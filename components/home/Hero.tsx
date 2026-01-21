@@ -11,7 +11,8 @@ export default function HomeHero() {
                 <div
                     className="absolute inset-0 bg-cover"
                     style={{
-                        backgroundImage: "url('/hero-1.jpg')",
+                        
+                        backgroundImage: "url('/hero-2.jpeg')",
                         backgroundPosition: "right center",
                     }}
                 />
