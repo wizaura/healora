@@ -52,19 +52,26 @@ export default function HowItWorks() {
                         return (
                             <div
                                 key={index}
-                                className="group relative bg-[#121B1F] p-8 shadow-xl transition-all duration-500
-                                           rounded-tl-4xl rounded-br-4xl rounded-tr-md rounded-bl-md
-                                           hover:-translate-y-2 hover:shadow-2xl hover:ring-1 hover:ring-teal-500/30"
+                                className="
+                                    group relative bg-[#121B1F] p-8 shadow-xl transition-all duration-500
+                                    rounded-tl-4xl rounded-br-4xl rounded-tr-md rounded-bl-md
+                                    hover:-translate-y-2 hover:shadow-2xl
+                                    hover:ring-1 hover:ring-[#9FE2BF]/30
+                                "
                             >
                                 {/* Step number */}
-                                <div className="absolute right-6 top-6 text-5xl font-bold text-teal-900/40">
+                                <div className="absolute right-6 top-6 text-5xl font-bold text-[#9FE2BF]/30">
                                     {step.step}
                                 </div>
 
                                 {/* Icon */}
-                                <div className="flex h-14 w-14 items-center justify-center rounded-xl
-                                                bg-gradient-to-br from-teal-500 to-emerald-500
-                                                text-white shadow-lg transition group-hover:scale-110">
+                                <div
+                                    className="
+                                        flex h-14 w-14 items-center justify-center rounded-xl
+                                        bg-gradient-to-br from-[#9FE2BF] to-[#ADE8F4]
+                                        text-black shadow-lg transition group-hover:scale-110
+                                    "
+                                >
                                     <Icon size={26} />
                                 </div>
 
@@ -78,7 +85,7 @@ export default function HowItWorks() {
                                 </p>
 
                                 {/* Accent line */}
-                                <div className="mt-6 h-1 w-10 rounded-full bg-gradient-to-r from-teal-500 to-emerald-500" />
+                                <div className="mt-6 h-1 w-10 rounded-full bg-gradient-to-r from-[#9FE2BF] to-[#ADE8F4]" />
                             </div>
                         );
                     })}

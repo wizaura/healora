@@ -93,7 +93,7 @@ export default function Navbar() {
 
                             <Link
                                 href="/book"
-                                className="rounded-xl bg-gradient-to-r from-teal-600 to-emerald-500 px-5 py-3 text-center text-sm font-semibold text-white shadow-md"
+                                className="rounded-xl bg-gradient-to-r from-[#9FE2BF] to-[#ADE8F4] px-5 py-3 text-center text-sm font-semibold text-black shadow-md"
                             >
                                 Book Appointment
                             </Link>

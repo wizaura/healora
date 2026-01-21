@@ -62,7 +62,7 @@ export default function DoctorsCarousel() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6">
 
                 {/* Header */}
-                <div className="mb-14 text-center">
+                <div className="mb-10 text-center">
                     <h2 className="text-4xl font-bold text-gray-900">
                         Our Doctors
                     </h2>
@@ -72,13 +72,11 @@ export default function DoctorsCarousel() {
                 </div>
 
                 {/* Carousel */}
-                {/* Carousel */}
                 <div
                     className="relative mx-auto max-w-full overflow-hidden"
                     onMouseEnter={stopAuto}
                     onMouseLeave={startAuto}
                 >
-                    {/* Viewport (hard clip) */}
                     <div className="relative flex w-full items-center justify-center overflow-hidden">
 
                         {/* Left Arrow */}
@@ -105,27 +103,22 @@ export default function DoctorsCarousel() {
                                     <div
                                         key={index}
                                         className={`
-                            relative shrink-0 transition-all duration-500
-                            ${isCenter
-                                                ? "z-10 opacity-100 scale-100"
+                                            relative shrink-0 transition-all duration-500
+                                            ${isCenter
+                                                ? "z-10 opacity-100 scale-99"
                                                 : "pointer-events-none hidden md:block opacity-40 scale-90"
                                             }
-                        `}
-                                        style={{
-                                            width: "min(280px, 85vw)", // 👈 CRITICAL
-                                        }}
+                                        `}
+                                        style={{ width: "min(280px, 85vw)" }}
                                     >
                                         <div
                                             className={`
-                                relative mt-12 rounded-[28px] bg-white p-6 pt-16 text-center shadow-xl
-                                ${isCenter
-                                                    ? "ring-2 ring-teal-500/20"
-                                                    : ""
-                                                }
-                            `}
+                                                relative mt-12 rounded-[28px] bg-white p-6 pt-16 text-center shadow-xl
+                                                ${isCenter ? "ring-2 ring-[#9FE2BF]/40" : ""}
+                                            `}
                                         >
                                             {/* Avatar */}
-                                            <div className="absolute left-1/2 top-0 z-20 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-teal-400 to-emerald-500 p-1 shadow-xl">
+                                            <div className="absolute left-1/2 top-0 z-20 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-[#9FE2BF] to-[#ADE8F4] p-1 shadow-xl">
                                                 <img
                                                     src={doctor.avatar}
                                                     alt={doctor.name}
@@ -135,14 +128,14 @@ export default function DoctorsCarousel() {
 
                                             {/* Glow */}
                                             {isCenter && (
-                                                <div className="pointer-events-none absolute inset-0 rounded-[28px] bg-gradient-to-b from-teal-50/60 to-transparent" />
+                                                <div className="pointer-events-none absolute inset-0 rounded-[28px] bg-gradient-to-b from-[#9FE2BF]/30 to-transparent" />
                                             )}
 
                                             <h3 className="mt-6 text-lg font-semibold text-gray-900">
                                                 {doctor.name}
                                             </h3>
 
-                                            <p className="text-sm font-medium text-teal-700">
+                                            <p className="text-sm font-medium text-[#4A7C6B]">
                                                 {doctor.specialty}
                                             </p>
 
@@ -150,10 +143,10 @@ export default function DoctorsCarousel() {
                                                 {doctor.experience}
                                             </p>
 
-                                            <div className="mx-auto mt-4 h-px w-12 bg-teal-200" />
+                                            <div className="mx-auto mt-4 h-px w-12 bg-[#9FE2BF]/60" />
 
                                             {isCenter && (
-                                                <button className="mt-5 w-full rounded-xl bg-gradient-to-r from-teal-600 to-emerald-500 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:scale-[1.03]">
+                                                <button className="mt-5 w-full rounded-xl bg-gradient-to-r from-[#9FE2BF] to-[#ADE8F4] py-2.5 text-sm font-semibold text-black shadow-lg transition hover:scale-[1.03]">
                                                     Book Appointment
                                                 </button>
                                             )}
