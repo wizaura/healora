@@ -11,7 +11,7 @@ export default function HomeHero() {
                 <div
                     className="absolute inset-0 bg-cover"
                     style={{
-                        
+
                         backgroundImage: "url('/hero-2.jpeg')",
                         backgroundPosition: "right center",
                     }}
@@ -40,17 +40,17 @@ export default function HomeHero() {
                         Healora
                     </h1>
 
-                    <p className="mt-5 text-2xl font-semibold text-[#475569]">
+                    <p className="mt-5 text-2xl font-semibold text-white">
                         Care that begins with trust
                     </p>
 
-                    <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-[#64748B]">
+                    <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-gray-200">
                         Book verified doctors, choose flexible time slots, and consult securely —
                         designed for clarity, comfort, and confidence.
                     </p>
 
                     {/* Trust bullets */}
-                    <div className="mt-10 flex flex-wrap gap-6 text-sm text-[#475569]">
+                    <div className="mt-10 flex flex-wrap gap-6 text-sm text-gray-200">
                         <span className="flex items-center gap-2">
                             <span className="h-2 w-2 rounded-full bg-[#9FE2BF]" />
                             Verified Doctors
@@ -67,7 +67,7 @@ export default function HomeHero() {
 
                     {/* BOOKING FORM */}
                     <div className="relative mt-12 max-w-7xl">
-                        <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gradient-to-br from-white via-[#F6FFFD] to-[#9FE2BF]/20 p-6 shadow-xl">
+                        <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gradient-to-br from-[#9FE2BF]/20 via-[#9FE2BF]/20 to-[#9FE2BF]/20 p-6 shadow-xl">
 
                             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#9FE2BF] to-[#ADE8F4]" />
 
@@ -142,7 +142,7 @@ export default function HomeHero() {
                                 </button>
                             </form>
 
-                            <p className="mt-4 text-center text-xs text-gray-500">
+                            <p className="mt-4 text-center text-xs text-gray-300">
                                 Secure payment • Instant confirmation • Trusted doctors
                             </p>
                         </div>
