@@ -44,6 +44,9 @@ export default function ServicesScrollSection() {
 
     useEffect(() => {
         const onScroll = () => {
+            // ⛔ Disable horizontal scroll on small screens
+            if (window.innerWidth < 768) return;
+
             if (!sectionRef.current || !trackRef.current) return;
 
             const section = sectionRef.current;
@@ -52,17 +55,14 @@ export default function ServicesScrollSection() {
             const rect = section.getBoundingClientRect();
             const viewportHeight = window.innerHeight;
 
-            // Section scroll progress (0 → 1)
-            const start = 0; // when section top hits viewport top
-            const end = rect.height - viewportHeight; // sticky duration
+            const totalScroll = rect.height - viewportHeight;
 
             const scrolled = Math.min(
-                Math.max(-rect.top, start),
-                end
+                Math.max(-rect.top, 0),
+                totalScroll
             );
 
-            const progress = scrolled / end;
-
+            const progress = scrolled / totalScroll;
 
             const maxTranslate =
                 track.scrollWidth - window.innerWidth + 160;
@@ -71,16 +71,26 @@ export default function ServicesScrollSection() {
         };
 
         window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
+
+        return () => {
+            window.removeEventListener("scroll", onScroll);
+        };
     }, []);
+
 
     return (
         <section
             ref={sectionRef}
-            className="relative h-[350vh] bg-gradient-to-b m-4 rounded-xl from-[#1F4BFF] to-[#9FE2BF]"
+            className="
+        relative m-4 rounded-xl
+        bg-gradient-to-b from-[#1F4BFF] to-[#9FE2BF]
+        py-16
+        md:h-[350vh] md:py-0
+    "
         >
+
             {/* Sticky viewport */}
-            <div className="sticky top-0 h-screen/80 overflow-hidden mb-20">    
+            <div className="relative md:sticky md:top-0 md:h-screen/80 overflow-hidden mb-20">
 
                 {/* Header */}
                 <div className="mx-auto max-w-6xl px-8 pt-20 pb-16">
@@ -106,30 +116,42 @@ export default function ServicesScrollSection() {
                 <div className="relative overflow-hidden">
                     <div
                         ref={trackRef}
-                        className="flex gap-6 px-24 py-3 will-change-transform"
+                        className="
+        flex flex-col gap-6 px-6 py-6
+        md:flex-row md:gap-6 md:px-24 md:py-3
+        will-change-transform
+    "
                     >
+
                         {services.map((s, i) => (
                             <div
                                 key={i}
                                 className="
-        w-[460px] shrink-0 overflow-hidden rounded-3xl
+        md:w-[460px] shrink-0 overflow-hidden rounded-3xl
         bg-white shadow-xl transition hover:scale-[1.03]
     "
                             >
-                                <div className="grid h-full grid-cols-[190px_1fr]">
+                                <div className="grid h-full grid-cols-1 md:grid-cols-[190px_1fr]">
 
-                                    {/* LEFT ICON PANEL */}
-                                    <div className="flex items-center m-4 justify-center rounded-xl bg-gradient-to-b from-[#7F9CFF] to-[#E6ECFF]">
+                                    {/* ICON PANEL */}
+                                    <div
+                                        className="
+                flex items-center justify-center
+                p-6 m-4
+                rounded-xl
+                bg-gradient-to-b from-[#7F9CFF] to-[#E6ECFF]
+            "
+                                    >
                                         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#1F4BFF] text-white shadow-lg">
                                             <s.icon size={30} />
                                         </div>
                                     </div>
 
-                                    {/* RIGHT CONTENT */}
-                                    <div className="flex flex-col justify-between p-6">
+                                    {/* CONTENT */}
+                                    <div className="flex flex-col justify-between px-6 pb-6 md:p-6">
 
-                                        <div>
-                                            <h3 className="text-lg font-semibold text-[#1F2147]">
+                                        <div className="text-center md:text-left">
+                                            <h3 className="text-lg font-bold md:font-semibold text-[#1F2147]">
                                                 {s.title}
                                             </h3>
 
@@ -139,20 +161,22 @@ export default function ServicesScrollSection() {
                                         </div>
 
                                         {/* CTA */}
-                                        <button
-                                            className="
-                    cursor-pointer group mt-6 inline-flex w-fit items-center gap-2
-                    rounded-full border border-gray-200
-                    px-4 py-2 text-sm font-medium
-                    text-[#1F4BFF] transition
-                    hover:bg-[#1F4BFF] hover:text-white
-                "
-                                        >
-                                            Explore More
-                                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#1F4BFF] text-white group-hover:text-[#1F4BFF] group-hover:bg-white">
-                                                <ArrowUpRight size={14} />
-                                            </span>
-                                        </button>
+                                        <div className="mt-6 flex justify-center md:justify-start">
+                                            <button
+                                                className="
+                        cursor-pointer group inline-flex items-center gap-2
+                        rounded-full border border-gray-200
+                        px-4 py-2 text-sm font-medium
+                        text-[#1F4BFF] transition
+                        hover:bg-[#1F4BFF] hover:text-white
+                    "
+                                            >
+                                                Explore More
+                                                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#1F4BFF] text-white group-hover:text-[#1F4BFF] group-hover:bg-white">
+                                                    <ArrowUpRight size={14} />
+                                                </span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
