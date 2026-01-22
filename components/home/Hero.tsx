@@ -1,6 +1,5 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
 import CTAButton from "../common/CTAButton";
 
 export default function HomeHero() {
@@ -47,7 +46,10 @@ export default function HomeHero() {
 
                 {/* CTA */}
                 <div className="mt-10 flex justify-center">
-                    <CTAButton />
+                    <CTAButton
+                        href="/book"
+                        label="Book an Appointment"
+                    />
                 </div>
             </div>
         </section>

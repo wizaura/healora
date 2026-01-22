@@ -1,49 +1,60 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
-export default function CTAButton() {
+type CTAButtonProps = {
+    href: string;
+    label: string;
+    className?: string;
+};
+
+export default function CTAButton({
+    href,
+    label,
+    className = "",
+}: CTAButtonProps) {
     return (
-        <button
-            className="
-                cursor-pointer group flex items-center bg-transparent gap-0.5 overflow-hidden
-                text-white
-                transition-all duration-300
-                hover:scale-[1.03]
-            "
-        >
-            {/* Text */}
-            <span className="px-8 py-5 text-sm font-semibold bg-[#2F4CFF] hover:bg-[#243BDB] rounded-xl">
-                Book an Appointment
-            </span>
+        <Link href={href}>
+            <button
+                className={`
+                    cursor-pointer group flex items-center gap-0.5 overflow-hidden
+                    text-white transition-all duration-300
+                    hover:scale-[1.03]
+                `}
+            >
+                {/* Text */}
+                <span className={`px-8 py-5 text-md font-semibold bg-[#2F4CFF] hover:bg-blue-900 rounded-xl transition-colors group-hover:text-white ${className}`}>
+                    {label}
+                </span>
 
-            {/* Icon Container */}
-            <span className="relative flex h-15 w-15 items-center justify-center rounded-xl bg-[#2F4CFF] hover:bg-[#243BDB] transition-colors duration-300 group-hover:bg-[#2F4CFF]">
+                {/* Icon Container */}
+                <span className={`relative flex h-16 w-16 items-center justify-center rounded-xl bg-[#2F4CFF] transition-colors duration-300 group-hover:bg-blue-900 group-hover:text-white ${className}`}>
+                    {/* Default Icon */}
+                    <ArrowUpRight
+                        className="
+                            absolute h-5 w-5
+                            transition-all duration-300 ease-out
+                            group-hover:translate-x-3
+                            group-hover:-translate-y-3
+                            group-hover:opacity-0
+                        "
+                    />
 
-                {/* Default Icon (moves ↗ out) */}
-                <ArrowUpRight
-                    className="
-                        absolute h-5 w-5
-                        transition-all duration-300 ease-out
-                        group-hover:translate-x-3
-                        group-hover:-translate-y-3
-                        group-hover:opacity-0
-                    "
-                />
-
-                {/* Hover Icon (comes ↗ in) */}
-                <ArrowUpRight
-                    className="
-                        absolute h-5 w-5
-                        translate-x-[-12px] translate-y-[12px]
-                        opacity-0
-                        transition-all duration-300 ease-out
-                        group-hover:translate-x-0
-                        group-hover:translate-y-0
-                        group-hover:opacity-100
-                    "
-                />
-            </span>
-        </button>
+                    {/* Hover Icon */}
+                    <ArrowUpRight
+                        className="
+                            absolute h-5 w-5
+                            translate-x-[-12px] translate-y-[12px]
+                            opacity-0
+                            transition-all duration-300 ease-out
+                            group-hover:translate-x-0
+                            group-hover:translate-y-0
+                            group-hover:opacity-100
+                        "
+                    />
+                </span>
+            </button>
+        </Link>
     );
 }
