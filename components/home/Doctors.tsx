@@ -1,171 +1,173 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { useState } from "react";
 
 const doctors = [
     {
-        name: "Dr. Anil Kumar",
-        specialty: "Cardiologist",
-        experience: "12+ years experience",
-        avatar: "https://i.pravatar.cc/150?img=32",
-    },
-    {
-        name: "Dr. Sneha Menon",
+        name: "Dr. Samuel Kim",
         specialty: "Dermatologist",
-        experience: "9+ years experience",
-        avatar: "https://i.pravatar.cc/150?img=47",
+        avatar: "https://i.pravatar.cc/300?img=12",
     },
     {
-        name: "Dr. Rahul Verma",
-        specialty: "Pediatrician",
-        experience: "10+ years experience",
-        avatar: "https://i.pravatar.cc/150?img=12",
+        name: "Dr. Emily Davis",
+        specialty: "Endocrinologist",
+        avatar: "https://i.pravatar.cc/300?img=32",
     },
     {
-        name: "Dr. Meera Nair",
-        specialty: "General Physician",
-        experience: "8+ years experience",
-        avatar: "https://i.pravatar.cc/150?img=58",
+        name: "Dr. Ema Thomson",
+        specialty: "Dermatologist",
+        avatar: "https://i.pravatar.cc/300?img=47",
+    },
+    {
+        name: "Dr. Oliver Johnson",
+        specialty: "Psychiatrist",
+        avatar: "https://i.pravatar.cc/300?img=58",
     },
 ];
 
-export default function DoctorsCarousel() {
-    const [active, setActive] = useState(0);
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+export default function DoctorsProjection() {
+    const [leftDoctor, setLeftDoctor] = useState(doctors[0]);
+    const [rightDoctor, setRightDoctor] = useState(doctors[1]);
+    const [slot, setSlot] = useState<"left" | "right">("left");
 
-    const next = () =>
-        setActive((prev) => (prev === doctors.length - 1 ? 0 : prev + 1));
-
-    const prev = () =>
-        setActive((prev) => (prev === 0 ? doctors.length - 1 : prev - 1));
-
-    const startAuto = () => {
-        stopAuto();
-        intervalRef.current = setInterval(next, 4000);
-    };
-
-    const stopAuto = () => {
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
+    const handleSelect = (doctor: typeof doctors[0]) => {
+        if (slot === "left") {
+            setLeftDoctor(doctor);
+            setSlot("right");
+        } else {
+            setRightDoctor(doctor);
+            setSlot("left");
         }
     };
 
-    useEffect(() => {
-        startAuto();
-        return () => stopAuto();
-    }, []);
-
     return (
-        <section className="overflow-hidden bg-white py-20">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <section className="bg-gradient-to-b m-4 rounded-xl from-[#ADE8F4]/50 to-[#1F4BFF] py-16">
+            <div className="mx-auto max-w-5xl px-6">
 
-                {/* Header */}
-                <div className="mb-10 text-center">
-                    <h2 className="text-4xl font-bold text-gray-900">
-                        Our Doctors
-                    </h2>
-                    <p className="mt-3 text-gray-600">
-                        Consult with trusted and experienced professionals
-                    </p>
-                </div>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3 items-start">
 
-                {/* Carousel */}
-                <div
-                    className="relative mx-auto max-w-full overflow-hidden"
-                    onMouseEnter={stopAuto}
-                    onMouseLeave={startAuto}
-                >
-                    <div className="relative flex w-full items-center justify-center overflow-hidden">
+                    {/* LEFT CARD */}
+                    <DoctorCard doctor={leftDoctor} />
 
-                        {/* Left Arrow */}
-                        <button
-                            onClick={prev}
-                            className="absolute left-2 z-20 rounded-full bg-white p-3 shadow-md hover:bg-gray-100 sm:left-4 md:left-8"
-                        >
-                            <ChevronLeft />
-                        </button>
-
-                        {/* Cards Track */}
-                        <div
-                            className="relative flex items-center justify-center"
-                            style={{ width: "100%", maxWidth: "100vw" }}
-                        >
-                            {[-1, 0, 1].map((offset) => {
-                                const index =
-                                    (active + offset + doctors.length) % doctors.length;
-
-                                const doctor = doctors[index];
-                                const isCenter = offset === 0;
-
-                                return (
-                                    <div
-                                        key={index}
-                                        className={`
-                                            relative shrink-0 transition-all duration-500
-                                            ${isCenter
-                                                ? "z-10 opacity-100 scale-99"
-                                                : "pointer-events-none hidden md:block opacity-40 scale-90"
-                                            }
-                                        `}
-                                        style={{ width: "min(280px, 85vw)" }}
-                                    >
-                                        <div
-                                            className={`
-                                                relative mt-12 rounded-[28px] bg-white p-6 pt-16 text-center shadow-xl
-                                                ${isCenter ? "ring-2 ring-[#9FE2BF]/40" : ""}
-                                            `}
-                                        >
-                                            {/* Avatar */}
-                                            <div className="absolute left-1/2 top-0 z-20 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-[#9FE2BF] to-[#ADE8F4] p-1 shadow-xl">
-                                                <img
-                                                    src={doctor.avatar}
-                                                    alt={doctor.name}
-                                                    className="h-full w-full rounded-full object-cover bg-white"
-                                                />
-                                            </div>
-
-                                            {/* Glow */}
-                                            {isCenter && (
-                                                <div className="pointer-events-none absolute inset-0 rounded-[28px] bg-gradient-to-b from-[#9FE2BF]/30 to-transparent" />
-                                            )}
-
-                                            <h3 className="mt-6 text-lg font-semibold text-gray-900">
-                                                {doctor.name}
-                                            </h3>
-
-                                            <p className="text-sm font-medium text-[#4A7C6B]">
-                                                {doctor.specialty}
-                                            </p>
-
-                                            <p className="mt-2 text-xs text-gray-500">
-                                                {doctor.experience}
-                                            </p>
-
-                                            <div className="mx-auto mt-4 h-px w-12 bg-[#9FE2BF]/60" />
-
-                                            {isCenter && (
-                                                <button className="mt-5 w-full rounded-xl bg-gradient-to-r from-[#9FE2BF] to-[#ADE8F4] py-2.5 text-sm font-semibold text-black shadow-lg transition hover:scale-[1.03]">
-                                                    Book Appointment
-                                                </button>
-                                            )}
-                                        </div>
+                    {/* CENTER LIST */}
+                    <div className="relative z-10 rounded-3xl bg-white/90 p-6 shadow-xl backdrop-blur">
+                        <ul className="space-y-5">
+                            {doctors.map((doc) => (
+                                <li
+                                    key={doc.name}
+                                    onClick={() => handleSelect(doc)}
+                                    className="flex cursor-pointer items-center gap-4 rounded-xl px-4 py-4 transition bg-gray-100 hover:bg-[#E0EAFF]"
+                                >
+                                    <img
+                                        src={doc.avatar}
+                                        className="h-10 w-10 rounded-full object-cover"
+                                    />
+                                    <div>
+                                        <p className="font-medium text-[#1F2147]">
+                                            {doc.name}
+                                        </p>
+                                        <p className="text-sm text-gray-500">
+                                            {doc.specialty}
+                                        </p>
                                     </div>
-                                );
-                            })}
-                        </div>
-
-                        {/* Right Arrow */}
-                        <button
-                            onClick={next}
-                            className="absolute right-2 z-20 rounded-full bg-white p-3 shadow-md hover:bg-gray-100 sm:right-4 md:right-8"
-                        >
-                            <ChevronRight />
-                        </button>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
+
+                    {/* RIGHT CARD */}
+                    <DoctorCard doctor={rightDoctor} />
                 </div>
             </div>
         </section>
     );
 }
+
+/* ------------------ Doctor Card ------------------ */
+
+function DoctorCard({
+    doctor,
+}: {
+    doctor: {
+        name: string;
+        specialty: string;
+        avatar: string;
+    };
+}) {
+    return (
+        <div
+            className="
+        group relative m-auto w-[300px] overflow-hidden p-3
+        rounded-3xl bg-white shadow-[0_30px_60px_-20px_rgba(0,0,0,0.25)]
+        transition-all duration-500
+        hover:-translate-y-2
+    "
+        >
+            {/* Top info pill */}
+            <div
+                className="
+            relative z-10 mb-3 flex items-center justify-between
+            rounded-2xl bg-white/95 px-4 py-2
+            shadow-md backdrop-blur
+        "
+            >
+                <div className="flex items-center gap-3">
+                    <img
+                        src={doctor.avatar}
+                        className="h-9 w-9 rounded-full object-cover ring-2 ring-[#EEF2FF]"
+                    />
+                    <div className="text-left">
+                        <p className="text-sm font-semibold text-[#1F2147] leading-tight">
+                            {doctor.name}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                            {doctor.specialty}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Go to Doctor */}
+                <div
+                    className="
+                group/action flex h-9 w-9 cursor-pointer items-center justify-center
+                rounded-full bg-[#EEF2FF] text-[#2F4CFF]
+                transition-all duration-300
+                hover:bg-[#2F4CFF] hover:text-white
+            "
+                    title="View doctor profile"
+                >
+                    <ArrowUpRight
+                        size={16}
+                        className="
+                    transition-transform duration-300
+                    group-hover/action:translate-x-[2px]
+                    group-hover/action:-translate-y-[2px]
+                "
+                    />
+                </div>
+            </div>
+
+            {/* Image Area */}
+            <div className="relative rounded-2xl h-[320px] w-full overflow-hidden">
+                <img
+                    src={doctor.avatar}
+                    alt={doctor.name}
+                    className="
+                h-full w-full object-cover
+                transition-transform duration-700
+                group-hover:scale-[1.05]
+            "
+                />
+
+                {/* Soft gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#3B82F6]/35" />
+            </div>
+
+            {/* Bottom glow */}
+            {/* <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#3B82F6]/70 to-transparent" /> */}
+        </div>
+
+    );
+}
+

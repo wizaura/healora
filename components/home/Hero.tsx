@@ -1,154 +1,55 @@
 "use client";
 
+import { ArrowUpRight } from "lucide-react";
+import CTAButton from "../common/CTAButton";
+
 export default function HomeHero() {
     return (
-        <section className="relative min-h-screen overflow-hidden bg-[#9FE2BF]/20">
+        <section className="relative m-4 rounded-xl flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-white via-white to-[#ADE8F4]/50">
 
-            {/* HERO SECTION */}
-            <section className="relative min-h-[90vh] overflow-hidden">
-
-                {/* Background Image */}
-                <div
-                    className="absolute inset-0 bg-cover"
-                    style={{
-
-                        backgroundImage: "url('/hero-2.jpeg')",
-                        backgroundPosition: "right center",
-                    }}
+            <div className="relative z-10 mx-auto max-w-4xl px-6 text-center md:mt-12">
+                {/* Left virus */}
+                <img
+                    src="/virus-left.png"
+                    alt=""
+                    className="pointer-events-none absolute left-6 top-1/2 w-24 -translate-y-1/2 opacity-70 md:w-32"
                 />
 
-                {/* Texture */}
-                <div
-                    className="absolute inset-0 opacity-[0.035]"
-                    style={{
-                        backgroundImage:
-                            "radial-gradient(circle at 1px 1px, #0f766e 1px, transparent 0)",
-                        backgroundSize: "36px 36px",
-                    }}
+                {/* Right virus */}
+                <img
+                    src="/virus-right.png"
+                    alt=""
+                    className="pointer-events-none absolute right-6 top-1/2 w-24 -translate-y-1/2 opacity-70 md:w-32"
                 />
 
-                {/* CONTENT + FORM */}
-                <div className="relative z-10 mx-auto flex min-h-[85vh] max-w-7xl flex-col justify-center px-6 py-24 lg:px-14">
+                {/* Social proof pill */}
+                <div className="mx-auto mb-8 flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 shadow-sm">
+                    <div className="flex -space-x-2">
+                        <img src="https://i.pravatar.cc/32?img=12" className="h-7 w-7 rounded-full border-2 border-white" />
+                        <img src="https://i.pravatar.cc/32?img=32" className="h-7 w-7 rounded-full border-2 border-white" />
+                        <img src="https://i.pravatar.cc/32?img=45" className="h-7 w-7 rounded-full border-2 border-white" />
+                        <span className="flex h-7 w-7 items-start justify-center rounded-full bg-orange-500 text-md font-bold text-white">
+                            +
+                        </span>
+                    </div>
 
-                    {/* Badge */}
-                    <span className="my-6 inline-flex w-fit items-center gap-2 rounded-full bg-black/80 px-5 py-2 text-xs font-semibold tracking-wide text-[#ADE8F4]">
-                        Trusted Healthcare Platform
+                    <span className="text-md text-gray-600">
+                        20,000+ happy patients served!
                     </span>
-
-                    {/* Title */}
-                    <h1 className="text-6xl font-extrabold tracking-tight text-[#0F172A]">
-                        Healora
-                    </h1>
-
-                    <p className="mt-5 text-2xl font-semibold text-white">
-                        Care that begins with trust
-                    </p>
-
-                    <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-gray-200">
-                        Book verified doctors, choose flexible time slots, and consult securely —
-                        designed for clarity, comfort, and confidence.
-                    </p>
-
-                    {/* Trust bullets */}
-                    <div className="mt-10 flex flex-wrap gap-6 text-sm text-gray-200">
-                        <span className="flex items-center gap-2">
-                            <span className="h-2 w-2 rounded-full bg-[#9FE2BF]" />
-                            Verified Doctors
-                        </span>
-                        <span className="flex items-center gap-2">
-                            <span className="h-2 w-2 rounded-full bg-[#9FE2BF]" />
-                            Secure Payments
-                        </span>
-                        <span className="flex items-center gap-2">
-                            <span className="h-2 w-2 rounded-full bg-[#9FE2BF]" />
-                            Instant Booking
-                        </span>
-                    </div>
-
-                    {/* BOOKING FORM */}
-                    <div className="relative mt-12 max-w-7xl">
-                        <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gradient-to-br from-[#9FE2BF]/20 via-[#9FE2BF]/20 to-[#9FE2BF]/20 p-6 shadow-xl">
-
-                            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#9FE2BF] to-[#ADE8F4]" />
-
-                            <form className="grid grid-cols-1 gap-4 md:grid-cols-6">
-
-                                {/* Specialty */}
-                                <div className="flex flex-col rounded-xl bg-white px-4 py-2 shadow-sm ring-1 ring-gray-200 focus-within:ring-[#9FE2BF]">
-                                    <span className="text-[11px] font-medium text-gray-500">
-                                        Specialty
-                                    </span>
-                                    <select className="border-none bg-transparent p-0 text-sm text-gray-800 focus:outline-none">
-                                        <option>Select Specialty</option>
-                                        <option>Cardiology</option>
-                                        <option>Dermatology</option>
-                                        <option>General Physician</option>
-                                    </select>
-                                </div>
-
-                                {/* Doctor */}
-                                <div className="flex flex-col rounded-xl bg-white px-4 py-2 shadow-sm ring-1 ring-gray-200 focus-within:ring-[#9FE2BF]">
-                                    <span className="text-[11px] font-medium text-gray-500">
-                                        Doctor
-                                    </span>
-                                    <select className="border-none bg-transparent text-gray-800 p-0 text-sm focus:outline-none">
-                                        <option>Select Doctor</option>
-                                        <option>Dr. Anil Kumar</option>
-                                        <option>Dr. Sneha Menon</option>
-                                    </select>
-                                </div>
-
-                                {/* Date */}
-                                <div className="flex flex-col rounded-xl bg-white px-4 py-2 shadow-sm ring-1 ring-gray-200 focus-within:ring-[#9FE2BF]">
-                                    <span className="text-[11px] font-medium text-gray-500">
-                                        Date
-                                    </span>
-                                    <input
-                                        type="date"
-                                        className="border-none bg-transparent text-gray-800 p-0 text-sm focus:outline-none"
-                                    />
-                                </div>
-
-                                {/* Time */}
-                                <div className="flex flex-col rounded-xl bg-white px-4 py-2 shadow-sm ring-1 ring-gray-200 focus-within:ring-[#9FE2BF]">
-                                    <span className="text-[11px] font-medium text-gray-500">
-                                        Time
-                                    </span>
-                                    <select className="border-none bg-transparent text-gray-800 p-0 text-sm focus:outline-none">
-                                        <option>Select Slot</option>
-                                        <option>09:00 – 09:30</option>
-                                        <option>10:00 – 10:30</option>
-                                    </select>
-                                </div>
-
-                                {/* Mode */}
-                                <div className="flex flex-col rounded-xl bg-white px-4 py-2 shadow-sm ring-1 ring-gray-200 focus-within:ring-[#9FE2BF]">
-                                    <span className="text-[11px] font-medium text-gray-500">
-                                        Mode
-                                    </span>
-                                    <select className="border-none bg-transparent text-gray-800 p-0 text-sm focus:outline-none">
-                                        <option>Consultation</option>
-                                        <option>Online</option>
-                                        <option>In Clinic</option>
-                                    </select>
-                                </div>
-
-                                {/* CTA */}
-                                <button
-                                    type="submit"
-                                    className="relative flex items-center justify-center rounded-xl bg-gradient-to-r from-[#9FE2BF] to-[#ADE8F4] px-6 py-4 text-sm font-semibold text-black shadow-lg transition hover:scale-[1.03]"
-                                >
-                                    Book Appointment
-                                </button>
-                            </form>
-
-                            <p className="mt-4 text-center text-xs text-gray-300">
-                                Secure payment • Instant confirmation • Trusted doctors
-                            </p>
-                        </div>
-                    </div>
                 </div>
-            </section>
+
+                {/* Main Heading */}
+                <h1 className="text-5xl font-medium leading-[1.15] tracking-[-0.02em] text-[#1F2147] md:text-7xl antialiased">
+                    Wellness starts with care
+                    <br />
+                    that really listens.
+                </h1>
+
+                {/* CTA */}
+                <div className="mt-10 flex justify-center">
+                    <CTAButton />
+                </div>
+            </div>
         </section>
     );
 }

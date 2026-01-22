@@ -9,8 +9,8 @@ export default function Home() {
   return (
     <div>
       <HomeHero />
-      <SpecialtiesSection />
       <DoctorsSlider />
+      <SpecialtiesSection />
       <HowItWorks />
       <ReviewsSection />
       <FAQsSection />
