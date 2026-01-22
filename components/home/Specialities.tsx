@@ -85,7 +85,7 @@ export default function ServicesScrollSection() {
                 {/* Header */}
                 <div className="mx-auto max-w-6xl px-8 pt-20 pb-16">
                     <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-                        <h2 className="text-6xl font-semibold text-white leading-tight">
+                        <h2 className="text-3xl font-semibold text-white leading-tight md:text-6xl">
                             Complete Health
                             <br />
                             Care Solutions.
