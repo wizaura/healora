@@ -68,7 +68,7 @@ export default function ReviewsSection() {
                                         size={16}
                                         className={
                                             i < item.rating
-                                                ? "fill-teal-500 text-teal-500"
+                                                ? "fill-[#9FE2BF] text-[#9FE2BF]"
                                                 : "text-gray-300"
                                         }
                                     />

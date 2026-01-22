@@ -80,7 +80,7 @@ export default function ServicesScrollSection() {
             className="relative h-[350vh] bg-gradient-to-b m-4 rounded-xl from-[#1F4BFF] to-[#9FE2BF]"
         >
             {/* Sticky viewport */}
-            <div className="sticky top-0 h-screen/80 overflow-hidden mb-20">
+            <div className="sticky top-0 h-screen/80 overflow-hidden mb-20">    
 
                 {/* Header */}
                 <div className="mx-auto max-w-6xl px-8 pt-20 pb-16">

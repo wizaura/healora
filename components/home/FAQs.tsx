@@ -69,7 +69,7 @@ export default function FAQsSection() {
                                 <div
                                     className={`flex h-10 w-10 items-center justify-center rounded-full
                                         ${active === index
-                                            ? "bg-teal-600 text-white"
+                                            ? "bg-[#9FE2BF] text-white"
                                             : "bg-teal-100 text-teal-600"
                                         }`}
                                 >
@@ -91,10 +91,10 @@ export default function FAQsSection() {
                         <div className="relative w-full max-w-lg rounded-[32px] bg-white p-10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.25)] transition-all duration-500">
 
                             {/* Top Accent */}
-                            <div className="absolute inset-x-0 top-0 h-1.5 rounded-t-[32px] bg-gradient-to-r from-teal-500 to-emerald-500" />
+                            <div className="absolute inset-x-0 top-0 h-1.5 rounded-t-[32px] bg-gradient-to-r from-[#9FE2BF] to-emerald-500" />
 
                             {/* Quote mark */}
-                            <div className="absolute -top-6 left-8 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-teal-600 to-emerald-500 text-white shadow-lg">
+                            <div className="absolute -top-6 left-8 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#9FE2BF] to-[#9FE2BF] text-white shadow-lg">
                                 <span className="text-2xl font-bold">?</span>
                             </div>
 
