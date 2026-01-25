@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, LogIn } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const navItems = [
@@ -50,13 +50,31 @@ export default function Navbar() {
                     })}
                 </div>
 
-                {/* Right CTA */}
-                <div className="hidden md:flex items-center">
+                {/* Right CTA (Desktop) */}
+                <div className="hidden md:flex items-center gap-3">
+
+                    {/* Login */}
+                    <Link
+                        href="/login"
+                        className="flex items-center gap-2 rounded-full
+                        border border-gray-200 bg-white px-5 py-2.5
+                        text-sm font-medium text-gray-700
+                        transition hover:bg-gray-50"
+                    >
+                        <LogIn size={16} />
+                        Login
+                    </Link>
+
+                    {/* Contact */}
                     <Link
                         href="#contact"
-                        className="group flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-[#1F2147] shadow-sm transition hover:bg-gray-50"
+                        className="group flex items-center gap-2 rounded-full
+                        border border-gray-200 bg-white px-5 py-2.5
+                        text-sm font-medium text-[#1F2147] shadow-sm
+                        transition hover:bg-gray-50"
                     >
-                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2F4CFF] text-white transition group-hover:scale-105">
+                        <span className="flex h-8 w-8 items-center justify-center
+                        rounded-full bg-[#2F4CFF] text-white transition group-hover:scale-105">
                             <ArrowUpRight size={16} />
                         </span>
                         Contact Us
@@ -76,20 +94,39 @@ export default function Navbar() {
             {open && (
                 <div className="md:hidden bg-white shadow-lg">
                     <div className="space-y-3 px-6 py-6">
+
                         {navItems.map((item) => (
                             <Link
                                 key={item.name}
                                 href={item.href}
                                 onClick={() => setOpen(false)}
-                                className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                                className="block rounded-lg px-4 py-2
+                                text-sm font-medium text-gray-700
+                                hover:bg-gray-100"
                             >
                                 {item.name}
                             </Link>
                         ))}
 
+                        {/* Login (Mobile) */}
+                        <Link
+                            href="/login"
+                            onClick={() => setOpen(false)}
+                            className="flex items-center justify-center gap-2
+                            rounded-xl border border-gray-200 px-5 py-3
+                            text-sm font-semibold text-gray-700"
+                        >
+                            <LogIn size={16} />
+                            Login
+                        </Link>
+
+                        {/* Contact (Mobile) */}
                         <Link
                             href="#contact"
-                            className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-[#2F4CFF] px-5 py-3 text-sm font-semibold text-white"
+                            onClick={() => setOpen(false)}
+                            className="flex items-center justify-center gap-2
+                            rounded-xl bg-[#2F4CFF] px-5 py-3
+                            text-sm font-semibold text-white"
                         >
                             Contact Us
                             <ArrowUpRight size={16} />
