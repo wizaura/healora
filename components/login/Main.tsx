@@ -4,17 +4,21 @@ import { useState } from "react";
 import Link from "next/link";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import api from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
 
 export default function Login() {
     const [form, setForm] = useState({
         email: "",
         password: "",
     });
+    const { refreshUser } = useAuth();
 
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-
+    const router = useRouter();
     const validate = () => {
         const newErrors: Record<string, string> = {};
 
@@ -43,12 +47,23 @@ export default function Login() {
         setLoading(true);
 
         try {
-            // fake delay → feels hosted
-            await new Promise((res) => setTimeout(res, 1200));
+            const res = await api.post("/auth/login", {
+                email: form.email,
+                password: form.password,
+            });
 
             toast.success("Logged in successfully 👋");
+            const user = await refreshUser();
 
-            // later → router.push("/dashboard")
+            if (!user) return;
+
+            if (user.role === "ADMIN") {
+                router.push("/admin");
+            } else if (user.role === "DOCTOR") {
+                router.push("/doctor");
+            } else {
+                router.push("/");
+            }
         } catch {
             toast.error("Invalid email or password");
         } finally {

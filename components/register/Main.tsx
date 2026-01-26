@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { Mail, Lock, User, EyeOff, Eye } from "lucide-react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import api from "@/lib/api";
 
 export default function Register() {
     const [form, setForm] = useState({
@@ -15,7 +17,7 @@ export default function Register() {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-
+    const router = useRouter();
     const validate = () => {
         const newErrors: Record<string, string> = {};
 
@@ -50,13 +52,15 @@ export default function Register() {
         setLoading(true);
 
         try {
-            // fake delay to feel hosted
-            await new Promise((res) => setTimeout(res, 1500));
-
+            await api.post("/auth/register", {
+                name: form.name,
+                email: form.email,
+                password: form.password,
+            });
             toast.success("Account created successfully 🎉");
             setForm({ name: "", email: "", password: "" });
 
-            // later → router.push("/login")
+            router.push("/login");
         } catch {
             toast.error("Something went wrong. Try again.");
         } finally {

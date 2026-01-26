@@ -2,8 +2,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ArrowUpRight, LogIn } from "lucide-react";
+import {
+    Menu,
+    X,
+    ArrowUpRight,
+    LogIn,
+    User,
+    Stethoscope,
+    ShieldCheck,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 
 const navItems = [
     { name: "Home", href: "/" },
@@ -16,6 +25,7 @@ const navItems = [
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const pathname = usePathname();
+    const { user, logout } = useAuth();
 
     return (
         <header className="fixed inset-x-0 top-0 z-50 bg-white/80 border-b border-gray-200 backdrop-blur-md">
@@ -37,10 +47,9 @@ export default function Navbar() {
                                 key={item.name}
                                 href={item.href}
                                 className={`px-5 py-2 text-sm font-medium rounded-full transition
-                                    ${
-                                        active
-                                            ? "bg-[#1F2147] text-white shadow-sm"
-                                            : "text-gray-600 hover:text-[#1F2147]"
+                                    ${active
+                                        ? "bg-[#1F2147] text-white shadow-sm"
+                                        : "text-gray-600 hover:text-[#1F2147]"
                                     }
                                 `}
                             >
@@ -53,17 +62,53 @@ export default function Navbar() {
                 {/* Right CTA (Desktop) */}
                 <div className="hidden md:flex items-center gap-3">
 
-                    {/* Login */}
-                    <Link
-                        href="/login"
-                        className="flex items-center gap-2 rounded-full
-                        border border-gray-200 bg-white px-5 py-2.5
-                        text-sm font-medium text-gray-700
-                        transition hover:bg-gray-50"
-                    >
-                        <LogIn size={16} />
-                        Login
-                    </Link>
+                    {/* Role-based links */}
+                    {user?.role === "ADMIN" && (
+                        <Link
+                            href="/admin"
+                            className="flex items-center gap-2 rounded-full
+                            border border-gray-200 bg-white px-5 py-2.5
+                            text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        >
+                            <ShieldCheck size={16} />
+                            Admin
+                        </Link>
+                    )}
+
+                    {user?.role === "DOCTOR" && (
+                        <Link
+                            href="/doctor"
+                            className="flex items-center gap-2 rounded-full
+                            border border-gray-200 bg-white px-5 py-2.5
+                            text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        >
+                            <Stethoscope size={16} />
+                            Dashboard
+                        </Link>
+                    )}
+
+                    {/* Login / Profile */}
+                    {!user ? (
+                        <Link
+                            href="/login"
+                            className="flex items-center gap-2 rounded-full
+                            border border-gray-200 bg-white px-5 py-2.5
+                            text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        >
+                            <LogIn size={16} />
+                            Login
+                        </Link>
+                    ) : (
+                        <Link
+                            href="/profile"
+                            className="flex items-center gap-2 rounded-full
+                            border border-gray-200 bg-white px-5 py-2.5
+                            text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        >
+                            <User size={16} />
+                            Profile
+                        </Link>
+                    )}
 
                     {/* Contact */}
                     <Link
@@ -101,26 +146,64 @@ export default function Navbar() {
                                 href={item.href}
                                 onClick={() => setOpen(false)}
                                 className="block rounded-lg px-4 py-2
-                                text-sm font-medium text-gray-700
-                                hover:bg-gray-100"
+                                text-sm font-medium text-gray-700 hover:bg-gray-100"
                             >
                                 {item.name}
                             </Link>
                         ))}
 
-                        {/* Login (Mobile) */}
-                        <Link
-                            href="/login"
-                            onClick={() => setOpen(false)}
-                            className="flex items-center justify-center gap-2
-                            rounded-xl border border-gray-200 px-5 py-3
-                            text-sm font-semibold text-gray-700"
-                        >
-                            <LogIn size={16} />
-                            Login
-                        </Link>
+                        {/* Role-based mobile links */}
+                        {user?.role === "ADMIN" && (
+                            <Link
+                                href="/admin"
+                                onClick={() => setOpen(false)}
+                                className="flex items-center justify-center gap-2
+                                rounded-xl border border-gray-200 px-5 py-3
+                                text-sm font-semibold text-gray-700"
+                            >
+                                <ShieldCheck size={16} />
+                                Admin
+                            </Link>
+                        )}
 
-                        {/* Contact (Mobile) */}
+                        {user?.role === "DOCTOR" && (
+                            <Link
+                                href="/doctor"
+                                onClick={() => setOpen(false)}
+                                className="flex items-center justify-center gap-2
+                                rounded-xl border border-gray-200 px-5 py-3
+                                text-sm font-semibold text-gray-700"
+                            >
+                                <Stethoscope size={16} />
+                                Doctor Dashboard
+                            </Link>
+                        )}
+
+                        {!user ? (
+                            <Link
+                                href="/login"
+                                onClick={() => setOpen(false)}
+                                className="flex items-center justify-center gap-2
+                                rounded-xl border border-gray-200 px-5 py-3
+                                text-sm font-semibold text-gray-700"
+                            >
+                                <LogIn size={16} />
+                                Login
+                            </Link>
+                        ) : (
+                            <Link
+                                href="/profile"
+                                onClick={() => setOpen(false)}
+                                className="flex items-center justify-center gap-2
+                                rounded-xl border border-gray-200 px-5 py-3
+                                text-sm font-semibold text-gray-700"
+                            >
+                                <User size={16} />
+                                Profile
+                            </Link>
+                        )}
+
+                        {/* Contact */}
                         <Link
                             href="#contact"
                             onClick={() => setOpen(false)}
