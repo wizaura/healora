@@ -34,7 +34,7 @@ const DUMMY_SPECIALITIES = [
         id: "s4",
         name: "Counseling",
         slug: "counseling",
-        description: "Professional guidance for emotional and mental wellbeing.",
+        description: "Professional guidance for emotional and mental wellbeing.\t \n \nnnn \n nn \n mm",
         icon: "MessageCircle",
         subSpecialities: [],
     },

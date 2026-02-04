@@ -42,12 +42,6 @@ const DUMMY_DOCTORS: Doctor[] = [
         speciality: { name: "Orthopedics" },
         avatar: "/doctor-placeholder.png",
     },
-    {
-        id: "d5",
-        user: { name: "Dr. Kavya Nair" },
-        speciality: { name: "Pediatrics" },
-        avatar: "/doctor-placeholder.png",
-    },
 ];
 
 
