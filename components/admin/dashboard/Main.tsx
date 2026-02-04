@@ -69,19 +69,6 @@ export default function AdminDashboard() {
                     );
                 })}
             </div>
-
-            {/* Primary CTA */}
-            <div className="mt-10">
-                <Link
-                    href="/admin/doctors/add"
-                    className="inline-flex items-center gap-2 rounded-xl
-          bg-teal-600 px-6 py-3 text-sm font-semibold text-white
-          transition hover:bg-teal-700"
-                >
-                    Add Doctor
-                    <ArrowUpRight size={16} />
-                </Link>
-            </div>
         </div>
     );
 }

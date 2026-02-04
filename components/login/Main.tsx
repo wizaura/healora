@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function Login() {
     const [form, setForm] = useState({
@@ -199,15 +200,31 @@ export default function Login() {
                 </div>
 
                 {/* Google Auth */}
-                <button
-                    onClick={() => toast("Google login coming soon")}
-                    className="flex w-full items-center justify-center gap-3 rounded-lg
-                    border border-slate-300 py-2.5 text-sm font-medium text-slate-700
-                    hover:bg-slate-50"
-                >
-                    <img src="/google.svg" alt="Google" className="h-5 w-5" />
-                    Continue with Google
-                </button>
+                <GoogleLogin
+                    onSuccess={async (credentialResponse) => {
+                        try {
+                            setLoading(true);
+
+                            await api.post("/auth/google", {
+                                token: credentialResponse.credential,
+                            });
+
+                            toast.success("Logged in with Google 👋");
+
+                            const user = await refreshUser();
+                            if (!user) return;
+
+                            router.push("/");
+                        } catch (err) {
+                            toast.error("Google login failed");
+                        } finally {
+                            setLoading(false);
+                        }
+                    }}
+                    onError={() => {
+                        toast.error("Google authentication failed");
+                    }}
+                />
 
                 {/* Footer */}
                 <p className="mt-6 text-center text-sm text-slate-500">

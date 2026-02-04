@@ -2,36 +2,67 @@
 
 import { ArrowUpRight } from "lucide-react";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import api from "@/lib/api";
 
-const doctors = [
+/* ------------------ TYPES ------------------ */
+type Doctor = {
+    id: string;
+    user: {
+        name: string;
+    }
+    speciality: {
+        name: string;
+    };
+    avatar?: string;
+};
+
+const DUMMY_DOCTORS: Doctor[] = [
     {
-        name: "Dr. Samuel Kim",
-        specialty: "Dermatologist",
-        avatar: "https://i.pravatar.cc/300?img=12",
+        id: "d1",
+        user: { name: "Dr. Ananya Rao" },
+        speciality: { name: "Cardiology" },
+        avatar: "/doctor-placeholder.png",
     },
     {
-        name: "Dr. Emily Davis",
-        specialty: "Endocrinologist",
-        avatar: "https://i.pravatar.cc/300?img=32",
+        id: "d2",
+        user: { name: "Dr. Arjun Menon" },
+        speciality: { name: "Dermatology" },
+        avatar: "/doctor-placeholder.png",
     },
     {
-        name: "Dr. Ema Thomson",
-        specialty: "Dermatologist",
-        avatar: "https://i.pravatar.cc/300?img=47",
+        id: "d3",
+        user: { name: "Dr. Neha Sharma" },
+        speciality: { name: "Neurology" },
+        avatar: "/doctor-placeholder.png",
     },
     {
-        name: "Dr. Oliver Johnson",
-        specialty: "Psychiatrist",
-        avatar: "https://i.pravatar.cc/300?img=58",
+        id: "d4",
+        user: { name: "Dr. Rohan Iyer" },
+        speciality: { name: "Orthopedics" },
+        avatar: "/doctor-placeholder.png",
+    },
+    {
+        id: "d5",
+        user: { name: "Dr. Kavya Nair" },
+        speciality: { name: "Pediatrics" },
+        avatar: "/doctor-placeholder.png",
     },
 ];
 
-export default function DoctorsProjection() {
-    const [leftDoctor, setLeftDoctor] = useState(doctors[0]);
-    const [rightDoctor, setRightDoctor] = useState(doctors[1]);
-    const [slot, setSlot] = useState<"left" | "right">("left");
 
-    const handleSelect = (doctor: typeof doctors[0]) => {
+export default function DoctorsProjection() {
+    const { data: doctors = DUMMY_DOCTORS, isLoading, isError } = useQuery<Doctor[]>({
+        queryKey: ["all-doctors"],
+        queryFn: () => api.get("/doctor").then(res => res.data),
+        retry: false,
+    });
+
+    const [slot, setSlot] = useState<"left" | "right">("left");
+    const [leftDoctor, setLeftDoctor] = useState<Doctor | null>(null);
+    const [rightDoctor, setRightDoctor] = useState<Doctor | null>(null);
+
+    const handleSelect = (doctor: Doctor) => {
         if (slot === "left") {
             setLeftDoctor(doctor);
             setSlot("right");
@@ -41,34 +72,47 @@ export default function DoctorsProjection() {
         }
     };
 
+    if (isLoading) {
+        return (
+            <section className="py-20 text-center text-navy">
+                Loading doctors…
+            </section>
+        );
+    }
+
     return (
-        <section className="bg-gradient-to-b m-4 rounded-xl from-[#ADE8F4]/50 to-[#1F4BFF] py-16">
-            <div className="mx-auto max-w-5xl px-6">
+        <section className="m-4 rounded-2xl bg-gradient-to-b from-wellness-bg via-white to-wellness-bg py-20">
+            <div className="mx-auto max-w-6xl px-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-3 items-start">
 
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3 items-start">
-
-                    {/* LEFT CARD */}
+                    {/* LEFT */}
                     <DoctorCard doctor={leftDoctor} />
 
                     {/* CENTER LIST */}
-                    <div className="relative z-10 rounded-3xl bg-white/90 p-6 shadow-xl backdrop-blur">
-                        <ul className="space-y-5">
-                            {doctors.map((doc) => (
+                    <div className="relative rounded-3xl bg-blur border border-gray-100 p-4 shadow-xl backdrop-blur">
+                        <ul className="space-y-4">
+                            {doctors.map(doc => (
                                 <li
-                                    key={doc.name}
+                                    key={doc.id}
                                     onClick={() => handleSelect(doc)}
-                                    className="flex cursor-pointer items-center gap-4 rounded-xl px-4 py-4 transition bg-gray-100 hover:bg-[#E0EAFF]"
+                                    className="
+                    flex cursor-pointer items-center gap-4
+                    rounded-xl px-4 py-4
+                    bg-navy
+                    hover:bg-navy/80
+                    transition
+                  "
                                 >
                                     <img
-                                        src={doc.avatar}
+                                        src={doc.avatar || "/doctor-placeholder.png"}
                                         className="h-10 w-10 rounded-full object-cover"
                                     />
                                     <div>
-                                        <p className="font-medium text-[#1F2147]">
-                                            {doc.name}
+                                        <p className="font-medium text-gray-100">
+                                            {doc.user.name}
                                         </p>
-                                        <p className="text-sm text-gray-500">
-                                            {doc.specialty}
+                                        <p className="text-sm text-gray-400">
+                                            {doc.speciality.name}
                                         </p>
                                     </div>
                                 </li>
@@ -76,7 +120,7 @@ export default function DoctorsProjection() {
                         </ul>
                     </div>
 
-                    {/* RIGHT CARD */}
+                    {/* RIGHT */}
                     <DoctorCard doctor={rightDoctor} />
                 </div>
             </div>
@@ -84,90 +128,80 @@ export default function DoctorsProjection() {
     );
 }
 
-/* ------------------ Doctor Card ------------------ */
 
 function DoctorCard({
     doctor,
 }: {
     doctor: {
-        name: string;
-        specialty: string;
-        avatar: string;
-    };
+        user: {
+            name: string
+        };
+        speciality: {
+            name: string
+        };
+        avatar?: string;
+    } | null;
 }) {
+    if (!doctor) {
+        return (
+            <div className="m-auto w-[300px] rounded-3xl bg-blur border border-gray-100 shadow-md p-10 text-center text-navy/50">
+                Select a doctor
+            </div>
+        );
+    }
+
     return (
         <div
             className="
-        group relative m-auto w-[300px] overflow-hidden p-3
-        rounded-3xl bg-white shadow-[0_30px_60px_-20px_rgba(0,0,0,0.25)]
+        group m-auto w-[300px] overflow-hidden
+        rounded-3xl bg-navy
+        shadow-[0_30px_60px_-20px_rgba(0,0,0,0.25)]
         transition-all duration-500
         hover:-translate-y-2
-    "
+      "
         >
-            {/* Top info pill */}
-            <div
-                className="
-            relative z-10 mb-3 flex items-center justify-between
-            rounded-2xl bg-white/95 px-4 py-2
-            shadow-md backdrop-blur
-        "
-            >
+            {/* TOP */}
+            <div className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3">
                     <img
-                        src={doctor.avatar}
-                        className="h-9 w-9 rounded-full object-cover ring-2 ring-[#EEF2FF]"
+                        src={doctor.avatar || "/doctor-placeholder.png"}
+                        className="h-10 w-10 rounded-full object-cover ring-2 ring-wellness-accent/30"
                     />
-                    <div className="text-left">
-                        <p className="text-sm font-semibold text-[#1F2147] leading-tight">
-                            {doctor.name}
+                    <div>
+                        <p className="text-md font-semibold text-gray-200">
+                            {doctor.user.name}
                         </p>
-                        <p className="text-xs text-gray-500">
-                            {doctor.specialty}
+                        <p className="text-sm text-gray-400">
+                            {doctor.speciality.name}
                         </p>
                     </div>
                 </div>
 
-                {/* Go to Doctor */}
                 <div
                     className="
-                group/action flex h-9 w-9 cursor-pointer items-center justify-center
-                rounded-full bg-[#EEF2FF] text-[#2F4CFF]
-                transition-all duration-300
-                hover:bg-[#2F4CFF] hover:text-white
-            "
-                    title="View doctor profile"
+            flex h-9 w-9 items-center justify-center
+            rounded-full bg-wellness-bg
+            text-navy cursor-pointer
+            hover:bg-wellness-accent hover:text-white
+            transition
+          "
                 >
-                    <ArrowUpRight
-                        size={16}
-                        className="
-                    transition-transform duration-300
-                    group-hover/action:translate-x-[2px]
-                    group-hover/action:-translate-y-[2px]
-                "
-                    />
+                    <ArrowUpRight size={16} />
                 </div>
             </div>
 
-            {/* Image Area */}
-            <div className="relative rounded-2xl h-[320px] w-full overflow-hidden">
+            {/* IMAGE */}
+            <div className="relative h-[320px] overflow-hidden rounded-2xl mx-3 mb-3">
                 <img
-                    src={doctor.avatar}
-                    alt={doctor.name}
+                    src={doctor.avatar || "/doctor-placeholder.png"}
                     className="
-                h-full w-full object-cover
-                transition-transform duration-700
-                group-hover:scale-[1.05]
-            "
+            h-full w-full object-cover
+            transition-transform duration-700
+            group-hover:scale-105
+          "
                 />
-
-                {/* Soft gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#3B82F6]/35" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-wellness-accent/30" />
             </div>
-
-            {/* Bottom glow */}
-            {/* <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#3B82F6]/70 to-transparent" /> */}
         </div>
-
     );
 }
-

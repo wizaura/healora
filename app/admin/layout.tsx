@@ -2,7 +2,8 @@
 
 import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import AdminSidebar from "@/components/admin/AdminSidebar";
 
 export default function AdminLayout({
     children,
@@ -11,16 +12,32 @@ export default function AdminLayout({
 }) {
     const { user, loading } = useAuth();
     const router = useRouter();
+    const [collapsed, setCollapsed] = useState(false);
 
     useEffect(() => {
-        if (!loading) {
-            if (!user || user.role !== "ADMIN") {
-                router.replace("/login");
-            }
+        if (!loading && (!user || user.role !== "ADMIN")) {
+            router.replace("/login");
         }
     }, [user, loading, router]);
 
     if (loading || !user) return null;
 
-    return <>{children}</>;
+    return (
+        <div className="min-h-screen bg-slate-50 flex">
+            <AdminSidebar
+                collapsed={collapsed}
+                setCollapsed={setCollapsed}
+            />
+
+            {/* Content */}
+            <main
+                className={`
+                    flex-1 p-8 transition-all duration-300
+                    ${collapsed ? "ml-20" : "ml-64"}
+                `}
+            >
+                {children}
+            </main>
+        </div>
+    );
 }

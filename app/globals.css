@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@config "../tailwind.config.ts";
 
 .scrollbar-hide::-webkit-scrollbar {
     display: none;

@@ -1,39 +1,84 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ArrowUpRight, HeartPulse, Sparkles, Brain } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import CTAButton from "../common/CTAButton";
+import SpecialityCard from "../common/SpecialitiesCard";
+import { getActiveSpecialities } from "@/lib/specialities.api";
+import { specialityIcons } from "@/lib/speciality-icons";
 
-const services = [
+const DUMMY_SPECIALITIES = [
     {
-        title: "Orthopedics",
-        icon: HeartPulse,
-        description:
-            "Specialized care for bones, joints, and muscles—focused on restoring mobility, reducing pain, and supporting active lifestyles.",
+        id: "s1",
+        name: "Homeopathy",
+        slug: "homeopathy",
+        description: "Natural and holistic treatment focused on long-term healing.",
+        icon: "Leaf",
+        subSpecialities: [],
     },
     {
-        title: "Pediatrics",
-        icon: Sparkles,
-        description:
-            "Compassionate pediatric care tailored to children’s unique health needs, supporting healthy growth and long-term well-being.",
+        id: "s2",
+        name: "Agro-Homeopathy",
+        slug: "agro-homeopathy",
+        description: "Eco-friendly plant and crop care through homeopathy.",
+        icon: "Sprout",
+        subSpecialities: [],
     },
     {
-        title: "Neurology",
-        icon: Brain,
-        description:
-            "Advanced neurological care for brain, spine, and nervous system conditions, guided by precision diagnostics and expert specialists.",
+        id: "s3",
+        name: "Veterinary Homeopathy",
+        slug: "veterinary-homeopathy",
+        description: "Gentle and effective animal healthcare solutions.",
+        icon: "Dog",
+        subSpecialities: [],
     },
     {
-        title: "Cardiology",
-        icon: HeartPulse,
-        description:
-            "Comprehensive heart care focused on prevention, diagnosis, and treatment—supporting lifelong cardiovascular health.",
+        id: "s4",
+        name: "Counseling",
+        slug: "counseling",
+        description: "Professional guidance for emotional and mental wellbeing.",
+        icon: "MessageCircle",
+        subSpecialities: [],
     },
     {
-        title: "Dermatology",
-        icon: Sparkles,
-        description:
-            "Personalized skin and hair treatments designed to enhance skin health, confidence, and long-term care outcomes.",
+        id: "s5",
+        name: "Psychology",
+        slug: "psychology",
+        description: "Evidence-based mental health assessment and therapy.",
+        icon: "Brain",
+        subSpecialities: [],
+    },
+    {
+        id: "s6",
+        name: "Fitness",
+        slug: "fitness",
+        description: "Personalized fitness plans for strength and recovery.",
+        icon: "Dumbbell",
+        subSpecialities: [],
+    },
+    {
+        id: "s7",
+        name: "Diet & Nutrition",
+        slug: "diet-nutrition",
+        description: "Balanced nutrition plans tailored to your lifestyle.",
+        icon: "Apple",
+        subSpecialities: [],
+    },
+    {
+        id: "s8",
+        name: "Physiotherapy",
+        slug: "physiotherapy",
+        description: "Rehabilitation and mobility care by certified therapists.",
+        icon: "Activity",
+        subSpecialities: [],
+    },
+    {
+        id: "s9",
+        name: "Naturopathy",
+        slug: "naturopathy",
+        description: "Drug-free healing using natural therapies.",
+        icon: "Leaf",
+        subSpecialities: [],
     },
 ];
 
@@ -42,11 +87,17 @@ export default function ServicesScrollSection() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const trackRef = useRef<HTMLDivElement>(null);
 
+    const { data = DUMMY_SPECIALITIES, isError } = useQuery({
+        queryKey: ["specialities", "home"],
+        queryFn: getActiveSpecialities,
+        retry: false,
+    });
+
+    const services = data.slice(0, 4);
+
     useEffect(() => {
         const onScroll = () => {
-            // ⛔ Disable horizontal scroll on small screens
             if (window.innerWidth < 768) return;
-
             if (!sectionRef.current || !trackRef.current) return;
 
             const section = sectionRef.current;
@@ -54,14 +105,9 @@ export default function ServicesScrollSection() {
 
             const rect = section.getBoundingClientRect();
             const viewportHeight = window.innerHeight;
-
             const totalScroll = rect.height - viewportHeight;
 
-            const scrolled = Math.min(
-                Math.max(-rect.top, 0),
-                totalScroll
-            );
-
+            const scrolled = Math.min(Math.max(-rect.top, 0), totalScroll);
             const progress = scrolled / totalScroll;
 
             const maxTranslate =
@@ -71,43 +117,45 @@ export default function ServicesScrollSection() {
         };
 
         window.addEventListener("scroll", onScroll, { passive: true });
-
-        return () => {
-            window.removeEventListener("scroll", onScroll);
-        };
+        return () => window.removeEventListener("scroll", onScroll);
     }, []);
-
 
     return (
         <section
             ref={sectionRef}
             className="
         relative m-4 rounded-xl
-        bg-gradient-to-b from-[#1F4BFF] to-[#9FE2BF]
+        bg-gradient-to-b
+        from-wellness-bg
+        via-white
+        to-wellness-bg
         py-16
         md:h-[350vh] md:py-0
-    "
+      "
         >
-
             {/* Sticky viewport */}
-            <div className="relative md:sticky md:top-0 md:h-screen/80 overflow-hidden mb-20">
+            <div className="relative md:sticky md:top-0 overflow-hidden mb-20">
 
                 {/* Header */}
                 <div className="mx-auto max-w-6xl px-8 pt-20 pb-16">
                     <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-                        <h2 className="text-3xl font-semibold text-white leading-tight md:text-6xl">
+                        <h2 className="text-3xl font-semibold text-navy-dark leading-tight md:text-6xl">
                             Complete Health
                             <br />
                             Care Solutions.
                         </h2>
 
                         <div className="flex flex-col items-start gap-6 md:items-end md:text-right">
-                            <p className="max-w-md text-white/80 text-lg">
+                            <p className="max-w-md text-navy/80 text-lg">
                                 Modern medical services designed around your
                                 health, comfort, and recovery.
                             </p>
 
-                            <CTAButton label="View All Services" href="/services" className="bg-white text-blue-900" />
+                            <CTAButton
+                                label="View All Specialities"
+                                href="/specialities"
+                                variant="light"
+                            />
                         </div>
                     </div>
                 </div>
@@ -117,70 +165,27 @@ export default function ServicesScrollSection() {
                     <div
                         ref={trackRef}
                         className="
-        flex flex-col gap-6 px-6 py-6
-        md:flex-row md:gap-6 md:px-24 md:py-3
-        will-change-transform
-    "
-                    >
-
-                        {services.map((s, i) => (
-                            <div
-                                key={i}
-                                className="
-        md:w-[460px] shrink-0 overflow-hidden rounded-3xl
-        bg-white shadow-xl transition hover:scale-[1.03]
-    "
-                            >
-                                <div className="grid h-full grid-cols-1 md:grid-cols-[190px_1fr]">
-
-                                    {/* ICON PANEL */}
-                                    <div
-                                        className="
-                flex items-center justify-center
-                p-6 m-4
-                rounded-xl
-                bg-gradient-to-b from-[#7F9CFF] to-[#E6ECFF]
+              flex flex-col gap-3 px-6 py-6
+              md:flex-row md:gap-6 md:px-24 md:py-3
+              will-change-transform
             "
-                                    >
-                                        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#1F4BFF] text-white shadow-lg">
-                                            <s.icon size={30} />
-                                        </div>
-                                    </div>
+                    >
+                        {services.map((s: any) => {
+                            const Icon =
+                                specialityIcons[s.icon] ||
+                                specialityIcons.HeartPulse;
 
-                                    {/* CONTENT */}
-                                    <div className="flex flex-col justify-between px-6 pb-6 md:p-6">
-
-                                        <div className="text-center md:text-left">
-                                            <h3 className="text-lg font-bold md:font-semibold text-[#1F2147]">
-                                                {s.title}
-                                            </h3>
-
-                                            <p className="mt-3 text-base leading-relaxed text-gray-600">
-                                                {s.description}
-                                            </p>
-                                        </div>
-
-                                        {/* CTA */}
-                                        <div className="mt-6 flex justify-center md:justify-start">
-                                            <button
-                                                className="
-                        cursor-pointer group inline-flex items-center gap-2
-                        rounded-full border border-gray-200
-                        px-4 py-2 text-sm font-medium
-                        text-[#1F4BFF] transition
-                        hover:bg-[#1F4BFF] hover:text-white
-                    "
-                                            >
-                                                Explore More
-                                                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#1F4BFF] text-white group-hover:text-[#1F4BFF] group-hover:bg-white">
-                                                    <ArrowUpRight size={14} />
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                            return (
+                                <SpecialityCard
+                                    key={s.id}
+                                    name={s.name}
+                                    description={s.description}
+                                    icon={Icon}
+                                    slug={s.slug}
+                                    subSpecialities={s.subSpecialities}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
             </div>

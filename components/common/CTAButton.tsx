@@ -18,18 +18,36 @@ export default function CTAButton({
 }: CTAButtonProps) {
     const variants = {
         primary: {
-            base: "bg-[#2F4CFF] text-white hover:bg-blue-900",
-            icon: "bg-[#2F4CFF] text-white group-hover:bg-blue-900",
+            base: `
+        bg-navy text-white
+        hover:bg-navy-dark
+      `,
+            icon: `
+        bg-wellness-accent text-navy-dark
+        group-hover:bg-white group-hover:text-navy
+      `,
         },
         light: {
-            base: "bg-white text-[#1F4BFF] hover:bg-gray-100",
-            icon: "bg-white text-[#1F4BFF] group-hover:bg-gray-100",
+            base: `
+        bg-white text-navy
+        hover:bg-gray-100
+      `,
+            icon: `
+        bg-white text-navy
+        group-hover:bg-navy group-hover:text-white
+      `,
         },
         outline: {
-            base:
-                "bg-transparent border border-[#2F4CFF] text-[#2F4CFF] hover:bg-[#2F4CFF] hover:text-white",
-            icon:
-                "bg-transparent border border-[#2F4CFF] text-[#2F4CFF] group-hover:bg-[#2F4CFF] group-hover:text-white",
+            base: `
+        bg-transparent border border-navy
+        text-navy
+        hover:bg-navy hover:text-white
+      `,
+            icon: `
+        bg-transparent border border-navy
+        text-navy
+        group-hover:bg-white group-hover:text-navy
+      `,
         },
     };
 
@@ -37,14 +55,17 @@ export default function CTAButton({
         <Link href={href}>
             <button
                 className="
-          group flex cursor-pointer items-center gap-0.5 overflow-hidden
-          transition-all duration-300 hover:scale-[1.03]
+          group flex items-center gap-1
+          transition-all duration-300
+          hover:scale-[1.04] cursor-pointer
         "
             >
                 {/* TEXT */}
                 <span
                     className={`
-            px-8 py-5 text-md font-semibold rounded-xl transition-colors
+            px-8 py-5 text-md font-semibold
+            rounded-xl
+            transition-colors duration-300
             ${variants[variant].base}
             ${className}
           `}
@@ -55,10 +76,10 @@ export default function CTAButton({
                 {/* ICON */}
                 <span
                     className={`
-            relative flex h-16 w-16 items-center justify-center rounded-xl
-            transition-colors duration-300
+            relative flex h-16 w-16 items-center justify-center
+            rounded-xl
+            transition-all duration-300
             ${variants[variant].icon}
-            ${className}
           `}
                 >
                     {/* Default Icon */}

@@ -31,15 +31,15 @@ const reviews = [
 
 export default function ReviewsSection() {
     return (
-        <section className="bg-[#F6FFFD] py-20">
+        <section className="bg-gradient-to-bl from-wellness-bg via-white to-wellness-bg py-24 m-4 rounded-2xl">
             <div className="mx-auto max-w-7xl px-6">
 
                 {/* Header */}
                 <div className="mb-20 text-center">
-                    <h2 className="text-4xl font-bold text-gray-900">
+                    <h2 className="text-4xl font-semibold text-navy md:text-5xl">
                         What Our Patients Say
                     </h2>
-                    <p className="mt-3 text-gray-600">
+                    <p className="mt-4 text-navy/70 text-lg">
                         Real experiences from people who trusted Healora
                     </p>
                 </div>
@@ -49,10 +49,26 @@ export default function ReviewsSection() {
                     {reviews.map((item, index) => (
                         <div
                             key={index}
-                            className="group relative rounded-3xl bg-white p-8 shadow-xl transition hover:-translate-y-2 hover:shadow-2xl"
+                            className="
+                group relative
+                rounded-tl-4xl rounded-br-4xl rounded-tr-md rounded-bl-md bg-white
+                p-8
+                shadow-[0_25px_50px_-20px_rgba(0,0,0,0.25)]
+                transition-all duration-500
+                hover:-translate-y-2
+                hover:shadow-[0_35px_70px_-20px_rgba(0,0,0,0.35)]
+                hover:ring-1 hover:ring-wellness-accent/30
+              "
                         >
                             {/* Floating avatar */}
-                            <div className="absolute z-10 -top-6 left-8 h-14 w-14 rounded-full bg-teal-100 p-1 shadow-md">
+                            <div
+                                className="
+                  absolute z-10 -top-6 left-8
+                  h-14 w-14 rounded-full
+                  bg-wellness-bg p-1
+                  shadow-md
+                "
+                            >
                                 <img
                                     src={item.avatar}
                                     alt={item.name}
@@ -68,7 +84,7 @@ export default function ReviewsSection() {
                                         size={16}
                                         className={
                                             i < item.rating
-                                                ? "fill-[#9FE2BF] text-[#9FE2BF]"
+                                                ? "fill-wellness-accent text-wellness-accent"
                                                 : "text-gray-300"
                                         }
                                     />
@@ -76,7 +92,7 @@ export default function ReviewsSection() {
                             </div>
 
                             {/* Review text */}
-                            <p className="mt-4 text-sm text-gray-600 leading-relaxed">
+                            <p className="mt-4 text-sm leading-relaxed text-navy/70">
                                 “{item.review}”
                             </p>
 
@@ -85,16 +101,13 @@ export default function ReviewsSection() {
 
                             {/* User */}
                             <div className="mt-4">
-                                <p className="font-semibold text-gray-900">
+                                <p className="font-semibold text-navy">
                                     {item.name}
                                 </p>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-navy/60">
                                     {item.role}
                                 </p>
                             </div>
-
-                            {/* Accent glow */}
-                            <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-transparent transition group-hover:ring-teal-400/30" />
                         </div>
                     ))}
                 </div>

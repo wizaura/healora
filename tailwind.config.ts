@@ -11,8 +11,14 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                primary: "#9FE2BF",
-                secondary: "#ADE8F4",
+                wellness: {
+                    bg: "#d5f8d5",     // soft green background
+                    accent: "#6FBF8E", // accents / icons
+                },
+                navy: {
+                    DEFAULT: "#0A2540", // main text
+                    dark: "#081C32",    // strong headings
+                },
             },
         },
     },

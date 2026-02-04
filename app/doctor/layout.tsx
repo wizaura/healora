@@ -1,5 +1,6 @@
 "use client";
 
+import DoctorTopBar from "@/components/doctor/DoctorTopbar";
 import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -22,5 +23,14 @@ export default function DoctorLayout({
 
     if (loading || !user) return null;
 
-    return <>{children}</>;
+    return (
+        <div className="min-h-screen bg-slate-50">
+            <DoctorTopBar />
+
+            {/* Page content */}
+            <main className="mx-auto max-w-7xl px-6 pt-20 pb-8">
+                {children}
+            </main>
+        </div>
+    );
 }

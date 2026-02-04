@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuth } from "@/lib/auth-context";
 import Link from "next/link";
 import {
     User,
@@ -10,11 +9,8 @@ import {
 } from "lucide-react";
 
 export default function DoctorDashboard() {
-    const { user } = useAuth();
-
     return (
         <div className="p-8 pt-24">
-
             {/* Header */}
             <div className="mb-8">
                 <h1 className="text-2xl font-semibold text-slate-900">
@@ -27,11 +23,9 @@ export default function DoctorDashboard() {
 
             {/* Cards */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-
                 {/* Profile */}
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex h-10 w-10 items-center justify-center
-                        rounded-lg bg-teal-100 text-teal-700">
+                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-teal-100 text-teal-700">
                         <User size={18} />
                     </div>
 
@@ -44,18 +38,16 @@ export default function DoctorDashboard() {
 
                     <Link
                         href="/doctor/profile"
-                        className="mt-4 inline-flex items-center gap-1
-                        text-sm font-medium text-teal-600"
+                        className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-teal-600"
                     >
                         Edit Profile
                         <ArrowUpRight size={14} />
                     </Link>
                 </div>
 
-                {/* Slots */}
+                {/* Availability */}
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex h-10 w-10 items-center justify-center
-                        rounded-lg bg-indigo-100 text-indigo-700">
+                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-100 text-indigo-700">
                         <Calendar size={18} />
                     </div>
 
@@ -67,19 +59,17 @@ export default function DoctorDashboard() {
                     </p>
 
                     <Link
-                        href="/doctor/slots"
-                        className="mt-4 inline-flex items-center gap-1
-                        text-sm font-medium text-indigo-600"
+                        href="/doctor/availability"
+                        className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-indigo-600"
                     >
                         Manage Slots
                         <ArrowUpRight size={14} />
                     </Link>
                 </div>
 
-                {/* Appointments (placeholder) */}
+                {/* Appointments */}
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex h-10 w-10 items-center justify-center
-                        rounded-lg bg-orange-100 text-orange-700">
+                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 text-orange-700">
                         <Clock size={18} />
                     </div>
 
