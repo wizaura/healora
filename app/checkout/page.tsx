@@ -1,9 +1,12 @@
 import Checkout from "@/components/checkout/Main";
+import { Suspense } from "react";
 
 export default function CheckoutPage() {
     return (
         <div>
-            <Checkout />
+            <Suspense fallback={null}>
+                <Checkout />
+            </Suspense>
         </div>
     )
 }
