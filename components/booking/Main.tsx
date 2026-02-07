@@ -3,28 +3,28 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import DoctorSummary from "./DoctorSummary";
-import DatePicker from "./DatePicker";
+import DatePickerCard from "./DatePicker";
 import SlotGrid from "./SlotGrid";
 import BookingFooter from "./BookingFooter";
 
 export default function BookingMainPage() {
     const { doctorId } = useParams<{ doctorId: string }>();
 
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState<Date | undefined>(undefined);
     const [selectedSlot, setSelectedSlot] = useState<any>(null);
 
     return (
         <>
             {/* ================= HERO / HEADER ================= */}
-            <section className="bg-gradient-to-b from-white via-white to-[#1F4BFF] py-24 m-4 rounded-3xl">
-                <div className="mx-auto max-w-4xl px-6 text-center">
+            <section className="py-6">
+                <div className="mx-auto text-center">
                     <DoctorSummary doctorId={doctorId} />
                 </div>
             </section>
 
             {/* ================= BOOKING CONTENT ================= */}
-            <section className="mx-auto max-w-4xl space-y-6 px-6 pb-32">
-                <DatePicker date={date} setDate={setDate} />
+            <section className="mx-auto grid grid-cols-1 md:grid-cols-2 max-w-7xl space-y-4 px-6 pb-16">
+                <DatePickerCard date={date} setDate={setDate} />
 
                 {date && (
                     <SlotGrid
@@ -36,7 +36,7 @@ export default function BookingMainPage() {
                 )}
             </section>
 
-            <BookingFooter slot={selectedSlot} />
+            <BookingFooter slot={selectedSlot} doctorId={doctorId} date={date} />
         </>
     );
 }

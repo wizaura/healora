@@ -12,27 +12,146 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
 
     if (isLoading) {
         return (
-            <div className="mx-auto h-32 max-w-xl animate-pulse rounded-2xl bg-white/60" />
+            <section className="relative m-4 rounded-3xl bg-white/60 py-24">
+                <div className="mx-auto max-w-6xl px-6">
+                    <div className="h-40 animate-pulse rounded-3xl bg-white/70" />
+                </div>
+            </section>
         );
     }
 
     return (
-        <div className="mx-auto max-w-2xl">
-            <span className="inline-block mb-6 rounded-full border border-gray-200 bg-white px-6 py-2 text-sm text-gray-600 font-medium">
-                Doctor
-            </span>
+        <section
+            className="
+        relative m-4 rounded-2xl
+        bg-gradient-to-b
+        from-white via-white to-wellness-bg
+        py-20
+    "
+        >
+            <div className="mx-auto max-w-7xl px-6">
+                <div className="grid items-center gap-16 md:grid-cols-2">
 
-            <h1 className="text-4xl md:text-6xl font-medium leading-[1.15] tracking-[-0.02em] text-[#1F2147]">
-                {data.user.name}
-            </h1>
+                    {/* LEFT — DOCTOR DETAILS */}
+                    <div className="space-y-6">
 
-            <p className="mx-auto mt-4 max-w-xl text-md text-gray-600">
-                {data.speciality.name} • {data.experience} years experience
-            </p>
+                        {/* Label */}
+                        <span
+                            className="
+                        inline-block
+                        rounded-full
+                        border border-navy/10
+                        bg-white/80
+                        px-8 py-2
+                        text-sm font-medium
+                        text-navy/70
+                        backdrop-blur
+                    "
+                        >
+                            Doctor Profile
+                        </span>
 
-            <div className="mt-6 inline-block rounded-xl bg-white px-5 py-2 text-sm font-semibold text-gray-900 shadow">
-                ₹{data.slotFee} per consultation
+                        {/* Name */}
+                        <div className="space-y-3">
+                            <h1
+                                className="
+                            text-4xl md:text-6xl
+                            font-semibold
+                            leading-[1.15]
+                            tracking-[-0.02em]
+                            text-navy
+                        "
+                            >
+                                {data.user.name}
+                            </h1>
+
+                            <p className="text-md text-navy/70">
+                                <span className="font-medium text-lg">{data.speciality.name}</span> • <span className="font-medium">{data.experience}</span> years experience
+                            </p>
+                        </div>
+
+                        {/* Sub-specialities */}
+                        {data.subSpecialities?.length > 0 && (
+                            <div className="space-y-2 mx-auto text-center">
+                                <p className="text-sm font-medium text-navy/60">
+                                    Areas of expertise
+                                </p>
+                                <ul className="flex flex-wrap justify-center gap-2">
+                                    {data.subSpecialities.map((sub: any) => (
+                                        <li
+                                            key={sub.subSpeciality.id}
+                                            className="
+                rounded-full
+                bg-navy
+                px-4 py-1.5
+                text-sm
+                text-wellness-bg
+                shadow-sm
+            "
+                                        >
+                                            {sub.subSpeciality.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {/* Pricing & status */}
+                        <div
+                            className="
+                        inline-flex
+                        items-center
+                        gap-4
+                        rounded-2xl
+                        border border-navy/10
+                        bg-navy/10
+                        px-6 py-4
+                        shadow-sm
+                    "
+                        >
+                            <span className="text-sm font-semibold text-navy">
+                                ₹{data.slotFee} / consultation
+                            </span>
+
+                            <span className="h-4 w-px bg-navy/10" />
+
+                            <span className="text-sm font-medium text-emerald-800">
+                                Verified Doctor
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* RIGHT — IMAGE */}
+                    <div className="relative mx-auto w-full max-w-sm">
+                        <div
+                            className="
+                        relative overflow-hidden
+                        rounded-3xl
+                        bg-white
+                        shadow-xl
+                    "
+                        >
+                            <img
+                                src={data.user.image || "/doctor-placeholder.png"}
+                                alt={data.user.name}
+                                className="h-[440px] w-full object-cover"
+                            />
+                        </div>
+
+                        {/* Accent glow */}
+                        <div
+                            className="
+                        absolute -bottom-8 -left-8
+                        h-32 w-32
+                        rounded-full
+                        bg-wellness-accent/30
+                        blur-3xl
+                    "
+                        />
+                    </div>
+
+                </div>
             </div>
-        </div>
+        </section>
     );
 }

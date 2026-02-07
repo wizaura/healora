@@ -1,9 +1,14 @@
-export default function DatePicker({ date, setDate }: any) {
+"use client";
+
+import DatePicker from "../common/DatePicker";
+
+export default function DatePickerCard({ date, setDate }: any) {
     return (
-        <section className="rounded-3xl bg-gradient-to-b from-white to-white p-8">
+        <section className="rounded-2xl bg-gradient-to-b from-white to-white p-4">
             <div className="mx-auto max-w-lg text-center">
+
                 {/* pill label */}
-                <span className="inline-block mb-4 rounded-full border border-gray-200 bg-white px-6 py-2 text-sm font-medium text-gray-600">
+                <span className="mb-4 inline-block rounded-full border border-gray-200 bg-white px-6 py-2 text-sm font-medium text-gray-600">
                     Date
                 </span>
 
@@ -12,16 +17,13 @@ export default function DatePicker({ date, setDate }: any) {
                     Choose consultation date
                 </h2>
 
-                {/* input */}
-                <div className="mt-6">
-                    <input
-                        type="date"
-                        min={new Date().toISOString().split("T")[0]}
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        className="w-full rounded-2xl border bg-white px-5 py-3 text-sm shadow-sm outline-none transition focus:border-black"
-                    />
-                </div>
+                {/* calendar */}
+                <DatePicker
+                    selectedDate={date || null}
+                    selectDate={setDate}
+                    isAllowedDate={() => true}
+                />
+
             </div>
         </section>
     );
