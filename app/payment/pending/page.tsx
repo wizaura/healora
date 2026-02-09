@@ -1,9 +1,12 @@
 import PaymentPending from "@/components/payment/pending/Main";
+import { Suspense } from "react";
 
 export default function PaymentPendingPage() {
     return (
         <div>
-            <PaymentPending />
+            <Suspense fallback={null}>
+                <PaymentPending />
+            </Suspense>
         </div>
     )
 }
