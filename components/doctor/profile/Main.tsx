@@ -12,7 +12,7 @@ export default function DoctorProfile() {
     const [subIds, setSubIds] = useState<string[]>([]);
     const [experience, setExperience] = useState("");
     const [qualification, setQualification] = useState("");
-    const [slotFee, setSlotFee] = useState("");
+    const [consultationFee, setConsultationFee] = useState("");
     const [bio, setBio] = useState("");
 
     /* ---------------- FETCH DATA ---------------- */
@@ -49,7 +49,7 @@ export default function DoctorProfile() {
         );
         setExperience(String(profile.experience || ""));
         setQualification(profile.qualification || "");
-        setSlotFee(String(profile.slotFee || ""));
+        setConsultationFee(String(profile.consultationFee || ""));
         setBio(profile.bio || "");
     }, [profile]);
 
@@ -66,7 +66,7 @@ export default function DoctorProfile() {
                 subSpecialityIds: subIds,
                 experience: Number(experience),
                 qualification,
-                slotFee: Number(slotFee),
+                consultationFee: Number(consultationFee),
                 bio,
             }),
         onSuccess: () =>
@@ -76,7 +76,7 @@ export default function DoctorProfile() {
     });
 
     const handleSave = () => {
-        if (!specialityId || !experience || !qualification || !slotFee) {
+        if (!specialityId || !experience || !qualification || !consultationFee) {
             toast.error("Please fill all required fields");
             return;
         }
@@ -215,8 +215,8 @@ export default function DoctorProfile() {
                             <input
                                 type="number"
                                 min="0"
-                                value={slotFee}
-                                onChange={(e) => setSlotFee(e.target.value)}
+                                value={consultationFee}
+                                onChange={(e) => setConsultationFee(e.target.value)}
                                 className={inputClass}
                             />
                         </div>

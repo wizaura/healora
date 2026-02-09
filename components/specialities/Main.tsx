@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getActiveSpecialities } from "@/lib/specialities.api";
 import { specialityIcons } from "@/lib/speciality-icons";
 import SpecialityCard from "../common/SpecialitiesCard";
+import { useMemo } from "react";
 
 const DUMMY_SPECIALITIES = [
     {
@@ -80,12 +81,37 @@ const DUMMY_SPECIALITIES = [
     },
 ];
 
+
 export default function SpecialtiesSection() {
     const { data = DUMMY_SPECIALITIES, isLoading, isError } = useQuery({
         queryKey: ["specialities"],
         queryFn: getActiveSpecialities,
         retry: false,
     });
+
+    const sortedSpecialities = useMemo(() => {
+        if (!Array.isArray(data)) return [];
+
+        const exactHomeopathy: typeof data = [];
+        const haveHomeopathy: typeof data = [];
+        const others: typeof data = [];
+
+        data.forEach((item) => {
+            const name = item?.name?.trim().toLowerCase();
+
+            if (name === "homeopathy") {
+                exactHomeopathy.push(item);
+            } else if (name?.includes("homeopathy")) {
+                haveHomeopathy.push(item);
+            } else {
+                others.push(item);
+            }
+        });
+
+        return [...exactHomeopathy, ...haveHomeopathy, ...others];
+    }, [data]);
+
+
 
     if (isLoading) {
         return (
@@ -140,7 +166,7 @@ export default function SpecialtiesSection() {
 
                 {/* Cards */}
                 <div className="mx-auto grid max-w-5xl gap-4 md:gap-6 md:grid-cols-2">
-                    {data.map((item: any) => {
+                    {sortedSpecialities.map((item: any) => {
                         const Icon =
                             specialityIcons[item.icon] || specialityIcons.HeartPulse;
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import CTAButton from "../common/CTAButton";
 import SpecialityCard from "../common/SpecialitiesCard";
@@ -93,7 +93,29 @@ export default function ServicesScrollSection() {
         retry: false,
     });
 
-    const services = data.slice(0, 4);
+    const sortedSpecialities = useMemo(() => {
+        if (!Array.isArray(data)) return [];
+
+        const exactHomeopathy: typeof data = [];
+        const haveHomeopathy: typeof data = [];
+        const others: typeof data = [];
+
+        data.forEach((item) => {
+            const name = item?.name?.trim().toLowerCase();
+
+            if (name === "homeopathy") {
+                exactHomeopathy.push(item);
+            } else if (name?.includes("homeopathy")) {
+                haveHomeopathy.push(item);
+            } else {
+                others.push(item);
+            }
+        });
+
+        return [...exactHomeopathy, ...haveHomeopathy, ...others];
+    }, [data]);
+
+    const services = sortedSpecialities.slice(0, 4);
 
     useEffect(() => {
         const onScroll = () => {

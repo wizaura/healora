@@ -110,7 +110,7 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
                     "
                         >
                             <span className="text-sm font-semibold text-navy">
-                                ₹{data.slotFee} / consultation
+                                ₹{data.consultationFee} / consultation
                             </span>
 
                             <span className="h-4 w-px bg-navy/10" />

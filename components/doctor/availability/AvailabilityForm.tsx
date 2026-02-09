@@ -14,6 +14,10 @@ export default function AvailabilityForm() {
     const [duration, setDuration] = useState<30 | 60>(30);
     const [loading, setLoading] = useState(false);
 
+    const timezone =
+        Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+
     const dateStr = date
         ? [
             date.getFullYear(),
@@ -75,9 +79,10 @@ export default function AvailabilityForm() {
 
             await api.post("/availability", {
                 date: dateStr,
-                startTime: `${dateStr}T${start}:00`,
-                endTime: `${dateStr}T${end}:00`,
+                startTime: start,
+                endTime: end,
                 slotDuration: duration,
+                timezone,
             });
 
             toast.success(
