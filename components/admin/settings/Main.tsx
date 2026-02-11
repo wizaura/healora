@@ -67,41 +67,46 @@ export default function AdminSettings() {
                 {loading ? (
                     <div className="text-sm text-navy/50">Loading…</div>
                 ) : (
-                    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-6">
-                        {/* Input section */}
-                        <div className="flex-1">
-                            <label className="block text-sm font-medium text-navy mb-1">
-                                Slot Booking Fee (₹)
-                            </label>
+                    <div className="flex flex-col gap-2">
+                        {/* Input + Button Wrapper */}
+                        <div className="flex w-full flex-col sm:flex-row sm:items-end gap-3">
 
-                            <input
-                                type="number"
-                                value={slotFee}
-                                onChange={(e) => setSlotFee(Number(e.target.value))}
+                            {/* Input Section */}
+                            <div className="flex-1">
+                                <label className="block text-sm font-medium text-navy mb-1">
+                                    Slot Booking Fee (₹)
+                                </label>
+
+                                <input
+                                    type="number"
+                                    value={slotFee}
+                                    onChange={(e) => setSlotFee(Number(e.target.value))}
+                                    min={0}
+                                    className="
+                                        w-full rounded-xl border border-gray-200 px-4 py-2
+                                        focus:outline-none focus:ring-2 focus:ring-teal-500
+                                    "
+                                />
+                            </div>
+
+                            {/* Button */}
+                            <button
+                                onClick={saveSlotFee}
+                                disabled={saving}
                                 className="
-        w-full rounded-xl border border-gray-200 px-4 py-2
-        focus:outline-none focus:ring-2 focus:ring-teal-500
-      "
-                                min={0}
-                            />
-
-                            <span className="text-xs text-navy/50 mt-2">
-                                This amount is charged upfront to confirm a booking.
-                                Consultation fee is charged separately by the doctor.
-                            </span>
+                                    py-2 px-6 rounded-xl bg-teal-600 text-white font-medium
+                                    hover:bg-teal-700 transition disabled:opacity-50 sm:mb-[2px]
+                                "
+                            >
+                                {saving ? "Saving..." : "Save"}
+                            </button>
                         </div>
 
-                        {/* Save button */}
-                        <button
-                            onClick={saveSlotFee}
-                            disabled={saving}
-                            className="
-        h-10 px-6 rounded-xl bg-teal-600 text-white font-medium
-        hover:bg-teal-700 transition disabled:opacity-50
-    "
-                        >
-                            {saving ? "Saving..." : "Save"}
-                        </button>
+                        {/* Helper Text */}
+                        <p className="text-xs text-navy/50">
+                            This amount is charged upfront to confirm a booking.
+                            Consultation fee is charged separately by the doctor.
+                        </p>
                     </div>
 
                 )}

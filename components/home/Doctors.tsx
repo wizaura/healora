@@ -22,13 +22,13 @@ const DUMMY_DOCTORS: Doctor[] = [
         id: "d1",
         user: { name: "Dr. Ananya Rao" },
         speciality: { name: "Cardiology" },
-        avatar: "/doctor-placeholder.png",
+        avatar: "/doc_1.png",
     },
     {
         id: "d2",
         user: { name: "Dr. Arjun Menon" },
         speciality: { name: "Dermatology" },
-        avatar: "/doctor-placeholder.png",
+        avatar: "/doc_1.png",
     },
     {
         id: "d3",
@@ -48,7 +48,7 @@ const DUMMY_DOCTORS: Doctor[] = [
 export default function DoctorsProjection() {
     const { data: doctors = DUMMY_DOCTORS, isLoading, isError } = useQuery<Doctor[]>({
         queryKey: ["all-doctors"],
-        queryFn: () => api.get("/doctor").then(res => res.data),
+        queryFn: () => api.get("/doctors").then(res => res.data),
         retry: false,
     });
 
@@ -83,7 +83,7 @@ export default function DoctorsProjection() {
                     <DoctorCard doctor={leftDoctor} />
 
                     {/* CENTER LIST */}
-                    <div className="relative rounded-3xl bg-blur border border-gray-100 p-4 shadow-xl backdrop-blur">
+                    <div className="relative rounded-3xl bg-blur border border-gray-100 p-4 backdrop-blur">
                         <ul className="space-y-4">
                             {doctors.map(doc => (
                                 <li
@@ -92,8 +92,8 @@ export default function DoctorsProjection() {
                                     className="
                     flex cursor-pointer items-center gap-4
                     rounded-xl px-4 py-4
-                    bg-navy
-                    hover:bg-navy/80
+                    bg-white shadow-xl
+                    hover:bg-gray-50
                     transition
                   "
                                 >
@@ -102,10 +102,10 @@ export default function DoctorsProjection() {
                                         className="h-10 w-10 rounded-full object-cover"
                                     />
                                     <div>
-                                        <p className="font-medium text-gray-100">
+                                        <p className="font-medium text-lg text-gray-900">
                                             {doc.user.name}
                                         </p>
-                                        <p className="text-sm text-gray-400">
+                                        <p className="text-md text-gray-600">
                                             {doc.speciality.name}
                                         </p>
                                     </div>
@@ -162,10 +162,10 @@ function DoctorCard({
                         className="h-10 w-10 rounded-full object-cover ring-2 ring-wellness-accent/30"
                     />
                     <div>
-                        <p className="text-md font-semibold text-gray-200">
+                        <p className="text-xl font-semibold text-gray-200">
                             {doctor.user.name}
                         </p>
-                        <p className="text-sm text-gray-400">
+                        <p className="text-md text-gray-400">
                             {doctor.speciality.name}
                         </p>
                     </div>

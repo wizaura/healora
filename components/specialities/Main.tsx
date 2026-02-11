@@ -127,7 +127,7 @@ export default function SpecialtiesSection() {
         relative m-4 rounded-3xl
         bg-gradient-to-b
         from-white via-wellness-bg to-wellness-bg
-        py-20
+        py-24
       "
         >
             <div className="mx-auto max-w-7xl px-6">

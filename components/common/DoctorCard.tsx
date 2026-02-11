@@ -67,7 +67,7 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
                     </p>
 
                     <span className="mt-2 text-lg font-semibold text-navy-dark">
-                        ₹{doctor.slotFee}
+                        ₹{doctor.consultationFee}
                     </span>
                 </div>
 

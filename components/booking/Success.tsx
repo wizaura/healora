@@ -97,7 +97,7 @@ export default function BookingSuccess() {
                 </p>
 
                 <button
-                    onClick={() => router.replace("/appointments")}
+                    onClick={() => router.replace("/profile/appointments")}
                     className="mt-6 w-full rounded-xl bg-navy py-3 text-white font-medium"
                 >
                     View my appointments

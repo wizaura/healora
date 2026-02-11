@@ -80,9 +80,13 @@ export default function DoctorDashboard() {
                         View upcoming consultations
                     </p>
 
-                    <span className="mt-4 inline-block text-xs text-slate-400">
-                        Coming soon
-                    </span>
+                    <Link
+                        href="/doctor/appointments"
+                        className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-indigo-600"
+                    >
+                        Manage Appointments
+                        <ArrowUpRight size={14} />
+                    </Link>
                 </div>
             </div>
         </div>

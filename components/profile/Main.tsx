@@ -7,7 +7,9 @@ import {
     ShieldCheck,
     Stethoscope,
     LogOut,
+    ArrowUpRight,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function Profile() {
     const { user, logout, loading } = useAuth();
@@ -43,6 +45,13 @@ export default function Profile() {
 
     return (
         <div className="flex min-h-[70vh] items-center justify-center px-4 pt-24">
+            <Link
+                href="/profile/appointments"
+                className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-indigo-600"
+            >
+                Manage Appointments
+                <ArrowUpRight size={14} />
+            </Link>
             <div className="w-full max-w-md rounded-2xl border
                 border-slate-200 bg-white p-8 shadow-sm">
 

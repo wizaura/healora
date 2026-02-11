@@ -31,7 +31,7 @@ const reviews = [
 
 export default function ReviewsSection() {
     return (
-        <section className="bg-gradient-to-bl from-wellness-bg via-white to-wellness-bg py-24 m-4 rounded-2xl">
+        <section className="bg-gradient-to-b from-white via-white to-wellness-bg py-24 m-4 rounded-2xl">
             <div className="mx-auto max-w-7xl px-6">
 
                 {/* Header */}
@@ -52,7 +52,7 @@ export default function ReviewsSection() {
                             className="
                 group relative
                 rounded-tl-4xl rounded-br-4xl rounded-tr-md rounded-bl-md bg-white
-                p-8
+                p-8 border border-navy/50 border-2
                 shadow-[0_25px_50px_-20px_rgba(0,0,0,0.25)]
                 transition-all duration-500
                 hover:-translate-y-2

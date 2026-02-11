@@ -67,7 +67,7 @@ export default function DoctorViewModal({
                             />
                             <Info
                                 label="Consultation Fee"
-                                value={profile ? `₹${profile.slotFee}` : "—"}
+                                value={profile ? `₹${profile.consultationFee}` : "—"}
                             />
                         </div>
                     </Section>

@@ -7,11 +7,42 @@ import api from "@/lib/api";
 export default function PaymentPending() {
     const params = useSearchParams();
     const router = useRouter();
-    const appointmentId = params.get("appointmentId");
 
-    const [status, setStatus] = useState<
-        "PENDING" | "SUCCESS" | "FAILED"
-    >("PENDING");
+    const sessionId = params.get("session_id");
+    const directAppointmentId = params.get("appointmentId");
+
+    const [appointmentId, setAppointmentId] = useState<string | null>(null);
+    const [status, setStatus] = useState<"PENDING" | "SUCCESS" | "FAILED">(
+        "PENDING"
+    );
+
+    /* ================= Resolve Stripe session ================= */
+
+    useEffect(() => {
+        const resolveSession = async () => {
+            if (directAppointmentId) {
+                setAppointmentId(directAppointmentId);
+                return;
+            }
+
+            if (sessionId) {
+                try {
+                    const res = await api.get(
+                        `/payments/stripe/session/${sessionId}`
+                    );
+
+                    setAppointmentId(res.data.appointmentId);
+                } catch (err) {
+                    console.error("Failed to resolve Stripe session", err);
+                    setStatus("FAILED");
+                }
+            }
+        };
+
+        resolveSession();
+    }, [sessionId, directAppointmentId]);
+
+    /* ================= Poll Appointment ================= */
 
     useEffect(() => {
         if (!appointmentId) return;
@@ -19,7 +50,7 @@ export default function PaymentPending() {
         const interval = setInterval(async () => {
             try {
                 const res = await api.get(
-                    `/appointments/${appointmentId}/status`,
+                    `/appointments/${appointmentId}/status`
                 );
 
                 const bookingStatus = res.data.status;
@@ -40,7 +71,7 @@ export default function PaymentPending() {
             } catch (err) {
                 console.error("Polling failed", err);
             }
-        }, 3000); // poll every 3s
+        }, 3000);
 
         return () => clearInterval(interval);
     }, [appointmentId, router]);
@@ -52,11 +83,9 @@ export default function PaymentPending() {
                 {status === "PENDING" && (
                     <>
                         <div className="mx-auto mb-6 h-12 w-12 animate-spin rounded-full border-4 border-teal-200 border-t-teal-600" />
-
                         <h1 className="text-xl font-semibold text-navy">
                             Confirming your payment
                         </h1>
-
                         <p className="mt-2 text-sm text-navy/60">
                             Please don’t close this page.
                             We’re securely confirming your slot.
@@ -69,11 +98,9 @@ export default function PaymentPending() {
                         <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600">
                             ✓
                         </div>
-
                         <h1 className="text-xl font-semibold text-navy">
                             Slot confirmed!
                         </h1>
-
                         <p className="mt-2 text-sm text-navy/60">
                             Redirecting you to booking details…
                         </p>
@@ -85,11 +112,9 @@ export default function PaymentPending() {
                         <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600">
                             ✕
                         </div>
-
                         <h1 className="text-xl font-semibold text-navy">
                             Payment failed
                         </h1>
-
                         <p className="mt-2 text-sm text-navy/60">
                             The slot has been released.
                             Please try booking again.

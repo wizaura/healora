@@ -5,6 +5,7 @@ import {
     LayoutDashboard,
     Users,
     Stethoscope,
+    Calendar,
     ClipboardList,
     Settings,
     ChevronLeft,
@@ -15,9 +16,10 @@ import { useState } from "react";
 
 const navItems = [
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-    { label: "Specialities", href: "/admin/specialities", icon: ClipboardList },
     { label: "Doctors", href: "/admin/doctors", icon: Stethoscope },
+    { label: "Appointments", href: "/admin/appointments", icon: Calendar },
     { label: "Users", href: "/admin/users", icon: Users },
+    { label: "Specialities", href: "/admin/specialities", icon: ClipboardList },
     { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
