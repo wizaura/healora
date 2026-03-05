@@ -1,14 +1,20 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Globe, ChevronDown, ChevronUp, BadgeCheck } from "lucide-react";
 import api from "@/lib/api";
 
 export default function DoctorSummary({ doctorId }: { doctorId: string }) {
+    const [expanded, setExpanded] = useState(false);
+
     const { data, isLoading } = useQuery({
         queryKey: ["doctor", doctorId],
         queryFn: () =>
             api.get(`/doctor/${doctorId}`).then((res) => res.data),
     });
+
+    console.log(data,'hd')
 
     if (isLoading) {
         return (
@@ -21,133 +27,145 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
     }
 
     return (
-        <section
-            className="
-        relative m-4 rounded-2xl
-        bg-gradient-to-b
-        from-white via-white to-wellness-bg
-        py-20
-    "
-        >
+        <section className="relative m-4 rounded-3xl bg-gradient-to-b from-white to-wellness-bg py-20">
             <div className="mx-auto max-w-7xl px-6">
                 <div className="grid items-center gap-16 md:grid-cols-2">
 
-                    {/* LEFT — DOCTOR DETAILS */}
-                    <div className="space-y-6">
+                    {/* LEFT SIDE */}
+                    <div className="space-y-8 text-center">
 
-                        {/* Label */}
-                        <span
-                            className="
-                        inline-block
-                        rounded-full
-                        border border-navy/10
-                        bg-white/80
-                        px-8 py-2
-                        text-sm font-medium
-                        text-navy/70
-                        backdrop-blur
-                    "
-                        >
+                        <span className="inline-block rounded-full border border-navy/10 bg-white px-6 py-2 text-sm font-medium text-navy/70">
                             Doctor Profile
                         </span>
 
-                        {/* Name */}
-                        <div className="space-y-3">
-                            <h1
-                                className="
-                            text-4xl md:text-6xl
-                            font-semibold
-                            leading-[1.15]
-                            tracking-[-0.02em]
-                            text-navy
-                        "
-                            >
+                        {/* NAME + VERIFIED */}
+                        <div className="space-y-4">
+                            <h1 className="text-4xl md:text-6xl font-semibold text-navy leading-tight">
                                 {data.user.name}
                             </h1>
 
-                            <p className="text-md text-navy/70">
-                                <span className="font-medium text-lg">{data.speciality.name}</span> • <span className="font-medium">{data.experience}</span> years experience
+                            {data.isApproved && (
+                                <div className="inline-flex items-center gap-2 text-sm text-emerald-700">
+                                    <BadgeCheck size={16} />
+                                    Verified Doctor
+                                </div>
+                            )}
+
+                            <p className="text-navy/70 text-lg">
+                                {data.qualification} • {data.experience} years experience
                             </p>
                         </div>
 
-                        {/* Sub-specialities */}
-                        {data.subSpecialities?.length > 0 && (
-                            <div className="space-y-2 mx-auto text-center">
-                                <p className="text-sm font-medium text-navy/60">
-                                    Areas of expertise
+                        {/* SPECIALITIES */}
+                        {data.specialities?.length > 0 && (
+                            <div>
+                                <p className="text-sm font-medium text-navy/60 mb-3">
+                                    Specialities
                                 </p>
-                                <ul className="flex flex-wrap justify-center gap-2">
-                                    {data.subSpecialities.map((sub: any) => (
-                                        <li
-                                            key={sub.subSpeciality.id}
-                                            className="
-                rounded-full
-                bg-navy
-                px-4 py-1.5
-                text-sm
-                text-wellness-bg
-                shadow-sm
-            "
+
+                                <div className="flex flex-wrap justify-center gap-2">
+                                    {data.specialities.map((s: any) => (
+                                        <span
+                                            key={s.speciality.id}
+                                            className="rounded-full bg-navy px-4 py-1.5 text-sm text-white"
                                         >
-                                            {sub.subSpeciality.name}
-                                        </li>
+                                            {s.speciality.name}
+                                        </span>
                                     ))}
-                                </ul>
+                                </div>
                             </div>
                         )}
 
-                        {/* Pricing & status */}
-                        <div
-                            className="
-                        inline-flex
-                        items-center
-                        gap-4
-                        rounded-2xl
-                        border border-navy/10
-                        bg-navy/10
-                        px-6 py-4
-                        shadow-sm
-                    "
-                        >
-                            <span className="text-sm font-semibold text-navy">
-                                ₹{data.consultationFee} / consultation
+                        {/* SUB SPECIALITIES */}
+                        {data.subSpecialities?.length > 0 && (
+                            <div>
+                                <p className="text-sm font-medium text-navy/60 mb-3">
+                                    Areas of Expertise
+                                </p>
+
+                                <div className="flex flex-wrap justify-center gap-2">
+                                    {data.subSpecialities.map((sub: any) => (
+                                        <span
+                                            key={sub.subSpeciality.id}
+                                            className="rounded-full bg-navy/10 px-4 py-1.5 text-sm text-navy"
+                                        >
+                                            {sub.subSpeciality.name}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* MINI SPECIALITIES */}
+                        {data.miniSpecialities?.length > 0 && (
+                            <div>
+                                <p className="text-sm font-medium text-navy/60 mb-3">
+                                    Focus Areas
+                                </p>
+
+                                <div className="flex flex-wrap justify-center gap-2">
+                                    {data.miniSpecialities.map((mini: any) => (
+                                        <span
+                                            key={mini.miniSpeciality.id}
+                                            className="rounded-full bg-wellness-accent/20 px-4 py-1.5 text-sm text-navy"
+                                        >
+                                            {mini.miniSpeciality.name}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* LANGUAGES */}
+                        {data.languages?.length > 0 && (
+                            <div className="flex items-center justify-center gap-2 text-sm text-navy/70">
+                                <Globe size={16} />
+                                {data.languages.map((l: any) => l.language.name).join(", ")}
+                            </div>
+                        )}
+
+                        {/* BIO (Expandable) */}
+                        {data.bio && (
+                            <div className="">
+                                <button
+                                    onClick={() => setExpanded(!expanded)}
+                                    className="flex items-center mx-auto gap-2 text-sm font-medium text-navy"
+                                >
+                                    {expanded ? "Hide bio" : "Read full bio"}
+                                    {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                </button>
+
+                                {expanded && (
+                                    <p className="mt-4 text-navy/70 leading-relaxed">
+                                        {data.bio}
+                                    </p>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Pricing */}
+                        <div className="inline-flex items-center gap-4 rounded-2xl border border-navy/10 bg-navy/5 px-6 py-4 shadow-sm">
+                            <span className="text-lg font-semibold text-navy">
+                                ₹{data.consultationFee}
                             </span>
-
-                            <span className="h-4 w-px bg-navy/10" />
-
-                            <span className="text-sm font-medium text-emerald-800">
-                                Verified Doctor
+                            <span className="text-sm text-navy/60">
+                                per consultation
                             </span>
                         </div>
+
                     </div>
 
-                    {/* RIGHT — IMAGE */}
+                    {/* RIGHT SIDE IMAGE */}
                     <div className="relative mx-auto w-full max-w-sm">
-                        <div
-                            className="
-                        relative overflow-hidden
-                        rounded-3xl
-                        bg-white
-                        shadow-xl
-                    "
-                        >
+                        <div className="relative overflow-hidden rounded-3xl bg-white shadow-xl">
                             <img
                                 src={data.user.image || "/doctor-placeholder.png"}
                                 alt={data.user.name}
-                                className="h-[440px] w-full object-cover"
+                                className="h-[460px] w-full object-cover"
                             />
                         </div>
 
-                        {/* Accent glow */}
-                        <div
-                            className="
-                        absolute -bottom-8 -left-8
-                        h-32 w-32
-                        rounded-full
-                        bg-wellness-accent/30
-                        blur-3xl
-                    "
-                        />
+                        <div className="absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-wellness-accent/30 blur-3xl" />
                     </div>
 
                 </div>

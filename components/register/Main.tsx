@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, Lock, User, EyeOff, Eye } from "lucide-react";
+import { Mail, Lock, User, EyeOff, Eye, Globe } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
@@ -12,12 +12,14 @@ export default function Register() {
         name: "",
         email: "",
         password: "",
+        country: "",
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
+
     const validate = () => {
         const newErrors: Record<string, string> = {};
 
@@ -35,6 +37,10 @@ export default function Register() {
             newErrors.password = "Password is required";
         } else if (form.password.length < 8) {
             newErrors.password = "Password must be at least 8 characters";
+        }
+
+        if (!form.country) {
+            newErrors.country = "Country is required";
         }
 
         setErrors(newErrors);
@@ -56,9 +62,17 @@ export default function Register() {
                 name: form.name,
                 email: form.email,
                 password: form.password,
+                country: form.country,
             });
+
             toast.success("Account created successfully 🎉");
-            setForm({ name: "", email: "", password: "" });
+
+            setForm({
+                name: "",
+                email: "",
+                password: "",
+                country: "",
+            });
 
             router.push("/login");
         } catch {
@@ -68,11 +82,22 @@ export default function Register() {
         }
     };
 
+    const countries = [
+        "India",
+        "United States",
+        "United Kingdom",
+        "Canada",
+        "Australia",
+        "Germany",
+        "France",
+        "UAE",
+        "Singapore",
+    ];
+
     return (
         <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 mt-20">
             <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
 
-                {/* Header */}
                 <div className="mb-8 text-center">
                     <h1 className="text-2xl font-semibold text-slate-900">
                         Create your Healora account
@@ -82,10 +107,9 @@ export default function Register() {
                     </p>
                 </div>
 
-                {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-5">
 
-                    {/* Name */}
+                    {/* NAME */}
                     <div>
                         <label className="text-sm font-medium text-slate-700">
                             Full name
@@ -99,8 +123,10 @@ export default function Register() {
                                     setForm({ ...form, name: e.target.value })
                                 }
                                 className={`w-full rounded-lg border pl-10 pr-4 py-2.5 text-sm
-                                    focus:ring-teal-500
-                                    ${errors.name ? "border-red-400" : "border-slate-300 focus:border-teal-500"}`}
+                                    ${errors.name
+                                        ? "border-red-400"
+                                        : "border-slate-300 focus:border-teal-500 focus:ring-teal-500"
+                                    }`}
                             />
                         </div>
                         {errors.name && (
@@ -108,7 +134,7 @@ export default function Register() {
                         )}
                     </div>
 
-                    {/* Email */}
+                    {/* EMAIL */}
                     <div>
                         <label className="text-sm font-medium text-slate-700">
                             Email address
@@ -122,8 +148,10 @@ export default function Register() {
                                     setForm({ ...form, email: e.target.value })
                                 }
                                 className={`w-full rounded-lg border pl-10 pr-4 py-2.5 text-sm
-                                    focus:ring-teal-500
-                                    ${errors.email ? "border-red-400" : "border-slate-300 focus:border-teal-500"}`}
+                                    ${errors.email
+                                        ? "border-red-400"
+                                        : "border-slate-300 focus:border-teal-500 focus:ring-teal-500"
+                                    }`}
                             />
                         </div>
                         {errors.email && (
@@ -131,18 +159,45 @@ export default function Register() {
                         )}
                     </div>
 
-                    {/* Password */}
+                    {/* COUNTRY */}
+                    <div>
+                        <label className="text-sm font-medium text-slate-700">
+                            Country
+                        </label>
+                        <div className="relative mt-1">
+                            <Globe className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                            <select
+                                value={form.country}
+                                onChange={(e) =>
+                                    setForm({ ...form, country: e.target.value })
+                                }
+                                className={`w-full rounded-lg border pl-10 pr-4 py-2.5 text-sm bg-white
+                                    ${errors.country
+                                        ? "border-red-400"
+                                        : "border-slate-300 focus:border-teal-500 focus:ring-teal-500"
+                                    }`}
+                            >
+                                <option value="">Select your country</option>
+                                {countries.map((country) => (
+                                    <option key={country} value={country}>
+                                        {country}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        {errors.country && (
+                            <p className="mt-1 text-xs text-red-500">{errors.country}</p>
+                        )}
+                    </div>
+
+                    {/* PASSWORD */}
                     <div>
                         <label className="text-sm font-medium text-slate-700">
                             Password
                         </label>
 
                         <div className="relative mt-1">
-                            <Lock
-                                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                                size={18}
-                            />
-
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                             <input
                                 type={showPassword ? "text" : "password"}
                                 value={form.password}
@@ -150,24 +205,19 @@ export default function Register() {
                                     setForm({ ...form, password: e.target.value })
                                 }
                                 className={`w-full rounded-lg border pl-10 pr-10 py-2.5 text-sm
-                focus:ring-teal-500
-                ${errors.password
+                                    ${errors.password
                                         ? "border-red-400"
-                                        : "border-slate-300 focus:border-teal-500"}`}
+                                        : "border-slate-300 focus:border-teal-500 focus:ring-teal-500"
+                                    }`}
                             />
-
-                            {/* Eye toggle */}
                             <button
                                 type="button"
                                 onClick={() => setShowPassword((prev) => !prev)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2
-            text-slate-400 hover:text-slate-600"
-                                aria-label={showPassword ? "Hide password" : "Show password"}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                             >
                                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
                         </div>
-
                         {errors.password && (
                             <p className="mt-1 text-xs text-red-500">
                                 {errors.password}
@@ -175,39 +225,19 @@ export default function Register() {
                         )}
                     </div>
 
-                    {/* Submit */}
                     <button
                         type="submit"
                         disabled={loading}
                         className={`w-full rounded-lg py-3 text-sm font-semibold text-white
-                            transition
                             ${loading
                                 ? "bg-teal-400 cursor-not-allowed"
-                                : "bg-teal-600 hover:bg-teal-700"}`}
+                                : "bg-teal-600 hover:bg-teal-700"
+                            }`}
                     >
                         {loading ? "Creating account..." : "Create account"}
                     </button>
                 </form>
 
-                {/* Divider */}
-                <div className="my-6 flex items-center gap-3">
-                    <div className="h-px w-full bg-slate-200" />
-                    <span className="text-xs text-slate-400">OR</span>
-                    <div className="h-px w-full bg-slate-200" />
-                </div>
-
-                {/* Google */}
-                <button
-                    onClick={() => toast("Google auth coming soon")}
-                    className="flex w-full items-center justify-center gap-3 rounded-lg
-                    border border-slate-300 py-2.5 text-sm font-medium text-slate-700
-                    hover:bg-slate-50"
-                >
-                    <img src="/google.svg" alt="Google" className="h-5 w-5" />
-                    Sign up with Google
-                </button>
-
-                {/* Footer */}
                 <p className="mt-6 text-center text-sm text-slate-500">
                     Already have an account?{" "}
                     <Link href="/login" className="font-medium text-teal-600 hover:underline">

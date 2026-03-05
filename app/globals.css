@@ -9,3 +9,53 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+/* ================= Healora FullCalendar ================= */
+
+.fc {
+    font-family: inherit;
+}
+
+.fc .fc-toolbar-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #0B2E28;
+}
+
+.fc-button {
+    background-color: #ffffff !important;
+    border: 1px solid #CDE7E2 !important;
+    color: #0B2E28 !important;
+    border-radius: 10px !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+}
+
+.fc-button:hover {
+    background-color: #F4FBF9 !important;
+}
+
+.fc-button-primary:not(:disabled).fc-button-active {
+    background-color: #38D6C4 !important;
+    border-color: #38D6C4 !important;
+    color: white !important;
+}
+
+.fc-timegrid-slot {
+    border-color: #F1F5F4 !important;
+}
+
+.fc-timegrid-axis {
+    color: #7FA6A0 !important;
+}
+
+.fc-day-today {
+    background-color: #F4FBF9 !important;
+}
+
+.fc-event {
+    border-radius: 10px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    padding: 4px 6px !important;
+}

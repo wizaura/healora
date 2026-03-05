@@ -28,9 +28,7 @@ export default function SpecialityCard({
             className="
 
     w-auto
-min-w-[320px]
-sm:min-w-[420px]
-md:min-w-[500px]
+
 
     overflow-hidden
     rounded-2xl
@@ -92,7 +90,7 @@ md:min-w-[500px]
             hover:bg-navy hover:text-white hover:border-navy
           "
                 >
-                    Explore More
+                    Explore
 
                     <span
                         className="

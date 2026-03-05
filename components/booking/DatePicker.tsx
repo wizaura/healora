@@ -19,6 +19,7 @@ export default function DatePickerCard({ date, setDate }: any) {
 
                 {/* calendar */}
                 <DatePicker
+                    mode="single"
                     selectedDate={date || null}
                     selectDate={setDate}
                     isAllowedDate={() => true}

@@ -1,123 +1,155 @@
 "use client";
 
 import api from "@/lib/api";
-import { EyeIcon } from "lucide-react";
+import { ArrowLeft, ArrowRight, EyeIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import AvailabilityModal from "./AvailabilityModal";
 
 /* ---------- TYPES ---------- */
 
-type Availability = {
-    date: string; // YYYY-MM-DD
+export type SlotStatus = "AVAILABLE" | "INACTIVE" | "BOOKED";
+
+export type Slot = {
+    id: string;
     startTimeUTC: string;
     endTimeUTC: string;
-    slotDuration: number;
+    status: SlotStatus;
 };
 
-/* ---------- COMPONENT ---------- */
+export type Availability = {
+    id: string;
+    date: string;
+    slots: Slot[];
+};
 
 export default function ExistingAvailability() {
     const [data, setData] = useState<Availability[]>([]);
-    const [activeDate, setActiveDate] = useState<string | null>(null);
+    const [activeDay, setActiveDay] = useState<Availability | null>(null);
+    const [currentMonth, setCurrentMonth] = useState(new Date());
+
+    /* ---------- FETCH FROM BACKEND (MONTH FILTER) ---------- */
+
+    const fetchAvailability = async (monthDate: Date) => {
+        try {
+            const month = monthDate.toISOString().slice(0, 7); // YYYY-MM
+            const res = await api.get(`/availability/my?month=${month}`);
+            setData(res.data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     useEffect(() => {
-        const fetchAvailability = async () => {
-            try {
-                const res = await api.get("/availability/my");
-                setData(res.data);
-            } catch (err) {
-                console.error(err);
-            }
-        };
+        fetchAvailability(currentMonth);
+    }, [currentMonth]);
 
-        fetchAvailability();
-    }, []);
+    /* ---------- MONTH SWITCH ---------- */
 
-    /* ---------- GROUP & SORT BY DATE ---------- */
-    const normalizeDate = (value: string) => {
-        const d = new Date(value);
-        return [
-            d.getFullYear(),
-            String(d.getMonth() + 1).padStart(2, "0"),
-            String(d.getDate()).padStart(2, "0"),
-        ].join("-");
+    const changeMonth = (offset: number) => {
+        const newMonth = new Date(currentMonth);
+        newMonth.setMonth(currentMonth.getMonth() + offset);
+        setCurrentMonth(newMonth);
     };
-    const groupedByDate = useMemo(() => {
-        const map: Record<string, Availability[]> = {};
 
-        data.forEach((a) => {
-            const normalizedDate = normalizeDate(a.date);
-
-            if (!map[normalizedDate]) {
-                map[normalizedDate] = [];
-            }
-
-            map[normalizedDate].push(a);
-        });
-
-        // sort slots within each day
-        Object.values(map).forEach((slots) =>
-            slots.sort(
-                (a, b) =>
-                    new Date(a.startTimeUTC).getTime() -
-                    new Date(b.startTimeUTC).getTime()
-            )
-        );
-
-        return Object.entries(map).sort(
-            ([dateA], [dateB]) =>
-                new Date(dateA).getTime() - new Date(dateB).getTime()
+    const sortedData = useMemo(() => {
+        return [...data].sort(
+            (a, b) =>
+                new Date(a.date).getTime() -
+                new Date(b.date).getTime()
         );
     }, [data]);
 
-
-
-    if (!groupedByDate.length) return null;
-
     return (
         <>
-            {/* ================= DAY LIST ================= */}
-            <section className="rounded-3xl border border-navy/10 bg-white p-6 space-y-5">
-                <h2 className="text-lg font-semibold text-navy">
-                    Your Availability
-                </h2>
+            <section className="rounded-3xl bg-gradient-to-br from-[#F4FBF9] to-white p-8 border border-[#E6F2EF] shadow-sm space-y-8">
 
-                <div className="space-y-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                    {groupedByDate.map(([date, slots]) => {
-                        const dateObj = new Date(`${date}T00:00:00`);
+                {/* Month Header */}
+                <div className="flex items-center justify-between">
+                    <button
+                        onClick={() => changeMonth(-1)}
+                        className="flex items-center gap-2 cursor-pointer px-5 py-2 rounded-xl border border-[#CDE7E2] bg-white text-[#0B2E28] text-sm hover:bg-[#F0FAF7] transition"
+                    >
+                        <ArrowLeft size={14} />
+                        Previous
+                    </button>
 
-                        console.log(date, 'dtO');
-
-                        const dateLabel = dateObj.toLocaleDateString(undefined, {
-                            weekday: "long",
-                            day: "numeric",
-                            month: "short",
+                    <h2 className="text-2xl font-semibold text-[#0B2E28] tracking-wide">
+                        {currentMonth.toLocaleDateString(undefined, {
+                            month: "long",
                             year: "numeric",
-                        });
+                        })}
+                    </h2>
+
+                    <button
+                        onClick={() => changeMonth(1)}
+                        className="flex items-center gap-2 cursor-pointer px-5 py-2 rounded-xl border border-[#CDE7E2] bg-white text-[#0B2E28] text-sm hover:bg-[#F0FAF7] transition"
+                    >
+                        Next
+                        <ArrowRight size={14}/>
+                    </button>
+                </div>
+
+                {/* Empty State */}
+                {!sortedData.length && (
+                    <div className="text-center py-12 text-[#5F7C76] text-sm">
+                        No availability created for this month.
+                    </div>
+                )}
+
+                {/* Day Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                    {sortedData.map((day) => {
+                        const activeCount = day.slots.filter(
+                            (s) => s.status === "AVAILABLE"
+                        ).length;
+
+                        const booked = day.slots.filter(
+                            (s) => s.status === "BOOKED"
+                        ).length;
+
+                        const total = day.slots.length;
 
                         return (
                             <button
-                                key={date}
-                                onClick={() => setActiveDate(date)}
-                                className="
-                    w-full rounded-2xl border border-gray-200
-                    bg-gray-50 px-5 py-4 text-left cursor-pointer
-                    transition hover:bg-navy/5 hover:border-navy/20
-                "
+                                key={day.id}
+                                onClick={() => setActiveDay(day)}
+                                className="group rounded-2xl bg-white border border-[#E2F0ED] p-6 text-left hover:shadow-md hover:border-[#B9DED6] transition-all"
                             >
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-base font-medium text-navy">
-                                            {dateLabel}
-                                        </p>
-                                        <p className="text-sm text-navy/60">
-                                            {slots.length} slot
-                                            {slots.length > 1 ? "s" : ""}
-                                        </p>
-                                    </div>
+                                <div className="flex justify-between items-center mb-3">
+                                    <p className="font-semibold text-[#0B2E28]">
+                                        {new Date(day.date).toLocaleDateString(undefined, {
+                                            weekday: "short",
+                                            day: "numeric",
+                                        })}
+                                    </p>
 
-                                    <span className="rounded-full text-xs text-navy">
-                                        <EyeIcon  className="w-5 h-5"/>
+                                    <EyeIcon
+                                        size={18}
+                                        className="cursor-pointer text-[#5F7C76] group-hover:text-[#38D6C4] transition"
+                                    />
+                                </div>
+
+                                <p className="text-xs text-[#7FA6A0] mb-4">
+                                    {total} slots created
+                                </p>
+
+                                <div className="flex justify-between text-xs mb-2">
+                                    <span className="text-[#1F9E8E]">
+                                        {activeCount} Active
                                     </span>
+                                    <span className="text-[#C98B00]">
+                                        {booked} Booked
+                                    </span>
+                                </div>
+
+                                {/* Soft Progress Bar */}
+                                <div className="h-1.5 bg-[#E6F2EF] rounded-full overflow-hidden">
+                                    <div
+                                        className="h-full bg-[#38D6C4] transition-all"
+                                        style={{
+                                            width: `${(activeCount / total) * 100}%`,
+                                        }}
+                                    />
                                 </div>
                             </button>
                         );
@@ -125,71 +157,14 @@ export default function ExistingAvailability() {
                 </div>
             </section>
 
-            {/* ================= MODAL ================= */}
-            {activeDate && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                    <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl">
-
-                        <h3 className="mb-1 text-xl font-semibold text-navy">
-                            Availability
-                        </h3>
-
-                        <p className="mb-4 text-sm text-navy/60">
-                            {new Date(
-                                `${activeDate}T00:00:00`
-                            ).toLocaleDateString(undefined, {
-                                weekday: "long",
-                                day: "numeric",
-                                month: "long",
-                                year: "numeric",
-                            })}
-                        </p>
-
-                        <div className="space-y-3">
-                            {groupedByDate
-                                .find(([d]) => d === activeDate)?.[1]
-                                .map((slot, i) => (
-                                    <div
-                                        key={i}
-                                        className="flex items-center justify-between rounded-xl border border-gray-200 bg-gray-50 px-4 py-3"
-                                    >
-                                        <div>
-                                            <p className="text-sm font-medium text-navy">
-                                                {formatTime(slot.startTimeUTC)} –{" "}
-                                                {formatTime(slot.endTimeUTC)}
-                                            </p>
-                                        </div>
-
-                                        <span className="rounded-full bg-navy/10 px-3 py-1 text-xs font-semibold text-navy">
-                                            {slot.slotDuration} min
-                                        </span>
-                                    </div>
-                                ))}
-                        </div>
-
-                        <div className="mt-6 flex justify-end">
-                            <button
-                                onClick={() => setActiveDate(null)}
-                                className="
-                                    rounded-xl border border-gray-200
-                                    px-4 py-2 text-sm font-medium
-                                    text-gray-700 hover:bg-gray-100
-                                "
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            {activeDay && (
+                <AvailabilityModal
+                    day={activeDay}
+                    onClose={() => setActiveDay(null)}
+                    refresh={() => fetchAvailability(currentMonth)}
+                />
             )}
         </>
     );
+
 }
-
-/* ---------- HELPERS ---------- */
-
-const formatTime = (utc: string) =>
-    new Date(utc).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-    });

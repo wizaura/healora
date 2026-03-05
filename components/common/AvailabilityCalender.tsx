@@ -9,7 +9,7 @@ type Props = {
     onSelectDate: (date: string) => void;
 };
 
-export default function AvailabilityCalendar({
+export function AvailabilityCalendar({
     availableDates,
     selectedDate,
     onSelectDate,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -15,22 +15,23 @@ declare global {
 export default function CheckoutFooter({
     doctorId,
     slotId,
-    date,
-    startTime,
-    endTime,
     paymentMethod,
 }: {
     doctorId: string;
     slotId: string;
-    date: string;
-    startTime: string;
-    endTime: string;
     paymentMethod: "razorpay" | "stripe";
 }) {
-    const [slotFee, setSlotFee] = useState<number>(0);
-    const [consultationFee, setConsultationFee] = useState<number>(0);
-    const [appointmentId, setAppointmentId] = useState<string | null>(null);
+    const [slotFee, setSlotFee] = useState(0);
+    const [consultationFee, setConsultationFee] = useState(0);
+    const [prescriptionFee, setPrescriptionFee] = useState(50); // small optional fee
     const [loading, setLoading] = useState(true);
+    const [meetingType, setMeetingType] = useState<"google" | "zoom" | null>(null);
+    const [deliveryMode, setDeliveryMode] = useState<"none" | "prescription" | "door">("none");
+    const [address, setAddress] = useState("");
+    const deliveryFee = 100; // example
+
+    const [payMode, setPayMode] = useState<"slot" | "full">("slot");
+    const [includePrescription, setIncludePrescription] = useState(false);
 
     const router = useRouter();
 
@@ -54,31 +55,59 @@ export default function CheckoutFooter({
         fetchFees();
     }, [doctorId]);
 
+    // 🔥 dynamic total calculation
+    const totalAmount = useMemo(() => {
+        let total = slotFee;
+
+        if (payMode === "full") {
+            total += consultationFee;
+        }
+
+        if (deliveryMode === "prescription") {
+            total += prescriptionFee;
+        }
+
+        return total;
+    }, [slotFee, consultationFee, payMode, deliveryMode]);
+
     const handlePayment = async () => {
-        setLoading(true);
+        if (payMode === "full" && !meetingType) {
+            return toast.error("Please select consultation mode");
+        }
+
+        if (deliveryMode === "door" && !address.trim()) {
+            return toast.error("Please enter delivery address");
+        }
 
         try {
-            // 1️⃣ Initiate booking
+            setLoading(true);
+
+            // 1️⃣ initiate booking
             const bookingRes = await api.post("/booking/initiate", {
                 doctorId,
                 slotId,
             });
 
             const { appointmentId } = bookingRes.data.data;
-            setAppointmentId(appointmentId);
 
-            // 2️⃣ Initiate payment
+            // 2️⃣ initiate payment with totalAmount
             const paymentRes = await api.post("/payments/initiate", {
-                appointmentId,
-                paymentMethod,
+                doctorId,
+                slotId,
+                payMode,
+                meetingType,
+                deliveryMode,
+                address: deliveryMode === "door" ? address : null,
             });
+
 
             if (paymentMethod === "razorpay") {
                 openRazorpay(paymentRes.data.data, appointmentId);
             }
 
             if (paymentMethod === "stripe") {
-                window.location.href = paymentRes.data.data.checkoutUrl;
+                window.location.href =
+                    paymentRes.data.data.checkoutUrl;
             }
         } catch (err) {
             toast.error("Failed to initiate payment");
@@ -90,7 +119,7 @@ export default function CheckoutFooter({
 
     const openRazorpay = (order: any, appointmentId: string) => {
         if (!window.Razorpay) {
-            toast.error("Payment service not loaded. Please refresh.");
+            toast.error("Payment service not loaded.");
             return;
         }
 
@@ -100,18 +129,12 @@ export default function CheckoutFooter({
             currency: "INR",
             order_id: order.orderId,
             name: "Healora",
-            description: "Slot booking fee",
-
+            description: "Appointment Payment",
             handler: () => {
-                router.push(`/payment/pending?appointmentId=${appointmentId}`);
+                router.push(
+                    `/payment/pending?appointmentId=${appointmentId}`
+                );
             },
-
-            modal: {
-                ondismiss: () => {
-                    toast.error("Payment cancelled");
-                },
-            },
-
             theme: { color: "#0E3B43" },
         };
 
@@ -122,64 +145,148 @@ export default function CheckoutFooter({
     if (loading) return null;
 
     return (
-        <section className="rounded-2xl bg-white p-4">
+        <section className="rounded-2xl bg-white p-6 shadow-sm">
             <Script
                 src="https://checkout.razorpay.com/v1/checkout.js"
                 strategy="afterInteractive"
             />
-            <div className="mx-auto max-w-lg text-center">
 
-                {/* pill */}
-                <span className="mb-4 inline-block rounded-full border border-gray-200 bg-white px-6 py-2 text-sm font-medium text-gray-600">
-                    Summary
-                </span>
+            <div className="max-w-lg mx-auto">
 
-                {/* title */}
-                <h2 className="text-2xl font-medium tracking-[-0.02em] text-[#1F2147]">
-                    Confirm your slot
+                {/* Title */}
+                <h2 className="text-xl font-semibold text-navy mb-6">
+                    Choose Payment Option
                 </h2>
 
-                {/* breakdown */}
-                <div className="mt-8 space-y-3 rounded-2xl bg-wellness-bg px-6 py-4 text-left">
-                    <div className="flex justify-between text-sm text-navy/70">
-                        <span>Doctor consultation fee</span>
-                        <span className="font-medium text-navy">
-                            ₹{consultationFee}
-                        </span>
+                {/* Payment Mode Options */}
+                <div className="space-y-3">
+
+                    {/* Slot only */}
+                    <div
+                        onClick={() => setPayMode("slot")}
+                        className={`cursor-pointer rounded-xl border p-4 ${payMode === "slot"
+                            ? "border-navy bg-navy/5"
+                            : "border-gray-200"
+                            }`}
+                    >
+                        <div className="flex justify-between">
+                            <span className="font-medium">
+                                Pay Slot Fee Only
+                            </span>
+                            <span>₹{slotFee}</span>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">
+                            Confirm booking now. Consultation later.
+                        </p>
                     </div>
 
-                    <div className="flex justify-between text-sm text-navy/70">
-                        <span>Slot booking fee</span>
-                        <span className="font-medium text-navy">
-                            ₹{slotFee}
-                        </span>
+                    {/* Full payment */}
+                    <div
+                        onClick={() => setPayMode("full")}
+                        className={`cursor-pointer rounded-xl border p-4 ${payMode === "full"
+                            ? "border-navy bg-navy/5"
+                            : "border-gray-200"
+                            }`}
+                    >
+                        <div className="flex justify-between">
+                            <span className="font-medium">
+                                Pay Slot + Consultation
+                            </span>
+                            <span>
+                                ₹{slotFee + consultationFee}
+                            </span>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">
+                            Complete payment in one go.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Optional Prescription */}
+                <div className="mt-6 space-y-3">
+                    <p className="text-sm font-medium">Add-ons</p>
+
+                    <div
+                        onClick={() => setDeliveryMode("prescription")}
+                        className={`cursor-pointer rounded-xl border p-3 ${deliveryMode === "prescription"
+                            ? "border-navy bg-navy/5"
+                            : "border-gray-200"
+                            }`}
+                    >
+                        Prescription Copy (₹{prescriptionFee})
                     </div>
 
-                    <div className="border-t border-gray-200 pt-3 flex justify-between">
-                        <span className="text-sm font-medium text-navy">
-                            Pay now
-                        </span>
-                        <span className="text-xl font-semibold text-navy">
-                            ₹{slotFee}
-                        </span>
+                    <div
+                        onClick={() => setDeliveryMode("door")}
+                        className={`cursor-pointer rounded-xl border p-3 ${deliveryMode === "door"
+                            ? "border-navy bg-navy/5"
+                            : "border-gray-200"
+                            }`}
+                    >
+                        Door-to-door Medicine Delivery
                     </div>
+                </div>
+
+                {payMode === "full" && (
+                    <div className="mt-4 space-y-2">
+                        <p className="text-sm font-medium">Choose Consultation Mode</p>
+    
+                        <div className="flex gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setMeetingType("google")}
+                                className={`px-4 py-2 rounded-lg border ${meetingType === "google"
+                                    ? "border-navy bg-navy/5"
+                                    : "border-gray-200"
+                                    }`}
+                            >
+                                Google Meet
+                            </button>
+    
+                            <button
+                                type="button"
+                                onClick={() => setMeetingType("zoom")}
+                                className={`px-4 py-2 rounded-lg border ${meetingType === "zoom"
+                                    ? "border-navy bg-navy/5"
+                                    : "border-gray-200"
+                                    }`}
+                            >
+                                Zoom
+                            </button>
+                        </div>
+                    </div>
+                )}
+                {deliveryMode === "door" && (
+                    <div className="mt-4">
+                        <label className="block text-sm font-medium mb-2">
+                            Delivery Address
+                        </label>
+                        <textarea
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            rows={3}
+                            className="w-full rounded-xl border px-4 py-3 text-sm"
+                            placeholder="Enter full address with pincode"
+                        />
+                    </div>
+                )}
+
+                {/* Summary */}
+                <div className="mt-6 border-t pt-4 flex justify-between text-lg font-semibold">
+                    <span>Total Payable</span>
+                    <span>₹{totalAmount}</span>
                 </div>
 
                 {/* CTA */}
                 <button
                     onClick={handlePayment}
                     disabled={loading}
-                    className="mt-6 w-full rounded-2xl bg-navy py-4 text-white font-semibold"
+                    className="mt-6 w-full rounded-2xl bg-navy py-4 text-white font-semibold hover:opacity-90 transition"
                 >
-                    {loading ? "Processing..." : "Pay slot fee & confirm"}
+                    {loading ? "Processing..." : "Proceed to Payment"}
                 </button>
 
-                <p className="mt-4 text-center text-xs text-navy/50">
-                    Slot fee confirms your booking.
-                    Consultation fee is paid separately to the doctor.
-                </p>
-
-                <p className="mt-1 text-center text-xs text-navy/40">
+                <p className="mt-4 text-xs text-gray-500 text-center">
                     Secure payment • {paymentMethod.toUpperCase()}
                 </p>
             </div>

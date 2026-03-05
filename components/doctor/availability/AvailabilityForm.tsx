@@ -5,34 +5,31 @@ import toast from "react-hot-toast";
 import api from "@/lib/api";
 import DatePicker from "@/components/common/DatePicker";
 import { CalendarDays, Clock, Timer } from "lucide-react";
+import { DateRange } from "react-day-picker";
 
 export default function AvailabilityForm() {
     const [isOpen, setIsOpen] = useState(false);
-    const [date, setDate] = useState<Date | undefined>();
+    const [range, setRange] = useState<DateRange | undefined>();
     const [start, setStart] = useState("09:00");
     const [end, setEnd] = useState("17:00");
     const [duration, setDuration] = useState<30 | 60>(30);
     const [loading, setLoading] = useState(false);
 
-    const timezone =
-        Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-
-    const dateStr = date
-        ? [
+    const formatDate = (date: Date) =>
+        [
             date.getFullYear(),
             String(date.getMonth() + 1).padStart(2, "0"),
             String(date.getDate()).padStart(2, "0"),
-        ].join("-")
-        : null;
+        ].join("-");
 
     const submit = async () => {
-        if (!dateStr) {
-            toast.error("Please select a date");
+        if (!range?.from || !range?.to) {
+            toast.error("Please select a date range");
             return;
         }
 
-        // Convert times to minutes for comparison
         const toMinutes = (t: string) => {
             const [h, m] = t.split(":").map(Number);
             return h * 60 + m;
@@ -41,11 +38,6 @@ export default function AvailabilityForm() {
         const startMin = toMinutes(start);
         const endMin = toMinutes(end);
 
-        if (Number.isNaN(startMin) || Number.isNaN(endMin)) {
-            toast.error("Invalid time selected");
-            return;
-        }
-
         if (endMin <= startMin) {
             toast.error("End time must be later than start time");
             return;
@@ -53,32 +45,26 @@ export default function AvailabilityForm() {
 
         const totalMinutes = endMin - startMin;
 
-        if (totalMinutes < duration) {
-            toast.error(
-                `Time range must be at least ${duration} minutes`
-            );
+        if (totalMinutes < duration || totalMinutes % duration !== 0) {
+            toast.error("Invalid slot duration for selected time range");
             return;
         }
 
-        if (totalMinutes % duration !== 0) {
-            toast.error(
-                "Time range must divide evenly into slot duration"
-            );
-            return;
-        }
+        const days =
+            Math.floor(
+                (range.to.getTime() - range.from.getTime()) /
+                (1000 * 60 * 60 * 24)
+            ) + 1;
 
-        const totalSlots = totalMinutes / duration;
-
-        if (totalSlots <= 0) {
-            toast.error("No valid slots can be created");
-            return;
-        }
+        const slotsPerDay = totalMinutes / duration;
+        const totalSlots = slotsPerDay * days;
 
         try {
             setLoading(true);
 
-            await api.post("/availability", {
-                date: dateStr,
+            await api.post("/availability/range", {
+                startDate: formatDate(range.from),
+                endDate: formatDate(range.to),
                 startTime: start,
                 endTime: end,
                 slotDuration: duration,
@@ -86,172 +72,122 @@ export default function AvailabilityForm() {
             });
 
             toast.success(
-                `Availability saved (${totalSlots} slots created)`
+                `Availability saved (${totalSlots} slots across ${days} days)`
             );
+
             setIsOpen(false);
+            setRange(undefined);
         } catch (error: any) {
-            toast.error(
-                error?.response?.data?.message ||
-                "Failed to save availability"
-            );
+            toast.error(error.message || "Something went wrong");
         } finally {
             setLoading(false);
         }
     };
 
+    const daysSelected =
+        range?.from && range?.to
+            ? Math.floor(
+                (range.to.getTime() - range.from.getTime()) /
+                (1000 * 60 * 60 * 24)
+            ) + 1
+            : 0;
 
     return (
         <section className="rounded-2xl">
-            {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
                     <h2 className="text-3xl font-semibold text-[#1F2147]">
                         Availability
                     </h2>
                     <p className="text-lg text-gray-500">
-                        Set when you are available
+                        Set availability for multiple days
                     </p>
                 </div>
 
                 <button
                     onClick={() => setIsOpen((v) => !v)}
-                    className="
-                        rounded-xl bg-navy px-5 py-2.5
-                        text-sm font-medium text-white
-                        transition hover:bg-navy/90 cursor-pointer
-                    "
+                    className="rounded-xl bg-navy px-5 py-2.5 text-sm font-medium text-white hover:bg-navy/90"
                 >
                     {isOpen ? "Close" : "Set availability"}
                 </button>
             </div>
 
-            {/* Collapsible Panel */}
             {isOpen && (
                 <div className="mt-8 grid gap-8 md:grid-cols-2">
 
-                    {/* LEFT — CALENDAR */}
+                    {/* LEFT — RANGE CALENDAR */}
                     <div className="rounded-2xl text-center bg-gray-50">
-                        <span className="mb-4 inline-block rounded-full border border-gray-200 bg-white px-6 py-2 text-sm font-medium text-gray-600">
-                            Date
-                        </span>
-
-                        <h2 className="text-2xl mb-6 font-medium tracking-[-0.02em] text-[#1F2147]">
-                            Select date for availability
+                        <h2 className="text-2xl mb-6 font-medium text-[#1F2147]">
+                            Select time & slot duration
                         </h2>
 
                         <DatePicker
-                            selectedDate={date ?? null}
-                            selectDate={setDate}
-                            isAllowedDate={() => true}
+                            mode="range"
+                            selectedRange={range}
+                            selectRange={setRange}
                         />
                     </div>
 
                     {/* RIGHT — DETAILS */}
                     <div className="space-y-6 text-center">
 
-                        <span className="mb-4 inline-block rounded-full border border-gray-200 bg-white px-6 py-2 text-sm font-medium text-gray-600">
-                            Time
-                        </span>
-
-                        {/* title */}
-                        <h2 className="text-2xl mb-6 font-medium tracking-[-0.02em] text-[#1F2147]">
-                            Select the time for slots
+                        <h2 className="text-2xl font-medium text-[#1F2147]">
+                            Select time & slot duration
                         </h2>
 
-
-                        {/* Time Range */}
                         <div className="grid grid-cols-2 gap-8">
-                            <TimeSelect
-                                label="Start time"
-                                value={start}
-                                onChange={setStart}
-                            />
-                            <TimeSelect
-                                label="End time"
-                                value={end}
-                                onChange={setEnd}
-                            />
+                            <TimeSelect label="Start time" value={start} onChange={setStart} />
+                            <TimeSelect label="End time" value={end} onChange={setEnd} />
                         </div>
 
-                        {/* Slot Duration */}
-                        <div className="space-y-2">
-                            <p className="text-sm font-medium text-gray-700">
-                                Slot duration
-                            </p>
-
-                            <div className="flex gap-3">
-                                {[30, 60].map((d) => (
-                                    <button
-                                        key={d}
-                                        type="button"
-                                        onClick={() => setDuration(d as 30 | 60)}
-                                        className={`
-                                            flex-1 rounded-xl px-4 py-3
-                                            text-sm font-medium transition
-                                            ${duration === d
-                                                ? "bg-navy text-white"
-                                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                            }
-                                        `}
-                                    >
-                                        {d} minutes
-                                    </button>
-                                ))}
-                            </div>
+                        <div className="flex gap-3">
+                            {[30, 60].map((d) => (
+                                <button
+                                    key={d}
+                                    type="button"
+                                    onClick={() => setDuration(d as 30 | 60)}
+                                    className={`flex-1 rounded-xl px-4 py-3 text-sm font-medium ${duration === d
+                                        ? "bg-navy text-white"
+                                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                        }`}
+                                >
+                                    {d} minutes
+                                </button>
+                            ))}
                         </div>
 
-                        {/* Selected Summary */}
-                        <div className="rounded-2xl border border-navy/10 bg-gradient-to-br from-navy/5 to-white p-5">
-                            <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-navy">
-                                Selected availability
-                            </p>
+                        {/* Summary */}
+                        <div className="rounded-2xl border bg-white p-5 shadow-sm">
+                            <div className="flex flex-wrap gap-3 justify-center">
 
-                            <div className="flex flex-wrap gap-3">
-                                <div className="flex items-center gap-2 rounded-xl bg-white px-4 py-2 shadow-sm">
+                                <div className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-xl">
                                     <CalendarDays className="h-4 w-4 text-navy" />
                                     <span className="text-sm font-semibold text-navy">
-                                        {date
-                                            ? date.toLocaleDateString(undefined, {
-                                                weekday: "short",
-                                                day: "numeric",
-                                                month: "short",
-                                            })
-                                            : "No date"}
+                                        {daysSelected > 0
+                                            ? `${daysSelected} days selected`
+                                            : "No dates selected"}
                                     </span>
                                 </div>
 
-                                <div className="flex items-center gap-2 rounded-xl bg-white px-4 py-2 shadow-sm">
+                                <div className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-xl">
                                     <Clock className="h-4 w-4 text-navy" />
-                                    <span className="text-sm font-semibold text-navy">
-                                        {start} – {end}
-                                    </span>
+                                    {start} – {end}
                                 </div>
 
-                                <div className="flex items-center gap-2 rounded-xl bg-white px-4 py-2 shadow-sm">
+                                <div className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-xl">
                                     <Timer className="h-4 w-4 text-navy" />
-                                    <span className="text-sm font-semibold text-navy">
-                                        {duration} min slots
-                                    </span>
+                                    {duration} min slots
                                 </div>
+
                             </div>
                         </div>
 
-
-                        {/* CTA */}
                         <button
-                            disabled={loading || !date}
+                            disabled={loading || !range?.from || !range?.to}
                             onClick={submit}
-                            className="
-                                w-full rounded-xl
-                                bg-navy py-4
-                                text-sm font-semibold text-white
-                                transition hover:bg-navy/90
-                                disabled:opacity-50
-                            "
+                            className="w-full rounded-xl bg-navy py-4 text-sm font-semibold text-white disabled:opacity-50"
                         >
-                            {loading
-                                ? "Saving availability…"
-                                : "Save availability"}
+                            {loading ? "Saving…" : "Save availability"}
                         </button>
                     </div>
                 </div>
