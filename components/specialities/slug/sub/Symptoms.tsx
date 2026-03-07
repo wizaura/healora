@@ -4,11 +4,14 @@ import { Activity } from "lucide-react";
 type Item = {
     id: string;
     name: string;
-    description: string;
+    description?: string;
     imageUrl?: string | null;
 };
 
 export default function SubSpecialitySymptoms({ symptoms }: { symptoms: Item[] }) {
+
+    if (!symptoms || symptoms.length === 0) return null;
+
     return (
         <section className="py-20 bg-white">
 
@@ -61,18 +64,18 @@ export default function SubSpecialitySymptoms({ symptoms }: { symptoms: Item[] }
 
                                 <div
                                     className="
-            w-32 h-32
-            rounded-full
-            bg-wellness-bg
-            flex items-center justify-center
-            group-hover:bg-wellness-accent/10
-            transition
-        "
+                                        w-28 h-28
+                                        rounded-full
+                                        bg-wellness-bg
+                                        flex items-center justify-center
+                                        group-hover:bg-wellness-accent/10
+                                        transition
+                                    "
                                 >
 
                                     {symptom.imageUrl ? (
 
-                                        <div className="relative w-30 h-30">
+                                        <div className="relative w-20 h-20">
 
                                             <Image
                                                 src={symptom.imageUrl}
@@ -104,9 +107,13 @@ export default function SubSpecialitySymptoms({ symptoms }: { symptoms: Item[] }
 
                             {/* DESCRIPTION */}
 
-                            <p className="mt-2 text-xs text-navy/60 leading-relaxed">
-                                {symptom.description}
-                            </p>
+                            {symptom.description && (
+
+                                <p className="mt-2 text-xs text-navy/60 leading-relaxed">
+                                    {symptom.description}
+                                </p>
+
+                            )}
 
                         </div>
 

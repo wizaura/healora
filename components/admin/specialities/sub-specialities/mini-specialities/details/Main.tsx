@@ -152,10 +152,11 @@ export default function ManageMiniPage() {
                 {tab === "symptoms" && (
                     <RelationSection
                         title="Symptoms"
-                        items={mini.miniSpecialitySymptoms?.map((s: any) => s.symptom)}
+                        items={mini.miniSpecialitySymptoms}
                         fetchUrl="/settings/symptoms"
                         addUrl={`/admin/mini-specialities/${miniId}/symptoms`}
                         removeUrl={`/admin/mini-specialities/${miniId}/symptoms`}
+                        descriptionUrl={`/admin/mini-specialities/${miniId}/symptoms`}
                         refetchMini={refetch}
                     />
                 )}
@@ -163,10 +164,11 @@ export default function ManageMiniPage() {
                 {tab === "causes" && (
                     <RelationSection
                         title="Causes"
-                        items={mini.miniSpecialityCauses?.map((c: any) => c.cause)}
+                        items={mini.miniSpecialityCauses}
                         fetchUrl="/settings/causes"
                         addUrl={`/admin/mini-specialities/${miniId}/causes`}
                         removeUrl={`/admin/mini-specialities/${miniId}/causes`}
+                        descriptionUrl={`/admin/mini-specialities/${miniId}/causes`}
                         refetchMini={refetch}
                     />
                 )}
@@ -174,10 +176,11 @@ export default function ManageMiniPage() {
                 {tab === "risk" && (
                     <RelationSection
                         title="Risk Factors"
-                        items={mini.miniSpecialityRiskFactors?.map((r: any) => r.riskFactor)}
+                        items={mini.miniSpecialityRiskFactors}
                         fetchUrl="/settings/risk-factors"
                         addUrl={`/admin/mini-specialities/${miniId}/risk-factors`}
                         removeUrl={`/admin/mini-specialities/${miniId}/risk-factors`}
+                        descriptionUrl={`/admin/mini-specialities/${miniId}/risk-factors`}
                         refetchMini={refetch}
                     />
                 )}

@@ -167,10 +167,11 @@ export default function ManageSubSpecialityPage() {
                 {tab === "symptoms" && (
                     <RelationSection
                         title="Symptoms"
-                        items={sub.subSpecialitySymptoms?.map((s: any) => s.symptom)}
+                        items={sub.subSpecialitySymptoms}
                         fetchUrl="/settings/symptoms"
                         addUrl={`/admin/sub-specialities/${subId}/symptoms`}
                         removeUrl={`/admin/sub-specialities/${subId}/symptoms`}
+                        descriptionUrl={`/admin/sub-specialities/${subId}/symptoms`}
                         refetchMini={refetch}
                     />
                 )}
@@ -178,10 +179,11 @@ export default function ManageSubSpecialityPage() {
                 {tab === "causes" && (
                     <RelationSection
                         title="Causes"
-                        items={sub.subSpecialityCauses?.map((c: any) => c.cause)}
+                        items={sub.subSpecialityCauses}
                         fetchUrl="/settings/causes"
                         addUrl={`/admin/sub-specialities/${subId}/causes`}
                         removeUrl={`/admin/sub-specialities/${subId}/causes`}
+                        descriptionUrl={`/admin/sub-specialities/${subId}/causes`}
                         refetchMini={refetch}
                     />
                 )}
@@ -189,10 +191,11 @@ export default function ManageSubSpecialityPage() {
                 {tab === "risk" && (
                     <RelationSection
                         title="Risk Factors"
-                        items={sub.subSpecialityRiskFactors?.map((r: any) => r.riskFactor)}
+                        items={sub.subSpecialityRiskFactors}
                         fetchUrl="/settings/risk-factors"
                         addUrl={`/admin/sub-specialities/${subId}/risk-factors`}
                         removeUrl={`/admin/sub-specialities/${subId}/risk-factors`}
+                        descriptionUrl={`/admin/sub-specialities/${subId}/risk-factors`}
                         refetchMini={refetch}
                     />
                 )}

@@ -18,7 +18,6 @@ export default function LibraryPage({
     const [saving, setSaving] = useState(false);
 
     const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
     const [image, setImage] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
 
@@ -41,7 +40,6 @@ export default function LibraryPage({
         try {
             const form = new FormData();
             form.append("name", name);
-            form.append("description", description);
 
             if (image) {
                 form.append("image", image);
@@ -56,7 +54,6 @@ export default function LibraryPage({
             toast.success("Created");
 
             setName("");
-            setDescription("");
             setImage(null);
             setPreview(null);
 
@@ -111,8 +108,6 @@ export default function LibraryPage({
                     title={`Add ${title}`}
                     name={name}
                     setName={setName}
-                    description={description}
-                    setDescription={setDescription}
                     preview={preview}
                     setPreview={setPreview}
                     setImage={setImage}
@@ -127,10 +122,6 @@ export default function LibraryPage({
                     title={`Edit ${title}`}
                     name={editing.name}
                     setName={(v) => setEditing({ ...editing, name: v })}
-                    description={editing.description || ""}
-                    setDescription={(v) =>
-                        setEditing({ ...editing, description: v })
-                    }
                     preview={preview || editing.imageUrl || null}
                     setPreview={setPreview}
                     setImage={setImage}

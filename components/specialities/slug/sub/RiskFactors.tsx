@@ -4,11 +4,14 @@ import { Activity } from "lucide-react";
 type Item = {
     id: string;
     name: string;
-    description: string;
+    description?: string;
     imageUrl?: string | null;
 };
 
 export default function SubSpecialityRiskFactors({ riskFactors }: { riskFactors: Item[] }) {
+
+    if (!riskFactors || riskFactors.length === 0) return null;
+
     return (
         <section className="py-20 bg-white">
 
@@ -32,7 +35,6 @@ export default function SubSpecialityRiskFactors({ riskFactors }: { riskFactors:
                     </p>
 
                 </div>
-
 
                 {/* GRID */}
 
@@ -62,7 +64,7 @@ export default function SubSpecialityRiskFactors({ riskFactors }: { riskFactors:
 
                                 <div
                                     className="
-                                        w-32 h-32
+                                        w-28 h-28
                                         rounded-full
                                         bg-wellness-bg
                                         flex items-center justify-center
@@ -73,7 +75,7 @@ export default function SubSpecialityRiskFactors({ riskFactors }: { riskFactors:
 
                                     {riskFactor.imageUrl ? (
 
-                                        <div className="relative w-24 h-24">
+                                        <div className="relative w-20 h-20">
 
                                             <Image
                                                 src={riskFactor.imageUrl}
@@ -87,7 +89,7 @@ export default function SubSpecialityRiskFactors({ riskFactors }: { riskFactors:
                                     ) : (
 
                                         <Activity
-                                            size={40}
+                                            size={36}
                                             className="text-navy/70"
                                         />
 
@@ -97,19 +99,19 @@ export default function SubSpecialityRiskFactors({ riskFactors }: { riskFactors:
 
                             </div>
 
-
                             {/* TITLE */}
 
                             <h3 className="font-semibold text-navy-dark text-sm">
                                 {riskFactor.name}
                             </h3>
 
-
                             {/* DESCRIPTION */}
 
-                            <p className="mt-2 text-xs text-navy/60 leading-relaxed">
-                                {riskFactor.description}
-                            </p>
+                            {riskFactor.description && (
+                                <p className="mt-2 text-xs text-navy/60 leading-relaxed">
+                                    {riskFactor.description}
+                                </p>
+                            )}
 
                         </div>
 

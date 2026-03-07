@@ -33,7 +33,7 @@ export default function SubSpecialityOverview({
                     </h1>
 
                     {overview.summary && (
-                        <p className="mt-6 text-lg text-navy/70 leading-relaxed">
+                        <p className="mt-6 text-lg text-navy leading-relaxed">
                             {overview.summary}
                         </p>
                     )}
@@ -60,7 +60,7 @@ export default function SubSpecialityOverview({
                                     className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm"
                                 >
 
-                                    <p className="text-sm text-navy/80 leading-relaxed">
+                                    <p className="text-sm text-navy/95 leading-relaxed">
                                         {fact}
                                     </p>
 
@@ -127,7 +127,7 @@ function SectionBlock({
                 {title}
             </h2>
 
-            <p className="text-navy/70 leading-relaxed text-base max-w-3xl">
+            <p className="text-navy/90 leading-relaxed text-base max-w-3xl">
                 {content}
             </p>
 
@@ -153,7 +153,7 @@ function SectionHighlight({
                 {title}
             </h2>
 
-            <p className="text-navy/70 leading-relaxed max-w-3xl">
+            <p className="text-navy/90 leading-relaxed max-w-3xl">
                 {content}
             </p>
 

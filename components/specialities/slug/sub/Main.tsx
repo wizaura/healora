@@ -34,6 +34,8 @@ export default function SubSpecialityDetailPage() {
         retry: false,
     });
 
+    console.log(data)
+
     if (!data) return null;
 
     const hasMiniSpecialities =
