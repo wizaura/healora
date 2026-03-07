@@ -8,12 +8,15 @@ import toast from "react-hot-toast";
 type Language = {
     id: string;
     name: string;
+    isActive: boolean;
 };
 
 export default function LanguagesPage() {
+
     const queryClient = useQueryClient();
 
     const [showForm, setShowForm] = useState(false);
+    const [editing, setEditing] = useState<Language | null>(null);
     const [name, setName] = useState("");
 
     /* ---------------- FETCH ---------------- */
@@ -36,98 +39,231 @@ export default function LanguagesPage() {
         onError: () => toast.error("Failed to create language"),
     });
 
-    /* ---------------- DELETE ---------------- */
+    /* ---------------- UPDATE ---------------- */
 
-    const deleteMutation = useMutation({
-        mutationFn: (id: string) => api.delete(`/settings/languages/${id}`),
+    const updateMutation = useMutation({
+        mutationFn: () =>
+            api.put(`/settings/languages/${editing?.id}`, { name }),
         onSuccess: () => {
-            toast.success("Language deleted");
+            toast.success("Language updated");
+            setEditing(null);
+            setName("");
             queryClient.invalidateQueries({ queryKey: ["languages"] });
         },
-        onError: () => toast.error("Failed to delete language"),
+        onError: () => toast.error("Failed to update language"),
     });
 
+    /* ---------------- TOGGLE ACTIVE ---------------- */
+
+    const toggleMutation = useMutation({
+        mutationFn: (lang: Language) =>
+            api.patch(`/settings/languages/${lang.id}`, {
+                isActive: !lang.isActive,
+            }),
+        onSuccess: () => {
+            toast.success("Status updated");
+            queryClient.invalidateQueries({ queryKey: ["languages"] });
+        },
+        onError: () => toast.error("Failed to update status"),
+    });
+
+    /* ---------------- HANDLERS ---------------- */
+
     const handleCreate = () => {
+
         if (!name.trim()) {
             toast.error("Language name required");
             return;
         }
+
         createMutation.mutate();
     };
 
+    const handleUpdate = () => {
+
+        if (!name.trim()) {
+            toast.error("Language name required");
+            return;
+        }
+
+        updateMutation.mutate();
+    };
+
+    const startEdit = (lang: Language) => {
+        setEditing(lang);
+        setName(lang.name);
+        setShowForm(true);
+    };
+
+    const cancelForm = () => {
+        setEditing(null);
+        setShowForm(false);
+        setName("");
+    };
+
     return (
-        <div className="space-y-8">
+        <div className="space-y-6">
 
             {/* HEADER */}
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-start">
+
                 <div>
-                    <h2 className="text-xl font-semibold text-navy">
+                    <h2 className="text-lg font-semibold text-slate-900">
                         Languages
                     </h2>
-                    <p className="text-sm text-navy/50">
-                        Manage supported languages for doctors
+
+                    <p className="text-sm text-slate-500 mt-1">
+                        Manage languages that doctors can select for consultations.
                     </p>
                 </div>
 
                 <button
-                    onClick={() => setShowForm(!showForm)}
-                    className="px-5 py-2 rounded-xl bg-wellness-accent text-white text-sm font-medium hover:opacity-90"
+                    onClick={() => {
+                        setShowForm(!showForm);
+                        setEditing(null);
+                        setName("");
+                    }}
+                    className="cursor-pointer bg-teal-600 hover:bg-teal-800 text-white px-4 py-2 rounded-md text-sm"
                 >
-                    {showForm ? "Close" : "+ Add Language"}
+                    {showForm ? "Close" : "Add Language"}
                 </button>
+
             </div>
 
             {/* FORM */}
             {showForm && (
-                <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-6 space-y-4">
+                <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
 
-                    <input
-                        className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-wellness-accent/30"
-                        placeholder="Language name (e.g. English)"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
+                    <h3 className="text-lg font-semibold mb-6">
+                        {editing ? "Edit Language" : "Add Language"}
+                    </h3>
 
-                    <button
-                        onClick={handleCreate}
-                        disabled={createMutation.isPending}
-                        className="px-5 py-2.5 rounded-xl bg-navy text-white text-sm font-medium hover:opacity-90 disabled:opacity-60"
-                    >
-                        {createMutation.isPending ? "Creating..." : "Create Language"}
-                    </button>
-                </div>
-            )}
+                    <div className="space-y-1">
 
-            {/* LIST */}
-            {isLoading ? (
-                <div className="text-sm text-navy/50">
-                    Loading languages...
-                </div>
-            ) : languages.length === 0 ? (
-                <div className="text-sm text-navy/50">
-                    No languages added yet.
-                </div>
-            ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {languages.map((lang) => (
-                        <div
-                            key={lang.id}
-                            className="bg-white border border-gray-100 rounded-2xl shadow-sm p-5 flex justify-between items-center hover:shadow-md transition"
+                        <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                            Language Name
+                        </label>
+
+                        <input
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Example: English"
+                            className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500"
+                        />
+
+                    </div>
+
+                    {/* ACTIONS */}
+                    <div className="flex justify-end gap-3 pt-6 border-t border-gray-300 mt-6">
+
+                        <button
+                            onClick={cancelForm}
+                            className="cursor-pointer bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-md text-sm"
                         >
-                            <span className="font-medium text-navy">
-                                {lang.name}
-                            </span>
+                            Cancel
+                        </button>
 
-                            <button
-                                onClick={() => deleteMutation.mutate(lang.id)}
-                                className="text-sm text-red-500 hover:text-red-600"
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    ))}
+                        <button
+                            onClick={editing ? handleUpdate : handleCreate}
+                            disabled={createMutation.isPending || updateMutation.isPending}
+                            className="cursor-pointer bg-teal-600 hover:bg-teal-800 text-white px-4 py-2 rounded-md text-sm"
+                        >
+                            {editing
+                                ? updateMutation.isPending
+                                    ? "Updating..."
+                                    : "Update"
+                                : createMutation.isPending
+                                ? "Creating..."
+                                : "Create"}
+                        </button>
+
+                    </div>
+
                 </div>
             )}
+
+            {/* TABLE */}
+            <div className="overflow-hidden border border-gray-200 rounded-xl bg-white">
+
+                {isLoading ? (
+                    <div className="p-6 text-sm text-slate-500">
+                        Loading languages...
+                    </div>
+                ) : (
+                    <table className="w-full text-sm">
+
+                        <thead className="bg-slate-50 text-slate-600">
+                            <tr>
+                                <th className="px-6 py-3 text-left">Language</th>
+                                <th className="px-6 py-3 text-left">Status</th>
+                                <th className="px-6 py-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {languages.map((lang) => (
+                                <tr
+                                    key={lang.id}
+                                    className="border-t border-gray-200 hover:bg-slate-50"
+                                >
+
+                                    <td className="px-6 py-4 font-medium text-slate-900">
+                                        {lang.name}
+                                    </td>
+
+                                    <td className="px-6 py-4">
+
+                                        <span
+                                            className={`px-2 py-1 text-xs rounded-full ${
+                                                lang.isActive
+                                                    ? "bg-green-100 text-green-700"
+                                                    : "bg-gray-100 text-gray-500"
+                                            }`}
+                                        >
+                                            {lang.isActive ? "Active" : "Inactive"}
+                                        </span>
+
+                                    </td>
+
+                                    <td className="px-6 py-4 text-right">
+
+                                        <div className="flex justify-end gap-4 text-xs font-medium">
+
+                                            <button
+                                                onClick={() => startEdit(lang)}
+                                                className="text-blue-600 hover:underline"
+                                            >
+                                                Edit
+                                            </button>
+
+                                            <button
+                                                onClick={() =>
+                                                    toggleMutation.mutate(lang)
+                                                }
+                                                className={`${
+                                                    lang.isActive
+                                                        ? "text-yellow-600"
+                                                        : "text-green-600"
+                                                } hover:underline`}
+                                            >
+                                                {lang.isActive ? "Disable" : "Enable"}
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            ))}
+
+                        </tbody>
+
+                    </table>
+                )}
+
+            </div>
+
         </div>
     );
 }

@@ -142,23 +142,44 @@ export default function AdminSettings() {
                 </div>
 
                 {/* TABS */}
-                <div className="flex gap-6 border-b pb-2">
-                    {tabs.map((tab) => (
-                        <button
-                            key={tab}
-                            onClick={() => setActiveTab(tab)}
-                            className={`text-sm font-medium capitalize transition ${activeTab === tab
-                                    ? "text-wellness-accent border-b-2 border-wellness-accent"
-                                    : "text-navy/60 hover:text-navy"
-                                }`}
-                        >
-                            {tab.replace("-", " ")}
-                        </button>
-                    ))}
+                {/* TABS */}
+                <div className="flex flex-wrap gap-2 p-1 bg-slate-100 rounded-xl w-fit">
+
+                    {tabs.map((tab) => {
+
+                        const isActive = activeTab === tab;
+
+                        return (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveTab(tab)}
+                                className={`
+                    px-4 py-2
+                    rounded-lg
+                    text-sm
+                    font-medium
+                    capitalize
+                    transition-all
+                    duration-200
+                    ${isActive
+                                        ? "bg-white text-slate-900 shadow-sm"
+                                        : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                                    }
+                `}
+                            >
+                                {tab.replace("-", " ")}
+                            </button>
+                        );
+
+                    })}
+
                 </div>
 
-                {/* DYNAMIC TAB CONTENT */}
-                <div>{renderTabContent()}</div>
+
+                {/* TAB CONTENT */}
+                <div className="pt-6">
+                    {renderTabContent()}
+                </div>
             </section>
         </div>
     );
