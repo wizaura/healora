@@ -2,20 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import api from "@/lib/api";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-    Calendar,
-    Video,
-    CreditCard,
-    RefreshCw,
-    X,
-    Search
-} from "lucide-react";
-import { useRouter } from "next/navigation";
+import AppointmentCard from "./AppointmentCard";
+import AppointmentDetailsModal from "./AppointmentModal";
+import { Search } from "lucide-react";
 
 export default function UserAppointments() {
-
-    const router = useRouter();
 
     const [appointments, setAppointments] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -42,69 +33,47 @@ export default function UserAppointments() {
         }
     };
 
-    /* ================= Helpers ================= */
-
-    const formatDate = (date: string) =>
-        new Date(date).toLocaleString("en-IN", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-        });
-
-    const statusStyle = (status: string) => {
-        switch (status) {
-            case "CONFIRMED":
-                return "bg-green-100 text-green-700";
-            case "COMPLETED":
-                return "bg-blue-100 text-blue-700";
-            case "CANCELLED":
-                return "bg-red-100 text-red-700";
-            default:
-                return "bg-gray-100 text-gray-700";
-        }
-    };
-
     const filtered = useMemo(() => {
         return appointments.filter((a) =>
-            a.doctor?.user?.name?.toLowerCase().includes(search.toLowerCase())
+            a.doctor?.user?.name
+                ?.toLowerCase()
+                .includes(search.toLowerCase())
         );
     }, [appointments, search]);
 
     return (
-        <div className="min-h-screen bg-wellness-bg py-20">
+        <div className="min-h-screen bg-slate-50 pt-24 pb-16">
 
-            <div className="max-w-6xl mx-auto px-6 space-y-10">
+            <div className="mx-auto max-w-5xl px-6 space-y-8">
 
                 {/* HEADER */}
 
-                <div className="space-y-2">
-                    <h1 className="text-3xl font-semibold text-navy-dark">
+                <div>
+                    <h1 className="text-xl font-semibold text-slate-900">
                         My Appointments
                     </h1>
 
-                    <p className="text-sm text-navy/60">
+                    <p className="text-sm text-slate-500">
                         View and manage your consultations
                     </p>
                 </div>
 
-                {/* FILTERS */}
+                {/* FILTER BAR */}
 
-                <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-5 flex flex-wrap gap-4 items-center">
+                <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm flex flex-wrap gap-4 items-center">
 
                     <div className="relative">
 
                         <Search
                             size={16}
-                            className="absolute left-3 top-2.5 text-gray-400"
+                            className="absolute left-3 top-2.5 text-slate-400"
                         />
 
                         <input
                             placeholder="Search doctor"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="pl-9 pr-3 py-2 border rounded-xl text-sm"
+                            className="pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20"
                         />
 
                     </div>
@@ -112,7 +81,7 @@ export default function UserAppointments() {
                     <select
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
-                        className="border rounded-xl px-3 py-2 text-sm"
+                        className="border border-slate-200 rounded-lg px-3 py-2 text-sm"
                     >
                         <option value="">All Status</option>
                         <option value="CONFIRMED">Confirmed</option>
@@ -127,126 +96,29 @@ export default function UserAppointments() {
 
                 {loading ? (
 
-                    <div className="text-center text-navy/60">
+                    <div className="text-center text-sm text-slate-500 py-10">
                         Loading appointments...
                     </div>
 
                 ) : filtered.length === 0 ? (
 
-                    <div className="bg-white border rounded-xl p-10 text-center text-navy/60">
+                    <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center text-sm text-slate-500 shadow-sm">
                         No appointments found
                     </div>
 
                 ) : (
 
-                    <div className="grid gap-6">
+                    <div className="space-y-4">
 
-                        {filtered.map((appt) => {
+                        {filtered.map((appt) => (
 
-                            const payConsultation =
-                                appt.slotPaymentStatus === "PAID" &&
-                                appt.consultationPaymentStatus !== "PAID";
+                            <AppointmentCard
+                                key={appt.id}
+                                appt={appt}
+                                onView={() => setSelected(appt)}
+                            />
 
-                            const retrySlot =
-                                appt.slotPaymentStatus === "FAILED";
-
-                            return (
-
-                                <div
-                                    key={appt.id}
-                                    className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
-                                >
-
-                                    {/* LEFT */}
-
-                                    <div className="space-y-2">
-
-                                        <div className="font-medium text-navy-dark">
-                                            Dr. {appt.doctor?.user?.name}
-                                        </div>
-
-                                        <div className="text-sm text-navy/60">
-                                            {appt.doctor?.speciality?.name}
-                                        </div>
-
-                                        <div className="flex items-center gap-2 text-sm text-navy/70">
-                                            <Calendar size={14} />
-                                            {formatDate(appt.slot.startTimeUTC)}
-                                        </div>
-
-                                        <span
-                                            className={`inline-block mt-1 px-3 py-1 text-xs rounded-full ${statusStyle(
-                                                appt.status
-                                            )}`}
-                                        >
-                                            {appt.status}
-                                        </span>
-
-                                    </div>
-
-                                    {/* ACTIONS */}
-
-                                    <div className="flex flex-wrap gap-3">
-
-                                        {appt.meetingLink && (
-
-                                            <a
-                                                href={appt.meetingLink}
-                                                target="_blank"
-                                                className="flex items-center gap-2 px-4 py-2 text-sm bg-indigo-600 text-white rounded-xl"
-                                            >
-                                                <Video size={16} />
-                                                Join
-                                            </a>
-
-                                        )}
-
-                                        {payConsultation && (
-
-                                            <button
-                                                onClick={() =>
-                                                    router.push(
-                                                        `/checkout/consultation/${appt.id}`
-                                                    )
-                                                }
-                                                className="flex items-center gap-2 px-4 py-2 text-sm bg-wellness-accent text-white rounded-xl"
-                                            >
-                                                <CreditCard size={16} />
-                                                Pay Consultation
-                                            </button>
-
-                                        )}
-
-                                        {retrySlot && (
-
-                                            <button
-                                                onClick={() =>
-                                                    router.push(
-                                                        `/checkout/slot/${appt.id}`
-                                                    )
-                                                }
-                                                className="flex items-center gap-2 px-4 py-2 text-sm bg-red-500 text-white rounded-xl"
-                                            >
-                                                <RefreshCw size={16} />
-                                                Retry Slot
-                                            </button>
-
-                                        )}
-
-                                        <button
-                                            onClick={() => setSelected(appt)}
-                                            className="px-4 py-2 text-sm border border-gray-200 rounded-xl"
-                                        >
-                                            View Details
-                                        </button>
-
-                                    </div>
-
-                                </div>
-
-                            );
-
-                        })}
+                        ))}
 
                     </div>
 
@@ -254,93 +126,12 @@ export default function UserAppointments() {
 
             </div>
 
-            {/* ================= MODAL ================= */}
-
-            <AnimatePresence>
-
-                {selected && (
-
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50"
-                    >
-
-                        <motion.div
-                            initial={{ scale: 0.95 }}
-                            animate={{ scale: 1 }}
-                            exit={{ scale: 0.95 }}
-                            className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-5"
-                        >
-
-                            <div className="flex justify-between items-center">
-
-                                <h2 className="text-lg font-semibold text-navy-dark">
-                                    Appointment Details
-                                </h2>
-
-                                <X
-                                    size={18}
-                                    className="cursor-pointer"
-                                    onClick={() => setSelected(null)}
-                                />
-
-                            </div>
-
-                            <div className="space-y-3 text-sm text-navy/80">
-
-                                <p>
-                                    <strong>Doctor:</strong>{" "}
-                                    Dr. {selected.doctor?.user?.name}
-                                </p>
-
-                                <p>
-                                    <strong>Speciality:</strong>{" "}
-                                    {selected.doctor?.speciality?.name}
-                                </p>
-
-                                <p>
-                                    <strong>Date & Time:</strong>{" "}
-                                    {formatDate(selected.slot.startTimeUTC)}
-                                </p>
-
-                                <p>
-                                    <strong>Status:</strong>{" "}
-                                    {selected.status}
-                                </p>
-
-                                <p>
-                                    <strong>Slot Payment:</strong>{" "}
-                                    {selected.slotPaymentStatus}
-                                </p>
-
-                                <p>
-                                    <strong>Consultation Payment:</strong>{" "}
-                                    {selected.consultationPaymentStatus}
-                                </p>
-
-                                {selected.meetingLink && (
-
-                                    <a
-                                        href={selected.meetingLink}
-                                        target="_blank"
-                                        className="inline-block mt-3 text-indigo-600 font-medium"
-                                    >
-                                        Join Meeting →
-                                    </a>
-
-                                )}
-
-                            </div>
-
-                        </motion.div>
-
-                    </motion.div>
-
-                )}
-
-            </AnimatePresence>
+            {selected && (
+                <AppointmentDetailsModal
+                    appointment={selected}
+                    onClose={() => setSelected(null)}
+                />
+            )}
 
         </div>
     );

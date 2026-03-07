@@ -21,19 +21,19 @@ export default function AppointmentDetailsModal({ appointment, onClose }: any) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/40 flex items-center justify-center"
+                className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50"
             >
 
                 <motion.div
-                    initial={{ scale: 0.9 }}
+                    initial={{ scale: 0.95 }}
                     animate={{ scale: 1 }}
-                    exit={{ scale: 0.9 }}
-                    className="bg-white rounded-xl w-full max-w-md p-6"
+                    exit={{ scale: 0.95 }}
+                    className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-5"
                 >
 
-                    <div className="flex justify-between items-center mb-4">
+                    <div className="flex justify-between items-center">
 
-                        <h2 className="font-semibold text-lg">
+                        <h2 className="font-semibold text-slate-900">
                             Appointment Details
                         </h2>
 
@@ -44,7 +44,7 @@ export default function AppointmentDetailsModal({ appointment, onClose }: any) {
 
                     </div>
 
-                    <div className="space-y-3 text-sm">
+                    <div className="space-y-3 text-sm text-slate-600">
 
                         <p>
                             <strong>Doctor:</strong> Dr. {appointment.doctor?.user?.name}
@@ -76,13 +76,15 @@ export default function AppointmentDetailsModal({ appointment, onClose }: any) {
                         </p>
 
                         {appointment.meetingLink && (
+
                             <a
                                 href={appointment.meetingLink}
                                 target="_blank"
-                                className="text-indigo-600"
+                                className="text-indigo-600 font-medium"
                             >
-                                Join Meeting
+                                Join Meeting →
                             </a>
+
                         )}
 
                     </div>

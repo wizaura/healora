@@ -1,7 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, BadgeCheck, Stethoscope, Globe } from "lucide-react";
+import {
+    ArrowUpRight,
+    BadgeCheck,
+    Stethoscope,
+    Globe,
+    Clock
+} from "lucide-react";
 
 type DoctorCardProps = {
     doctor: any;
@@ -9,138 +15,207 @@ type DoctorCardProps = {
 };
 
 export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
+
     return (
         <div
             className="
-                group flex min-h-[280px] overflow-hidden
-                rounded-3xl bg-white
-                shadow-[0_20px_50px_-15px_rgba(0,0,0,0.15)]
-                transition-all duration-300
-                hover:-translate-y-1 hover:shadow-xl
-                flex-col sm:flex-row
-            "
+            group
+            relative
+            bg-white
+            border border-gray-100
+            rounded-xl
+            p-6
+            shadow-sm
+            transition-all
+            duration-300
+            hover:-translate-y-1
+            hover:shadow-xl
+        "
         >
-            {/* LEFT PANEL */}
-            <div
-                className="
-                    relative flex items-center justify-center
-                    m-4 h-32 sm:h-auto sm:w-44
-                    rounded-2xl
-                    bg-gradient-to-b
-                    from-wellness-bg via-white to-white
+
+            {/* HEADER */}
+
+            <div className="flex items-center gap-4">
+
+                {/* DOCTOR IMAGE */}
+
+                <div
+                    className="
+                    relative
+                    w-20 h-20
+                    rounded-full
+                    overflow-hidden
+                    ring-4 ring-wellness-bg
+                    shadow-sm
+                    flex-shrink-0
                 "
-            >
-                {doctor.imageUrl ? (
-                    <div className="relative h-20 w-20 rounded-full overflow-hidden shadow-md">
+                >
+
+                    {doctor.imageUrl ? (
+
                         <Image
                             src={doctor.imageUrl}
                             alt={doctor.user?.name || "Doctor"}
                             fill
                             className="object-cover"
                         />
-                    </div>
-                ) : (
-                    <div
-                        className="
-                            flex h-16 w-16 items-center justify-center
-                            rounded-full bg-navy text-wellness-accent
-                            shadow-md
-                        "
-                    >
-                        <Stethoscope size={26} />
-                    </div>
-                )}
-            </div>
 
-            {/* RIGHT CONTENT */}
-            <div className="flex flex-1 flex-col justify-between px-6 py-6">
-                {/* TOP */}
-                <div>
-                    {/* NAME + VERIFIED */}
-                    <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="text-xl font-semibold text-navy-dark">
+                    ) : (
+
+                        <div
+                            className="
+                            w-full h-full
+                            flex items-center justify-center
+                            bg-wellness-bg
+                            text-navy
+                        "
+                        >
+                            <Stethoscope size={30} />
+                        </div>
+
+                    )}
+
+                    {/* ONLINE INDICATOR (optional future feature) */}
+
+                    {/* 
+                    <span className="absolute bottom-1 right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                    */}
+
+                </div>
+
+
+                {/* NAME + QUALIFICATION */}
+
+                <div className="flex-1">
+
+                    <div className="flex items-center gap-2">
+
+                        <h3 className="font-semibold text-navy-dark text-lg">
                             {doctor.user?.name}
                         </h3>
 
                         {doctor.isApproved && (
+
                             <span
                                 className="
-                                    inline-flex items-center gap-1
-                                    rounded-full bg-wellness-bg
-                                    px-2 py-1 text-xs font-medium
-                                    text-navy
-                                "
+                                inline-flex items-center gap-1
+                                text-xs
+                                text-green-600
+                            "
                             >
-                                <BadgeCheck size={12} />
-                                Verified
+                                <BadgeCheck size={14} />
                             </span>
+
                         )}
+
                     </div>
 
-                    {/* SPECIALITIES */}
-                    <div className="mt-3 flex flex-wrap gap-2">
-                        {doctor.specialities?.map((s: any) => (
-                            <span
-                                key={s.speciality?.id}
-                                className="rounded-full bg-navy/5 px-3 py-1 text-xs text-navy"
-                            >
-                                {s.speciality?.name}
-                            </span>
-                        ))}
+                    {doctor.qualification && (
+
+                        <p className="text-xs text-navy/60 mt-1">
+                            {doctor.qualification}
+                        </p>
+
+                    )}
+
+                </div>
+
+            </div>
+
+
+            {/* SPECIALITIES */}
+
+            {doctor.specialities?.length > 0 && (
+
+                <div className="mt-5 flex flex-wrap gap-2">
+
+                    {doctor.specialities.map((s: any) => (
+
+                        <span
+                            key={s.speciality?.id}
+                            className="
+                            text-xs
+                            px-3 py-1
+                            rounded-full
+                            bg-wellness-bg
+                            text-navy
+                        "
+                        >
+                            {s.speciality?.name}
+                        </span>
+
+                    ))}
+
+                </div>
+
+            )}
+
+
+            {/* META INFO */}
+
+            <div className="mt-5 space-y-2 text-sm text-navy/70">
+
+                {doctor.experience && (
+
+                    <div className="flex items-center gap-2">
+
+                        <Clock size={14} />
+
+                        <span>
+                            {doctor.experience} years experience
+                        </span>
+
                     </div>
 
-                    {/* LANGUAGES */}
-                    {doctor.languages?.length > 0 && (
-                        <div className="mt-3 flex items-center gap-2 text-xs text-navy/60">
-                            <Globe size={14} />
+                )}
+
+                {doctor.languages?.length > 0 && (
+
+                    <div className="flex items-center gap-2">
+
+                        <Globe size={14} />
+
+                        <span>
                             {doctor.languages
                                 .map((l: any) => l.language.name)
                                 .join(", ")}
-                        </div>
-                    )}
-
-                    {/* EXPERIENCE */}
-                    <p className="mt-4 text-sm text-navy/70">
-                        {doctor.qualification} • {doctor.experience} yrs experience
-                    </p>
-                </div>
-
-                {/* FOOTER */}
-                <div
-                    className="
-                        mt-6 flex items-center justify-between gap-4
-                        border-t border-navy/10 pt-4
-                    "
-                >
-                    <button
-                        onClick={() => onBook?.(doctor.id)}
-                        className="
-                            group inline-flex items-center gap-2
-                            rounded-full
-                            border border-navy/20
-                            bg-white
-                            px-5 py-2
-                            text-sm font-semibold
-                            text-navy
-                            transition-all
-                            hover:bg-navy hover:text-white hover:border-navy
-                        "
-                    >
-                        Book Appointment
-
-                        <span
-                            className="
-                                flex h-7 w-7 items-center justify-center
-                                rounded-full bg-navy text-white
-                                transition-all
-                                group-hover:bg-white group-hover:text-navy
-                            "
-                        >
-                            <ArrowUpRight size={14} />
                         </span>
-                    </button>
-                </div>
+
+                    </div>
+
+                )}
+
             </div>
+
+
+            {/* CTA */}
+
+            <div className="mt-6 pt-4 border-t border-gray-100">
+
+                <button
+                    onClick={() => onBook?.(doctor.id)}
+                    className="
+                    w-full
+                    flex items-center justify-center gap-2
+                    rounded-xl
+                    bg-navy
+                    text-white
+                    text-sm
+                    font-medium
+                    py-2.5
+                    transition
+                    hover:bg-navy-dark
+                "
+                >
+
+                    Book Appointment
+
+                    <ArrowUpRight size={16} />
+
+                </button>
+
+            </div>
+
         </div>
     );
 }

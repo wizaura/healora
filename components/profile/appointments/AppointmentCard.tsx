@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Video } from "lucide-react";
+import { Calendar, Video, CreditCard, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function AppointmentCard({ appt, onView }: any) {
@@ -22,71 +22,71 @@ export default function AppointmentCard({ appt, onView }: any) {
     const retrySlotPayment = appt.slotPaymentStatus === "FAILED";
 
     return (
-        <div className="bg-white rounded-xl border p-5 flex justify-between items-center">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
-            <div className="space-y-2">
+            <div className="space-y-1">
 
-                <div className="font-medium">
+                <div className="font-medium text-slate-900">
                     Dr. {appt.doctor?.user?.name}
                 </div>
 
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-slate-500">
                     {appt.doctor?.speciality?.name}
                 </div>
 
-                <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="flex items-center gap-2 text-sm text-slate-600">
                     <Calendar size={14} />
                     {formatDate(appt.slot.startTimeUTC)}
                 </div>
 
             </div>
 
-            <div className="flex gap-3 items-center">
-
-                {/* MEETING LINK */}
+            <div className="flex flex-wrap gap-3 items-center">
 
                 {appt.meetingLink && (
+
                     <a
                         href={appt.meetingLink}
                         target="_blank"
-                        className="flex items-center gap-1 text-indigo-600 text-sm"
+                        className="flex items-center gap-1 text-indigo-600 text-sm font-medium"
                     >
                         <Video size={16} />
                         Join
                     </a>
+
                 )}
 
-                {/* CONTINUE PAYMENT */}
-
                 {canContinueConsultationPayment && (
+
                     <button
                         onClick={() =>
                             router.push(`/checkout/consultation/${appt.id}`)
                         }
-                        className="text-sm bg-indigo-600 text-white px-3 py-1 rounded-lg"
+                        className="flex items-center gap-1 bg-teal-600 text-white px-3 py-1.5 rounded-lg text-sm"
                     >
+                        <CreditCard size={14} />
                         Pay Consultation
                     </button>
+
                 )}
 
-                {/* RETRY SLOT PAYMENT */}
-
                 {retrySlotPayment && (
+
                     <button
                         onClick={() =>
                             router.push(`/checkout/slot/${appt.id}`)
                         }
-                        className="text-sm bg-red-500 text-white px-3 py-1 rounded-lg"
+                        className="flex items-center gap-1 bg-red-500 text-white px-3 py-1.5 rounded-lg text-sm"
                     >
-                        Retry Slot Payment
+                        <RefreshCw size={14} />
+                        Retry Slot
                     </button>
-                )}
 
-                {/* VIEW DETAILS */}
+                )}
 
                 <button
                     onClick={onView}
-                    className="text-sm text-indigo-600"
+                    className="text-sm font-medium text-indigo-600"
                 >
                     View
                 </button>

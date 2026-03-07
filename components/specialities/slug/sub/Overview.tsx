@@ -16,13 +16,17 @@ export default function SubSpecialityOverview({
 }: Props) {
 
     return (
-        <section className="py-24 bg-gradient-to-b from-white to-wellness-bg">
+        <section className="py-24 bg-gradient-to-b from-white to-wellness-bg m-4 rounded-2xl">
 
-            <div className="max-w-6xl mx-auto px-6 space-y-20">
+            <div className="max-w-5xl mx-auto px-6">
 
-                {/* HERO HEADER */}
+                {/* HERO */}
 
-                <div className="text-center max-w-3xl mx-auto">
+                <div className="text-center my-14 max-w-3xl mx-auto">
+
+                    <span className="inline-block text-xs font-medium tracking-wide text-wellness-accent uppercase mb-3">
+                        Medical Speciality
+                    </span>
 
                     <h1 className="text-4xl md:text-5xl font-semibold text-navy-dark">
                         {name}
@@ -36,13 +40,14 @@ export default function SubSpecialityOverview({
 
                 </div>
 
+
                 {/* QUICK FACTS */}
 
                 {quickFacts.length > 0 && (
 
-                    <div className="bg-white border rounded-2xl shadow-sm p-10">
+                    <div className="mb-20">
 
-                        <h2 className="text-xl font-semibold text-navy-dark mb-6">
+                        <h2 className="text-xl font-semibold text-navy-dark mb-8 text-center">
                             Quick Facts
                         </h2>
 
@@ -52,10 +57,8 @@ export default function SubSpecialityOverview({
 
                                 <div
                                     key={i}
-                                    className="flex items-start gap-3"
+                                    className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm"
                                 >
-
-                                    <div className="w-2 h-2 mt-2 rounded-full bg-wellness-accent"></div>
 
                                     <p className="text-sm text-navy/80 leading-relaxed">
                                         {fact}
@@ -71,33 +74,35 @@ export default function SubSpecialityOverview({
 
                 )}
 
-                {/* INFORMATION GRID */}
 
-                <div className="grid md:grid-cols-2 gap-8">
+                {/* WHAT IS */}
 
-                    {overview.whatIsIt && (
-                        <InfoCard
-                            title={`What is ${name}?`}
-                            content={overview.whatIsIt}
-                        />
-                    )}
+                {overview.whatIsIt && (
+                    <SectionBlock
+                        title={`What is ${name}?`}
+                        content={overview.whatIsIt}
+                    />
+                )}
 
-                    {overview.whoIsAffected && (
-                        <InfoCard
-                            title="Who is affected?"
-                            content={overview.whoIsAffected}
-                        />
-                    )}
 
-                    {overview.whenToSeeDoctor && (
-                        <InfoCard
-                            title="When should you see a doctor?"
-                            content={overview.whenToSeeDoctor}
-                            full
-                        />
-                    )}
+                {/* WHO IS AFFECTED */}
 
-                </div>
+                {overview.whoIsAffected && (
+                    <SectionBlock
+                        title="Who is affected?"
+                        content={overview.whoIsAffected}
+                    />
+                )}
+
+
+                {/* WHEN TO SEE DOCTOR */}
+
+                {overview.whenToSeeDoctor && (
+                    <SectionHighlight
+                        title="When should you see a doctor?"
+                        content={overview.whenToSeeDoctor}
+                    />
+                )}
 
             </div>
 
@@ -105,30 +110,54 @@ export default function SubSpecialityOverview({
     );
 }
 
-/* ---------------- INFO CARD ---------------- */
 
-function InfoCard({
+function SectionBlock({
     title,
     content,
-    full,
 }: {
     title: string;
     content: string;
-    full?: boolean;
 }) {
-    return (
-        <div
-            className={`bg-white border rounded-2xl p-8 shadow-sm ${
-                full ? "md:col-span-2" : ""
-            }`}
-        >
-            <h3 className="text-lg font-semibold text-navy-dark mb-3">
-                {title}
-            </h3>
 
-            <p className="text-navy/70 leading-relaxed text-sm">
+    return (
+
+        <div className="mb-16">
+
+            <h2 className="text-2xl font-semibold text-navy-dark mb-4">
+                {title}
+            </h2>
+
+            <p className="text-navy/70 leading-relaxed text-base max-w-3xl">
                 {content}
             </p>
+
         </div>
+
+    );
+}
+
+
+function SectionHighlight({
+    title,
+    content,
+}: {
+    title: string;
+    content: string;
+}) {
+
+    return (
+
+        <div className="bg-white border border-gray-100 rounded-2xl p-10 shadow-sm">
+
+            <h2 className="text-2xl font-semibold text-navy-dark mb-4">
+                {title}
+            </h2>
+
+            <p className="text-navy/70 leading-relaxed max-w-3xl">
+                {content}
+            </p>
+
+        </div>
+
     );
 }
