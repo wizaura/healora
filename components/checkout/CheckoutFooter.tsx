@@ -12,15 +12,23 @@ declare global {
     }
 }
 
+type Props = {
+    doctorId: string;
+    slotId: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+    paymentMethod: "razorpay" | "stripe";
+};
+
 export default function CheckoutFooter({
     doctorId,
     slotId,
+    date,
+    startTime,
+    endTime,
     paymentMethod,
-}: {
-    doctorId: string;
-    slotId: string;
-    paymentMethod: "razorpay" | "stripe";
-}) {
+}: Props) {
     const [slotFee, setSlotFee] = useState(0);
     const [consultationFee, setConsultationFee] = useState(0);
     const [prescriptionFee, setPrescriptionFee] = useState(50); // small optional fee
