@@ -6,10 +6,19 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { forwardRef } from "react";
 
 type FormValues = {
     name: string;
-    description?: string;
+
+    overview: {
+        summary: string;
+        whatIsIt: string;
+        whoIsAffected: string;
+        whenToSeeDoctor: string;
+    };
+
+    quickFacts: string;
 };
 
 export default function EditMiniPage() {
@@ -23,31 +32,39 @@ export default function EditMiniPage() {
         formState: { errors },
     } = useForm<FormValues>();
 
-    /* ---------------- FETCH MINI ---------------- */
+    /* ---------------- FETCH ---------------- */
 
     const { data, isLoading } = useQuery({
         queryKey: ["admin-mini", miniId],
         queryFn: async () => {
             const res = await api.get(`/admin/mini-specialities/${miniId}`);
-            return res.data;
+
+            return {
+                ...res.data,
+                quickFacts: res.data.quickFacts?.join("\n") ?? "",
+            };
         },
         enabled: !!miniId,
     });
 
     useEffect(() => {
-        if (data) {
-            reset({
-                name: data.name,
-                description: data.description || "",
-            });
-        }
+        if (data) reset(data);
     }, [data, reset]);
 
     /* ---------------- UPDATE ---------------- */
 
     const mutation = useMutation({
         mutationFn: async (values: FormValues) => {
-            await api.patch(`/admin/mini-specialities/${miniId}`, values);
+
+            const payload = {
+                ...values,
+                quickFacts: values.quickFacts
+                    .split("\n")
+                    .map(v => v.trim())
+                    .filter(Boolean),
+            };
+
+            await api.patch(`/admin/mini-specialities/${miniId}`, payload);
         },
         onSuccess: () => {
             toast.success("Mini-speciality updated");
@@ -73,112 +90,147 @@ export default function EditMiniPage() {
     if (!data) return null;
 
     return (
-        <div className="min-h-screen bg-wellness-bg py-20">
-            <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 p-12 space-y-10">
+        <div className="py-16">
 
+            {/* PAGE HEADER */}
+
+            <div className="max-w-4xl mx-auto px-6 mb-12">
                 <h1 className="text-3xl font-semibold text-navy-dark">
                     Edit Mini Speciality
                 </h1>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-
-                    <Input
-                        label="Name"
-                        error={errors.name?.message}
-                        {...register("name", { required: "Name is required" })}
-                    />
-
-                    <Textarea
-                        label="Description"
-                        error={errors.description?.message}
-                        {...register("description")}
-                    />
-
-                    <div className="flex justify-end gap-4">
-                        <button
-                            type="button"
-                            onClick={() => router.back()}
-                            className="px-6 py-3 rounded-xl border border-gray-200 text-sm"
-                        >
-                            Cancel
-                        </button>
-
-                        <button
-                            type="submit"
-                            disabled={mutation.isPending}
-                            className="px-6 py-3 bg-wellness-accent text-white rounded-xl text-sm font-medium shadow disabled:opacity-60"
-                        >
-                            {mutation.isPending ? "Saving..." : "Save Changes"}
-                        </button>
-                    </div>
-
-                </form>
+                <p className="text-sm text-navy/60 mt-2">
+                    Update medical information for this condition.
+                </p>
             </div>
+
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="max-w-4xl mx-auto px-6 space-y-6"
+            >
+
+                {/* BASIC */}
+
+                <SectionTitle title="Basic Information" />
+
+                <Input
+                    label="Name"
+                    error={errors.name?.message}
+                    {...register("name", { required: "Name is required" })}
+                />
+
+                {/* OVERVIEW */}
+
+                <SectionTitle title="Overview Content" />
+
+                <Textarea
+                    label="Summary"
+                    {...register("overview.summary")}
+                />
+
+                <Textarea
+                    label="What is it?"
+                    {...register("overview.whatIsIt")}
+                />
+
+                <Textarea
+                    label="Who is affected?"
+                    {...register("overview.whoIsAffected")}
+                />
+
+                <Textarea
+                    label="When should someone see a doctor?"
+                    {...register("overview.whenToSeeDoctor")}
+                />
+
+                {/* QUICK FACTS */}
+
+                <SectionTitle title="Quick Facts" />
+
+                <Textarea
+                    label="Quick Facts (one per line)"
+                    rows={5}
+                    {...register("quickFacts")}
+                />
+
+                {/* ACTIONS */}
+
+                <div className="flex justify-end gap-4 pt-8 border-t border-gray-100">
+
+                    <button
+                        type="button"
+                        onClick={() => router.back()}
+                        className="cursor-pointer hover:bg-gray-200 px-6 py-3 rounded-lg border border-gray-200 text-sm"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        disabled={mutation.isPending}
+                        className="cursor-pointer px-6 py-3 bg-wellness-accent text-white rounded-lg text-sm font-medium shadow-sm hover:opacity-90 disabled:opacity-60"
+                    >
+                        {mutation.isPending ? "Saving..." : "Save Changes"}
+                    </button>
+
+                </div>
+
+            </form>
         </div>
     );
 }
 
-/* ---------------- REUSABLE COMPONENTS ---------------- */
+/* ---------------- COMPONENTS ---------------- */
 
-import { forwardRef } from "react";
-
-/* -------- INPUT -------- */
+function SectionTitle({ title }: { title: string }) {
+    return (
+        <div className="border-b border-gray-100 pb-3">
+            <h2 className="text-lg font-semibold text-navy-dark">
+                {title}
+            </h2>
+        </div>
+    );
+}
 
 const Input = forwardRef<
     HTMLInputElement,
-    {
-        label: string;
-        error?: string;
-    } & React.InputHTMLAttributes<HTMLInputElement>
->(({ label, error, ...props }, ref) => {
-    return (
-        <div className="space-y-2">
-            <label className="block text-sm font-medium text-navy-dark">
-                {label}
-            </label>
+    { label: string; error?: string } & React.InputHTMLAttributes<HTMLInputElement>
+>(({ label, error, ...props }, ref) => (
+    <div className="space-y-2">
+        <label className="text-sm font-medium text-navy-dark">
+            {label}
+        </label>
 
-            <input
-                ref={ref}
-                {...props}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-wellness-accent focus:outline-none"
-            />
+        <input
+            ref={ref}
+            {...props}
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-wellness-accent focus:outline-none"
+        />
 
-            {error && (
-                <p className="text-xs text-red-500">{error}</p>
-            )}
-        </div>
-    );
-});
+        {error && <p className="text-xs text-red-500">{error}</p>}
+    </div>
+));
 
 Input.displayName = "Input";
 
-/* -------- TEXTAREA -------- */
-
 const Textarea = forwardRef<
     HTMLTextAreaElement,
-    {
-        label: string;
-        error?: string;
-    } & React.TextareaHTMLAttributes<HTMLTextAreaElement>
->(({ label, error, ...props }, ref) => {
-    return (
-        <div className="space-y-2">
-            <label className="block text-sm font-medium text-navy-dark">
-                {label}
-            </label>
+    { label: string; error?: string } & React.TextareaHTMLAttributes<HTMLTextAreaElement>
+>(({ label, error, ...props }, ref) => (
+    <div className="space-y-2">
+        <label className="text-sm font-medium text-navy-dark">
+            {label}
+        </label>
 
-            <textarea
-                ref={ref}
-                {...props}
-                rows={4}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm resize-none focus:ring-2 focus:ring-wellness-accent focus:outline-none"
-            />
+        <textarea
+            ref={ref}
+            {...props}
+            rows={4}
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm resize-none focus:ring-2 focus:ring-wellness-accent focus:outline-none"
+        />
 
-            {error && (
-                <p className="text-xs text-red-500">{error}</p>
-            )}
-        </div>
-    );
-});
+        {error && <p className="text-xs text-red-500">{error}</p>}
+    </div>
+));
 
 Textarea.displayName = "Textarea";

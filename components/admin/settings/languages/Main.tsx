@@ -20,13 +20,13 @@ export default function LanguagesPage() {
 
     const { data: languages = [], isLoading } = useQuery<Language[]>({
         queryKey: ["languages"],
-        queryFn: () => api.get("/languages").then(res => res.data),
+        queryFn: () => api.get("/settings/languages").then(res => res.data),
     });
 
     /* ---------------- CREATE ---------------- */
 
     const createMutation = useMutation({
-        mutationFn: () => api.post("/languages", { name }),
+        mutationFn: () => api.post("/settings/languages", { name }),
         onSuccess: () => {
             toast.success("Language created");
             setName("");
@@ -39,7 +39,7 @@ export default function LanguagesPage() {
     /* ---------------- DELETE ---------------- */
 
     const deleteMutation = useMutation({
-        mutationFn: (id: string) => api.delete(`/languages/${id}`),
+        mutationFn: (id: string) => api.delete(`/settings/languages/${id}`),
         onSuccess: () => {
             toast.success("Language deleted");
             queryClient.invalidateQueries({ queryKey: ["languages"] });

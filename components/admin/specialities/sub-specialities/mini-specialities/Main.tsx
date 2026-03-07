@@ -1,26 +1,45 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import api from "@/lib/api";
-import InlineRelationManager from "@/components/common/InlineRelationManager";
+import RelationSection from "@/components/common/RelationManager";
 
-type TabType = "overview" | "content" | "mini";
+type TabType = "overview" | "symptoms" | "causes" | "risk" | "mini";
 
-export default function AdminSubSpecialityDetail() {
+export default function ManageSubSpecialityPage() {
+
     const { subId } = useParams<{ subId: string }>();
     const router = useRouter();
     const [tab, setTab] = useState<TabType>("overview");
 
-    const { data: sub, isLoading } = useQuery({
+    const { data: sub, isLoading, refetch } = useQuery({
         queryKey: ["admin-sub-speciality", subId],
         queryFn: async () => {
             const res = await api.get(`/admin/sub-specialities/${subId}`);
             return res.data;
         },
         enabled: !!subId,
+    });
+
+    const toggleMutation = useMutation({
+        mutationFn: async () => {
+            await api.patch(`/admin/sub-specialities/${subId}/status`, {
+                isActive: !sub.isActive,
+            });
+        },
+        onSuccess: () => refetch(),
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: async () => {
+            await api.delete(`/admin/sub-specialities/${subId}`);
+        },
+        onSuccess: () => {
+            router.push(`/admin/specialities/${sub.specialityId}`);
+        },
     });
 
     if (isLoading) {
@@ -39,106 +58,288 @@ export default function AdminSubSpecialityDetail() {
         );
     }
 
+    const tabs: TabType[] = sub.hasMiniLevel
+        ? ["overview", "mini"]
+        : ["overview", "symptoms", "causes", "risk"];
+
     return (
-        <div className="min-h-screen bg-gradient-to-br from-wellness-bg via-white to-wellness-bg/40">
+        <div className="py-16">
 
-            <div className="max-w-6xl mx-auto px-8 py-16 space-y-16">
+            {/* HEADER */}
 
-                {/* HEADER */}
-                <div className="backdrop-blur-xl bg-white/60 border border-white/40 shadow-xl rounded-3xl px-10 py-10 flex justify-between items-start">
+            <div className="max-w-6xl mx-auto px-6 mb-10">
 
-                    <div className="space-y-5">
+                <button
+                    onClick={() => router.back()}
+                    className="text-sm text-navy/60 hover:text-navy"
+                >
+                    ← Back
+                </button>
 
-                        <button
-                            onClick={() => router.back()}
-                            className="text-sm text-navy/60 hover:text-navy transition"
-                        >
-                            ← Back
-                        </button>
+                <div className="flex justify-between items-start mt-4">
 
-                        <div className="space-y-3">
-                            <h1 className="text-4xl font-semibold text-navy-dark tracking-tight">
-                                {sub.name}
-                            </h1>
+                    <div>
 
-                            <div className="flex items-center gap-4">
-                                <span className="font-mono bg-white/70 backdrop-blur px-3 py-1 rounded-lg text-xs text-navy/70 border border-gray-100">
-                                    /{sub.slug}
-                                </span>
+                        <h1 className="text-3xl font-semibold text-navy-dark">
+                            {sub.name}
+                        </h1>
 
-                                <ModeBadge hasMini={sub.hasMiniLevel} />
-                                <StatusBadge active={sub.isActive} />
-                            </div>
+                        <div className="flex items-center gap-3 mt-1">
+
+                            <span className="text-sm text-navy/60 font-mono">
+                                /{sub.slug}
+                            </span>
+
+                            <ModeBadge hasMini={sub.hasMiniLevel} />
+
                         </div>
+
                     </div>
+
+                    <StatusBadge active={sub.isActive} />
+
+                </div>
+
+                {/* ACTIONS */}
+
+                <div className="flex gap-4 flex-wrap mt-6">
 
                     <Link
                         href={`/admin/sub-specialities/${subId}/edit`}
-                        className="px-6 py-3 bg-gradient-to-r from-wellness-accent to-indigo-500 text-white rounded-xl text-sm font-medium shadow-lg hover:scale-[1.03] transition"
+                        className="px-5 py-2.5 bg-wellness-accent text-white rounded-lg text-sm font-medium"
                     >
                         Edit
                     </Link>
 
-                </div>
+                    <button
+                        onClick={() => toggleMutation.mutate()}
+                        className="px-5 py-2.5 border border-gray-200 rounded-lg text-sm"
+                    >
+                        {sub.isActive ? "Deactivate" : "Activate"}
+                    </button>
 
-                {/* MAIN CARD */}
-                <div className="bg-white/70 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 overflow-hidden">
+                    <button
+                        onClick={() => {
+                            if (confirm("Delete this sub-speciality?")) {
+                                deleteMutation.mutate();
+                            }
+                        }}
+                        className="px-5 py-2.5 bg-red-500 text-white rounded-lg text-sm"
+                    >
+                        Delete
+                    </button>
 
-                    {/* TABS */}
-                    <div className="flex gap-4 px-8 pt-8">
-
-                        {(["overview", "content", "mini"] as TabType[]).map((t) => (
-                            <button
-                                key={t}
-                                onClick={() => setTab(t)}
-                                className={`px-6 py-3 rounded-xl text-sm font-medium capitalize transition-all duration-200 ${tab === t
-                                    ? "bg-wellness-accent text-white shadow-md"
-                                    : "bg-white/50 text-navy/60 hover:bg-white"
-                                    }`}
-                            >
-                                {t}
-                            </button>
-                        ))}
-
-                    </div>
-
-                    <div className="px-10 py-16">
-
-                        {tab === "overview" && (
-                            <OverviewSection sub={sub} />
-                        )}
-
-                        {tab === "content" && !sub.hasMiniLevel && (
-                            <ContentSection sub={sub} />
-                        )}
-
-                        {tab === "mini" && sub.hasMiniLevel && (
-                            <MiniSection sub={sub} subId={subId} />
-                        )}
-
-                        {sub.hasMiniLevel && tab === "content" && (
-                            <EmptyState message="Content is managed inside mini-specialities." />
-                        )}
-
-                        {!sub.hasMiniLevel && tab === "mini" && (
-                            <EmptyState message="Mini level is disabled for this sub-speciality." />
-                        )}
-                    </div>
                 </div>
 
             </div>
+
+            {/* TABS */}
+
+            <div className="max-w-6xl mx-auto px-6 border-b border-gray-100 flex gap-8 text-sm font-medium">
+
+                {tabs.map((t) => (
+
+                    <button
+                        key={t}
+                        onClick={() => setTab(t as TabType)}
+                        className={`pb-4 capitalize transition ${tab === t
+                                ? "text-navy-dark border-b-2 border-wellness-accent"
+                                : "text-navy/60 hover:text-navy"
+                            }`}
+                    >
+                        {t === "risk"
+                            ? "Risk Factors"
+                            : t}
+                    </button>
+
+                ))}
+
+            </div>
+
+            {/* CONTENT */}
+
+            <div className="max-w-6xl mx-auto px-6 py-10 space-y-12">
+
+                {tab === "overview" && (
+                    <OverviewSection sub={sub} />
+                )}
+
+                {tab === "symptoms" && (
+                    <RelationSection
+                        title="Symptoms"
+                        items={sub.subSpecialitySymptoms?.map((s: any) => s.symptom)}
+                        fetchUrl="/settings/symptoms"
+                        addUrl={`/admin/sub-specialities/${subId}/symptoms`}
+                        removeUrl={`/admin/sub-specialities/${subId}/symptoms`}
+                        refetchMini={refetch}
+                    />
+                )}
+
+                {tab === "causes" && (
+                    <RelationSection
+                        title="Causes"
+                        items={sub.subSpecialityCauses?.map((c: any) => c.cause)}
+                        fetchUrl="/settings/causes"
+                        addUrl={`/admin/sub-specialities/${subId}/causes`}
+                        removeUrl={`/admin/sub-specialities/${subId}/causes`}
+                        refetchMini={refetch}
+                    />
+                )}
+
+                {tab === "risk" && (
+                    <RelationSection
+                        title="Risk Factors"
+                        items={sub.subSpecialityRiskFactors?.map((r: any) => r.riskFactor)}
+                        fetchUrl="/settings/risk-factors"
+                        addUrl={`/admin/sub-specialities/${subId}/risk-factors`}
+                        removeUrl={`/admin/sub-specialities/${subId}/risk-factors`}
+                        refetchMini={refetch}
+                    />
+                )}
+
+                {tab === "mini" && (
+                    sub.hasMiniLevel ? (
+                        <MiniSection sub={sub} subId={subId} />
+                    ) : (
+                        <EmptyState message="Mini level is disabled for this sub-speciality." />
+                    )
+                )}
+
+            </div>
+
         </div>
     );
 }
 
-/* ---------------- COMPONENTS ---------------- */
+/* ---------------- OVERVIEW ---------------- */
+
+function OverviewSection({ sub }: any) {
+    return (
+        <div className="space-y-10">
+
+            <OverviewBlock title="Summary" value={sub.overview?.summary} />
+
+            <OverviewBlock title="What is it?" value={sub.overview?.whatIsIt} />
+
+            <OverviewBlock
+                title="Who is affected?"
+                value={sub.overview?.whoIsAffected}
+            />
+
+            <OverviewBlock
+                title="When to see a doctor?"
+                value={sub.overview?.whenToSeeDoctor}
+            />
+
+            {sub.quickFacts?.length > 0 && (
+                <div>
+                    <h3 className="text-sm font-semibold text-navy-dark mb-4">
+                        Quick Facts
+                    </h3>
+
+                    <ul className="space-y-2 text-sm text-navy/80 list-disc pl-5">
+                        {sub.quickFacts.map((fact: string, i: number) => (
+                            <li key={i}>{fact}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+        </div>
+    );
+}
+
+function OverviewBlock({ title, value }: any) {
+    return (
+        <div>
+            <h3 className="text-sm font-semibold text-navy-dark mb-2">
+                {title}
+            </h3>
+
+            <p className="text-sm text-navy/80 leading-relaxed">
+                {value || "Not provided"}
+            </p>
+        </div>
+    );
+}
+
+/* ---------------- MINI SECTION ---------------- */
+
+function MiniSection({ sub, subId }: any) {
+    return (
+        <div className="space-y-8">
+
+            {/* HEADER */}
+
+            <div className="flex justify-between items-center">
+
+                <div>
+                    <h3 className="text-lg font-semibold text-navy-dark">
+                        Mini Specialities
+                    </h3>
+
+                    <p className="text-sm text-navy/60">
+                        Manage mini-level conditions for this sub-speciality.
+                    </p>
+                </div>
+
+                <Link
+                    href={`/admin/sub-specialities/${subId}/mini/new`}
+                    className="px-5 py-2.5 bg-wellness-accent text-white rounded-lg text-sm font-medium"
+                >
+                    Add Mini
+                </Link>
+
+            </div>
+
+            {/* LIST */}
+
+            {sub.miniSpecialities.length === 0 ? (
+
+                <EmptyState message="No mini-specialities yet." />
+
+            ) : (
+
+                <div className="divide-y divide-gray-100 border border-gray-100 rounded-lg">
+
+                    {sub.miniSpecialities.map((mini: any) => (
+
+                        <div
+                            key={mini.id}
+                            className="flex justify-between items-center px-5 py-4"
+                        >
+
+                            <span className="text-sm font-medium text-navy-dark">
+                                {mini.name}
+                            </span>
+
+                            <Link
+                                href={`/admin/mini-specialities/${mini.id}`}
+                                className="text-sm text-wellness-accent hover:underline"
+                            >
+                                Manage
+                            </Link>
+
+                        </div>
+
+                    ))}
+
+                </div>
+
+            )}
+
+        </div>
+    );
+}
+
+/* ---------------- BADGES ---------------- */
 
 function StatusBadge({ active }: { active: boolean }) {
     return (
         <span
             className={`px-4 py-1.5 rounded-full text-xs font-medium ${active
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-600"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-600"
                 }`}
         >
             {active ? "Active" : "Inactive"}
@@ -149,9 +350,9 @@ function StatusBadge({ active }: { active: boolean }) {
 function ModeBadge({ hasMini }: { hasMini: boolean }) {
     return (
         <span
-            className={`px-4 py-1.5 rounded-full text-xs font-medium ${hasMini
-                ? "bg-indigo-100 text-indigo-700"
-                : "bg-gray-100 text-navy/70"
+            className={`px-3 py-1 rounded-full text-xs font-medium ${hasMini
+                    ? "bg-indigo-100 text-indigo-700"
+                    : "bg-gray-100 text-navy/70"
                 }`}
         >
             {hasMini ? "Mini Structure" : "Direct Content"}
@@ -159,131 +360,9 @@ function ModeBadge({ hasMini }: { hasMini: boolean }) {
     );
 }
 
-function OverviewSection({ sub }: { sub: any }) {
-    return (
-        <div className="max-w-3xl space-y-6">
-            <h3 className="text-xs uppercase tracking-wider font-semibold text-navy/60">
-                Description
-            </h3>
-
-            <p className="text-navy/80 leading-relaxed text-base">
-                {sub.description || "No description provided."}
-            </p>
-        </div>
-    );
-}
-
-function ContentSection({ sub }: { sub: any }) {
-    return (
-        <div className="space-y-14">
-
-            <InlineRelationManager
-                title="Symptoms"
-                items={sub.subSpecialitySymptoms?.map((s: any) => s.symptom) || []}
-                fetchUrl="/settings/symptoms"
-                addUrl={`/admin/sub-specialities/${sub.id}/symptoms`}
-                removeUrl={`/admin/sub-specialities/${sub.id}/symptoms`}
-            />
-
-            <InlineRelationManager
-                title="Causes"
-                items={sub.subSpecialityCauses?.map((c: any) => c.cause) || []}
-                fetchUrl="/settings/causes"
-                addUrl={`/admin/sub-specialities/${sub.id}/causes`}
-                removeUrl={`/admin/sub-specialities/${sub.id}/causes`}
-            />
-
-            <InlineRelationManager
-                title="Risk Factors"
-                items={sub.subSpecialityRiskFactors?.map((r: any) => r.riskFactor) || []}
-                fetchUrl="/settings/risk-factors"
-                addUrl={`/admin/sub-specialities/${sub.id}/risk-factors`}
-                removeUrl={`/admin/sub-specialities/${sub.id}/risk-factors`}
-            />
-
-        </div>
-    );
-}
-
-function ContentGroup({ title, items }: { title: string; items: any[] }) {
-    return (
-        <div className="space-y-8">
-
-            <div className="flex justify-between items-center">
-                <h3 className="text-xs uppercase tracking-[0.15em] font-semibold text-navy/50">
-                    {title}
-                </h3>
-
-                <button className="text-sm text-wellness-accent hover:underline font-medium">
-                    Manage
-                </button>
-            </div>
-
-            {items.length === 0 ? (
-                <p className="text-sm text-navy/50">
-                    No items assigned.
-                </p>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {items.map((item: any) => (
-                        <div
-                            key={item.id}
-                            className="bg-white border border-gray-100 rounded-2xl px-6 py-5 shadow-sm hover:shadow-md transition"
-                        >
-                            <p className="text-navy-dark text-sm font-medium">
-                                {item.name}
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            )}
-
-        </div>
-    );
-}
-
-function MiniSection({ sub, subId }: { sub: any; subId: string }) {
-    return (
-        <div className="space-y-10">
-
-            <div className="flex justify-end">
-                <Link
-                    href={`/admin/sub-specialities/${subId}/mini/new`}
-                    className="px-6 py-2.5 bg-wellness-accent text-white rounded-xl text-sm font-medium shadow-sm hover:opacity-90 transition"
-                >
-                    Add Mini
-                </Link>
-            </div>
-
-            {sub.miniSpecialities.length === 0 ? (
-                <EmptyState message="No mini-specialities yet." />
-            ) : (
-                <div className="divide-y border border-gray-100 rounded-xl bg-white">
-                    {sub.miniSpecialities.map((mini: any) => (
-                        <Link
-                            key={mini.id}
-                            href={`/admin/mini-specialities/${mini.id}`}
-                            className="block px-8 py-5 hover:bg-wellness-bg/30 transition"
-                        >
-                            <div className="flex justify-between items-center">
-                                <span className="font-medium text-navy-dark">
-                                    {mini.name}
-                                </span>
-                                <span className="text-sm text-navy/60">
-                                    Manage →
-                                </span>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
-            )}
-        </div>
-    );
-}
-
 function EmptyState({ message }: { message: string }) {
     return (
-        <div className="text-sm text-navy/60 bg-white/60 backdrop-blur border border-gray-100 rounded-2xl px-10 py-8 text-center shadow-sm">
+        <div className="text-sm text-navy/60 border border-gray-100 rounded-lg px-6 py-6 text-center">
             {message}
         </div>
     );

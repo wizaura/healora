@@ -1,5 +1,6 @@
 "use client";
 
+import api from "@/lib/api";
 import { useRouter } from "next/navigation";
 
 type BookingFooterProps = {
@@ -67,10 +68,24 @@ export default function BookingFooter({
 
                 {/* CTA */}
                 <button
-                    onClick={() => {
-                        router.push(
-                            `/checkout?doctorId=${doctorId}&date=${dateStr}&slotId=${slot.id}&startTime=${slot.startTime}&endTime=${slot.endTime}`
-                        );
+                    onClick={async () => {
+
+                        try {
+
+                            await api.post("/appointments/lock-slot", {
+                                doctorId,
+                                slotId: slot.id,
+                                date: dateStr
+                            });
+
+                            router.push(
+                                `/checkout?doctorId=${doctorId}&date=${dateStr}&slotId=${slot.id}&startTime=${slot.startTime}&endTime=${slot.endTime}`
+                            );
+
+                        } catch (err) {
+                            alert("Sorry, this slot was just booked by someone else.");
+                        }
+
                     }}
                     className="
                         rounded-xl bg-navy px-7 py-3

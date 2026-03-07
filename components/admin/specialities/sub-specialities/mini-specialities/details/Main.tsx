@@ -58,139 +58,191 @@ export default function ManageMiniPage() {
     }
 
     return (
-        <div className="min-h-screen bg-wellness-bg py-20">
-            <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="py-16">
 
-                {/* HEADER */}
-                <div className="p-12 border-b border-gray-100 space-y-6">
+            {/* HEADER */}
 
-                    <div className="flex justify-between items-start">
-                        <div>
-                            <button
-                                onClick={() => router.back()}
-                                className="text-sm text-navy/60 hover:text-navy"
-                            >
-                                ← Back
-                            </button>
+            <div className="max-w-6xl mx-auto px-6 mb-10">
 
-                            <h1 className="text-3xl font-semibold text-navy-dark mt-3">
-                                {mini.name}
-                            </h1>
+                <button
+                    onClick={() => router.back()}
+                    className="text-sm text-navy/60 hover:text-navy"
+                >
+                    ← Back
+                </button>
 
-                            <p className="text-sm text-navy/60 font-mono">
-                                /{mini.slug}
-                            </p>
-                        </div>
+                <div className="flex justify-between items-start mt-4">
 
-                        <StatusBadge active={mini.isActive} />
+                    <div>
+                        <h1 className="text-3xl font-semibold text-navy-dark">
+                            {mini.name}
+                        </h1>
+
+                        <p className="text-sm text-navy/60 font-mono mt-1">
+                            /{mini.slug}
+                        </p>
                     </div>
 
-                    {/* ACTIONS */}
-                    <div className="flex gap-4 flex-wrap">
-                        <Link
-                            href={`/admin/mini-specialities/${miniId}/edit`}
-                            className="px-6 py-2.5 bg-wellness-accent text-white rounded-xl text-sm font-medium"
-                        >
-                            Edit
-                        </Link>
-
-                        <button
-                            onClick={() => toggleMutation.mutate()}
-                            className="px-6 py-2.5 border border-gray-200 rounded-xl text-sm"
-                        >
-                            {mini.isActive ? "Deactivate" : "Activate"}
-                        </button>
-
-                        <button
-                            onClick={() => {
-                                if (confirm("Delete this mini-speciality?")) {
-                                    deleteMutation.mutate();
-                                }
-                            }}
-                            className="px-6 py-2.5 bg-red-500 text-white rounded-xl text-sm"
-                        >
-                            Delete
-                        </button>
-                    </div>
+                    <StatusBadge active={mini.isActive} />
 
                 </div>
 
-                {/* TABS */}
-                <div className="flex gap-6 px-10 pt-6 border-b border-gray-100 text-sm font-medium">
-                    {["overview", "symptoms", "causes", "risk"].map((t) => (
-                        <button
-                            key={t}
-                            onClick={() => setTab(t as TabType)}
-                            className={`pb-4 capitalize transition ${tab === t
-                                ? "text-navy-dark border-b-2 border-wellness-accent"
-                                : "text-navy/60 hover:text-navy"
-                                }`}
-                        >
-                            {t === "risk" ? "Risk Factors" : t}
-                        </button>
-                    ))}
-                </div>
+                {/* ACTIONS */}
 
-                {/* TAB CONTENT */}
-                <div className="p-10 space-y-10">
+                <div className="flex gap-4 flex-wrap mt-6">
 
-                    {tab === "overview" && (
-                        <OverviewSection mini={mini} />
-                    )}
+                    <Link
+                        href={`/admin/mini-specialities/${miniId}/edit`}
+                        className="px-5 py-2.5 bg-wellness-accent text-white rounded-lg text-sm font-medium"
+                    >
+                        Edit
+                    </Link>
 
-                    {tab === "symptoms" && (
-                        <RelationSection
-                            title="Symptoms"
-                            items={mini.miniSpecialitySymptoms?.map((s: any) => s.symptom)}
-                            fetchUrl="/settings/symptoms"
-                            addUrl={`/admin/mini-specialities/${miniId}/symptoms`}
-                            removeUrl={`/admin/mini-specialities/${miniId}/symptoms`}
-                            refetchMini={refetch}
-                        />
-                    )}
+                    <button
+                        onClick={() => toggleMutation.mutate()}
+                        className="px-5 py-2.5 border border-gray-200 rounded-lg text-sm"
+                    >
+                        {mini.isActive ? "Deactivate" : "Activate"}
+                    </button>
 
-                    {tab === "causes" && (
-                        <RelationSection
-                            title="Causes"
-                            items={mini.miniSpecialityCauses?.map((c: any) => c.cause)}
-                            fetchUrl="/settings/causes"
-                            addUrl={`/admin/mini-specialities/${miniId}/causes`}
-                            removeUrl={`/admin/mini-specialities/${miniId}/causes`}
-                            refetchMini={refetch}
-                        />
-                    )}
-
-                    {tab === "risk" && (
-                        <RelationSection
-                            title="Risk Factors"
-                            items={mini.miniSpecialityRiskFactors?.map((r: any) => r.riskFactor)}
-                            fetchUrl="/settings/risk-factors"
-                            addUrl={`/admin/mini-specialities/${miniId}/risk-factors`}
-                            removeUrl={`/admin/mini-specialities/${miniId}/risk-factors`}
-                            refetchMini={refetch}
-                        />
-                    )}
+                    <button
+                        onClick={() => {
+                            if (confirm("Delete this mini-speciality?")) {
+                                deleteMutation.mutate();
+                            }
+                        }}
+                        className="px-5 py-2.5 bg-red-500 text-white rounded-lg text-sm"
+                    >
+                        Delete
+                    </button>
 
                 </div>
+
             </div>
+
+            {/* TABS */}
+
+            <div className="max-w-6xl mx-auto px-6 border-b border-gray-100 flex gap-8 text-sm font-medium">
+
+                {["overview", "symptoms", "causes", "risk"].map((t) => (
+
+                    <button
+                        key={t}
+                        onClick={() => setTab(t as TabType)}
+                        className={`pb-4 capitalize transition ${tab === t
+                            ? "text-navy-dark border-b-2 border-wellness-accent"
+                            : "text-navy/60 hover:text-navy"
+                            }`}
+                    >
+                        {t === "risk" ? "Risk Factors" : t}
+                    </button>
+
+                ))}
+
+            </div>
+
+            {/* CONTENT */}
+
+            <div className="max-w-6xl mx-auto px-6 py-10 space-y-12">
+
+                {tab === "overview" && (
+                    <OverviewSection mini={mini} />
+                )}
+
+                {tab === "symptoms" && (
+                    <RelationSection
+                        title="Symptoms"
+                        items={mini.miniSpecialitySymptoms?.map((s: any) => s.symptom)}
+                        fetchUrl="/settings/symptoms"
+                        addUrl={`/admin/mini-specialities/${miniId}/symptoms`}
+                        removeUrl={`/admin/mini-specialities/${miniId}/symptoms`}
+                        refetchMini={refetch}
+                    />
+                )}
+
+                {tab === "causes" && (
+                    <RelationSection
+                        title="Causes"
+                        items={mini.miniSpecialityCauses?.map((c: any) => c.cause)}
+                        fetchUrl="/settings/causes"
+                        addUrl={`/admin/mini-specialities/${miniId}/causes`}
+                        removeUrl={`/admin/mini-specialities/${miniId}/causes`}
+                        refetchMini={refetch}
+                    />
+                )}
+
+                {tab === "risk" && (
+                    <RelationSection
+                        title="Risk Factors"
+                        items={mini.miniSpecialityRiskFactors?.map((r: any) => r.riskFactor)}
+                        fetchUrl="/settings/risk-factors"
+                        addUrl={`/admin/mini-specialities/${miniId}/risk-factors`}
+                        removeUrl={`/admin/mini-specialities/${miniId}/risk-factors`}
+                        refetchMini={refetch}
+                    />
+                )}
+
+            </div>
+
         </div>
     );
 }
 
-/* ---------------- COMPONENTS ---------------- */
+/* ---------------- OVERVIEW ---------------- */
 
 function OverviewSection({ mini }: any) {
     return (
+        <div className="space-y-10">
+
+            <OverviewBlock title="Summary" value={mini.overview?.summary} />
+
+            <OverviewBlock title="What is it?" value={mini.overview?.whatIsIt} />
+
+            <OverviewBlock
+                title="Who is affected?"
+                value={mini.overview?.whoIsAffected}
+            />
+
+            <OverviewBlock
+                title="When to see a doctor?"
+                value={mini.overview?.whenToSeeDoctor}
+            />
+
+            {mini.quickFacts?.length > 0 && (
+                <div>
+
+                    <h3 className="text-sm font-semibold text-navy-dark mb-4">
+                        Quick Facts
+                    </h3>
+
+                    <ul className="space-y-2 text-sm text-navy/80 list-disc pl-5">
+                        {mini.quickFacts.map((fact: string, i: number) => (
+                            <li key={i}>{fact}</li>
+                        ))}
+                    </ul>
+
+                </div>
+            )}
+
+        </div>
+    );
+}
+
+function OverviewBlock({ title, value }: any) {
+    return (
         <div>
-            <h3 className="text-xs uppercase tracking-wider text-navy/50 font-semibold mb-3">
-                Description
+            <h3 className="text-sm font-semibold text-navy-dark mb-2">
+                {title}
             </h3>
-            <p className="text-navy/80 text-sm">
-                {mini.description || "No description provided."}
+
+            <p className="text-sm text-navy/80 leading-relaxed">
+                {value || "Not provided"}
             </p>
         </div>
     );
 }
+
+/* ---------------- STATUS BADGE ---------------- */
 
 function StatusBadge({ active }: { active: boolean }) {
     return (

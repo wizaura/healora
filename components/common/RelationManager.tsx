@@ -2,6 +2,7 @@ import api from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import SelectOption from "@/components/common/SelectOption";
 
 type Item = {
     id: string;
@@ -25,9 +26,10 @@ export default function RelationSection({
     removeUrl,
     refetchMini,
 }: RelationSectionProps) {
+
     const [selectedId, setSelectedId] = useState("");
 
-    /* ---------------- FETCH ALL AVAILABLE ITEMS ---------------- */
+    /* ---------------- FETCH ALL ---------------- */
 
     const { data: allItems = [], isLoading } = useQuery<Item[]>({
         queryKey: [fetchUrl],
@@ -37,7 +39,7 @@ export default function RelationSection({
         },
     });
 
-    /* ---------------- ADD RELATION ---------------- */
+    /* ---------------- ADD ---------------- */
 
     const addMutation = useMutation({
         mutationFn: async () => {
@@ -55,7 +57,7 @@ export default function RelationSection({
         },
     });
 
-    /* ---------------- REMOVE RELATION ---------------- */
+    /* ---------------- REMOVE ---------------- */
 
     const removeMutation = useMutation({
         mutationFn: async (id: string) => {
@@ -70,7 +72,7 @@ export default function RelationSection({
         },
     });
 
-    /* ---------------- FILTER AVAILABLE ---------------- */
+    /* ---------------- FILTER ---------------- */
 
     const attachedIds = items.map((i) => i.id);
 
@@ -78,39 +80,49 @@ export default function RelationSection({
         (i) => !attachedIds.includes(i.id)
     );
 
+    /* Convert to SelectOption format */
+
+    const options = availableItems.map(item => ({
+        label: item.name,
+        value: item.id,
+    }));
+
     /* ---------------- UI ---------------- */
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
 
-            <h3 className="text-xs uppercase tracking-wider text-navy/50 font-semibold">
-                {title}
-            </h3>
+            {/* HEADER */}
+
+            <div>
+                <h3 className="text-lg font-semibold text-navy-dark">
+                    {title}
+                </h3>
+
+                <p className="text-sm text-navy/60">
+                    Manage related {title.toLowerCase()}.
+                </p>
+            </div>
 
             {/* ADD SECTION */}
-            <div className="flex gap-4 items-center">
 
-                <select
+            <div className="flex gap-4 items-center flex-wrap">
+
+                <SelectOption
                     value={selectedId}
-                    onChange={(e) => setSelectedId(e.target.value)}
-                    className="px-4 py-2 border rounded-xl text-sm"
-                    disabled={isLoading}
-                >
-                    <option value="">
-                        {isLoading ? "Loading..." : `Select ${title}`}
-                    </option>
-
-                    {availableItems.map((item) => (
-                        <option key={item.id} value={item.id}>
-                            {item.name}
-                        </option>
-                    ))}
-                </select>
+                    onChange={setSelectedId}
+                    options={options}
+                    placeholder={
+                        isLoading
+                            ? "Loading..."
+                            : `${title}`
+                    }
+                />
 
                 <button
                     disabled={!selectedId || addMutation.isPending}
                     onClick={() => addMutation.mutate()}
-                    className="px-5 py-2 bg-wellness-accent text-white rounded-xl text-sm disabled:opacity-50"
+                    className="cursor-pointer hover:bg-wellness-accent/90 px-5 py-2 bg-wellness-accent text-white rounded-lg text-sm font-medium disabled:opacity-50"
                 >
                     {addMutation.isPending ? "Adding..." : "Add"}
                 </button>
@@ -118,15 +130,22 @@ export default function RelationSection({
             </div>
 
             {/* LIST */}
+
             {items.length === 0 ? (
-                <p className="text-sm text-navy/60">No items added.</p>
+                <p className="text-sm text-navy/60">
+                    No {title.toLowerCase()} added yet.
+                </p>
             ) : (
-                <div className="space-y-3">
+
+                <div className="divide-y divide-gray-200 border border-gray-200 rounded-lg">
+
                     {items.map((item) => (
+
                         <div
                             key={item.id}
-                            className="flex justify-between items-center bg-wellness-bg/40 border border-gray-100 rounded-xl px-6 py-4"
+                            className="flex justify-between items-center px-5 py-4"
                         >
+
                             <span className="text-sm text-navy-dark">
                                 {item.name}
                             </span>
@@ -134,13 +153,17 @@ export default function RelationSection({
                             <button
                                 disabled={removeMutation.isPending}
                                 onClick={() => removeMutation.mutate(item.id)}
-                                className="text-sm text-red-500 hover:underline disabled:opacity-50"
+                                className="cursor-pointer text-sm hover:underline text-red-500 hover:text-red-600 disabled:opacity-50"
                             >
                                 Remove
                             </button>
+
                         </div>
+
                     ))}
+
                 </div>
+
             )}
 
         </div>
