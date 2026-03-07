@@ -11,6 +11,7 @@ import SubSpecialityRiskFactors from "../RiskFactors";
 import SubSpecialityDoctors from "../AvailableDoctors";
 
 export default function MiniSpeciality() {
+
     const params = useParams();
 
     const subSlug = Array.isArray(params.subSlug)
@@ -37,22 +38,30 @@ export default function MiniSpeciality() {
 
     return (
         <div className="bg-white">
+
             <SubSpecialityOverview
                 name={data.name}
-                overview={data.overview}
+                overview={data.overview || {}}
+                quickFacts={data.quickFacts || []}
             />
 
-            <SubSpecialitySymptoms symptoms={data.symptoms} />
+            <SubSpecialitySymptoms
+                symptoms={data.symptoms || []}
+            />
 
-            <SubSpecialityCauses causes={data.causes} />
+            <SubSpecialityCauses
+                causes={data.causes || []}
+            />
 
             <SubSpecialityRiskFactors
-                riskFactors={data.riskFactors}
+                riskFactors={data.riskFactors || []}
             />
 
             <SubSpecialityDoctors
-                subSlug={miniSlug as string}
+                subSlug={subSlug as string}
+                miniSlug={miniSlug as string}
             />
+
         </div>
     );
 }
