@@ -48,8 +48,9 @@ export default function AddDoctorPage() {
                 router.push("/admin/doctors");
             }, 1500);
 
-        } catch {
-            toast.error("Failed to create doctor");
+        } catch(err: any) {
+            toast.error(err);
+            console.log(err)
         } finally {
             setLoading(false);
         }

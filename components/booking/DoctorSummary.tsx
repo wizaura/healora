@@ -126,7 +126,7 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
 
                                 <button
                                     onClick={() => setExpanded(!expanded)}
-                                    className="flex items-center gap-2 text-sm font-medium text-navy"
+                                    className="flex items-center gap-2 text-md font-medium text-navy"
                                 >
                                     {expanded ? "Hide bio" : "Read full bio"}
                                     {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
