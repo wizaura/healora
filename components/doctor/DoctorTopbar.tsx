@@ -7,6 +7,7 @@ import {
     User,
     Calendar,
     Clock,
+    User2,
 } from "lucide-react";
 
 const nav = [
@@ -14,6 +15,7 @@ const nav = [
     { label: "Profile", href: "/doctor/profile", icon: User },
     { label: "Availability", href: "/doctor/availability", icon: Calendar },
     { label: "Appointments", href: "/doctor/appointments", icon: Clock },
+    { label: "Patients", href: "/doctor/patients", icon: User2 },
 ];
 
 export default function DoctorTopBar() {

@@ -6,6 +6,7 @@ import { useState } from "react";
 import Link from "next/link";
 import api from "@/lib/api";
 import RelationSection from "@/components/common/RelationManager";
+import { refresh } from "next/cache";
 
 type TabType = "overview" | "symptoms" | "causes" | "risk" | "mini";
 
@@ -143,8 +144,8 @@ export default function ManageSubSpecialityPage() {
                         key={t}
                         onClick={() => setTab(t as TabType)}
                         className={`pb-4 capitalize transition ${tab === t
-                                ? "text-navy-dark border-b-2 border-wellness-accent"
-                                : "text-navy/60 hover:text-navy"
+                            ? "text-navy-dark border-b-2 border-wellness-accent"
+                            : "text-navy/60 hover:text-navy"
                             }`}
                     >
                         {t === "risk"
@@ -202,7 +203,7 @@ export default function ManageSubSpecialityPage() {
 
                 {tab === "mini" && (
                     sub.hasMiniLevel ? (
-                        <MiniSection sub={sub} subId={subId} />
+                        <MiniSection sub={sub} subId={subId} refetch={refetch} />
                     ) : (
                         <EmptyState message="Mini level is disabled for this sub-speciality." />
                     )
@@ -217,22 +218,65 @@ export default function ManageSubSpecialityPage() {
 /* ---------------- OVERVIEW ---------------- */
 
 function OverviewSection({ sub }: any) {
+
+    const overview = sub.overview ?? {};
+
     return (
-        <div className="space-y-10">
+        <div className="space-y-12">
 
-            <OverviewBlock title="Summary" value={sub.overview?.summary} />
+            {/* MAIN DESCRIPTION */}
 
-            <OverviewBlock title="What is it?" value={sub.overview?.whatIsIt} />
+            {overview.mainDescription && (
+                <div className="text-sm text-navy/80 leading-relaxed">
+                    {overview.mainDescription}
+                </div>
+            )}
 
-            <OverviewBlock
-                title="Who is affected?"
-                value={sub.overview?.whoIsAffected}
-            />
+            {/* IMAGE 1 */}
 
-            <OverviewBlock
-                title="When to see a doctor?"
-                value={sub.overview?.whenToSeeDoctor}
-            />
+            <div className="flex flex-row gap-4">
+                {overview.images?.image1?.url && (
+                    <img
+                        src={overview.images.image1.url}
+                        className="w-24 h-24 rounded-xl border border-gray-100"
+                        alt="Sub speciality"
+                    />
+                )}
+
+                {overview.images?.image2 && (
+                    <img
+                        src={`${overview.images.image2.url}`}
+                        className="w-24 h-24 rounded-xl border border-gray-100"
+                    />
+                )}
+            </div>
+
+            {/* HEADER MAIN QUESTION */}
+
+            {overview.headerMain && (
+                <OverviewBlock
+                    title={overview.headerMain.question}
+                    value={overview.headerMain.answer}
+                />
+            )}
+
+            {/* HEADER SECONDARY QUESTIONS */}
+
+            {overview.headerSecondary?.length > 0 && (
+                <div className="space-y-8">
+
+                    {overview.headerSecondary.map((item: any, i: number) => (
+                        <OverviewBlock
+                            key={i}
+                            title={item.question}
+                            value={item.answer}
+                        />
+                    ))}
+
+                </div>
+            )}
+
+            {/* QUICK FACTS */}
 
             {sub.quickFacts?.length > 0 && (
                 <div>
@@ -241,10 +285,28 @@ function OverviewSection({ sub }: any) {
                     </h3>
 
                     <ul className="space-y-2 text-sm text-navy/80 list-disc pl-5">
-                        {sub.quickFacts.map((fact: string, i: number) => (
-                            <li key={i}>{fact}</li>
+                        {sub.quickFacts.map((fact: any, i: number) => (
+                            <li key={i}>
+                                {typeof fact === "string" ? fact : fact.value}
+                            </li>
                         ))}
                     </ul>
+                </div>
+            )}
+
+            {/* FOOTER QUESTIONS */}
+
+            {overview.footerQuestions?.length > 0 && (
+                <div className="space-y-8">
+
+                    {overview.footerQuestions.map((item: any, i: number) => (
+                        <OverviewBlock
+                            key={i}
+                            title={item.question}
+                            value={item.answer}
+                        />
+                    ))}
+
                 </div>
             )}
 
@@ -268,7 +330,33 @@ function OverviewBlock({ title, value }: any) {
 
 /* ---------------- MINI SECTION ---------------- */
 
-function MiniSection({ sub, subId }: any) {
+function MiniSection({ sub, subId, refetch }: any) {
+
+    const [name, setName] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const createMini = async () => {
+
+        if (!name.trim()) return;
+
+        try {
+
+            setLoading(true);
+
+            await api.post(`/admin/mini-specialities`, {
+                name,
+                subSpecialityId: subId
+            });
+
+            setName("");
+            refetch();
+
+        } finally {
+            setLoading(false);
+        }
+
+    };
+
     return (
         <div className="space-y-8">
 
@@ -286,12 +374,26 @@ function MiniSection({ sub, subId }: any) {
                     </p>
                 </div>
 
-                <Link
-                    href={`/admin/sub-specialities/${subId}/mini/new`}
+            </div>
+
+            {/* ADD MINI */}
+
+            <div className="flex gap-3">
+
+                <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Mini speciality name"
+                    className="flex-1 rounded-lg border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-wellness-accent"
+                />
+
+                <button
+                    onClick={createMini}
+                    disabled={loading}
                     className="px-5 py-2.5 bg-wellness-accent text-white rounded-lg text-sm font-medium"
                 >
-                    Add Mini
-                </Link>
+                    {loading ? "Adding..." : "Add Mini"}
+                </button>
 
             </div>
 
@@ -341,8 +443,8 @@ function StatusBadge({ active }: { active: boolean }) {
     return (
         <span
             className={`px-4 py-1.5 rounded-full text-xs font-medium ${active
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-600"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-600"
                 }`}
         >
             {active ? "Active" : "Inactive"}
@@ -354,8 +456,8 @@ function ModeBadge({ hasMini }: { hasMini: boolean }) {
     return (
         <span
             className={`px-3 py-1 rounded-full text-xs font-medium ${hasMini
-                    ? "bg-indigo-100 text-indigo-700"
-                    : "bg-gray-100 text-navy/70"
+                ? "bg-indigo-100 text-indigo-700"
+                : "bg-gray-100 text-navy/70"
                 }`}
         >
             {hasMini ? "Mini Structure" : "Direct Content"}

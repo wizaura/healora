@@ -112,8 +112,8 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
 
                     {doctor.qualification && (
 
-                        <p className="text-xs text-navy/60 mt-1">
-                            {doctor.qualification}
+                        <p className="text-xs text-navy/85 mt-1">
+                            <span className="font-semibold text-sm text-gray-800">Qualifications:</span> {doctor.qualification}
                         </p>
 
                     )}

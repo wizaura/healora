@@ -21,10 +21,6 @@ export default function SubSpecialitySymptoms({ symptoms }: { symptoms: Item[] }
 
                 <div className="text-center mb-14">
 
-                    <span className="text-xs uppercase tracking-wider text-wellness-accent font-semibold">
-                        Symptoms Information
-                    </span>
-
                     <h2 className="text-3xl font-semibold text-navy-dark mt-2">
                         Common Symptoms
                     </h2>

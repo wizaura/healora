@@ -9,13 +9,14 @@ import RelationSection from "@/components/common/RelationManager";
 
 type TabType = "overview" | "symptoms" | "causes" | "risk";
 
-export default function ManageMiniPage() {
+export default function ManageMiniSpecialityPage() {
+
     const { miniId } = useParams<{ miniId: string }>();
     const router = useRouter();
     const [tab, setTab] = useState<TabType>("overview");
 
     const { data: mini, isLoading, refetch } = useQuery({
-        queryKey: ["admin-mini", miniId],
+        queryKey: ["admin-mini-speciality", miniId],
         queryFn: async () => {
             const res = await api.get(`/admin/mini-specialities/${miniId}`);
             return res.data;
@@ -52,10 +53,12 @@ export default function ManageMiniPage() {
     if (!mini) {
         return (
             <div className="h-screen flex items-center justify-center text-red-500">
-                Mini not found
+                Not found
             </div>
         );
     }
+
+    const tabs: TabType[] = ["overview", "symptoms", "causes", "risk"];
 
     return (
         <div className="py-16">
@@ -74,13 +77,19 @@ export default function ManageMiniPage() {
                 <div className="flex justify-between items-start mt-4">
 
                     <div>
+
                         <h1 className="text-3xl font-semibold text-navy-dark">
                             {mini.name}
                         </h1>
 
-                        <p className="text-sm text-navy/60 font-mono mt-1">
-                            /{mini.slug}
-                        </p>
+                        <div className="flex items-center gap-3 mt-1">
+
+                            <span className="text-sm text-navy/60 font-mono">
+                                /{mini.slug}
+                            </span>
+
+                        </div>
+
                     </div>
 
                     <StatusBadge active={mini.isActive} />
@@ -124,15 +133,16 @@ export default function ManageMiniPage() {
 
             <div className="max-w-6xl mx-auto px-6 border-b border-gray-100 flex gap-8 text-sm font-medium">
 
-                {["overview", "symptoms", "causes", "risk"].map((t) => (
+                {tabs.map((t) => (
 
                     <button
                         key={t}
-                        onClick={() => setTab(t as TabType)}
-                        className={`pb-4 capitalize transition ${tab === t
-                            ? "text-navy-dark border-b-2 border-wellness-accent"
-                            : "text-navy/60 hover:text-navy"
-                            }`}
+                        onClick={() => setTab(t)}
+                        className={`pb-4 capitalize transition ${
+                            tab === t
+                                ? "text-navy-dark border-b-2 border-wellness-accent"
+                                : "text-navy/60 hover:text-navy"
+                        }`}
                     >
                         {t === "risk" ? "Risk Factors" : t}
                     </button>
@@ -194,38 +204,66 @@ export default function ManageMiniPage() {
 /* ---------------- OVERVIEW ---------------- */
 
 function OverviewSection({ mini }: any) {
+
+    const overview = mini.overview ?? {};
+
     return (
-        <div className="space-y-10">
+        <div className="space-y-12">
 
-            <OverviewBlock title="Summary" value={mini.overview?.summary} />
-
-            <OverviewBlock title="What is it?" value={mini.overview?.whatIsIt} />
-
-            <OverviewBlock
-                title="Who is affected?"
-                value={mini.overview?.whoIsAffected}
-            />
-
-            <OverviewBlock
-                title="When to see a doctor?"
-                value={mini.overview?.whenToSeeDoctor}
-            />
-
-            {mini.quickFacts?.length > 0 && (
-                <div>
-
-                    <h3 className="text-sm font-semibold text-navy-dark mb-4">
-                        Quick Facts
-                    </h3>
-
-                    <ul className="space-y-2 text-sm text-navy/80 list-disc pl-5">
-                        {mini.quickFacts.map((fact: string, i: number) => (
-                            <li key={i}>{fact}</li>
-                        ))}
-                    </ul>
-
+            {overview.mainDescription && (
+                <div className="text-sm text-navy/80 leading-relaxed">
+                    {overview.mainDescription}
                 </div>
             )}
+
+            <div className="flex gap-4">
+
+                {overview.images?.image1?.url && (
+                    <img
+                        src={overview.images.image1.url}
+                        className="w-24 h-24 rounded-xl border border-gray-100"
+                    />
+                )}
+
+                {overview.images?.image2?.url && (
+                    <img
+                        src={overview.images.image2.url}
+                        className="w-24 h-24 rounded-xl border border-gray-100"
+                    />
+                )}
+
+            </div>
+
+            {overview.headerMain && (
+                <OverviewBlock
+                    title={overview.headerMain.question}
+                    value={overview.headerMain.answer}
+                />
+            )}
+
+            {overview.headerSecondary?.map((item: any, i: number) => (
+                <OverviewBlock
+                    key={i}
+                    title={item.question}
+                    value={item.answer}
+                />
+            ))}
+
+            {mini.quickFacts?.length > 0 && (
+                <ul className="space-y-2 text-sm text-navy/80 list-disc pl-5">
+                    {mini.quickFacts.map((fact: string, i: number) => (
+                        <li key={i}>{fact}</li>
+                    ))}
+                </ul>
+            )}
+
+            {overview.footerQuestions?.map((item: any, i: number) => (
+                <OverviewBlock
+                    key={i}
+                    title={item.question}
+                    value={item.answer}
+                />
+            ))}
 
         </div>
     );

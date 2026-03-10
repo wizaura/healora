@@ -1,9 +1,9 @@
-import EditMiniPage from "@/components/admin/specialities/sub-specialities/mini-specialities/details/Edit";
+import EditMiniSpecialityPage from "@/components/admin/specialities/sub-specialities/mini-specialities/edit/EditMiniSpecialityPage";
 
 export default function AdminMiniSpecialityEditPage() {
     return (
         <div>
-            <EditMiniPage />
+            <EditMiniSpecialityPage />
         </div>
     )
 }

@@ -1,163 +1,129 @@
+type QA = {
+    question?: string;
+    answer?: string;
+};
+
 type Props = {
     name: string;
+    description?: string;
     overview?: {
-        summary?: string;
-        whatIsIt?: string;
-        whoIsAffected?: string;
-        whenToSeeDoctor?: string;
+        headerMain?: QA;
+        headerSecondary?: QA[];
+        images?: {
+            image1?: { url: string };
+            image2?: { url: string };
+        };
     };
-    quickFacts?: string[];
 };
 
 export default function SubSpecialityOverview({
     name,
-    overview = {},
-    quickFacts = [],
+    description,
+    overview = {}
 }: Props) {
 
-    return (
-        <section className="py-24 bg-gradient-to-b from-white to-wellness-bg m-4 rounded-2xl">
+    const { headerMain, headerSecondary = [], images } = overview;
 
-            <div className="max-w-5xl mx-auto px-6">
+    const image = images?.image1?.url || images?.image2?.url;
+
+    return (
+        <section className="py-24 bg-white">
+
+            <div className="max-w-6xl mx-auto px-6">
 
                 {/* HERO */}
 
-                <div className="text-center my-14 max-w-3xl mx-auto">
+                <div className="grid md:grid-cols-2 gap-16 items-center">
 
-                    <span className="inline-block text-xs font-medium tracking-wide text-wellness-accent uppercase mb-3">
-                        Medical Speciality
-                    </span>
+                    {/* TEXT SIDE */}
 
-                    <h1 className="text-4xl md:text-5xl font-semibold text-navy-dark">
-                        {name}
-                    </h1>
+                    <div>
 
-                    {overview.summary && (
-                        <p className="mt-6 text-lg text-navy leading-relaxed">
-                            {overview.summary}
-                        </p>
+                        <span className="text-xs tracking-widest text-gray-400 uppercase font-medium">
+                            Medical Condition
+                        </span>
+
+                        <h1 className="mt-4 text-4xl md:text-5xl font-semibold text-navy-dark leading-tight">
+                            {name}
+                        </h1>
+
+                        {description && (
+                            <p className="mt-6 text-lg text-gray-600 leading-relaxed max-w-lg">
+                                {description}
+                            </p>
+                        )}
+
+                        {/* MAIN QUESTION */}
+
+                        {headerMain?.question && (
+
+                            <div className="mt-10">
+
+                                <h2 className="text-xl font-semibold text-navy-dark mb-3">
+                                    {headerMain.question}
+                                </h2>
+
+                                <p className="text-gray-600 leading-relaxed">
+                                    {headerMain.answer}
+                                </p>
+
+                            </div>
+
+                        )}
+
+                    </div>
+
+                    {/* IMAGE SIDE */}
+
+                    {image && (
+
+                        <div className="relative">
+
+                            <div className="absolute inset-0 bg-gradient-to-tr from-white via-transparent to-white opacity-60 rounded-2xl" />
+
+                            <img
+                                src={image}
+                                className="rounded-2xl shadow-lg object-cover w-full h-[380px]"
+                                alt={name}
+                            />
+
+                        </div>
+
                     )}
 
                 </div>
 
+                {/* SECONDARY QUESTIONS */}
 
-                {/* QUICK FACTS */}
+                {headerSecondary.length > 0 && (
 
-                {quickFacts.length > 0 && (
+                    <div className="mt-20 grid md:grid-cols-2 gap-8">
 
-                    <div className="mb-20">
+                        {headerSecondary.map((item, i) => (
 
-                        <h2 className="text-xl font-semibold text-navy-dark mb-8 text-center">
-                            Quick Facts
-                        </h2>
+                            <div
+                                key={i}
+                                className="border border-gray-100 rounded-xl p-8 bg-gray-50 hover:bg-white transition shadow-sm"
+                            >
 
-                        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                <h3 className="text-lg font-semibold text-navy-dark mb-3">
+                                    {item.question}
+                                </h3>
 
-                            {quickFacts.map((fact, i) => (
+                                <p className="text-gray-600 leading-relaxed">
+                                    {item.answer}
+                                </p>
 
-                                <div
-                                    key={i}
-                                    className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm"
-                                >
+                            </div>
 
-                                    <p className="text-sm text-navy/95 leading-relaxed">
-                                        {fact}
-                                    </p>
-
-                                </div>
-
-                            ))}
-
-                        </div>
+                        ))}
 
                     </div>
 
                 )}
 
-
-                {/* WHAT IS */}
-
-                {overview.whatIsIt && (
-                    <SectionBlock
-                        title={`What is ${name}?`}
-                        content={overview.whatIsIt}
-                    />
-                )}
-
-
-                {/* WHO IS AFFECTED */}
-
-                {overview.whoIsAffected && (
-                    <SectionBlock
-                        title="Who is affected?"
-                        content={overview.whoIsAffected}
-                    />
-                )}
-
-
-                {/* WHEN TO SEE DOCTOR */}
-
-                {overview.whenToSeeDoctor && (
-                    <SectionHighlight
-                        title="When should you see a doctor?"
-                        content={overview.whenToSeeDoctor}
-                    />
-                )}
-
             </div>
 
         </section>
-    );
-}
-
-
-function SectionBlock({
-    title,
-    content,
-}: {
-    title: string;
-    content: string;
-}) {
-
-    return (
-
-        <div className="mb-16">
-
-            <h2 className="text-2xl font-semibold text-navy-dark mb-4">
-                {title}
-            </h2>
-
-            <p className="text-navy/90 leading-relaxed text-base max-w-3xl">
-                {content}
-            </p>
-
-        </div>
-
-    );
-}
-
-
-function SectionHighlight({
-    title,
-    content,
-}: {
-    title: string;
-    content: string;
-}) {
-
-    return (
-
-        <div className="bg-white border border-gray-100 rounded-2xl p-10 shadow-sm">
-
-            <h2 className="text-2xl font-semibold text-navy-dark mb-4">
-                {title}
-            </h2>
-
-            <p className="text-navy/90 leading-relaxed max-w-3xl">
-                {content}
-            </p>
-
-        </div>
-
     );
 }

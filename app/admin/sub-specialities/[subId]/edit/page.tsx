@@ -1,4 +1,4 @@
-import EditSubSpecialityPage from "@/components/admin/specialities/sub-specialities/mini-specialities/Edit";
+import EditSubSpecialityPage from "@/components/admin/specialities/sub-specialities/edit/EditSubSpecialityPage";
 
 export default function AdminEditSubSpecialityPage() {
     return (

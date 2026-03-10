@@ -96,13 +96,19 @@ export default function CheckoutFooter({
                 slotId,
             });
 
+            console.log(bookingRes,'bs')
+
             const { appointmentId } = bookingRes.data.data;
+
+            console.log(appointmentId,'ap')
 
             // 2️⃣ initiate payment with totalAmount
             const paymentRes = await api.post("/payments/initiate", {
+                appointmentId,
                 doctorId,
                 slotId,
                 payMode,
+                paymentMethod,
                 meetingType,
                 deliveryMode,
                 address: deliveryMode === "door" ? address : null,
