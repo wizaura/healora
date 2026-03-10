@@ -3,50 +3,52 @@
 import { useState } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
-import DoctorViewModal from "./DoctorViewModal";
 import ConfirmModal from "@/components/common/ConfirmModal";
 
-export default function DoctorsTable({ doctors, onEdit, refetch }: any) {
+export default function DisabledDoctorsTable({ doctors, refetch }: any) {
 
     const [search, setSearch] = useState("");
-    const [viewDoctor, setViewDoctor] = useState<any>(null);
-
     const [confirmOpen, setConfirmOpen] = useState(false);
-    const [actionDoctor, setActionDoctor] = useState<any>(null);
+    const [actionData, setActionData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
 
-    const openDisable = (doc: any) => {
-        setActionDoctor(doc);
+    const openConfirm = (type: string, doc: any) => {
+        setActionData({ type, doc });
         setConfirmOpen(true);
     };
 
     const handleConfirm = async () => {
-
-        if (!actionDoctor) return;
+        if (!actionData) return;
 
         setLoading(true);
 
         try {
 
-            await api.patch(`/doctor/${actionDoctor.id}/approval`, {
-                isApproved: false,
-            });
+            if (actionData.type === "restore") {
+                await api.patch(`/doctor/${actionData.doc.id}/approval`, {
+                    isApproved: true,
+                });
+                toast.success("Doctor restored");
+            }
 
-            toast.success("Doctor disabled");
+            if (actionData.type === "delete") {
+                await api.delete(`/doctor/${actionData.doc.id}/delete`);
+                toast.success("Doctor deleted permanently");
+            }
 
             refetch();
 
         } catch {
-            toast.error("Failed to disable doctor");
+            toast.error("Action failed");
         }
 
         setLoading(false);
         setConfirmOpen(false);
-        setActionDoctor(null);
+        setActionData(null);
     };
 
-    const activeDoctors = doctors
-        .filter((d: any) => d?.doctor?.isApproved === true)
+    const disabledDoctors = doctors
+        .filter((d: any) => !d?.doctor?.isApproved)
         .filter(
             (doc: any) =>
                 doc.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -55,24 +57,18 @@ export default function DoctorsTable({ doctors, onEdit, refetch }: any) {
 
     return (
         <>
-            <DoctorViewModal
-                open={!!viewDoctor}
-                doctor={viewDoctor}
-                onClose={() => setViewDoctor(null)}
-            />
-
             <ConfirmModal
                 open={confirmOpen}
-                title="Disable doctor?"
-                message={`Are you sure you want to disable ${actionDoctor?.name}?`}
-                confirmText="Disable"
+                title="Confirm action"
+                message={`Are you sure you want to ${actionData?.type} ${actionData?.doc?.name}?`}
+                confirmText="Yes, continue"
                 cancelText="Cancel"
                 loading={loading}
                 onConfirm={handleConfirm}
                 onCancel={() => setConfirmOpen(false)}
             />
 
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm">
 
                 <div className="p-5 border-b border-gray-200">
                     <input
@@ -90,14 +86,14 @@ export default function DoctorsTable({ doctors, onEdit, refetch }: any) {
                         <tr>
                             <th className="px-5 py-3 text-left">Doctor</th>
                             <th className="px-5 py-3 text-left">Email</th>
-                            <th className="px-5 py-3 text-left">Approval</th>
+                            <th className="px-5 py-3 text-left">Status</th>
                             <th className="px-5 py-3 text-right">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
 
-                        {activeDoctors.map((doc: any) => (
+                        {disabledDoctors.map((doc: any) => (
 
                             <tr key={doc.id} className="border-t border-gray-200 hover:bg-slate-50">
 
@@ -108,8 +104,8 @@ export default function DoctorsTable({ doctors, onEdit, refetch }: any) {
                                 </td>
 
                                 <td className="px-5 py-4">
-                                    <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs">
-                                        Approved
+                                    <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs">
+                                        Disabled
                                     </span>
                                 </td>
 
@@ -118,24 +114,17 @@ export default function DoctorsTable({ doctors, onEdit, refetch }: any) {
                                     <div className="flex justify-end gap-4">
 
                                         <button
-                                            onClick={() => setViewDoctor(doc)}
-                                            className="text-indigo-600 text-xs hover:underline"
+                                            onClick={() => openConfirm("restore", doc)}
+                                            className="text-teal-600 text-xs hover:underline"
                                         >
-                                            View
+                                            Restore
                                         </button>
 
                                         <button
-                                            onClick={() => onEdit(doc)}
-                                            className="text-blue-600 text-xs hover:underline"
-                                        >
-                                            Edit
-                                        </button>
-
-                                        <button
-                                            onClick={() => openDisable(doc)}
+                                            onClick={() => openConfirm("delete", doc)}
                                             className="text-red-600 text-xs hover:underline"
                                         >
-                                            Disable
+                                            Delete
                                         </button>
 
                                     </div>
