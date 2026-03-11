@@ -51,9 +51,17 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
                                 </div>
                             )}
 
-                            <p className="text-navy/70 text-base">
-                                {data.qualification} • {data.experience} years experience
-                            </p>
+                            <div className="text-md text-navy/90 space-y-1">
+                                <p>
+                                    <span className="font-medium text-lg text-navy">Qualification:</span>{" "}
+                                    {data.qualification}
+                                </p>
+
+                                <p>
+                                    <span className="font-medium text-lg text-navy">Experience:</span>{" "}
+                                    {data.experience} years
+                                </p>
+                            </div>
                         </div>
 
                         {/* PRIMARY SPECIALITY */}
@@ -135,7 +143,7 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
                                 {expanded && (
                                     <div className="mt-4 space-y-4">
 
-                                        <p className="text-navy/70 text-sm leading-relaxed">
+                                        <p className="whitespace-pre-wrap text-navy/90 text-md leading-relaxed">
                                             {data.bio}
                                         </p>
 
@@ -186,7 +194,7 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
                             <span className="text-lg font-semibold text-navy">
                                 ₹{data.consultationFee}
                             </span>
-                            <span className="text-xs text-navy/60">
+                            <span className="text-sm text-navy/80">
                                 per consultation
                             </span>
                         </div>

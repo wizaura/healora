@@ -72,6 +72,61 @@ export default function DoctorViewModal({
                         </div>
                     </Section>
 
+                    {/* Profile Image */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <Section title="Profile Image">
+                            {profile?.imageUrl ? (
+                                <div className="flex items-center gap-4">
+                                    <img
+                                        src={profile.imageUrl}
+                                        alt="Doctor profile"
+                                        className="w-24 h-24 rounded-xl object-cover border border-gray-200"
+                                    />
+
+                                    <a
+                                        href={profile.imageUrl}
+                                        target="_blank"
+                                        className="text-sm text-blue-600 hover:underline"
+                                    >
+                                        View Full Image
+                                    </a>
+                                </div>
+                            ) : (
+                                <EmptyText />
+                            )}
+                        </Section>
+
+                        {/* Certificate */}
+                        <Section title="Certificate">
+                            {profile?.certificateUrl ? (
+                                <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-slate-50 p-4">
+
+                                    {/* Preview */}
+                                    {profile.certificateUrl.includes(".pdf") ? (
+                                        <span className="text-2xl">📄</span>
+                                    ) : (
+                                        <img
+                                            src={profile.certificateUrl}
+                                            className="w-16 h-16 object-cover rounded-lg border"
+                                        />
+                                    )}
+
+                                    {/* Link */}
+                                    <a
+                                        href={profile.certificateUrl}
+                                        target="_blank"
+                                        className="text-sm text-blue-600 hover:underline"
+                                    >
+                                        View Certificate
+                                    </a>
+
+                                </div>
+                            ) : (
+                                <EmptyText />
+                            )}
+                        </Section>
+                    </div>
+
                     {/* Qualification */}
                     <Section title="Qualification">
                         <Info
