@@ -202,9 +202,7 @@ export default function ServicesScrollSection() {
                                     key={s.id}
                                     name={s.name}
                                     description={s.description}
-                                    icon={Icon}
                                     slug={s.slug}
-                                    subSpecialities={s.subSpecialities}
                                 />
                             );
                         })}
