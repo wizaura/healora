@@ -27,12 +27,12 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
     }
 
     return (
-        <section className="relative m-4 rounded-3xl bg-gradient-to-b from-white to-wellness-bg py-20">
+        <section className="relative m-4 rounded-3xl bg-gradient-to-b from-white to-wellness-bg pt-20 pb-12">
             <div className="mx-auto max-w-7xl px-6">
                 <div className="grid items-start gap-16 md:grid-cols-2">
 
                     {/* LEFT SIDE */}
-                    <div className="space-y-5 text-center md:text-left">
+                    <div className="space-y-2 text-center md:text-left">
 
                         <span className="inline-block rounded-full border border-navy/10 bg-white px-5 py-1.5 text-xs font-medium text-navy/70">
                             Doctor Profile
@@ -59,7 +59,7 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
 
                                 <p>
                                     <span className="font-medium text-lg text-navy">Experience:</span>{" "}
-                                    {data.experience} years
+                                    {data.experience} Years
                                 </p>
                             </div>
                         </div>
@@ -123,10 +123,20 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
                         {/* LANGUAGES */}
                         {data.languages?.length > 0 && (
                             <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-navy/70">
-                                <Globe size={15} />
+                                <span className="font-medium text-lg text-navy">Languages:</span>{" "}
                                 {data.languages.map((l: any) => l.language.name).join(", ")}
                             </div>
                         )}
+
+                        {/* PRICE */}
+                        <div className="inline-flex items-center gap-3 rounded-xl border border-navy/10 bg-navy/5 px-5 py-3 shadow-sm">
+                            <span className="text-lg font-semibold text-navy">
+                                ₹{data.consultationFee}
+                            </span>
+                            <span className="text-sm text-navy/80">
+                                per consultation
+                            </span>
+                        </div>
 
                         {/* BIO */}
                         {data.bio && (
@@ -189,15 +199,6 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
                             </div>
                         )}
 
-                        {/* PRICE */}
-                        <div className="inline-flex items-center gap-3 rounded-xl border border-navy/10 bg-navy/5 px-5 py-3 shadow-sm">
-                            <span className="text-lg font-semibold text-navy">
-                                ₹{data.consultationFee}
-                            </span>
-                            <span className="text-sm text-navy/80">
-                                per consultation
-                            </span>
-                        </div>
 
                     </div>
 

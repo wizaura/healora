@@ -14,7 +14,6 @@ import { FooterQuestions } from "./FooterQuestions";
 import { QuickFacts } from "./QuickFacts";
 
 import SpecialityCard from "@/components/common/SpecialitiesCard";
-import { Activity } from "lucide-react";
 
 export default function SubSpecialityDetailPage() {
 
@@ -36,8 +35,6 @@ export default function SubSpecialityDetailPage() {
         retry: false,
     });
 
-    console.log(data,'data')
-
     if (isLoading) {
         return (
             <div className="py-32 text-center text-navy/60">
@@ -55,35 +52,42 @@ export default function SubSpecialityDetailPage() {
         data.miniSpecialities.length > 0;
 
     return (
-        <div className="bg-white">
+        <div className="bg-white m-4">
 
-            {/* MINI SPECIALITIES VIEW */}
+            {/* HEADER / OVERVIEW */}
 
-            {hasMiniSpecialities ? (
+            <SubSpecialityOverview
+                name={data.name}
+                description={data.description}
+                overview={overview}
+            />
 
-                <section className="py-24 bg-gradient-to-b from-white to-wellness-bg">
+
+            {/* MINI SPECIALITIES */}
+
+            {hasMiniSpecialities && (
+
+                <section className="py-12 bg-gradient-to-b from-white to-wellness-bg rounded-2xl">
 
                     <div className="max-w-6xl mx-auto px-6 text-center">
 
-                        <h1 className="text-4xl font-semibold text-navy-dark mb-6">
-                            {data.name}
-                        </h1>
+                        <h2 className="text-3xl font-semibold text-navy-dark mb-4">
+                            Conditions Under {data.name}
+                        </h2>
 
-                        <p className="max-w-2xl mx-auto text-navy/70 mb-16">
-                            Explore specific conditions under {data.name}.
+                        <p className="max-w-2xl mx-auto text-navy/70 mb-12">
+                            Explore specific conditions and related treatments under this speciality.
                         </p>
 
-                        <div className="flex flex-col gap-8 items-center">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
                             {data.miniSpecialities.map((mini: any) => (
 
                                 <SpecialityCard
                                     key={mini.id}
                                     name={mini.name}
-                                    description={
-                                        mini.overview?.headerMain?.answer || ""
-                                    }
-                                    icon={Activity}
+                                    description={mini.description}
+                                    imageUrl={mini.overview?.images?.image1?.url}
                                     slug={`${specialitySlug}/${subSlug}/${mini.slug}`}
                                 />
 
@@ -95,54 +99,49 @@ export default function SubSpecialityDetailPage() {
 
                 </section>
 
-            ) : (
-
-                <>
-                    {/* HEADER + HEADER QUESTIONS */}
-
-                    <SubSpecialityOverview
-                        name={data.name}
-                        description={data.description}
-                        overview={overview}
-                    />
-
-                    {/* SYMPTOMS */}
-
-                    {data.symptoms?.length > 0 && (
-                        <SubSpecialitySymptoms symptoms={data.symptoms} />
-                    )}
-
-                    {/* CAUSES */}
-
-                    {data.causes?.length > 0 && (
-                        <SubSpecialityCauses causes={data.causes} />
-                    )}
-
-                    {/* RISK FACTORS */}
-
-                    {data.riskFactors?.length > 0 && (
-                        <SubSpecialityRiskFactors riskFactors={data.riskFactors} />
-                    )}
-
-                    {/* FOOTER QUESTIONS */}
-
-                    {overview.footerQuestions?.length > 0 && (
-                        <FooterQuestions
-                            questions={overview.footerQuestions}
-                        />
-                    )}
-
-                    {/* QUICK FACTS */}
-
-                    {data.quickFacts?.length > 0 && (
-                        <QuickFacts facts={data.quickFacts} />
-                    )}
-
-                    {/* AVAILABLE DOCTORS */}
-
-                    <SubSpecialityDoctors subSlug={subSlug as string} />
-                </>
             )}
+
+
+            {/* SYMPTOMS */}
+
+            {data.symptoms?.length > 0 && (
+                <SubSpecialitySymptoms symptoms={data.symptoms} />
+            )}
+
+
+            {/* CAUSES */}
+
+            {data.causes?.length > 0 && (
+                <SubSpecialityCauses causes={data.causes} />
+            )}
+
+
+            {/* RISK FACTORS */}
+
+            {data.riskFactors?.length > 0 && (
+                <SubSpecialityRiskFactors riskFactors={data.riskFactors} />
+            )}
+
+
+            {/* FOOTER QUESTIONS */}
+
+            {overview.footerQuestions?.length > 0 && (
+                <FooterQuestions
+                    questions={overview.footerQuestions}
+                />
+            )}
+
+
+            {/* QUICK FACTS */}
+
+            {data.quickFacts?.length > 0 && (
+                <QuickFacts facts={data.quickFacts} />
+            )}
+
+
+            {/* AVAILABLE DOCTORS */}
+
+            <SubSpecialityDoctors subSlug={subSlug as string} />
 
         </div>
     );

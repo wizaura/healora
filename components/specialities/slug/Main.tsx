@@ -3,22 +3,29 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import api from "@/lib/api";
+
 import SpecialityCard from "../../common/SpecialitiesCard";
-import { Activity } from "lucide-react";
+
+import SpecialityOverview from "../slug/sub/Overview";
+import { QuickFacts } from "../slug/sub/QuickFacts";
+import { FooterQuestions } from "../slug/sub/FooterQuestions";
 
 const DUMMY_SPECIALITY = {
     id: "sp1",
     name: "Homeopathy",
     description:
         "Natural and holistic treatment focused on long-term healing.",
+    overview: {},
+    quickFacts: [],
     subSpecialities: [
         { id: "sub1", name: "General Homeopathy", slug: "general-homeopathy" },
         { id: "sub2", name: "Chronic Care", slug: "chronic-care" },
         { id: "sub3", name: "Pediatric Homeopathy", slug: "pediatric-homeopathy" },
     ],
-};
+};  
 
-export default function SubSpecialitiesPage() {
+export default function SpecialityPage() {
+
     const params = useParams();
     const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
 
@@ -31,66 +38,95 @@ export default function SubSpecialitiesPage() {
         retry: false,
     });
 
-    return (
-        <section
-            className="
-                relative m-4 rounded-3xl
-                bg-gradient-to-b from-white via-white to-wellness-bg
-                py-24
-            "
-        >
-            <div className="mx-auto max-w-7xl px-6">
+    const overview = speciality?.overview || {};
 
-                {/* ================= HEADER ================= */}
-                <div className="mb-20 text-center">
-                    <span
-                        className="
+    return (
+        <div className="bg-white m-4">
+
+            {/* OVERVIEW */}
+
+            <SpecialityOverview
+                name={speciality.name}
+                description={speciality.description}
+                overview={overview}
+            />
+
+
+            {/* ================= SUB SPECIALITIES ================= */}
+
+            <section
+                className="
+                relative rounded-3xl
+                bg-gradient-to-b from-white via-white to-wellness-bg
+                py-12
+                "
+                >
+                <div className="mx-auto max-w-7xl px-6">
+
+                    <div className="mb-16 text-center">
+
+                        <span
+                            className="
                             inline-block mb-6 rounded-full
                             border border-navy/10
                             bg-white/80 backdrop-blur
                             px-8 py-2
                             text-sm font-medium text-navy/70
-                        "
-                    >
-                        Speciality
-                    </span>
+                            "
+                            >
+                            Sub Specialities
+                        </span>
 
-                    <h1 className="text-4xl md:text-6xl font-semibold text-navy-dark">
-                        {speciality?.name}
-                    </h1>
+                        <h2 className="text-3xl md:text-4xl font-semibold text-navy-dark">
+                            Areas of Treatment
+                        </h2>
 
-                    <p className="mx-auto mt-4 max-w-2xl text-navy/70">
-                        {speciality?.description ||
-                            "Explore available sub-specialities under this field."}
-                    </p>
-
-                    {isError && (
-                        <p className="mt-4 text-sm text-navy/50">
-                            Showing sample data while we reconnect…
+                        <p className="mx-auto mt-4 max-w-2xl text-navy/70">
+                            Explore specialised treatment areas under {speciality.name}.
                         </p>
-                    )}
-                </div>
 
-                {/* ================= SUB SPECIALITIES ================= */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+                        {isError && (
+                            <p className="mt-4 text-sm text-navy/50">
+                                Showing sample data while we reconnect…
+                            </p>
+                        )}
 
-                    {speciality?.subSpecialities?.map((sub: any) => (
-                        <SpecialityCard
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                        {speciality?.subSpecialities?.map((sub: any) => (
+                            <SpecialityCard
                             key={sub.id}
                             name={sub.name}
                             description={sub.description}
-                            icon={Activity}
+                            imageUrl={sub.overview?.images?.image1?.url}
                             slug={`${slug}/${sub.slug || sub.id}`}
-                        />
-                    ))}
+                            />
+                        ))}
 
-                    {speciality?.subSpecialities?.length === 0 && (
-                        <div className="text-center text-navy/60">
-                            No sub-specialities available yet.
-                        </div>
-                    )}
+                        {speciality?.subSpecialities?.length === 0 && (
+                            <div className="col-span-full text-center text-navy/60">
+                                No sub-specialities available yet.
+                            </div>
+                        )}
+
+                    </div>
+
                 </div>
-            </div>
-        </section>
+            </section>
+
+            {/* FOOTER QUESTIONS */}
+
+            {overview?.footerQuestions?.length > 0 && (
+                <FooterQuestions questions={overview.footerQuestions} />
+            )}
+
+            {/* QUICK FACTS */}
+
+            {speciality?.quickFacts?.length > 0 && (
+                <QuickFacts facts={speciality.quickFacts} />
+            )}
+        </div>
     );
 }

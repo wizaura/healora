@@ -95,6 +95,10 @@ export default function ManageSubSpecialityPage() {
 
                         </div>
 
+                        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-600">
+                            {sub.description}
+                        </p>
+
                     </div>
 
                     <StatusBadge active={sub.isActive} />

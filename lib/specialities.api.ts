@@ -38,8 +38,6 @@ export const getAdminSpecialityById = async (id: string) => {
 // 🔹 Create
 export const createSpeciality = async (data: {
     name: string;
-    description?: string;
-    icon?: string;
 }) => {
     const res = await api.post("/admin/specialities", data);
     return res.data;

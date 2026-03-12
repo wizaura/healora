@@ -56,6 +56,7 @@ export default function MiniSpeciality() {
 
             <SubSpecialityOverview
                 name={data.name}
+                description={data.description}
                 overview={overview}
             />
 

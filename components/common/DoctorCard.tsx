@@ -159,7 +159,10 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
 
                     <div className="flex items-center gap-2">
 
-                        <Clock size={14} />
+                        <div className="flex flex-row gap-1 items-center">
+                            <Clock size={14} className="mt-1" />
+                            <span className="font-semibold text-md text-gray-800">Experience:</span>
+                        </div>
 
                         <span>
                             {doctor.experience} years experience
@@ -173,7 +176,10 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
 
                     <div className="flex items-center gap-2">
 
-                        <Globe size={14} />
+                        <div className="flex flex-row gap-1 items-center">
+                            <Globe size={14} className="mt-1" />
+                            <span className="font-semibold text-md text-gray-800">Language:</span>
+                        </div>
 
                         <span>
                             {doctor.languages
@@ -195,7 +201,7 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
                 <button
                     onClick={() => onBook?.(doctor.id)}
                     className="
-                    w-full
+                    w-full cursor-pointer
                     flex items-center justify-center gap-2
                     rounded-xl
                     bg-navy

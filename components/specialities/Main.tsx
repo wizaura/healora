@@ -126,7 +126,7 @@ export default function SpecialtiesSection() {
             className="
         relative m-4 rounded-3xl
         bg-gradient-to-b
-        from-white via-wellness-bg to-wellness-bg
+        from-white via-white to-wellness-bg
         py-24
       "
         >
@@ -134,34 +134,52 @@ export default function SpecialtiesSection() {
 
                 {/* Header */}
                 <div className="mb-20 text-center">
+
                     <span
                         className="
-              inline-block mb-6
-              rounded-full
-              border border-navy/10
-              bg-white/80
-              px-8 py-2
-              text-sm font-medium
-              text-navy/70
-              backdrop-blur
-            "
+        inline-block mb-6
+        rounded-full
+        border border-navy/10
+        bg-white/80
+        px-8 py-2
+        text-sm font-medium
+        text-navy/70
+        backdrop-blur
+    "
                     >
                         Specialities
                     </span>
 
                     <h2
                         className="
-              text-4xl md:text-6xl
-              font-semibold
-              leading-[1.15]
-              tracking-[-0.02em]
-              text-navy
-            "
+        text-4xl md:text-6xl
+        font-semibold
+        leading-[1.15]
+        tracking-[-0.02em]
+        text-navy
+    "
                     >
                         Quality Medical Services
                         <br />
                         For Every Patient
                     </h2>
+
+                    <p
+                        className="
+        mt-6
+        text-lg
+        text-navy/60
+        max-w-2xl
+        mx-auto
+        leading-relaxed
+    "
+                    >
+                        Discover our range of holistic healthcare services designed
+                        to address physical, mental, and emotional wellbeing. Our
+                        specialists provide personalized treatments to help you
+                        achieve lasting health and balance.
+                    </p>
+
                 </div>
 
                 {/* Cards */}
@@ -175,9 +193,8 @@ export default function SpecialtiesSection() {
                                 key={item.id}
                                 name={item.name}
                                 description={item.description}
-                                icon={Icon}
+                                imageUrl={item.overview?.images?.image1?.url}
                                 slug={item.slug}
-                                subSpecialities={item.subSpecialities}
                             />
                         );
                     })}

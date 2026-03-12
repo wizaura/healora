@@ -16,10 +16,10 @@ import { useAuth } from "@/lib/auth-context";
 
 const navItems = [
     { name: "Home", href: "/" },
-    { name: "About Us", href: "#about" },
+    { name: "About Us", href: "/about" },
     { name: "Specialities", href: "/specialities" },
     { name: "Doctors", href: "/doctors" },
-    { name: "Blog", href: "#blog" },
+    { name: "Blog", href: "/blog" },
 ];
 
 export default function Navbar() {

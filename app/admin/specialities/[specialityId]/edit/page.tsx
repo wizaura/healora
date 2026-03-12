@@ -1,9 +1,7 @@
-import SpecialityForm from "@/components/admin/specialities/SpecialitiesForm";
+import EditSpecialityPage from "@/components/admin/specialities/edit/EditSpecialityPage";
 
 export default function AdminEditSpeciality() {
     return (
-        <div className="py-20 px-6">
-            <SpecialityForm mode="create" />
-        </div>
+        <EditSpecialityPage />
     )
 }

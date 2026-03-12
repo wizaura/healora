@@ -27,11 +27,53 @@ export default function SubSpecialityOverview({
     const image = images?.image1?.url || images?.image2?.url;
 
     return (
-        <section className="py-24 bg-white">
+        <section className="pt-24 pb-6 bg-white">
 
-            <div className="max-w-6xl mx-auto px-6">
+            <div className="max-w-6xl mx-auto px-6 py-12">
 
-                {/* HERO */}
+                {/* HEADER STYLE LIKE SPECIALITIES */}
+
+                <div className="mb-20 text-center">
+
+                    <span
+                        className="
+                        inline-block mb-6
+                        rounded-full
+                        border border-navy/10
+                        bg-white/80
+                        px-8 py-2
+                        text-sm font-medium
+                        text-navy/70
+                        backdrop-blur
+                        "
+                    >
+                        Medical Condition
+                    </span>
+
+                    <h1
+                        className="
+                        text-4xl md:text-6xl
+                        font-semibold
+                        leading-[1.15]
+                        tracking-[-0.02em]
+                        text-navy-dark
+                        "
+                    >
+                        {name}
+                    </h1>
+
+                    {description && (
+
+                        <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+                            {description}
+                        </p>
+
+                    )}
+
+                </div>
+
+
+                {/* HERO CONTENT */}
 
                 <div className="grid md:grid-cols-2 gap-16 items-center">
 
@@ -39,27 +81,11 @@ export default function SubSpecialityOverview({
 
                     <div>
 
-                        <span className="text-xs tracking-widest text-gray-400 uppercase font-medium">
-                            Medical Condition
-                        </span>
-
-                        <h1 className="mt-4 text-4xl md:text-5xl font-semibold text-navy-dark leading-tight">
-                            {name}
-                        </h1>
-
-                        {description && (
-                            <p className="mt-6 text-lg text-gray-600 leading-relaxed max-w-lg">
-                                {description}
-                            </p>
-                        )}
-
-                        {/* MAIN QUESTION */}
-
                         {headerMain?.question && (
 
-                            <div className="mt-10">
+                            <div>
 
-                                <h2 className="text-xl font-semibold text-navy-dark mb-3">
+                                <h2 className="text-2xl font-semibold text-navy-dark mb-4">
                                     {headerMain.question}
                                 </h2>
 
@@ -72,6 +98,7 @@ export default function SubSpecialityOverview({
                         )}
 
                     </div>
+
 
                     {/* IMAGE SIDE */}
 
@@ -93,6 +120,7 @@ export default function SubSpecialityOverview({
 
                 </div>
 
+
                 {/* SECONDARY QUESTIONS */}
 
                 {headerSecondary.length > 0 && (
@@ -103,7 +131,15 @@ export default function SubSpecialityOverview({
 
                             <div
                                 key={i}
-                                className="border border-gray-100 rounded-xl p-8 bg-gray-50 hover:bg-white transition shadow-sm"
+                                className="
+                                border border-gray-100
+                                rounded-xl
+                                p-8
+                                bg-gray-50
+                                hover:bg-white
+                                transition
+                                shadow-sm
+                                "
                             >
 
                                 <h3 className="text-lg font-semibold text-navy-dark mb-3">

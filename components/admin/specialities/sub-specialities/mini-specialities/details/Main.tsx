@@ -90,6 +90,10 @@ export default function ManageMiniSpecialityPage() {
 
                         </div>
 
+                        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-600">
+                            {mini.description}
+                        </p>
+
                     </div>
 
                     <StatusBadge active={mini.isActive} />
@@ -138,11 +142,10 @@ export default function ManageMiniSpecialityPage() {
                     <button
                         key={t}
                         onClick={() => setTab(t)}
-                        className={`pb-4 capitalize transition ${
-                            tab === t
+                        className={`pb-4 capitalize transition ${tab === t
                                 ? "text-navy-dark border-b-2 border-wellness-accent"
                                 : "text-navy/60 hover:text-navy"
-                        }`}
+                            }`}
                     >
                         {t === "risk" ? "Risk Factors" : t}
                     </button>

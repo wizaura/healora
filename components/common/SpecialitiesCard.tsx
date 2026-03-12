@@ -1,109 +1,137 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
-type SubSpeciality = {
-    id: string;
+type Props = {
     name: string;
-};
-
-type SpecialityCardProps = {
-    name: string;
-    description?: string;
-    icon: any;
     slug: string;
-    subSpecialities?: SubSpeciality[];
+    description?: string;
+    imageUrl?: string;
 };
 
-export default function SpecialityCard({
+export default function MainSpecialityCard({
     name,
-    description,
-    icon: Icon,
     slug,
-    subSpecialities = [],
-}: SpecialityCardProps) {
+    description,
+    imageUrl,
+}: Props) {
+
     return (
+
         <div
             className="
-
-    w-auto
-
-
-    overflow-hidden
-    rounded-2xl
-    bg-navy-dark
-    shadow-[0_30px_60px_-25px_rgba(0,0,0,0.35)]
-    transition-all duration-500
-    hover:-translate-y-1 hover:scale-[1.02]
-    flex flex-col sm:flex-row
-  "
+            group
+            bg-white
+            border border-gray-200
+            rounded-2xl
+            overflow-hidden
+            shadow-sm
+            transition-all duration-300
+            hover:-translate-y-1
+            hover:shadow-xl
+            flex flex-col lg:flex-row
+            h-auto lg:h-[220px]
+        "
         >
 
-            {/* ICON PANEL */}
+            {/* IMAGE */}
+
             <div
                 className="
-          relative flex items-center justify-center
-          bg-gradient-to-b from-wellness-bg via-white to-white
-          p-6
-          m-3 rounded-xl sm:m-4 sm:w-44 sm:rounded-2xl
-        "
+                relative
+                w-full
+                h-[170px]
+                lg:h-full
+                lg:w-[40%]
+                overflow-hidden
+                flex-shrink-0
+            "
             >
-                <div
-                    className="
-            flex h-16 w-16 items-center justify-center
-            rounded-full
-            bg-navy
-            text-wellness-accent
-            shadow-lg
-          "
-                >
-                    <Icon size={28} />
-                </div>
+
+                {imageUrl && (
+
+                    <Image
+                        src={imageUrl}
+                        alt={name}
+                        fill
+                        className="
+                        object-cover
+                        transition duration-500
+                        group-hover:scale-105
+                    "
+                    />
+
+                )}
+
             </div>
+
 
             {/* CONTENT */}
-            <div className="flex flex-1 flex-col justify-between px-5 py-6">
-                <div>
-                    <h3 className="mb-2 text-xl font-semibold text-white">
-                        {name}
-                    </h3>
 
-                    {description && (
-                        <p className="max-w-md text-md leading-relaxed text-white/70">
-                            {description}
-                        </p>
-                    )}
+            <div
+                className="
+                flex flex-col
+                flex-1
+                p-6
+            "
+            >
+
+                <h3 className="text-lg font-semibold text-navy-dark">
+                    {name}
+                </h3>
+
+
+                {description && (
+
+                    <p
+                        className="
+                        text-sm
+                        text-gray-600
+                        mt-2
+                        line-clamp-4
+                    "
+                    >
+                        {description}
+                    </p>
+
+                )}
+
+
+                {/* BUTTON */}
+
+                <div className="mt-auto pt-4">
+
+                    <Link
+                        href={`/specialities/${slug}`}
+                        className="
+                        inline-flex
+                        items-center
+                        gap-2
+                        rounded-xl
+                        bg-navy
+                        text-white
+                        text-sm
+                        font-medium
+                        px-5
+                        py-2.5
+                        transition
+                        hover:bg-navy-dark
+                    "
+                    >
+
+                        Explore
+
+                        <ArrowUpRight size={16} />
+
+                    </Link>
+
                 </div>
 
-                {/* CTA */}
-                <Link
-                    href={`/specialities/${slug}`}
-                    className="
-            group mt-5 inline-flex w-fit items-center gap-3
-            rounded-full
-            border border-white/20 hover:border-white
-            bg-white
-            px-4 py-2
-            text-sm font-medium text-navy
-            transition-all duration-300
-            hover:bg-navy hover:text-white hover:border-navy
-          "
-                >
-                    Explore
-
-                    <span
-                        className="
-              flex h-7 w-7 items-center justify-center rounded-full
-              bg-navy text-white
-              transition-all duration-300
-              group-hover:bg-white group-hover:text-navy
-            "
-                    >
-                        <ArrowUpRight size={14} />
-                    </span>
-                </Link>
             </div>
+
         </div>
+
     );
 }

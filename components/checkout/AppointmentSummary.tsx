@@ -115,7 +115,7 @@ export default function AppointmentSummary({
                         {/* Languages */}
                         {data.languages?.length > 0 && (
                             <p className="flex items-center justify-center gap-2">
-                                <Globe size={14} />
+                                <strong>Languages:</strong>{" "}
                                 {data.languages.map((l: any) => l.language.name).join(", ")}
                             </p>
                         )}

@@ -40,8 +40,6 @@ export type FormValues = {
 
 export default function ConditionEditor({ id, type }: any) {
 
-    console.log(id,'id')
-
     const router = useRouter();
 
     const form = useForm<FormValues>({
@@ -59,10 +57,23 @@ export default function ConditionEditor({ id, type }: any) {
 
     const { reset, handleSubmit } = form;
 
+    /* ---------------- ENTITY URL ---------------- */
+
     const baseUrl =
-        type === "sub"
-            ? `/admin/sub-specialities/${id}`
-            : `/admin/mini-specialities/${id}`;
+        type === "speciality"
+            ? `/admin/specialities/${id}`
+            : type === "sub"
+                ? `/admin/sub-specialities/${id}`
+                : `/admin/mini-specialities/${id}`;
+
+    const title =
+        type === "speciality"
+            ? "Edit Speciality"
+            : type === "sub"
+                ? "Edit Sub Speciality"
+                : "Edit Condition";
+
+    /* ---------------- FETCH DATA ---------------- */
 
     const { data } = useQuery({
         queryKey: ["condition", id],
@@ -86,12 +97,15 @@ export default function ConditionEditor({ id, type }: any) {
 
                 existingImages: overview.images ?? {}
             };
-        }
+        },
+        enabled: !!id
     });
 
     useEffect(() => {
         if (data) reset(data);
     }, [data]);
+
+    /* ---------------- UPDATE ---------------- */
 
     const mutation = useMutation({
         mutationFn: async (values: any) => {
@@ -126,6 +140,13 @@ export default function ConditionEditor({ id, type }: any) {
 
     const onSubmit = (values: FormValues) => mutation.mutate(values);
 
+    const cancelRoute =
+        type === "speciality"
+            ? `/admin/specialities/${id}`
+            : type === "sub"
+                ? `/admin/sub-specialities/${id}`
+                : `/admin/mini-specialities/${id}`;
+
     if (!data) return null;
 
     return (
@@ -135,7 +156,7 @@ export default function ConditionEditor({ id, type }: any) {
             <div className="max-w-5xl mx-auto px-6 space-y-12">
 
                 <h1 className="text-3xl font-semibold">
-                    Edit Condition
+                    {title}
                 </h1>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-12">
@@ -167,7 +188,7 @@ export default function ConditionEditor({ id, type }: any) {
 
                         <button
                             type="button"
-                            onClick={() => router.back()}
+                            onClick={() => router.replace(cancelRoute)}
                             className="px-6 py-3 rounded-lg border border-gray-200 hover:bg-gray-200 text-sm"
                         >
                             Cancel

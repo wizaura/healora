@@ -10,6 +10,8 @@ import {
     Settings,
     ChevronLeft,
     ChevronRight,
+    Paperclip,
+    Plus,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -20,6 +22,8 @@ const navItems = [
     { label: "Appointments", href: "/admin/appointments", icon: Calendar },
     { label: "Users", href: "/admin/users", icon: Users },
     { label: "Specialities", href: "/admin/specialities", icon: ClipboardList },
+    { label: "Blogs", href: "/admin/blogs", icon: Paperclip },
+    { label: "Medikits", href: "/admin/medikits", icon: Plus },
     { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 

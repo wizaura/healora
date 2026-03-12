@@ -32,7 +32,7 @@ export default function SubSpecialityDoctors({ subSlug, miniSlug }: Props) {
     });
 
     return (
-        <section className="py-20 bg-wellness-bg m-4 rounded-2xl">
+        <section className="py-20 bg-gradient-to-b from-wellness-bg via-white to-white my-2 rounded-2xl">
 
             <div className="max-w-7xl mx-auto px-6">
 
@@ -40,15 +40,11 @@ export default function SubSpecialityDoctors({ subSlug, miniSlug }: Props) {
 
                 <div className="text-center mb-16">
 
-                    <span className="text-xs uppercase tracking-wider text-wellness-accent font-semibold">
-                        Medical Specialists
-                    </span>
-
-                    <h2 className="text-3xl font-semibold text-navy-dark mt-2">
+                    <h2 className="text-4xl font-semibold text-navy-dark mt-2">
                         Available Doctors
                     </h2>
 
-                    <p className="text-navy/60 text-sm mt-3 max-w-xl mx-auto">
+                    <p className="text-navy/90 text-lg mt-3 max-w-xl mx-auto">
                         Connect with experienced doctors who specialize in treating
                         this condition and receive professional medical guidance.
                     </p>
