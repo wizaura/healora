@@ -13,6 +13,9 @@ import {
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { useQuery } from "@tanstack/react-query";
+import { getProfile } from "@/lib/profile.api";
+import { AlertTriangle } from "lucide-react";
 
 const navItems = [
     { name: "Home", href: "/" },
@@ -25,7 +28,13 @@ const navItems = [
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const pathname = usePathname();
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
+
+    const { data: profile } = useQuery({
+        queryKey: ["profile", user?.sub],
+        queryFn: () => getProfile(user!.sub),
+        enabled: !!user?.sub,
+    });
 
     return (
         <header className="fixed inset-x-0 top-0 z-50 bg-white/80 border-b border-gray-200 backdrop-blur-md">
@@ -134,6 +143,28 @@ export default function Navbar() {
                     {open ? <X /> : <Menu />}
                 </button>
             </nav>
+
+            {profile?.mustChangePassword && (
+                <div className="bg-red-50 border-t border-red-200">
+                    <div className="mx-auto max-w-7xl px-6 py-2 flex items-center justify-between">
+
+                        <div className="flex items-center gap-2 text-sm text-red-700">
+                            <AlertTriangle size={16} />
+                            <span>
+                                Your password was set by an administrator. Please update it for security.
+                            </span>
+                        </div>
+
+                        <Link
+                            href="/profile/settings"
+                            className="text-sm font-semibold text-red-700 hover:underline"
+                        >
+                            Change Password
+                        </Link>
+
+                    </div>
+                </div>
+            )}
 
             {/* Mobile Menu */}
             {open && (
