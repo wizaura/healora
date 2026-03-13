@@ -188,6 +188,7 @@ export default function ConditionEditor({ id, type }: any) {
 
                         <button
                             type="button"
+                            disabled={mutation.isPending}
                             onClick={() => router.replace(cancelRoute)}
                             className="px-6 py-3 rounded-lg border border-gray-200 hover:bg-gray-200 text-sm"
                         >
@@ -196,9 +197,14 @@ export default function ConditionEditor({ id, type }: any) {
 
                         <button
                             type="submit"
-                            className="px-6 py-3 bg-wellness-accent text-white rounded-lg text-sm font-medium"
+                            disabled={mutation.isPending}
+                            className="flex items-center gap-2 px-6 py-3 bg-wellness-accent text-white rounded-lg text-sm font-medium disabled:opacity-60"
                         >
-                            Save Changes
+                            {mutation.isPending && (
+                                <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                            )}
+
+                            {mutation.isPending ? "Saving..." : "Save Changes"}
                         </button>
 
                     </div>
