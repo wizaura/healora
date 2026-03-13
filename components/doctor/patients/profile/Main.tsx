@@ -32,7 +32,7 @@ export default function PatientProfilePage() {
     const appointmentId = latestAppointment?.id;
 
     return (
-        <div className="p-6 py-20 space-y-8">
+        <div className="p-6 max-w-7xl mx-auto py-20 space-y-8">
 
             {/* HEADER */}
 

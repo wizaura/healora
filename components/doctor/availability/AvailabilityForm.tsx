@@ -93,13 +93,13 @@ export default function AvailabilityForm() {
             : 0;
 
     return (
-        <section className="rounded-2xl">
+        <section className="rounded-2xl md:pt-12">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-3xl font-semibold text-[#1F2147]">
+                    <h2 className="text-lg sm:text-3xl font-semibold text-[#1F2147]">
                         Availability
                     </h2>
-                    <p className="text-lg text-gray-500">
+                    <p className="text-sm sm:text-lg text-gray-500">
                         Set availability for multiple days
                     </p>
                 </div>

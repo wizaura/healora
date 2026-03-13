@@ -17,7 +17,7 @@ export default function DoctorForm({ doctor, onSuccess, onClose }: Props) {
 
     const [certificate, setCertificate] = useState<File | null>(null);
     const [certificatePreview, setCertificatePreview] = useState<string | null>(
-        doctor?.certificateUrl || null
+        doctor?.doctor?.certificateUrl || null
     );
 
     const [saving, setSaving] = useState(false);

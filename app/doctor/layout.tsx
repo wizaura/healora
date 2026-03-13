@@ -25,10 +25,10 @@ export default function DoctorLayout({
 
     return (
         <div className="min-h-screen bg-slate-50">
-            <DoctorTopBar />
+            <DoctorTopBar/>
 
             {/* Page content */}
-            <main className="mx-auto max-w-7xl px-6 pt-20 pb-8">
+            <main className="mx-auto bg-white px-6 pt-24 pb-8">
                 {children}
             </main>
         </div>

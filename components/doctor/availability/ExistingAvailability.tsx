@@ -61,7 +61,7 @@ export default function ExistingAvailability() {
 
     return (
         <>
-            <section className="rounded-3xl bg-gradient-to-br from-[#F4FBF9] to-white p-8 border border-[#E6F2EF] shadow-sm space-y-8">
+            <section className="rounded-3xl bg-gradient-to-br from-[#F4FBF9] to-white p-3 md:p-8 border border-[#E6F2EF] shadow-sm space-y-8">
 
                 {/* Month Header */}
                 <div className="flex items-center justify-between">
@@ -73,7 +73,7 @@ export default function ExistingAvailability() {
                         Previous
                     </button>
 
-                    <h2 className="text-2xl font-semibold text-[#0B2E28] tracking-wide">
+                    <h2 className="text-base md:text-2xl font-semibold text-[#0B2E28] tracking-wide">
                         {currentMonth.toLocaleDateString(undefined, {
                             month: "long",
                             year: "numeric",
@@ -97,7 +97,7 @@ export default function ExistingAvailability() {
                 )}
 
                 {/* Day Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-6">
                     {sortedData.map((day) => {
                         const activeCount = day.slots.filter(
                             (s) => s.status === "AVAILABLE"

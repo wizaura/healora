@@ -1,5 +1,6 @@
 "use client";
 
+import api from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, User, CreditCard } from "lucide-react";
 
@@ -168,7 +169,41 @@ export default function AppointmentModal({
                         </div>
 
                         {/* FOOTER */}
-                        <div className="p-4 border-t border-[#E2F0ED] bg-[#F4FBF9] flex justify-end">
+                        <div className="p-4 border-t border-[#E2F0ED] bg-[#F4FBF9] flex justify-end gap-3">
+
+                            {selected.status === "CONFIRMED" && (
+                                <button
+                                    onClick={() =>
+                                        window.location.href = `/doctor/appointments/${selected.id}/reschedule`
+                                    }
+                                    className="px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-100"
+                                >
+                                    Reschedule
+                                </button>
+                            )}
+
+                            <button
+                                onClick={() => {
+                                    window.location.href = `/doctor/patients/${selected.user.id}`;
+                                }}
+                                className="px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-100 transition"
+                            >
+                                View Patient Record
+                            </button>
+
+
+                            {selected.status === "CONFIRMED" && (
+                                <button
+                                    onClick={async () => {
+                                        await api.post(`/appointments/${selected.id}/complete`);
+                                        window.location.href = `/doctor/patient/${selected.user.id}`;
+                                    }}
+                                    className="px-4 py-2 text-sm font-medium rounded-lg bg-green-600 text-white hover:bg-green-700"
+                                >
+                                    Complete Appointment
+                                </button>
+                            )}
+
                         </div>
                     </motion.div>
                 </motion.div>

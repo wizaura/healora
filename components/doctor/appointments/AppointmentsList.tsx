@@ -111,7 +111,7 @@ export default function AppointmentsList({
                                     <td className="py-4 text-right">
                                         <button
                                             onClick={() => onSelect(appt)}
-                                            className="px-4 py-1 text-sm font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
+                                            className="px-4 py-1 text-sm font-medium rounded-md bg-wellness-accent text-white hover:bg-wellness-accent/80 transition"
                                         >
                                             View
                                         </button>

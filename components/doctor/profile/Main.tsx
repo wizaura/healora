@@ -193,7 +193,7 @@ export default function DoctorProfile() {
 
     return (
 
-        <div className="mx-auto max-w-7xl bg-white px-8 rounded-xl py-12 my-20 space-y-10">
+        <div className="mx-auto max-w-7xl px-8 rounded-xl p-8 pt-24 space-y-10">
 
             {/* HEADER */}
 

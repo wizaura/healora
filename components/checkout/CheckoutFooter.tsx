@@ -5,12 +5,24 @@ import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
+import AddressForm from "./AddressForm";
 
 declare global {
     interface Window {
         Razorpay: any;
     }
 }
+
+type Address = {
+    name?: string;
+    phone?: string;
+    line1?: string;
+    line2?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    country?: string;
+};
 
 type Props = {
     doctorId: string;
@@ -24,22 +36,24 @@ type Props = {
 export default function CheckoutFooter({
     doctorId,
     slotId,
-    date,
-    startTime,
-    endTime,
     paymentMethod,
 }: Props) {
     const [slotFee, setSlotFee] = useState(0);
     const [consultationFee, setConsultationFee] = useState(0);
-    const [prescriptionFee, setPrescriptionFee] = useState(50); // small optional fee
+    const [prescriptionFee] = useState(50);
+    const [deliveryFee] = useState(100);
+
     const [loading, setLoading] = useState(true);
+
     const [meetingType, setMeetingType] = useState<"google" | "zoom" | null>(null);
-    const [deliveryMode, setDeliveryMode] = useState<"none" | "prescription" | "door">("none");
-    const [address, setAddress] = useState("");
-    const deliveryFee = 100; // example
+
+    const [deliveryMode, setDeliveryMode] = useState<
+        "none" | "prescription" | "door"
+    >("none");
 
     const [payMode, setPayMode] = useState<"slot" | "full">("slot");
-    const [includePrescription, setIncludePrescription] = useState(false);
+
+    const [address, setAddress] = useState<Address>({});
 
     const router = useRouter();
 
@@ -63,7 +77,6 @@ export default function CheckoutFooter({
         fetchFees();
     }, [doctorId]);
 
-    // 🔥 dynamic total calculation
     const totalAmount = useMemo(() => {
         let total = slotFee;
 
@@ -75,53 +88,64 @@ export default function CheckoutFooter({
             total += prescriptionFee;
         }
 
+        if (deliveryMode === "door") {
+            total += deliveryFee;
+        }
+
         return total;
-    }, [slotFee, consultationFee, payMode, deliveryMode]);
+    }, [slotFee, consultationFee, payMode, deliveryMode, prescriptionFee, deliveryFee]);
 
     const handlePayment = async () => {
         if (payMode === "full" && !meetingType) {
             return toast.error("Please select consultation mode");
         }
 
-        if (deliveryMode === "door" && !address.trim()) {
+        if (payMode === "full" && deliveryMode === "none") {
+            return toast.error("Please choose prescription copy or medicine delivery");
+        }
+
+        if (deliveryMode === "door" && !address.line1) {
             return toast.error("Please enter delivery address");
         }
 
         try {
             setLoading(true);
 
-            // 1️⃣ initiate booking
             const bookingRes = await api.post("/booking/initiate", {
                 doctorId,
                 slotId,
             });
 
-            console.log(bookingRes,'bs')
-
             const { appointmentId } = bookingRes.data.data;
 
-            console.log(appointmentId,'ap')
-
-            // 2️⃣ initiate payment with totalAmount
-            const paymentRes = await api.post("/payments/initiate", {
+            const payload: any = {
                 appointmentId,
                 doctorId,
                 slotId,
                 payMode,
                 paymentMethod,
-                meetingType,
-                deliveryMode,
-                address: deliveryMode === "door" ? address : null,
-            });
+            };
 
+            if (payMode === "full") {
+                payload.meetingType = meetingType;
+            }
+
+            if (payMode === "full") {
+                payload.deliveryMode = deliveryMode;
+            }
+
+            if (deliveryMode === "door") {
+                payload.address = address;
+            }
+
+            const paymentRes = await api.post("/payments/initiate", payload);
 
             if (paymentMethod === "razorpay") {
                 openRazorpay(paymentRes.data.data, appointmentId);
             }
 
             if (paymentMethod === "stripe") {
-                window.location.href =
-                    paymentRes.data.data.checkoutUrl;
+                window.location.href = paymentRes.data.data.checkoutUrl;
             }
         } catch (err) {
             toast.error("Failed to initiate payment");
@@ -145,9 +169,7 @@ export default function CheckoutFooter({
             name: "Healora",
             description: "Appointment Payment",
             handler: () => {
-                router.push(
-                    `/payment/pending?appointmentId=${appointmentId}`
-                );
+                router.push(`/payment/pending?appointmentId=${appointmentId}`);
             },
             theme: { color: "#0E3B43" },
         };
@@ -159,129 +181,134 @@ export default function CheckoutFooter({
     if (loading) return null;
 
     return (
-        <section className="rounded-2xl bg-white p-6 shadow-sm">
+        <section className="rounded-2xl bg-white shadow-sm max-h-[650px] flex flex-col">
             <Script
                 src="https://checkout.razorpay.com/v1/checkout.js"
                 strategy="afterInteractive"
             />
 
-            <div className="max-w-lg mx-auto">
+            <div className="overflow-y-auto p-6 max-w-lg mx-auto w-full">
 
                 {/* Title */}
                 <h2 className="text-xl font-semibold text-navy mb-6">
                     Choose Payment Option
                 </h2>
 
-                {/* Payment Mode Options */}
+                {/* Payment Mode */}
                 <div className="space-y-3">
 
-                    {/* Slot only */}
                     <div
                         onClick={() => setPayMode("slot")}
-                        className={`cursor-pointer rounded-xl border p-4 ${payMode === "slot"
-                            ? "border-navy bg-navy/5"
-                            : "border-gray-200"
-                            }`}
+                        className={`cursor-pointer rounded-xl border p-4 transition hover:border-navy
+            ${payMode === "slot"
+                                ? "border-navy bg-navy/5 shadow-sm"
+                                : "border-gray-200"}`}
                     >
                         <div className="flex justify-between">
-                            <span className="font-medium">
-                                Pay Slot Fee Only
-                            </span>
+                            <span className="font-medium">Pay Slot Fee Only</span>
                             <span>₹{slotFee}</span>
                         </div>
+
                         <p className="text-xs text-gray-500 mt-1">
                             Confirm booking now. Consultation later.
                         </p>
                     </div>
 
-                    {/* Full payment */}
                     <div
                         onClick={() => setPayMode("full")}
-                        className={`cursor-pointer rounded-xl border p-4 ${payMode === "full"
-                            ? "border-navy bg-navy/5"
-                            : "border-gray-200"
-                            }`}
+                        className={`cursor-pointer rounded-xl border p-4 transition hover:border-navy
+            ${payMode === "full"
+                                ? "border-navy bg-navy/5 shadow-sm"
+                                : "border-gray-200"}`}
                     >
                         <div className="flex justify-between">
                             <span className="font-medium">
                                 Pay Slot + Consultation
                             </span>
-                            <span>
-                                ₹{slotFee + consultationFee}
-                            </span>
+
+                            <span>₹{slotFee + consultationFee}</span>
                         </div>
+
                         <p className="text-xs text-gray-500 mt-1">
                             Complete payment in one go.
                         </p>
                     </div>
                 </div>
 
-                {/* Optional Prescription */}
+                {/* Add-ons */}
                 <div className="mt-6 space-y-3">
                     <p className="text-sm font-medium">Add-ons</p>
 
                     <div
-                        onClick={() => setDeliveryMode("prescription")}
-                        className={`cursor-pointer rounded-xl border p-3 ${deliveryMode === "prescription"
-                            ? "border-navy bg-navy/5"
-                            : "border-gray-200"
-                            }`}
+                        onClick={() =>
+                            setDeliveryMode(
+                                deliveryMode === "prescription" ? "none" : "prescription"
+                            )
+                        }
+                        className={`cursor-pointer rounded-xl border p-3 transition
+            ${deliveryMode === "prescription"
+                                ? "border-navy bg-navy/5"
+                                : "border-gray-200"}`}
                     >
                         Prescription Copy (₹{prescriptionFee})
                     </div>
 
                     <div
-                        onClick={() => setDeliveryMode("door")}
-                        className={`cursor-pointer rounded-xl border p-3 ${deliveryMode === "door"
-                            ? "border-navy bg-navy/5"
-                            : "border-gray-200"
-                            }`}
+                        onClick={() =>
+                            setDeliveryMode(deliveryMode === "door" ? "none" : "door")
+                        }
+                        className={`cursor-pointer rounded-xl border p-3 transition
+            ${deliveryMode === "door"
+                                ? "border-navy bg-navy/5"
+                                : "border-gray-200"}`}
                     >
-                        Door-to-door Medicine Delivery
+                        Door-to-door Medicine Delivery (Pay Later)
                     </div>
                 </div>
 
+                {/* Meeting Mode */}
                 {payMode === "full" && (
-                    <div className="mt-4 space-y-2">
-                        <p className="text-sm font-medium">Choose Consultation Mode</p>
-    
+                    <div className="mt-6 space-y-2">
+                        <p className="text-sm font-medium">
+                            Choose Consultation Mode
+                        </p>
+
                         <div className="flex gap-3">
+
                             <button
                                 type="button"
                                 onClick={() => setMeetingType("google")}
-                                className={`px-4 py-2 rounded-lg border ${meetingType === "google"
-                                    ? "border-navy bg-navy/5"
-                                    : "border-gray-200"
-                                    }`}
+                                className={`flex-1 py-2 rounded-lg border
+                ${meetingType === "google"
+                                        ? "border-navy bg-navy/5"
+                                        : "border-gray-200"}`}
                             >
                                 Google Meet
                             </button>
-    
+
                             <button
                                 type="button"
                                 onClick={() => setMeetingType("zoom")}
-                                className={`px-4 py-2 rounded-lg border ${meetingType === "zoom"
-                                    ? "border-navy bg-navy/5"
-                                    : "border-gray-200"
-                                    }`}
+                                className={`flex-1 py-2 rounded-lg border
+                ${meetingType === "zoom"
+                                        ? "border-navy bg-navy/5"
+                                        : "border-gray-200"}`}
                             >
                                 Zoom
                             </button>
+
                         </div>
                     </div>
                 )}
+
+                {/* Address */}
                 {deliveryMode === "door" && (
-                    <div className="mt-4">
-                        <label className="block text-sm font-medium mb-2">
+                    <div className="mt-6">
+                        <p className="text-sm font-medium mb-3">
                             Delivery Address
-                        </label>
-                        <textarea
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            rows={3}
-                            className="w-full rounded-xl border px-4 py-3 text-sm"
-                            placeholder="Enter full address with pincode"
-                        />
+                        </p>
+
+                        <AddressForm value={address} onChange={setAddress} />
                     </div>
                 )}
 
@@ -291,7 +318,7 @@ export default function CheckoutFooter({
                     <span>₹{totalAmount}</span>
                 </div>
 
-                {/* CTA */}
+                {/* Payment Button */}
                 <button
                     onClick={handlePayment}
                     disabled={loading}
@@ -303,6 +330,7 @@ export default function CheckoutFooter({
                 <p className="mt-4 text-xs text-gray-500 text-center">
                     Secure payment • {paymentMethod.toUpperCase()}
                 </p>
+
             </div>
         </section>
     );

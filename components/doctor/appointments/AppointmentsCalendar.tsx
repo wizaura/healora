@@ -10,6 +10,7 @@ export default function AppointmentsCalendar({
     appointments,
     onSelect,
 }: any) {
+
     const [view, setView] = useState("timeGridWeek");
 
     const events = appointments.map((appt: any) => ({
@@ -23,7 +24,7 @@ export default function AppointmentsCalendar({
     }));
 
     return (
-        <div className="bg-gradient-to-br from-[#F4FBF9] to-white rounded-3xl border border-[#E2F0ED] p-8 shadow-sm">
+        <div className="calendar-wrapper bg-gradient-to-br from-[#F4FBF9] to-white rounded-3xl border border-[#E2F0ED] p-6 shadow-sm">
 
             <FullCalendar
                 plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
@@ -39,9 +40,9 @@ export default function AppointmentsCalendar({
                     day: "Day",
                 }}
                 events={events}
-                height="650px"
-                slotMinTime="06:00:00"
-                slotMaxTime="22:00:00"
+                height="620px"
+                slotMinTime="00:00:00"
+                slotMaxTime="23:59:59"
                 eventClick={(info) =>
                     onSelect(info.event.extendedProps)
                 }

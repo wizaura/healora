@@ -45,7 +45,7 @@ export default function DoctorAppointments() {
     }, [appointments, search, statusFilter]);
 
     return (
-        <div className="min-h-screen bg-gray-50 p-6 pt-20">
+        <div className="min-h-screen md:p-8 pt-24 md:mt-12">
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-6">
 
                 {/* LEFT SIDE */}
@@ -60,7 +60,7 @@ export default function DoctorAppointments() {
                 />
 
                 {/* RIGHT SIDE */}
-                <div className="bg-white lg:col-span-2 rounded-xl shadow p-4 space-y-6">
+                <div className="bg-white lg:col-span-2 rounded-xl shadow p-1 md:p-4 space-y-6">
                     <TodayPanel appointments={appointments} />
                     <AppointmentsCalendar
                         appointments={appointments}
