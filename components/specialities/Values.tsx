@@ -67,17 +67,6 @@ export default function ValuesSection() {
 
                 {/* HEADER */}
                 <div className="mb-20 text-center">
-                    <span
-                        className="
-              inline-block mb-4 rounded-full
-              border border-navy/10
-              bg-white/80 backdrop-blur
-              px-8 py-2
-              text-sm font-medium text-navy/70
-            "
-                    >
-                        Our Values
-                    </span>
 
                     <h2 className="text-4xl md:text-6xl font-semibold text-navy-dark">
                         Values that guide our care

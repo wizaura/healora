@@ -66,18 +66,6 @@ export default function AllDoctors() {
 
                 <div className="mb-20 text-center">
 
-                    <span
-                        className="
-                        inline-block mb-6 rounded-full
-                        border border-navy/10
-                        bg-white/80 backdrop-blur
-                        px-8 py-2
-                        text-sm font-medium text-navy/70
-                    "
-                    >
-                        Healora Doctors
-                    </span>
-
                     <h1 className="text-4xl md:text-6xl font-semibold text-navy-dark">
                         Find the Right Doctor
                     </h1>

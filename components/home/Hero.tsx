@@ -101,7 +101,7 @@ export default function HomeHero() {
 
                 {/* CTA */}
                 <div className="mt-10 flex justify-center">
-                    <CTAButton href="/book" label="Book an Appointment" />
+                    <CTAButton href="/doctors" label="Book an Appointment" />
                 </div>
             </div>
         </section>

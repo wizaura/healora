@@ -19,11 +19,11 @@ export default function SubSpecialityDoctors({ subSlug, miniSlug }: Props) {
         queryFn: async () => {
 
             if (miniSlug) {
-                const res = await api.get(`/doctor/${miniSlug}/doctors`);
+                const res = await api.get(`/doctor/mini/${miniSlug}/doctors`);
                 return res.data;
             }
 
-            const res = await api.get(`/doctor/${subSlug}/doctors`);
+            const res = await api.get(`/doctor/sub/${subSlug}/doctors`);
             return res.data;
 
         },

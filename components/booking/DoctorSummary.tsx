@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Globe, ChevronDown, ChevronUp, BadgeCheck } from "lucide-react";
 import api from "@/lib/api";
+import Link from "next/link";
 
 export default function DoctorSummary({ doctorId }: { doctorId: string }) {
     const [expanded, setExpanded] = useState(false);
@@ -65,6 +66,7 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
                         </div>
 
                         {/* PRIMARY SPECIALITY */}
+
                         {data.specialities?.length > 0 && (
                             <div>
                                 <p className="text-xs font-medium text-navy/60 mb-2">
@@ -75,19 +77,22 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
 
                                     {data.specialities.map((s: any) => (
 
-                                        <span
+                                        <Link
                                             key={s.speciality.id}
+                                            href={`/specialities/${s.speciality.slug}`}
                                             className="
-                        rounded-full
-                        bg-navy
-                        px-4
-                        py-1
-                        text-sm
-                        text-white
-                    "
+            rounded-full
+            bg-navy
+            px-4
+            py-1
+            text-sm
+            text-white
+            transition
+            hover:bg-wellness-accent
+          "
                                         >
                                             {s.speciality.name}
-                                        </span>
+                                        </Link>
 
                                     ))}
 
@@ -96,26 +101,48 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
                         )}
 
                         {/* KEY EXPERTISE (limited) */}
-                        {(data.subSpecialities?.length || data.miniSpecialities?.length) > 0 && (
+
+                        {data.subSpecialities?.length && (
                             <div>
                                 <p className="text-xs font-medium text-navy/60 mb-2">
                                     Key Expertise
                                 </p>
 
                                 <div className="flex flex-wrap justify-center md:justify-start gap-2">
+
                                     {[
                                         ...data.subSpecialities.slice(0, 2),
-                                        ...data.miniSpecialities.slice(0, 2)
-                                    ].map((item: any, i: number) => (
+                                    ].map((item: any, i: number) => {
 
-                                        <span
-                                            key={i}
-                                            className="rounded-full bg-navy/10 px-3 py-1 text-xs text-navy"
-                                        >
-                                            {item.subSpeciality?.name || item.miniSpeciality?.name}
-                                        </span>
+                                        const name =
+                                            item.subSpeciality?.name;
+                                        const slug =
+                                            item.subSpeciality?.slug;
 
-                                    ))}
+                                        const specialitySlug =
+                                            data.specialities?.[0]?.speciality?.slug;
+
+                                        return (
+                                            <Link
+                                                key={i}
+                                                href={`/specialities/${specialitySlug}/${slug}`}
+                                                className="
+              rounded-full
+              bg-navy/10
+              px-3
+              py-1
+              text-xs
+              text-navy
+              transition
+              hover:bg-wellness-accent
+              hover:text-white
+            "
+                                            >
+                                                {name}
+                                            </Link>
+                                        );
+                                    })}
+
                                 </div>
                             </div>
                         )}
@@ -158,40 +185,54 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
                                         </p>
 
                                         {/* EXTENDED EXPERTISE */}
-                                        {(data.subSpecialities?.length > 0 ||
-                                            data.miniSpecialities?.length > 0) && (
+                                        {data.miniSpecialities?.length > 0 && (
 
-                                                <div>
+                                            <div>
 
-                                                    <p className="text-xs font-medium text-navy/60 mb-2">
-                                                        Areas of Expertise
-                                                    </p>
+                                                <p className="text-xs font-medium text-navy/60 mb-2">
+                                                    Areas of Expertise
+                                                </p>
 
-                                                    <div className="flex flex-wrap gap-2">
+                                                <div className="flex flex-wrap gap-2">
 
-                                                        {data.subSpecialities.map((s: any) => (
-                                                            <span
-                                                                key={s.subSpeciality.id}
-                                                                className="rounded-full bg-navy/10 px-3 py-1 text-xs text-navy"
-                                                            >
-                                                                {s.subSpeciality.name}
-                                                            </span>
-                                                        ))}
+                                                    {/* Mini Specialities (Clickable) */}
+                                                    {data.miniSpecialities.map((m: any) => {
 
-                                                        {data.miniSpecialities.map((m: any) => (
-                                                            <span
+                                                        const specialitySlug =
+                                                            data.specialities?.[0]?.speciality?.slug;
+
+                                                        const subSlug =
+                                                            m.miniSpeciality?.subSpeciality?.slug;
+
+                                                        const miniSlug =
+                                                            m.miniSpeciality?.slug;
+
+                                                        return (
+                                                            <Link
                                                                 key={m.miniSpeciality.id}
-                                                                className="rounded-full bg-wellness-accent/20 px-3 py-1 text-xs text-navy"
+                                                                href={`/specialities/${specialitySlug}/${subSlug}/${miniSlug}`}
+                                                                className="
+              rounded-full
+              bg-wellness-accent/20
+              px-3
+              py-1
+              text-xs
+              text-navy
+              transition
+              hover:bg-wellness-accent
+              hover:text-white
+            "
                                                             >
                                                                 {m.miniSpeciality.name}
-                                                            </span>
-                                                        ))}
-
-                                                    </div>
+                                                            </Link>
+                                                        );
+                                                    })}
 
                                                 </div>
 
-                                            )}
+                                            </div>
+
+                                        )}
 
                                     </div>
                                 )}

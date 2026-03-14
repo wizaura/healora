@@ -135,21 +135,6 @@ export default function SpecialtiesSection() {
                 {/* Header */}
                 <div className="mb-20 text-center">
 
-                    <span
-                        className="
-        inline-block mb-6
-        rounded-full
-        border border-navy/10
-        bg-white/80
-        px-8 py-2
-        text-sm font-medium
-        text-navy/70
-        backdrop-blur
-    "
-                    >
-                        Specialities
-                    </span>
-
                     <h2
                         className="
         text-4xl md:text-6xl

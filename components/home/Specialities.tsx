@@ -112,7 +112,7 @@ export default function ServicesScrollSection() {
             }
         });
 
-        return [...exactHomeopathy, ...haveHomeopathy, ...others];
+        return [...exactHomeopathy, ...others, ...haveHomeopathy];
     }, [data]);
 
     const services = sortedSpecialities.slice(0, 4);
@@ -156,10 +156,10 @@ export default function ServicesScrollSection() {
       "
         >
             {/* Sticky viewport */}
-            <div className="relative md:sticky md:top-0 overflow-hidden mb-20">
+            <div className="relative md:sticky md:top-0 overflow-hidden mb-6">
 
                 {/* Header */}
-                <div className="mx-auto max-w-6xl px-8 pt-20 pb-16">
+                <div className="mx-auto max-w-6xl px-8 pt-16 md:pt-28 pb-8">
                     <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
                         <h2 className="text-3xl font-semibold text-navy-dark leading-tight md:text-6xl">
                             Complete Health
@@ -183,30 +183,55 @@ export default function ServicesScrollSection() {
                 </div>
 
                 {/* Horizontal cards */}
-                <div className="relative overflow-hidden">
-                    <div
-                        ref={trackRef}
-                        className="
-              flex flex-col gap-3 px-6 py-6
-              md:flex-row md:gap-6 md:px-24 md:py-3
-              will-change-transform
-            "
-                    >
-                        {services.map((s: any) => {
-                            const Icon =
-                                specialityIcons[s.icon] ||
-                                specialityIcons.HeartPulse;
+                {/* Cards */}
 
-                            return (
+                <div className="relative md:mt-24">
+
+                    {/* MOBILE / SMALL SCREENS */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 px-6 md:hidden max-w-6xl mx-auto">
+                        {services.map((s: any) => (
+                            <div  key={s.id} className="w-full">
                                 <SpecialityCard
-                                    key={s.id}
                                     name={s.name}
                                     description={s.description}
                                     slug={s.slug}
+                                    imageUrl={s.overview?.images?.image1?.url}
                                 />
-                            );
-                        })}
+                            </div>
+                        ))}
                     </div>
+
+
+                    {/* DESKTOP SCROLL SECTION */}
+                    <div className="hidden md:block overflow-hidden">
+
+                        <div
+                            ref={trackRef}
+                            className="
+        flex gap-6 px-24 py-3
+        will-change-transform
+      "
+                        >
+                            {services.map((s: any) => (
+                                <div
+                                    key={s.id}
+                                    className="
+            flex-shrink-0
+            w-[420px]
+          "
+                                >
+                                    <SpecialityCard
+                                        name={s.name}
+                                        description={s.description}
+                                        slug={s.slug}
+                                        imageUrl={s.overview?.images?.image1?.url}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
         </section>

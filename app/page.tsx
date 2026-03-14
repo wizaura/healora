@@ -1,3 +1,4 @@
+import CTASection from "@/components/home/CTA";
 import DoctorsSlider from "@/components/home/Doctors";
 import FAQsSection from "@/components/home/FAQs";
 import HomeHero from "@/components/home/Hero";
@@ -14,6 +15,7 @@ export default function Home() {
       <HowItWorks />
       <ReviewsSection />
       <FAQsSection />
+      <CTASection />
     </div>
   );
 }

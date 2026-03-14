@@ -57,25 +57,13 @@ export default function SpecialityPage() {
             <section
                 className="
                 relative rounded-3xl
-                bg-gradient-to-b from-white via-white to-wellness-bg
+                bg-white
                 py-12
                 "
                 >
                 <div className="mx-auto max-w-7xl px-6">
 
                     <div className="mb-16 text-center">
-
-                        <span
-                            className="
-                            inline-block mb-6 rounded-full
-                            border border-navy/10
-                            bg-white/80 backdrop-blur
-                            px-8 py-2
-                            text-sm font-medium text-navy/70
-                            "
-                            >
-                            Sub Specialities
-                        </span>
 
                         <h2 className="text-3xl md:text-4xl font-semibold text-navy-dark">
                             Areas of Treatment

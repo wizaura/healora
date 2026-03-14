@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { GoogleLogin } from "@react-oauth/google";
+import { getApiError } from "@/lib/util";
 
 export default function Login() {
     const [form, setForm] = useState({
@@ -65,8 +66,8 @@ export default function Login() {
             } else {
                 router.push("/");
             }
-        } catch {
-            toast.error("Invalid email or password");
+        } catch (err: any) {
+            toast.error(getApiError(err));
         } finally {
             setLoading(false);
         }

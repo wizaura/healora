@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type QA = {
     question?: string;
     answer?: string;
@@ -19,100 +21,112 @@ type Props = {
 export default function SubSpecialityOverview({
     name,
     description,
-    overview = {}
+    overview = {},
 }: Props) {
 
     const { headerMain, headerSecondary = [], images } = overview;
 
-    const image = images?.image1?.url || images?.image2?.url;
+    const image =
+        images?.image1?.url ||
+        "/placeholder-medical.jpg";
+
+    const image2 =
+        images?.image2?.url ||
+        "/placeholder-medical.jpg";
+
+    const firstSecondary = headerSecondary[0];
+    const remainingQuestions = headerSecondary.slice(1);
 
     return (
-        <section className="pt-24 pb-6 bg-white">
+        <section className="bg-white pt-20">
 
-            <div className="max-w-6xl mx-auto px-6 py-12">
+            {/* HERO HEADER */}
 
-                {/* HEADER STYLE LIKE SPECIALITIES */}
+            <div
+                className="relative h-[240px] md:h-[320px] flex items-center justify-center text-center rounded-xl mx-4 sm:mx-0"
+                style={{
+                    backgroundImage: `url(${image2})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }}
+            >
 
-                <div className="mb-20 text-center">
+                <div className="absolute inset-0 bg-black/50 rounded-xl" />
 
-                    <span
-                        className="
-                        inline-block mb-6
-                        rounded-full
-                        border border-navy/10
-                        bg-white/80
-                        px-8 py-2
-                        text-sm font-medium
-                        text-navy/70
-                        backdrop-blur
-                        "
-                    >
-                        Medical Condition
-                    </span>
+                <div className="relative z-10 max-w-3xl px-6">
 
-                    <h1
-                        className="
-                        text-4xl md:text-6xl
-                        font-semibold
-                        leading-[1.15]
-                        tracking-[-0.02em]
-                        text-navy-dark
-                        "
-                    >
+                    <h1 className="text-4xl md:text-6xl font-semibold text-white tracking-[-0.02em]">
                         {name}
                     </h1>
 
                     {description && (
-
-                        <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+                        <p className="mt-6 text-smtext-lg text-white/90 leading-relaxed">
                             {description}
                         </p>
-
                     )}
 
                 </div>
 
+            </div>
 
-                {/* HERO CONTENT */}
+            {/* MAIN CONTENT */}
 
-                <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="max-w-7xl mx-auto px-6 py-20 space-y-6 sm:space-y-16">
 
-                    {/* TEXT SIDE */}
+                {/* TOP ROW */}
 
-                    <div>
+                <div className="grid md:grid-cols-3 gap-12 items-center">
 
-                        {headerMain?.question && (
+                    {/* MAIN QUESTION */}
 
-                            <div>
+                    {headerMain?.question && (
 
-                                <h2 className="text-2xl font-semibold text-navy-dark mb-4">
-                                    {headerMain.question}
-                                </h2>
+                        <div className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm hover:shadow-md transition">
 
-                                <p className="text-gray-600 leading-relaxed">
-                                    {headerMain.answer}
-                                </p>
+                            <h2 className="text-xl font-semibold text-navy-dark mb-4">
+                                {headerMain.question}
+                            </h2>
 
-                            </div>
+                            <p className="text-gray-600 leading-relaxed">
+                                {headerMain.answer}
+                            </p>
 
-                        )}
+                        </div>
+
+                    )}
+
+                    {/* CENTER IMAGE */}
+
+                    <div className="relative rounded-2xl overflow-hidden shadow-lg">
+
+                        {/* Image */}
+
+                        <Image
+                            src={image}
+                            alt={name}
+                            width={500}
+                            height={360}
+                            className="object-cover w-full h-[360px]"
+                        />
+
+                        {/* Blend Overlay */}
+
+                        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-white/60 pointer-events-none" />
 
                     </div>
+                    {/* FIRST HEADER QUESTION */}
 
+                    {firstSecondary?.question && (
 
-                    {/* IMAGE SIDE */}
+                        <div className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm hover:shadow-md transition">
 
-                    {image && (
+                            <h3 className="text-xl font-semibold text-navy-dark mb-4">
+                                {firstSecondary.question}
+                            </h3>
 
-                        <div className="relative">
-
-                            <div className="absolute inset-0 bg-gradient-to-tr from-white via-transparent to-white opacity-60 rounded-2xl" />
-
-                            <img
-                                src={image}
-                                className="rounded-2xl shadow-lg object-cover w-full h-[380px]"
-                                alt={name}
-                            />
+                            <p className="text-gray-600 leading-relaxed">
+                                {firstSecondary.answer}
+                            </p>
 
                         </div>
 
@@ -121,25 +135,25 @@ export default function SubSpecialityOverview({
                 </div>
 
 
-                {/* SECONDARY QUESTIONS */}
+                {/* EXTRA HEADER QUESTIONS */}
 
-                {headerSecondary.length > 0 && (
+                {remainingQuestions.length > 0 && (
 
-                    <div className="mt-20 grid md:grid-cols-2 gap-8">
+                    <div className="grid md:grid-cols-1 gap-8">
 
-                        {headerSecondary.map((item, i) => (
+                        {remainingQuestions.map((item, index) => (
 
                             <div
-                                key={i}
+                                key={index}
                                 className="
-                                border border-gray-100
-                                rounded-xl
-                                p-8
-                                bg-gray-50
-                                hover:bg-white
-                                transition
-                                shadow-sm
-                                "
+                  bg-gray-50
+                  border border-gray-100
+                  rounded-2xl
+                  p-8 text-center
+                  shadow-sm
+                  hover:shadow-md
+                  transition
+                "
                             >
 
                                 <h3 className="text-lg font-semibold text-navy-dark mb-3">

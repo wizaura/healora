@@ -12,3 +12,14 @@ export const paymentLabel = (status: string) => {
             return status;
     }
 };
+
+export function getApiError(err: any): string {
+    if (err?.response?.data?.message) {
+        if (Array.isArray(err.response.data.message)) {
+            return err.response.data.message.join(", ");
+        }
+        return err.response.data.message;
+    }
+
+    return err?.message || "Something went wrong";
+}

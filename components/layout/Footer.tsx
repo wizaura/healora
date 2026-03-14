@@ -42,7 +42,7 @@ export default function Footer() {
                         </p>
 
                         <Link
-                            href="/book"
+                            href="/doctors"
                             className="mt-6 inline-block rounded-xl bg-gradient-to-r from-teal-600 to-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:scale-[1.03]"
                         >
                             Book an Appointment
@@ -108,17 +108,6 @@ export default function Footer() {
                                     className="hover:text-teal-400 transition"
                                 >
                                     healorawellnesscentre@gmail.com
-                                </a>
-                            </li>
-
-                            {/* PHONE */}
-                            <li className="flex items-start gap-3">
-                                <Phone className="mt-0.5 h-4 w-4 text-teal-500" />
-                                <a
-                                    href="tel:+918547121264"
-                                    className="hover:text-teal-400 transition"
-                                >
-                                    +91 8547121264
                                 </a>
                             </li>
 

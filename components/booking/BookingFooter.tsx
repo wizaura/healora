@@ -1,7 +1,9 @@
 "use client";
 
 import api from "@/lib/api";
+import { getApiError } from "@/lib/util";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 type BookingFooterProps = {
     slot: {
@@ -82,8 +84,8 @@ export default function BookingFooter({
                                 `/checkout?doctorId=${doctorId}&date=${dateStr}&slotId=${slot.id}&startTime=${slot.startTime}&endTime=${slot.endTime}`
                             );
 
-                        } catch (err) {
-                            alert("Sorry, this slot was just booked by someone else.");
+                        } catch (err: any) {
+                            toast.error(getApiError(err)+". Please Login");
                         }
 
                     }}

@@ -14,21 +14,6 @@ export function QuickFacts({ facts }: any) {
 
                 <div className="text-center mb-16">
 
-                    <span
-                        className="
-                        inline-block mb-5
-                        rounded-full
-                        border border-navy/10
-                        bg-white/80
-                        px-6 py-2
-                        text-sm font-medium
-                        text-navy/70
-                        backdrop-blur
-                        "
-                    >
-                        Key Information
-                    </span>
-
                     <h2 className="text-3xl md:text-4xl font-semibold text-navy-dark">
                         Quick Facts
                     </h2>
@@ -42,7 +27,7 @@ export function QuickFacts({ facts }: any) {
 
                 {/* FACT GRID */}
 
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
 
                     {facts.map((fact: any, i: number) => (
 

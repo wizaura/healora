@@ -6,6 +6,7 @@ import { Mail, Lock, User, EyeOff, Eye, Globe } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
+import { getApiError } from "@/lib/util";
 
 export default function Register() {
     const [form, setForm] = useState({
@@ -75,8 +76,8 @@ export default function Register() {
             });
 
             router.push("/login");
-        } catch {
-            toast.error("Something went wrong. Try again.");
+        } catch (err: any) {
+            toast.error(getApiError(err));
         } finally {
             setLoading(false);
         }

@@ -27,7 +27,7 @@ export default function ExpertiseSection() {
                                 height={420}
                                 unoptimized
                                 className="
-                  h-[360px] w-[360px] object-cover
+                  h-[320px] w-[320px] object-cover
                   transition-transform duration-700 hover:scale-105
                 "
                             />
@@ -49,7 +49,7 @@ export default function ExpertiseSection() {
                                 height={420}
                                 unoptimized
                                 className="
-                  h-[380px] w-[380px] object-cover
+                  h-[340px] w-[340px] object-cover
                   transition-transform duration-700 hover:scale-105
                 "
                             />
@@ -58,17 +58,6 @@ export default function ExpertiseSection() {
 
                     {/* RIGHT – CONTENT */}
                     <div>
-                        <span
-                            className="
-                inline-block mb-4 rounded-full
-                border border-navy/10
-                bg-white/80 backdrop-blur
-                px-8 py-2
-                text-sm font-medium text-navy/70
-              "
-                        >
-                            Expertise
-                        </span>
 
                         <h2
                             className="

@@ -10,17 +10,20 @@ const api = axios.create({
 
 // Optional: response interceptor
 api.interceptors.response.use(
-    (response) => response,
+    (res) => res,
     (error) => {
-        if (error.response?.data?.message) {
-            error.message = Array.isArray(error.response.data.message)
-                ? error.response.data.message.join(", ")
-                : error.response.data.message;
-        }
+        const message =
+            error?.response?.data?.message ||
+            error?.message ||
+            "Something went wrong";
 
-        return Promise.reject(error);
+        return Promise.reject({
+            ...error,
+            friendlyMessage: Array.isArray(message)
+                ? message.join(", ")
+                : message,
+        });
     }
 );
-
 
 export default api;
