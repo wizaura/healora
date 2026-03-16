@@ -1,6 +1,7 @@
 import CTASection from "@/components/home/CTA";
 import DoctorsSlider from "@/components/home/Doctors";
 import FAQsSection from "@/components/home/FAQs";
+import GreetingBanner from "@/components/home/GreetingBanner";
 import HomeHero from "@/components/home/Hero";
 import HowItWorks from "@/components/home/How";
 import ReviewsSection from "@/components/home/Reviews";
@@ -12,6 +13,7 @@ export default function Home() {
       <HomeHero />
       <DoctorsSlider />
       <SpecialtiesSection />
+      <GreetingBanner />
       <HowItWorks />
       <ReviewsSection />
       <FAQsSection />

@@ -8,6 +8,8 @@ import SymptomsPage from "./symptoms/Main";
 import CausesPage from "./causes/Main";
 import RiskFactorsPage from "./risk-factors/Main";
 import LanguagesPage from "./languages/Main";
+import GreetingBannerSettings from "./greetings/Main";
+import GreetingBannerList from "./greetings/List";
 
 type TabType =
     | "symptoms"
@@ -180,6 +182,47 @@ export default function AdminSettings() {
                 <div className="pt-6">
                     {renderTabContent()}
                 </div>
+            </section>
+
+            <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-8">
+
+                {/* HEADER */}
+
+                <div>
+                    <h2 className="text-lg font-medium text-navy">
+                        Greeting Banner
+                    </h2>
+                    <p className="text-sm text-navy/50">
+                        Display a greeting image on the homepage for specific dates
+                    </p>
+                </div>
+
+
+                {/* LIST */}
+
+                <div className="space-y-4">
+
+                    <h3 className="text-sm font-medium text-navy/80">
+                        Existing Greeting
+                    </h3>
+
+                    <GreetingBannerList />
+
+                </div>
+
+
+                {/* FORM */}
+
+                <div className="border-t border-gray-100 pt-6">
+
+                    <h3 className="text-sm font-medium text-navy/80 mb-4">
+                        Add / Update Greeting
+                    </h3>
+
+                    <GreetingBannerSettings />
+
+                </div>
+
             </section>
         </div>
     );
