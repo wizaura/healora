@@ -22,19 +22,22 @@ import Image from "next/image";
 
 const navItems = [
     { name: "Home", href: "/" },
-    { name: "About Us", href: "/about" },
     { name: "Specialities", href: "/specialities" },
     { name: "Doctors", href: "/doctors" },
 ];
 
-const moreItems = [
-    { name: "Blogs", href: "/blog" },
+const aboutItems = [
+    { name: "About", href: "/about" },
     { name: "Vision & Mission", href: "/mission" },
-    { name: "FAQs", href: "/faqs" },
-    { name: "Counselling & Psychotherapy", href: "/counselling" },
     { name: "Why Homeopathy", href: "/why-homeopathy" },
     { name: "Agro Homeopathy", href: "/agro-homeopathy" },
     { name: "Veterinary Homeopathy", href: "/veterinary-homeopathy" },
+    { name: "Counselling & Psychotherapy", href: "/counselling" },
+];
+
+const moreItems = [
+    { name: "Blogs", href: "/blog" },
+    { name: "FAQs", href: "/faqs" },
     { name: "Contact", href: "/contact" },
 ];
 
@@ -114,6 +117,56 @@ export default function Navbar() {
                             </Link>
                         );
                     })}
+
+                    {/* About Dropdown */}
+                    <div className="relative group">
+
+                        <button
+                            className="px-5 py-2 text-sm font-medium rounded-full
+    text-gray-600 hover:text-[#1F2147]
+    flex items-center gap-1 transition"
+                        >
+                            About
+                            <ChevronDown
+                                size={14}
+                                className="transition-transform group-hover:rotate-180"
+                            />
+                        </button>
+
+                        <div className="absolute top-full left-0 w-full h-3"></div>
+
+                        <div
+                            className="absolute top-full left-0 mt-1 w-60
+    rounded-xl bg-white border border-gray-200 shadow-xl
+    opacity-0 invisible translate-y-2
+    transition-all duration-200
+    group-hover:opacity-100 group-hover:visible group-hover:translate-y-0"
+                        >
+
+                            <div className="py-2">
+
+                                {aboutItems.map((item) => (
+
+                                    <Link
+                                        key={item.name}
+                                        href={item.href}
+                                        className="flex items-center justify-between
+          px-4 py-2.5 text-sm text-gray-700
+          hover:bg-gray-50 transition"
+                                    >
+                                        {item.name}
+
+                                        <ArrowUpRight size={14} className="opacity-50" />
+
+                                    </Link>
+
+                                ))}
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
 
                     {/* More Dropdown */}
@@ -270,7 +323,29 @@ export default function Navbar() {
 
                         ))}
 
-                        <div className="border-t pt-3">
+                        <div className="border-t border-gray-200 pt-3">
+
+                            <p className="text-xs font-semibold text-gray-400 px-2 mb-2">
+                                ABOUT
+                            </p>
+
+                            {aboutItems.map((item) => (
+
+                                <Link
+                                    key={item.name}
+                                    href={item.href}
+                                    onClick={() => setOpen(false)}
+                                    className="block rounded-lg px-4 py-2
+      text-sm font-medium text-gray-700 hover:bg-gray-100"
+                                >
+                                    {item.name}
+                                </Link>
+
+                            ))}
+
+                        </div>
+
+                        <div className="border-t border-gray-200 pt-3">
 
                             <p className="text-xs font-semibold text-gray-400 px-2 mb-2">
                                 MORE
