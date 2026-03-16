@@ -108,7 +108,7 @@ export default function SpecialtiesSection() {
             }
         });
 
-        return [...exactHomeopathy, ...haveHomeopathy, ...others];
+        return [...exactHomeopathy, ...others, ...haveHomeopathy];
     }, [data]);
 
 

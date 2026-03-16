@@ -250,7 +250,7 @@ function OverviewSection({ sub }: any) {
                 {overview.images?.image2 && (
                     <img
                         src={`${overview.images.image2.url}`}
-                        className="w-24 h-24 rounded-xl border border-gray-100"
+                        className="w-50 h-24 rounded-xl border border-gray-100"
                     />
                 )}
             </div>

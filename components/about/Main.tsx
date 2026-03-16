@@ -6,280 +6,210 @@ export default function HealoraAboutSection() {
 
     return (
 
-        <section
-            className="
-            relative
-            bg-gradient-to-b
-            from-white
-            via-white
-            to-wellness-bg
-            py-24 m-4 rounded-2xl
-        "
-        >
+        <section className="m-4 rounded-2xl px-6 pb-24 bg-gradient-to-b from-white via-white to-wellness-bg">
 
-            <div className="max-w-7xl mx-auto px-6 space-y-24 py-12">
-
-
-                {/* HERO / STORY */}
+            <div className="max-w-7xl mx-auto space-y-24">
+                {/* STORY */}
 
                 <div className="grid md:grid-cols-2 gap-16 items-center">
 
-                    {/* TEXT */}
+                    <div className="space-y-5 text-slate-700 text-md md:text-lg leading-relaxed">
 
-                    <div className="space-y-6 text-center md:text-left">
-
-                        <span
-                            className="
-                            inline-block
-                            text-xs
-                            tracking-wide
-                            font-medium
-                            bg-navy
-                            text-white
-                            px-4 py-1.5
-                            rounded-full
-                        "
-                        >
-                            About Healora
-                        </span>
-
-                        <h2
-                            className="
-                            text-3xl md:text-4xl lg:text-5xl
-                            font-semibold
-                            text-navy-dark
-                            leading-tight
-                        "
-                        >
-                            Why Healora Wellness Centre
+                        <h2 className="text-2xl md:text-4xl font-semibold text-navy">
+                            Our Story
                         </h2>
 
-                        <p className="text-lg text-navy/90 leading-relaxed max-w-xl mx-auto md:mx-0">
-
-                            At
-                            <span className="font-semibold text-emerald-700 ml-1">
-                                Healora Wellness Centre
-                            </span>
-                            , our name is our promise — Healing & Wellness.
-
-                            We believe quality healthcare should be a right,
-                            not a privilege determined by geography.
-
+                        <p>
+                            At Healora Wellness Centre, our name reflects our
+                            promise — Healing and Wellness. We believe
+                            healthcare should be accessible, compassionate,
+                            and centered around the individual.
                         </p>
 
-                        <p className="text-navy/90 leading-relaxed max-w-xl mx-auto md:mx-0">
+                        <p>
+                            Founded by experienced healthcare professionals,
+                            Healora was created as a digital consultation hub
+                            where patients can receive expert guidance
+                            regardless of where they live.
+                        </p>
 
-                            Founded by highly qualified medical professionals,
-                            Healora is an online consultation hub designed to
-                            provide expert care wherever you are in the world.
-
+                        <p>
+                            By combining traditional healing systems with
+                            modern medical insights, we aim to provide care
+                            that supports both physical and emotional wellbeing.
                         </p>
 
                     </div>
 
 
-                    {/* IMAGE */}
+                    <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
 
-                    <div className="relative">
-
-                        <div
-                            className="
-                            absolute -inset-6
-                            bg-gradient-to-tr
-                            from-white
-                            via-weness-bg
-                            to-white
-                            rounded-3xl
-                            blur-2xl
-                        "
+                        <img
+                            src="/hero-1.jpg"
+                            alt="Healora Wellness"
+                            className="w-full h-[380px] object-cover"
                         />
-
-                        <div
-                            className="
-                            relative
-                            rounded-3xl
-                            overflow-hidden
-                            border border-navy/10
-                            shadow-lg
-                        "
-                        >
-
-                            <img
-                                src="/hero-1.jpg"
-                                className="w-full h-[380px] object-cover"
-                                alt="Healora Wellness"
-                            />
-
-                        </div>
 
                     </div>
 
                 </div>
 
 
+
                 {/* HOLISTIC ECOSYSTEM */}
 
-                <div className="space-y-10 text-center">
+                <div>
 
-                    <div className="space-y-3 max-w-3xl mx-auto">
+                    <div className="text-center mb-14">
 
-                        <h3 className="text-3xl font-semibold text-navy-dark">
+                        <h2 className="text-2xl md:text-4xl font-semibold text-navy">
                             Our Holistic Ecosystem
-                        </h3>
+                        </h2>
 
-                        <p className="text-navy/90 text-lg">
-                            We care for the whole individual. Our multi-disciplinary
-                            team works together to support every aspect of health
-                            and wellbeing.
+                        <p className="text-slate-600 max-w-2xl mx-auto mt-4">
+                            Our multidisciplinary team works together to
+                            support every aspect of health and wellbeing.
                         </p>
 
                     </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 
                         <Card
                             icon={<HeartPulse size={22} />}
                             title="Medical Experts"
-                            desc="Specialized homeopathic doctors delivering personalized treatment."
+                            desc="Experienced homeopathic doctors delivering personalized care."
                         />
 
                         <Card
                             icon={<Apple size={22} />}
                             title="Nutrition & Vitality"
-                            desc="Professional dietitians helping you build sustainable healthy habits."
+                            desc="Professional dietitians guiding sustainable healthy habits."
                         />
 
                         <Card
                             icon={<Brain size={22} />}
                             title="Mental Wellbeing"
-                            desc="Compassionate counsellors and psychologists supporting emotional health."
+                            desc="Compassionate psychologists supporting emotional health."
                         />
 
                         <Card
                             icon={<Dumbbell size={22} />}
                             title="Physical Strength"
-                            desc="Fitness trainers and physiotherapists improving mobility and strength."
+                            desc="Fitness trainers and physiotherapists improving mobility."
                         />
 
                     </div>
 
                 </div>
+
 
 
                 {/* WHAT SETS US APART */}
 
-                <div className="space-y-10 text-center">
+                <div>
 
-                    <div className="max-w-3xl mx-auto space-y-3">
+                    <div className="text-center mb-14">
 
-                        <h3 className="text-3xl font-semibold text-navy-dark">
-                            What Sets Us Apart
-                        </h3>
-
-                        <p className="text-navy/90 text-lg">
-                            Healora is built on science, empathy and accessibility
-                            to ensure every patient receives meaningful care.
-                        </p>
+                        <h2 className="text-2xl md:text-4xl font-semibold text-navy">
+                            What Sets Healora Apart
+                        </h2>
 
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-8 text-left">
+
+                    <div className="grid md:grid-cols-3 gap-8">
 
                         <FeatureCard
                             title="Scientifically Informed Care"
-                            desc="Traditional healing philosophies combined with modern diagnostic insights."
+                            desc="Traditional healing philosophies supported by modern medical knowledge."
                         />
 
                         <FeatureCard
                             title="Patient-Centered Philosophy"
-                            desc="Every treatment plan is tailored to the individual."
+                            desc="Every treatment plan is carefully tailored to the individual."
                         />
 
                         <FeatureCard
                             title="Healthcare Without Borders"
-                            desc="Our digital-first platform ensures care reaches patients everywhere."
+                            desc="Our digital-first platform allows care to reach patients anywhere."
                         />
 
                     </div>
 
                 </div>
 
-
                 {/* MOTTO */}
 
-                <div
-                    className="
-                    bg-gradient-to-br
-                    from-white
-                    via-wellness-bg
-                    to-white
-                    border border-navy/10
-                    rounded-3xl
-                    p-10
-                    text-center
-                    space-y-4
-                "
-                >
+                <div className="max-w-4xl mx-auto text-center">
 
-                    <h3 className="text-xl font-semibold text-navy-dark">
-                        Our Motto
-                    </h3>
+                    <div
+                        className="
+        p-10
+        rounded-3xl
+        border border-slate-200
+        bg-slate-50
+        shadow-sm
+        "
+                    >
 
-                    <p className="text-navy/90 max-w-3xl mx-auto text-lg">
+                        <h3 className="text-xl md:text-3xl font-semibold text-navy mb-4">
+                            Our Motto
+                        </h3>
 
-                        Quality healthcare should never be limited by geography.
-                        Healora bridges the distance between patients and doctors
-                        — one consultation at a time.
+                        <p className="text-slate-600 text-lg leading-relaxed">
 
-                    </p>
+                            Quality healthcare should never be limited by geography.
+                            Healora bridges the distance between patients and doctors
+                            — one consultation at a time.
+
+                        </p>
+
+                    </div>
 
                 </div>
+
+
 
 
                 {/* HUMANITY INTEGRATED */}
 
-                <div className="grid md:grid-cols-2 gap-12 items-center">
+                <div className="grid md:grid-cols-2 gap-16 items-center">
 
-                    <div
-                        className="
-                        rounded-3xl
-                        overflow-hidden
-                        border border-navy/10
-                        shadow-sm
-                    "
-                    >
+                    <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+
                         <img
                             src="/hero-2.jpeg"
-                            className="w-full h-full object-cover"
                             alt="Healora Community"
+                            className="w-full h-[380px] object-cover"
                         />
+
                     </div>
 
-                    <div className="space-y-5 text-center md:text-left">
+                    <div className="space-y-5 text-slate-800 leading-relaxed text-md md:text-lg">
 
-                        <h3 className="text-3xl font-semibold text-navy-dark">
+                        <h2 className="text-2xl md:text-4xl font-semibold text-navy">
                             Humanity, Integrated
-                        </h3>
+                        </h2>
 
-                        <p className="text-navy/90 leading-relaxed text-lg max-w-xl mx-auto md:mx-0">
-
-                            Healthcare shouldn’t feel fragmented. For too long,
-                            people had to visit multiple places for different
-                            aspects of wellbeing.
-
+                        <p>
+                            Healthcare should never feel fragmented.
+                            For too long, individuals have had to visit
+                            multiple places to address different aspects
+                            of wellbeing.
                         </p>
 
-                        <p className="text-navy/90 leading-relaxed max-w-xl mx-auto md:mx-0">
-
-                            Healora integrates counselling, psychotherapy and
-                            medical expertise into one seamless ecosystem.
-
+                        <p>
+                            Healora integrates counselling, psychotherapy,
+                            nutrition, and medical expertise into a single
+                            seamless ecosystem designed to support the
+                            whole person.
                         </p>
 
                     </div>
 
                 </div>
-
 
             </div>
 
@@ -290,44 +220,24 @@ export default function HealoraAboutSection() {
 }
 
 
-/* ECOSYSTEM CARD */
+
+/* CARD */
 
 function Card({ icon, title, desc }: any) {
 
     return (
 
-        <div
-            className="
-            p-6
-            rounded-2xl
-            border border-navy/10
-            bg-white
-            shadow-sm
-            hover:shadow-md
-            transition
-            space-y-3
-            text-center
-        "
-        >
+        <div className="p-8 rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition space-y-4 text-center">
 
-            <div
-                className="
-                w-12 h-12
-                rounded-xl
-                bg-wellness-bg
-                text-navy
-                flex items-center justify-center
-                mx-auto
-            "
-            >
+            <div className="w-10 h-10 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center mx-auto">
                 {icon}
             </div>
 
-            <h4 className="font-semibold text-navy-dark">
+            <h4 className="font-semibold text-slate-900">
                 {title}
             </h4>
 
-            <p className="text-sm text-navy/70 leading-relaxed">
+            <p className="text-sm text-slate-600 leading-relaxed">
                 {desc}
             </p>
 
@@ -338,30 +248,20 @@ function Card({ icon, title, desc }: any) {
 }
 
 
+
 /* FEATURE CARD */
 
 function FeatureCard({ title, desc }: any) {
 
     return (
 
-        <div
-            className="
-            rounded-2xl
-            border border-navy/10
-            bg-white
-            p-6
-            shadow-sm
-            hover:-translate-y-1
-            hover:shadow-lg
-            transition
-        "
-        >
+        <div className="p-8 rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition">
 
-            <h4 className="font-semibold text-navy-dark mb-2">
+            <h4 className="font-semibold text-slate-900 mb-2">
                 {title}
             </h4>
 
-            <p className="text-sm text-navy/70 leading-relaxed">
+            <p className="text-sm text-slate-600 leading-relaxed">
                 {desc}
             </p>
 

@@ -137,8 +137,8 @@ export default function ManageSpecialityPage() {
                 <button
                     onClick={() => setTab("overview")}
                     className={`pb-4 transition ${tab === "overview"
-                            ? "text-navy-dark border-b-2 border-wellness-accent"
-                            : "text-navy/60 hover:text-navy"
+                        ? "text-navy-dark border-b-2 border-wellness-accent"
+                        : "text-navy/60 hover:text-navy"
                         }`}
                 >
                     Overview
@@ -147,8 +147,8 @@ export default function ManageSpecialityPage() {
                 <button
                     onClick={() => setTab("sub")}
                     className={`pb-4 transition ${tab === "sub"
-                            ? "text-navy-dark border-b-2 border-wellness-accent"
-                            : "text-navy/60 hover:text-navy"
+                        ? "text-navy-dark border-b-2 border-wellness-accent"
+                        : "text-navy/60 hover:text-navy"
                         }`}
                 >
                     Sub Specialities
@@ -193,12 +193,20 @@ function OverviewSection({ speciality }: any) {
                 </div>
             )}
 
-            {overview.images?.image1 && (
-                <img
-                    src={overview.images.image1.url}
-                    className="w-28 h-28 rounded-xl border border-gray-100"
-                />
-            )}
+            <div className="flex gap-4">
+                {overview.images?.image1 && (
+                    <img
+                        src={overview.images.image1.url}
+                        className="w-28 h-28 rounded-xl border border-gray-100"
+                    />
+                )}
+                {overview.images?.image2 && (
+                    <img
+                        src={overview.images.image2.url}
+                        className="w-50 h-24 rounded-xl border border-gray-100"
+                    />
+                )}
+            </div>
 
             {overview.headerMain && (
                 <OverviewBlock
@@ -359,8 +367,8 @@ function StatusBadge({ active }: { active: boolean }) {
 
         <span
             className={`px-4 py-1.5 rounded-full text-xs font-medium ${active
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-600"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-600"
                 }`}
         >
             {active ? "Active" : "Inactive"}

@@ -188,30 +188,6 @@ export default function AdminSpecialitiesPage() {
 
                                         <div className="flex justify-end gap-6 text-xs font-medium">
 
-                                            <button
-                                                onClick={() =>
-                                                    toggleMutation.mutate({
-                                                        id: item.id,
-                                                        isActive: !item.isActive,
-                                                    })
-                                                }
-                                                className={
-                                                    item.isActive
-                                                        ? "text-red-600 hover:underline"
-                                                        : "text-green-600 hover:underline"
-                                                }
-                                            >
-                                                {item.isActive ? "Disable" : "Enable"}
-                                            </button>
-
-                                            <Link
-                                                href={`/admin/specialities/${item.id}/edit`}
-                                                className="inline-flex items-center gap-1 text-slate-600 hover:underline"
-                                            >
-                                                <Pencil size={14} />
-                                                Edit
-                                            </Link>
-
                                             <Link
                                                 href={`/admin/specialities/${item.id}`}
                                                 className="text-teal-600 hover:underline"

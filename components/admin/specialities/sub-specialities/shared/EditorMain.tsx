@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import api from "@/lib/api";
 
 import BasicInfoSection from "./BasicInfoSection";
@@ -34,13 +34,14 @@ export type FormValues = {
 
     quickFacts: QuickFact[];
 
-    image1?: FileList;
-    image2?: FileList;
+    image1?: File;
+    image2?: File;
 };
 
 export default function ConditionEditor({ id, type }: any) {
 
     const router = useRouter();
+    const [cropping, setCropping] = useState(false);
 
     const form = useForm<FormValues>({
         defaultValues: {
@@ -123,8 +124,8 @@ export default function ConditionEditor({ id, type }: any) {
                 formData.append("quickFacts", f.value)
             );
 
-            if (values.image1?.[0]) formData.append("image1", values.image1[0]);
-            if (values.image2?.[0]) formData.append("image2", values.image2[0]);
+            if (values.image1) formData.append("image1", values.image1);
+            if (values.image2) formData.append("image2", values.image2);
 
             await api.patch(baseUrl, formData, {
                 headers: {
@@ -166,6 +167,7 @@ export default function ConditionEditor({ id, type }: any) {
                     <ImageSection
                         form={form}
                         existingImages={data.existingImages}
+                        setCropping={setCropping}
                     />
 
                     <HeaderMainSection form={form} />
@@ -197,7 +199,7 @@ export default function ConditionEditor({ id, type }: any) {
 
                         <button
                             type="submit"
-                            disabled={mutation.isPending}
+                            disabled={mutation.isPending || cropping}
                             className="flex items-center gap-2 px-6 py-3 bg-wellness-accent text-white rounded-lg text-sm font-medium disabled:opacity-60"
                         >
                             {mutation.isPending && (

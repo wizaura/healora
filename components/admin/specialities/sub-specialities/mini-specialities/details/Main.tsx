@@ -231,7 +231,7 @@ function OverviewSection({ mini }: any) {
                 {overview.images?.image2?.url && (
                     <img
                         src={overview.images.image2.url}
-                        className="w-24 h-24 rounded-xl border border-gray-100"
+                        className="w-50 h-24 rounded-xl border border-gray-100"
                     />
                 )}
 

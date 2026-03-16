@@ -1,17 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, MapPin, Instagram, Linkedin, Youtube } from "lucide-react";
+import Image from "next/image";
 
 const footerLinks = {
     platform: [
-        { name: "Specialties", href: "#specialties" },
-        { name: "Doctors", href: "#doctors" },
+        { name: "Specialties", href: "/specialities" },
+        { name: "Doctors", href: "/doctors" },
+        { name: "Why Homeopathy", href: "/why-homeopathy" },
+        { name: "Agro Homeopathy", href: "/agro-homeopathy" },
+        { name: "Veterinary Homeopathy", href: "/veterinary-homeopathy" },
+        { name: "Counselling & Psychotherapy", href: "/counselling-psychotherapy" },
     ],
+
     company: [
         { name: "About Healora", href: "/about" },
-        { name: "FAQs", href: "#faqs" },
-        { name: "Blogs", href: "/blogs" },
+        { name: "Blogs", href: "/blog" },
+        { name: "FAQs", href: "/faqs" },
+        { name: "Contact", href: "/contact" },
     ],
 };
 
@@ -31,9 +38,21 @@ export default function Footer() {
                     {/* BRAND */}
 
                     <div>
-                        <h3 className="text-2xl font-extrabold text-white">
-                            Healora
-                        </h3>
+                        <div className="inline-flex items-center gap-3">
+
+                            <Image
+                                src="/logo.jpeg"
+                                alt="Healora Logo"
+                                width={66}
+                                height={66}
+                                className="object-contain"
+                            />
+
+                            <h3 className="text-2xl font-extrabold text-white">
+                                Healora
+                            </h3>
+
+                        </div>
 
                         <p className="mt-4 max-w-sm text-sm leading-relaxed">
                             A trusted doctor consultation platform connecting
@@ -43,7 +62,7 @@ export default function Footer() {
 
                         <Link
                             href="/doctors"
-                            className="mt-6 inline-block rounded-xl bg-gradient-to-r from-teal-600 to-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:scale-[1.03]"
+                            className="mt-6 inline-block rounded-xl bg-wellness-accent px-5 py-2.5 text-sm font-semibold text-navy shadow-md transition hover:scale-[1.03]"
                         >
                             Book an Appointment
                         </Link>
@@ -91,11 +110,11 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* CONTACT */}
+                    {/* CONNECT */}
 
                     <div>
                         <h4 className="mb-5 text-sm font-semibold uppercase tracking-wide text-white">
-                            Contact
+                            Connect
                         </h4>
 
                         <ul className="space-y-4 text-sm">
@@ -122,16 +141,42 @@ export default function Footer() {
                                     className="hover:text-teal-400 transition"
                                 >
                                     Healora Wellness Centre<br />
-                                    Karuvanpoyil<br />
-                                    Karuvanpoyil (PO)<br />
-                                    Koduvally, Kozhikode<br />
-                                    Kerala, India<br />
-                                    Pin: 673572
+                                    Karuvanpoyil, Koduvally<br />
+                                    Kozhikode, Kerala<br />
+                                    India — 673572
                                 </a>
 
                             </li>
 
                         </ul>
+
+                        {/* SOCIAL LINKS */}
+
+                        <div className="mt-6 flex items-center gap-4">
+
+                            <a
+                                href="#"
+                                className="text-gray-400 hover:text-teal-400 transition"
+                            >
+                                <Instagram size={18} />
+                            </a>
+
+                            <a
+                                href="#"
+                                className="text-gray-400 hover:text-teal-400 transition"
+                            >
+                                <Linkedin size={18} />
+                            </a>
+
+                            <a
+                                href="#"
+                                className="text-gray-400 hover:text-teal-400 transition"
+                            >
+                                <Youtube size={18} />
+                            </a>
+
+                        </div>
+
                     </div>
 
                 </div>
@@ -139,17 +184,13 @@ export default function Footer() {
 
                 {/* LEGAL BAR */}
 
-                <div className="mt-8 border-t border-white/10 pt-8">
+                <div className="mt-10 border-t border-white/10 pt-8">
 
                     <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-
-                        {/* COPYRIGHT */}
 
                         <p className="text-xs text-gray-500">
                             © {new Date().getFullYear()} Healora. All rights reserved.
                         </p>
-
-                        {/* LEGAL LINKS */}
 
                         <div className="flex items-center gap-6 text-xs">
 
@@ -175,8 +216,6 @@ export default function Footer() {
                             </Link>
 
                         </div>
-
-                        {/* CREDIT */}
 
                         <p className="text-xs text-gray-600">
                             Built with care for better healthcare access
