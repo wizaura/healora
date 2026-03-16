@@ -45,10 +45,10 @@ export default function Footer() {
                                 alt="Healora Logo"
                                 width={66}
                                 height={66}
-                                className="object-contain"
+                                className="object-contain rounded-full"
                             />
 
-                            <h3 className="text-2xl font-extrabold text-white">
+                            <h3 className="text-2xl font-extrabold text-welnnes-bg">
                                 Healora
                             </h3>
 

@@ -81,12 +81,12 @@ export default function Navbar() {
                 {/* Logo */}
                 <Link
                     href="/"
-                    className="flex items-center">
+                    className="flex items-center gap-2">
                     <Image
                         src="/logo.png"
                         alt="Healora Logo"
-                        width={64}
-                        height={64}
+                        width={49}
+                        height={49}
                         className="rounded-md object-cover" />
                     <span className="text-2xl font-semibold tracking-tight mb-2 text-[#1F2147]">
                         Healora
