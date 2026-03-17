@@ -196,7 +196,7 @@ export default function AppointmentModal({
                                 <button
                                     onClick={async () => {
                                         await api.post(`/appointments/${selected.id}/complete`);
-                                        window.location.href = `/doctor/patient/${selected.user.id}`;
+                                        window.location.href = `/doctor/patients/${selected.user.id}`;
                                     }}
                                     className="px-4 py-2 text-sm font-medium rounded-lg bg-green-600 text-white hover:bg-green-700"
                                 >

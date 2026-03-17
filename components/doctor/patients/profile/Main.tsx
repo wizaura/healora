@@ -6,14 +6,17 @@ import api from "@/lib/api";
 
 import ConsultationNotesSection from "./ConsultationNotesSection";
 import PrescriptionsSection from "./PrescriptionsSection";
-import DoctorNotesSection from "./DoctorNotesSection";
 
-import { Calendar, FileText, ClipboardList, Pill } from "lucide-react";
+import { Calendar, FileText, Pill } from "lucide-react";
+import { useEffect, useState } from "react";
+import SelectOption from "@/components/common/SelectOption";
 
 export default function PatientProfilePage() {
 
     const params = useParams();
     const patientId = params.patientId;
+
+    const [selectedAppointmentId, setSelectedAppointmentId] = useState<string | null>(null);
 
     const { data, refetch, isLoading } = useQuery({
         queryKey: ["patient-profile", patientId],
@@ -23,13 +26,53 @@ export default function PatientProfilePage() {
         },
     });
 
+    // 🔐 Safe fallback before data loads
+    const appointments = data?.appointments || [];
+
+    const completedAppointments = appointments.filter(
+        (a: any) => a.status === "COMPLETED"
+    );
+
+    // ✅ Hook MUST be before return
+    useEffect(() => {
+        if (
+            !selectedAppointmentId &&
+            completedAppointments.length > 0
+        ) {
+            setSelectedAppointmentId(completedAppointments[0].id);
+        }
+    }, [completedAppointments, selectedAppointmentId]);
+
+    // ✅ Now safe to return
     if (isLoading) return <div className="p-6">Loading...</div>;
     if (!data) return null;
 
-    const { patient, appointments, consultationNotes, doctorNotes, prescriptions } = data;
+    const { patient, consultationNotes, prescriptions } = data;
 
-    const latestAppointment = appointments?.[0];
-    const appointmentId = latestAppointment?.id;
+    const appointmentId = selectedAppointmentId;
+
+    const formatAppointmentLabel = (appt: any) => {
+
+        const date = new Date(appt.slot.startTimeUTC);
+
+        const dateStr = date.toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        });
+
+        const timeStr = date.toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+
+        return `${dateStr} • ${timeStr} • ${appt.deliveryMode}`;
+    };
+
+    const appointmentOptions = completedAppointments.map((appt: any) => ({
+        value: appt.id,
+        label: formatAppointmentLabel(appt),
+    }));
 
     return (
         <div className="p-6 max-w-7xl mx-auto py-20 space-y-8">
@@ -60,11 +103,6 @@ export default function PatientProfilePage() {
                     </div>
 
                     <div className="flex items-center gap-2 text-gray-600">
-                        <ClipboardList size={16} />
-                        {doctorNotes?.length || 0}
-                    </div>
-
-                    <div className="flex items-center gap-2 text-gray-600">
                         <Pill size={16} />
                         {prescriptions?.length || 0}
                     </div>
@@ -73,25 +111,43 @@ export default function PatientProfilePage() {
 
             </div>
 
+            <div className="w-full bg-white border border-gray-100 rounded-xl p-4 space-y-2">
+
+                <label className="text-sm font-medium text-gray-700">
+                    Select Consultation
+                </label>
+
+                <SelectOption
+                    value={selectedAppointmentId || ""}
+                    onChange={(val) => setSelectedAppointmentId(val)}
+                    options={appointmentOptions}
+                    placeholder="Select a completed consultation"
+                    className="w-full"
+                />
+
+            </div>
+
             {/* SECTIONS */}
 
-            <ConsultationNotesSection
-                notes={consultationNotes}
-                appointmentId={appointmentId}
-                refetch={refetch}
-            />
+            {appointmentId ? (
+                <>
+                    <ConsultationNotesSection
+                        notes={consultationNotes}
+                        appointmentId={appointmentId}
+                        refetch={refetch}
+                    />
 
-            <PrescriptionsSection
-                prescriptions={prescriptions}
-                appointmentId={appointmentId}
-                refetch={refetch}
-            />
-
-            {/* <DoctorNotesSection
-                notes={doctorNotes}
-                patientId={patientId as string}
-                refetch={refetch}
-            /> */}
+                    <PrescriptionsSection
+                        prescriptions={prescriptions}
+                        appointmentId={appointmentId}
+                        refetch={refetch}
+                    />
+                </>
+            ) : (
+                <div className="text-center text-gray-500 py-10">
+                    Please select a completed consultation to proceed
+                </div>
+            )}
 
         </div>
     );

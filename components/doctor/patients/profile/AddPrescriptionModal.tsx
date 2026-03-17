@@ -4,6 +4,7 @@ import { useState } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { Trash2, X } from "lucide-react";
+import { getApiError } from "@/lib/util";
 
 export default function AddPrescriptionModal({ appointmentId, onSaved }: any) {
 
@@ -14,6 +15,7 @@ export default function AddPrescriptionModal({ appointmentId, onSaved }: any) {
     ]);
 
     const [instructions, setInstructions] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const addMedicine = () => {
         setMedicines([...medicines, { text: "" }]);
@@ -27,22 +29,37 @@ export default function AddPrescriptionModal({ appointmentId, onSaved }: any) {
         setMedicines(copy);
     };
 
+
     const save = async () => {
 
-        await api.post("/consultations/prescriptions", {
-            appointmentId,
-            medicines,
-            instructions
-        });
+        try {
 
-        toast.success("Prescription created");
+            setLoading(true);
 
-        setOpen(false);
+            await api.post("/consultations/prescriptions", {
+                appointmentId,
+                medicines,
+                instructions
+            });
 
-        setMedicines([{ text: "" }]);
-        setInstructions("");
+            toast.success("Prescription created");
 
-        onSaved();
+            setOpen(false);
+
+            setMedicines([{ text: "" }]);
+            setInstructions("");
+
+            onSaved();
+
+        } catch (err: any) {
+
+            toast.error(getApiError(err));
+
+        } finally {
+
+            setLoading(false);
+
+        }
     };
 
     if (!open) {
@@ -197,6 +214,7 @@ export default function AddPrescriptionModal({ appointmentId, onSaved }: any) {
 
                     <button
                         onClick={save}
+                        disabled={loading}
                         className="bg-navy hover:bg-navy-dark text-white px-4 py-2 rounded-lg text-sm"
                     >
                         Save Prescription

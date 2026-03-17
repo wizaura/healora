@@ -12,6 +12,8 @@ import {
     ChevronRight,
     Paperclip,
     Plus,
+    DollarSign,
+    Hospital,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -24,6 +26,8 @@ const navItems = [
     { label: "Specialities", href: "/admin/specialities", icon: ClipboardList },
     { label: "Blogs", href: "/admin/blogs", icon: Paperclip },
     { label: "Medikits", href: "/admin/medikits", icon: Plus },
+    { label: "Pharmacy", href: "/admin/pharmacy", icon: Hospital },
+    { label: "Payments", href: "/admin/payments", icon: DollarSign },
     { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
@@ -41,7 +45,7 @@ export default function AdminSidebar({
     return (
         <aside
             className={`
-        fixed inset-y-0 left-0 z-30 mt-20
+        fixed inset-y-0 left-0 z-30 mt-16
         bg-white border-r border-slate-200
         transition-all duration-300
         ${collapsed ? "w-20" : "w-64"}

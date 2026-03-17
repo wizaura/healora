@@ -13,6 +13,7 @@ type Props = {
     onChange: (value: string) => void;
     options: Option[];
     placeholder?: string;
+    className?: string;
 };
 
 export default function SelectOption({
@@ -20,6 +21,7 @@ export default function SelectOption({
     onChange,
     options,
     placeholder = "Select option",
+    className,
 }: Props) {
     const [open, setOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -44,7 +46,7 @@ export default function SelectOption({
     }, []);
 
     return (
-        <div ref={containerRef} className="relative w-40">
+       <div ref={containerRef} className={`relative ${className || "w-40"}`}>
             {/* Trigger */}
             <button
                 type="button"
