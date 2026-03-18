@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const footerLinks = {
     platform: [
-        { name: "Specialties", href: "/specialities" },
+        { name: "Specialities", href: "/specialities" },
         { name: "Doctors", href: "/doctors" },
         { name: "Why Homeopathy", href: "/why-homeopathy" },
         { name: "Agro Homeopathy", href: "/agro-homeopathy" },

@@ -36,6 +36,7 @@ export type FormValues = {
 
     image1?: File;
     image2?: File;
+    hasMiniLevel: boolean;
 };
 
 export default function ConditionEditor({ id, type }: any) {
@@ -52,7 +53,8 @@ export default function ConditionEditor({ id, type }: any) {
             headerMain: { question: "", answer: "" },
             headerSecondary: [],
             footerQuestions: [],
-            quickFacts: []
+            quickFacts: [],
+            hasMiniLevel: false,
         }
     });
 
@@ -96,7 +98,8 @@ export default function ConditionEditor({ id, type }: any) {
                 quickFacts:
                     item.quickFacts?.map((v: string) => ({ value: v })) ?? [],
 
-                existingImages: overview.images ?? {}
+                existingImages: overview.images ?? {},
+                hasMiniLevel: item.hasMiniLevel ?? false
             };
         },
         enabled: !!id
@@ -114,6 +117,7 @@ export default function ConditionEditor({ id, type }: any) {
             const formData = new FormData();
 
             formData.append("name", values.name);
+            formData.append("slug", values.slug);
             formData.append("description", values.description);
 
             formData.append("headerMain", JSON.stringify(values.headerMain));
@@ -126,6 +130,8 @@ export default function ConditionEditor({ id, type }: any) {
 
             if (values.image1) formData.append("image1", values.image1);
             if (values.image2) formData.append("image2", values.image2);
+
+            formData.append("hasMiniLevel", String(values.hasMiniLevel));
 
             await api.patch(baseUrl, formData, {
                 headers: {
@@ -163,6 +169,25 @@ export default function ConditionEditor({ id, type }: any) {
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-12">
 
                     <BasicInfoSection form={form} />
+
+                    {type === "sub" && (
+                        <div className="flex items-center justify-between border border-gray-200 p-4 rounded-lg">
+                            <div>
+                                <p className="text-sm font-medium text-navy-dark">
+                                    Has Mini Specialities
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                    Enable if this contains mini specialities
+                                </p>
+                            </div>
+
+                            <input
+                                type="checkbox"
+                                {...form.register("hasMiniLevel")}
+                                className="h-5 w-5"
+                            />
+                        </div>
+                    )}
 
                     <ImageSection
                         form={form}

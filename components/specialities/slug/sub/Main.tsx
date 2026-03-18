@@ -48,6 +48,7 @@ export default function SubSpecialityDetailPage() {
     const overview = data.overview || {};
 
     const hasMiniSpecialities =
+        data.hasMiniLevel &&
         Array.isArray(data.miniSpecialities) &&
         data.miniSpecialities.length > 0;
 
@@ -102,24 +103,28 @@ export default function SubSpecialityDetailPage() {
             )}
 
 
-            {/* SYMPTOMS */}
+            {!data.hasMiniLevel && (
+                <>
+                    {/* SYMPTOMS */}
 
-            {data.symptoms?.length > 0 && (
-                <SubSpecialitySymptoms symptoms={data.symptoms} />
-            )}
-
-
-            {/* CAUSES */}
-
-            {data.causes?.length > 0 && (
-                <SubSpecialityCauses causes={data.causes} />
-            )}
+                    {data.symptoms?.length > 0 && (
+                        <SubSpecialitySymptoms symptoms={data.symptoms} />
+                    )}
 
 
-            {/* RISK FACTORS */}
+                    {/* CAUSES */}
 
-            {data.riskFactors?.length > 0 && (
-                <SubSpecialityRiskFactors riskFactors={data.riskFactors} />
+                    {data.causes?.length > 0 && (
+                        <SubSpecialityCauses causes={data.causes} />
+                    )}
+
+
+                    {/* RISK FACTORS */}
+
+                    {data.riskFactors?.length > 0 && (
+                        <SubSpecialityRiskFactors riskFactors={data.riskFactors} />
+                    )}
+                </>
             )}
 
 

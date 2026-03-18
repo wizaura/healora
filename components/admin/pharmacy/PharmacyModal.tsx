@@ -1,136 +1,267 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { X } from "lucide-react";
 
-export default function PharmacyModal({ data, onClose, onSubmit }: any) {
+export default function PharmacyModal({ data, mode, onClose, onSubmit }: any) {
+  const user = data.appointment.user;
+  const slot = data.appointment.slot;
+  const address = data.appointment.deliveryAddress;
 
-    const [price, setPrice] = useState("");
-    const [note, setNote] = useState("");
-    const [loading, setLoading] = useState(false);
+  const isPrescriptionView = mode === "view";
+  const isCreateMode = mode === "create";
+  const isInvoiceView = mode === "invoice";
 
-    const user = data.appointment.user;
-    const slot = data.appointment.slot;
+  const isInvoice = !!data.pharmacyItems;
 
-    const handleSubmit = async () => {
+  /* ---------------- STATE ---------------- */
 
-        if (!price) return;
+  const [items, setItems] = useState(
+    isInvoice
+      ? data.pharmacyItems
+      : data.medicines?.map((m: any) => ({
+          name: m.text,
+          qty: 1,
+          price: 0,
+        })) || []
+  );
 
-        setLoading(true);
+  const [deliveryCharge, setDeliveryCharge] = useState(
+    data.deliveryCharge || 0
+  );
+  const [discount, setDiscount] = useState(data.discount || 0);
+  const [tax, setTax] = useState(data.tax || 0);
+  const [note, setNote] = useState(data.pharmacyNote || "");
+  const [loading, setLoading] = useState(false);
 
-        await onSubmit({
-            price: Number(price),
-            note
-        });
+  /* ---------------- CALCULATIONS ---------------- */
 
-        setLoading(false);
-    };
+  const subtotal = useMemo(() => {
+    return items.reduce((acc: number, item: any) => {
+      return acc + item.qty * item.price;
+    }, 0);
+  }, [items]);
 
-    return (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+  const total = useMemo(() => {
+    return subtotal + deliveryCharge + tax - discount;
+  }, [subtotal, deliveryCharge, tax, discount]);
 
-            <div className="bg-white w-[700px] max-h-[90vh] rounded-xl shadow-lg flex flex-col">
+  const displaySubtotal = data.subtotal ?? subtotal;
+  const displayTotal = data.totalAmount ?? total;
 
-                {/* HEADER */}
-                <div className="flex justify-between items-center p-5 border-b">
-                    <h2 className="text-lg font-semibold">
-                        Prescription Details
-                    </h2>
+  /* ---------------- HANDLERS ---------------- */
 
-                    <button onClick={onClose}>
-                        <X size={18} />
-                    </button>
+  const updateItem = (index: number, field: string, value: any) => {
+    const updated = [...items];
+    updated[index][field] = Number(value);
+    setItems(updated);
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    await onSubmit({
+      items,
+      subtotal,
+      deliveryCharge,
+      tax,
+      discount,
+      totalAmount: total,
+      note,
+    });
+
+    setLoading(false);
+  };
+
+  /* ---------------- UI ---------------- */
+
+  return (
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+      <div className="bg-white w-[900px] max-h-[90vh] rounded-xl shadow-lg flex flex-col">
+
+        {/* HEADER */}
+        <div className="flex justify-between items-center p-5 border-b">
+          <h2 className="text-lg font-semibold">
+            {isPrescriptionView
+              ? "Prescription Details"
+              : isCreateMode
+              ? "Create Invoice"
+              : "Invoice Details"}
+          </h2>
+
+          <button onClick={onClose}>
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* BODY */}
+        <div className="p-6 space-y-6 overflow-y-auto">
+
+          {/* USER */}
+          <div>
+            <p className="font-medium">{user.name}</p>
+            <p className="text-sm text-gray-500">{user.email}</p>
+          </div>
+
+          {/* ADDRESS */}
+          <div className="bg-gray-50 p-4 rounded-lg border">
+            <h3 className="font-semibold mb-1">Delivery Address</h3>
+
+            {address ? (
+              <div className="text-sm text-gray-600 space-y-1">
+                <p className="font-medium">{address.name}</p>
+                <p>{address.line1}</p>
+                <p>{address.city}, {address.state} - {address.zip}</p>
+                <p>{address.country}</p>
+                <p>📞 {address.phone}</p>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400">No address provided</p>
+            )}
+          </div>
+
+          {/* DATE */}
+          <div className="text-sm text-gray-600">
+            {new Date(slot.startTimeUTC).toLocaleString()}
+          </div>
+
+          {/* MEDICINES */}
+          <div>
+            <h3 className="font-semibold mb-3">Medicines</h3>
+
+            <div className="space-y-3">
+              {items.map((item: any, i: number) => (
+                <div key={i} className="grid grid-cols-4 gap-3 items-center">
+                  <span>{item.name}</span>
+
+                  {!isCreateMode ? (
+                    <>
+                      <span>{item.qty}</span>
+                      <span>₹{item.price}</span>
+                      <span className="font-medium">
+                        ₹{item.qty * item.price}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <input
+                        type="number"
+                        value={item.qty}
+                        onChange={(e) =>
+                          updateItem(i, "qty", e.target.value)
+                        }
+                        className="border px-2 py-1 rounded"
+                      />
+
+                      <input
+                        type="number"
+                        value={item.price}
+                        onChange={(e) =>
+                          updateItem(i, "price", e.target.value)
+                        }
+                        className="border px-2 py-1 rounded"
+                      />
+
+                      <span className="font-medium">
+                        ₹{item.qty * item.price}
+                      </span>
+                    </>
+                  )}
                 </div>
+              ))}
+            </div>
+          </div>
 
-                {/* BODY */}
-                <div className="p-5 space-y-6 overflow-y-auto">
+          {/* PRICING INPUT */}
+          {isCreateMode && (
+            <div className="grid grid-cols-3 gap-4">
+              <input
+                type="number"
+                value={deliveryCharge}
+                onChange={(e) => setDeliveryCharge(Number(e.target.value))}
+                className="border px-3 py-2 rounded"
+                placeholder="Delivery"
+              />
 
-                    {/* USER */}
-                    <div>
-                        <p className="font-medium">{user.name}</p>
-                        <p className="text-sm text-gray-500">{user.email}</p>
-                    </div>
+              <input
+                type="number"
+                value={tax}
+                onChange={(e) => setTax(Number(e.target.value))}
+                className="border px-3 py-2 rounded"
+                placeholder="Tax"
+              />
 
-                    {/* APPOINTMENT */}
-                    <div className="text-sm text-gray-600">
-                        <p>
-                            {new Date(slot.startTimeUTC).toLocaleString()}
-                        </p>
-                        <p>{data.deliveryMode}</p>
-                    </div>
+              <input
+                type="number"
+                value={discount}
+                onChange={(e) => setDiscount(Number(e.target.value))}
+                className="border px-3 py-2 rounded"
+                placeholder="Discount"
+              />
+            </div>
+          )}
 
-                    {/* MEDICINES */}
-                    <div>
-                        <h3 className="font-semibold mb-2">Medicines</h3>
+          {/* BREAKDOWN */}
+          <div className="bg-gray-50 p-4 rounded-lg space-y-2 text-sm">
 
-                        <ul className="space-y-2 text-sm">
-                            {data.medicines?.map((m: any, i: number) => (
-                                <li key={i}>
-                                    {i + 1}. {m.text}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* INSTRUCTIONS */}
-                    {data.instructions && (
-                        <div>
-                            <h3 className="font-semibold mb-1">Instructions</h3>
-                            <p className="text-sm text-gray-600">
-                                {data.instructions}
-                            </p>
-                        </div>
-                    )}
-
-                    {/* PRICE INPUT */}
-                    {!data.pharmacyPrice && (
-                        <div className="space-y-3">
-
-                            <input
-                                type="number"
-                                placeholder="Enter price"
-                                value={price}
-                                onChange={(e) => setPrice(e.target.value)}
-                                className="w-full border rounded-lg px-4 py-2"
-                            />
-
-                            <textarea
-                                placeholder="Optional note"
-                                value={note}
-                                onChange={(e) => setNote(e.target.value)}
-                                className="w-full border rounded-lg px-4 py-2"
-                            />
-
-                        </div>
-                    )}
-
-                    {/* SHOW PRICE */}
-                    {data.pharmacyPrice && (
-                        <div className="bg-gray-50 p-4 rounded-lg text-sm">
-                            <p><strong>Price:</strong> ₹{data.pharmacyPrice}</p>
-                            <p><strong>Status:</strong> {data.paymentStatus}</p>
-                        </div>
-                    )}
-
-                </div>
-
-                {/* FOOTER */}
-                {!data.pharmacyPrice && (
-                    <div className="p-4 border-t flex justify-end">
-
-                        <button
-                            onClick={handleSubmit}
-                            disabled={loading}
-                            className="bg-teal-600 text-white px-5 py-2 rounded-lg"
-                        >
-                            {loading ? "Sending..." : "Send Quote"}
-                        </button>
-
-                    </div>
-                )}
-
+            <div className="flex justify-between">
+              <span>Subtotal</span>
+              <span>₹{displaySubtotal}</span>
             </div>
 
+            <div className="flex justify-between">
+              <span>Delivery</span>
+              <span>₹{deliveryCharge}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span>Tax</span>
+              <span>₹{tax}</span>
+            </div>
+
+            <div className="flex justify-between text-red-500">
+              <span>Discount</span>
+              <span>- ₹{discount}</span>
+            </div>
+
+            <hr />
+
+            <div className="flex justify-between font-semibold text-base">
+              <span>Total</span>
+              <span>₹{displayTotal}</span>
+            </div>
+          </div>
+
+          {/* STATUS */}
+          {isInvoiceView && (
+            <div className="bg-green-50 p-4 rounded-lg text-sm">
+              <p><strong>Status:</strong> {data.paymentStatus}</p>
+            </div>
+          )}
+
+          {/* NOTE */}
+          <textarea
+            value={note}
+            disabled={!isCreateMode}
+            onChange={(e) => setNote(e.target.value)}
+            className="w-full border rounded-lg px-4 py-2 disabled:bg-gray-100"
+            placeholder="Pharmacy note"
+          />
         </div>
-    );
+
+        {/* FOOTER */}
+        {isCreateMode && (
+          <div className="p-4 border-t flex justify-end">
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="bg-teal-600 text-white px-6 py-2 rounded-lg"
+            >
+              {loading ? "Sending..." : "Send Invoice"}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

@@ -19,6 +19,7 @@ type TabType =
 
 export default function AdminSettings() {
     const [slotFee, setSlotFee] = useState<number>(0);
+    const [prescriptionFee, setPrescriptionFee] = useState<number>(0);
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
     const [activeTab, setActiveTab] =
@@ -31,8 +32,14 @@ export default function AdminSettings() {
         const fetchSettings = async () => {
             setLoading(true);
             try {
-                const res = await api.get("/settings/slot-fee");
-                setSlotFee(res.data.slotFee ?? 0);
+                const [slotRes, prescriptionRes] = await Promise.all([
+                    api.get("/settings/slot-fee"),
+                    api.get("/settings/prescription-fee"),
+                ]);
+
+                setSlotFee(slotRes.data.slotFee ?? 0);
+                setPrescriptionFee(prescriptionRes.data.prescriptionFee ?? 0);
+
             } catch {
                 toast.error("Failed to load settings");
             } finally {
@@ -58,6 +65,27 @@ export default function AdminSettings() {
             toast.success("Slot fee updated successfully");
         } catch {
             toast.error("Failed to update slot fee");
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const savePrescriptionFee = async () => {
+
+        if (prescriptionFee < 0) {
+            toast.error("Prescription fee cannot be negative");
+            return;
+        }
+
+        setSaving(true);
+        try {
+            await api.put("/settings/prescription-fee", {
+                fee: prescriptionFee
+            });
+
+            toast.success("Prescription fee updated successfully");
+        } catch {
+            toast.error("Failed to update prescription fee");
         } finally {
             setSaving(false);
         }
@@ -106,28 +134,63 @@ export default function AdminSettings() {
                 {loading ? (
                     <div>Loading...</div>
                 ) : (
-                    <div className="flex gap-4 items-end">
-                        <div className="flex-1">
-                            <label className="block text-sm font-medium text-navy mb-1">
+                    <div className="grid md:grid-cols-2 gap-6">
+
+                        {/* SLOT FEE */}
+
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium text-navy">
                                 Slot Booking Fee (₹)
                             </label>
-                            <input
-                                type="number"
-                                value={slotFee}
-                                onChange={(e) =>
-                                    setSlotFee(Number(e.target.value))
-                                }
-                                className="w-full rounded-xl border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-wellness-accent/30"
-                            />
+
+                            <div className="flex gap-3">
+                                <input
+                                    type="number"
+                                    value={slotFee}
+                                    onChange={(e) =>
+                                        setSlotFee(Number(e.target.value))
+                                    }
+                                    className="flex-1 rounded-xl border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-wellness-accent/30"
+                                />
+
+                                <button
+                                    onClick={saveSlotFee}
+                                    disabled={saving}
+                                    className="px-4 rounded-xl bg-wellness-accent text-white text-sm"
+                                >
+                                    Save
+                                </button>
+                            </div>
                         </div>
 
-                        <button
-                            onClick={saveSlotFee}
-                            disabled={saving}
-                            className="py-2 px-6 rounded-xl bg-wellness-accent text-white font-medium"
-                        >
-                            {saving ? "Saving..." : "Save"}
-                        </button>
+
+                        {/* PRESCRIPTION FEE */}
+
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium text-navy">
+                                Prescription Fee (₹)
+                            </label>
+
+                            <div className="flex gap-3">
+                                <input
+                                    type="number"
+                                    value={prescriptionFee}
+                                    onChange={(e) =>
+                                        setPrescriptionFee(Number(e.target.value))
+                                    }
+                                    className="flex-1 rounded-xl border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-wellness-accent/30"
+                                />
+
+                                <button
+                                    onClick={savePrescriptionFee}
+                                    disabled={saving}
+                                    className="px-4 rounded-xl bg-wellness-accent text-white text-sm"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 )}
             </section>
