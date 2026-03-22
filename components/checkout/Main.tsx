@@ -46,9 +46,6 @@ export default function CheckoutMainPage() {
                         <CheckoutFooter
                             doctorId={doctorId}
                             slotId={slotId}
-                            date={date}
-                            startTime={startTime}
-                            endTime={endTime}
                             paymentMethod={paymentMethod}
                         />
                     </div>
