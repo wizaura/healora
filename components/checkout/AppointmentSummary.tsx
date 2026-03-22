@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Globe } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import api from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 
@@ -24,7 +24,7 @@ export default function AppointmentSummary({
             api.get(`/doctor/${doctorId}`).then((res) => res.data),
     });
 
-    if (isLoading) {
+    if (isLoading || !data) {
         return (
             <div className="mx-auto max-w-4xl rounded-3xl bg-white p-16 text-center shadow">
                 Loading appointment…
@@ -59,18 +59,19 @@ export default function AppointmentSummary({
                     Appointment summary
                 </span>
 
+                {/* Doctor Name */}
                 <h2 className="text-3xl md:text-5xl font-semibold text-navy">
-                    {data.user.name}
+                    {data.name}
                 </h2>
 
                 {/* Specialities */}
                 <div className="flex flex-wrap justify-center gap-2">
                     {data.specialities?.map((s: any) => (
                         <span
-                            key={s.speciality.id}
+                            key={s.id}
                             className="rounded-full bg-navy/5 px-4 py-1 text-xs text-navy"
                         >
-                            {s.speciality.name}
+                            {s.name}
                         </span>
                     ))}
                 </div>
@@ -85,6 +86,11 @@ export default function AppointmentSummary({
                     </span>
                 </div>
 
+                {/* Fee */}
+                <div className="text-lg font-semibold text-navy">
+                    Consultation Fee: {data.currencySymbol}{data.consultationFee}
+                </div>
+
                 {/* Learn More Toggle */}
                 <button
                     onClick={() => setExpanded(!expanded)}
@@ -97,26 +103,35 @@ export default function AppointmentSummary({
                 {expanded && (
                     <div className="mt-6 space-y-4 text-sm text-navy/70 max-w-2xl mx-auto">
 
-                        {/* Sub & Mini */}
+                        {/* Sub Specialities */}
                         {data.subSpecialities?.length > 0 && (
                             <p>
                                 <strong>Sub-specialities:</strong>{" "}
-                                {data.subSpecialities.map((s: any) => s.subSpeciality.name).join(", ")}
+                                {data.subSpecialities.map((s: any) => s.name).join(", ")}
                             </p>
                         )}
 
+                        {/* Mini Specialities */}
                         {data.miniSpecialities?.length > 0 && (
                             <p>
-                                <strong>Mini-specialities:</strong>{" "}
-                                {data.miniSpecialities.map((m: any) => m.miniSpeciality.name).join(", ")}
+                                <strong>Areas of Expertise:</strong>{" "}
+                                {data.miniSpecialities.map((m: any) => m.name).join(", ")}
                             </p>
                         )}
 
                         {/* Languages */}
                         {data.languages?.length > 0 && (
-                            <p className="flex items-center justify-center gap-2">
+                            <p>
                                 <strong>Languages:</strong>{" "}
-                                {data.languages.map((l: any) => l.language.name).join(", ")}
+                                {data.languages.map((l: any) => l.name).join(", ")}
+                            </p>
+                        )}
+
+                        {/* Registration */}
+                        {data.registrationCouncil && (
+                            <p>
+                                <strong>Registered with:</strong>{" "}
+                                {data.registrationCouncil}
                             </p>
                         )}
 

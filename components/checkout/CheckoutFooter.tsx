@@ -27,9 +27,6 @@ type Address = {
 type Props = {
     doctorId: string;
     slotId: string;
-    date: string;
-    startTime: string;
-    endTime: string;
     paymentMethod: "razorpay" | "stripe";
 };
 
@@ -40,33 +37,37 @@ export default function CheckoutFooter({
 }: Props) {
     const [slotFee, setSlotFee] = useState(0);
     const [consultationFee, setConsultationFee] = useState(0);
-    const [prescriptionFee] = useState(50);
-    const [deliveryFee] = useState(100);
+    const [currencySymbol, setCurrencySymbol] = useState("₹");
+
+    const [prescriptionFee, setPrescriptionFee] = useState(0);
+    const [deliveryFee, setDeliveryFee] = useState(0);
 
     const [loading, setLoading] = useState(true);
 
     const [meetingType, setMeetingType] = useState<"google" | "zoom" | null>(null);
-
-    const [deliveryMode, setDeliveryMode] = useState<
-        "none" | "prescription" | "door"
-    >("none");
-
+    const [deliveryMode, setDeliveryMode] = useState<"none" | "prescription" | "door">("none");
     const [payMode, setPayMode] = useState<"slot" | "full">("slot");
 
     const [address, setAddress] = useState<Address>({});
 
     const router = useRouter();
 
+    /* ---------------- Fetch Fees ---------------- */
     useEffect(() => {
         const fetchFees = async () => {
             try {
-                const [slotFeeRes, doctorRes] = await Promise.all([
+                const [slotFeeRes, prescriptionRes, doctorRes] = await Promise.all([
                     api.get("/settings/slot-fee"),
+                    api.get("/settings/prescription-fee"),
                     api.get(`/doctor/${doctorId}`),
                 ]);
 
                 setSlotFee(slotFeeRes.data.slotFee || 0);
+                setPrescriptionFee(prescriptionRes.data.prescriptionFee || 0);
+                setDeliveryFee(prescriptionRes.data.deliveryFee || 0);
+
                 setConsultationFee(doctorRes.data.consultationFee || 0);
+                setCurrencySymbol(doctorRes.data.currencySymbol || "₹");
             } catch (err) {
                 console.error("Failed to load fees", err);
             } finally {
@@ -77,31 +78,33 @@ export default function CheckoutFooter({
         fetchFees();
     }, [doctorId]);
 
+    /* ---------------- Total Calculation ---------------- */
     const totalAmount = useMemo(() => {
         let total = slotFee;
 
         if (payMode === "full") {
             total += consultationFee;
-        }
 
-        if (deliveryMode === "prescription") {
-            total += prescriptionFee;
-        }
+            if (deliveryMode === "prescription") {
+                total += prescriptionFee;
+            }
 
-        if (deliveryMode === "door") {
-            total += deliveryFee;
+            if (deliveryMode === "door") {
+                total += deliveryFee;
+            }
         }
 
         return total;
     }, [slotFee, consultationFee, payMode, deliveryMode, prescriptionFee, deliveryFee]);
 
+    /* ---------------- Payment ---------------- */
     const handlePayment = async () => {
         if (payMode === "full" && !meetingType) {
             return toast.error("Please select consultation mode");
         }
 
         if (payMode === "full" && deliveryMode === "none") {
-            return toast.error("Please choose prescription copy or medicine delivery");
+            return toast.error("Please choose prescription or medicine delivery");
         }
 
         if (deliveryMode === "door" && !address.line1) {
@@ -128,9 +131,6 @@ export default function CheckoutFooter({
 
             if (payMode === "full") {
                 payload.meetingType = meetingType;
-            }
-
-            if (payMode === "full") {
                 payload.deliveryMode = deliveryMode;
             }
 
@@ -164,7 +164,7 @@ export default function CheckoutFooter({
         const options = {
             key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
             amount: order.amount * 100,
-            currency: "INR",
+            currency: order.currency,
             order_id: order.orderId,
             name: "Healora",
             description: "Appointment Payment",
@@ -189,140 +189,144 @@ export default function CheckoutFooter({
 
             <div className="overflow-y-auto p-6 max-w-lg mx-auto w-full">
 
-                {/* Title */}
                 <h2 className="text-xl font-semibold text-navy mb-6">
                     Choose Payment Option
                 </h2>
 
                 {/* Payment Mode */}
                 <div className="space-y-3">
-
                     <div
-                        onClick={() => setPayMode("slot")}
-                        className={`cursor-pointer rounded-xl border p-4 transition hover:border-navy
-            ${payMode === "slot"
-                                ? "border-navy bg-navy/5 shadow-sm"
-                                : "border-gray-200"}`}
+                        onClick={() => {
+                            setPayMode("slot");
+                            setDeliveryMode("none");
+                            setMeetingType(null);
+                        }}
+                        className={`cursor-pointer rounded-xl border p-4 ${
+                            payMode === "slot"
+                                ? "border-navy bg-navy/5"
+                                : "border-gray-200"
+                        }`}
                     >
                         <div className="flex justify-between">
                             <span className="font-medium">Pay Slot Fee Only</span>
-                            <span>₹{slotFee}</span>
+                            <span>{currencySymbol}{slotFee}</span>
                         </div>
-
-                        <p className="text-xs text-gray-500 mt-1">
-                            Confirm booking now. Consultation later.
-                        </p>
                     </div>
 
                     <div
                         onClick={() => setPayMode("full")}
-                        className={`cursor-pointer rounded-xl border p-4 transition hover:border-navy
-            ${payMode === "full"
-                                ? "border-navy bg-navy/5 shadow-sm"
-                                : "border-gray-200"}`}
+                        className={`cursor-pointer rounded-xl border p-4 ${
+                            payMode === "full"
+                                ? "border-navy bg-navy/5"
+                                : "border-gray-200"
+                        }`}
                     >
                         <div className="flex justify-between">
                             <span className="font-medium">
                                 Pay Slot + Consultation
                             </span>
-
-                            <span>₹{slotFee + consultationFee}</span>
+                            <span>{currencySymbol}{slotFee + consultationFee}</span>
                         </div>
-
-                        <p className="text-xs text-gray-500 mt-1">
-                            Complete payment in one go.
-                        </p>
                     </div>
                 </div>
 
-                {/* Add-ons */}
-                <div className="mt-6 space-y-3">
-                    <p className="text-sm font-medium">Add-ons</p>
-
-                    <div
-                        onClick={() =>
-                            setDeliveryMode(
-                                deliveryMode === "prescription" ? "none" : "prescription"
-                            )
-                        }
-                        className={`cursor-pointer rounded-xl border p-3 transition
-            ${deliveryMode === "prescription"
-                                ? "border-navy bg-navy/5"
-                                : "border-gray-200"}`}
-                    >
-                        Prescription Copy (₹{prescriptionFee})
-                    </div>
-
-                    <div
-                        onClick={() =>
-                            setDeliveryMode(deliveryMode === "door" ? "none" : "door")
-                        }
-                        className={`cursor-pointer rounded-xl border p-3 transition
-            ${deliveryMode === "door"
-                                ? "border-navy bg-navy/5"
-                                : "border-gray-200"}`}
-                    >
-                        Door-to-door Medicine Delivery (Pay Later)
-                    </div>
-                </div>
-
-                {/* Meeting Mode */}
+                {/* Only show below if FULL PAYMENT */}
                 {payMode === "full" && (
-                    <div className="mt-6 space-y-2">
-                        <p className="text-sm font-medium">
-                            Choose Consultation Mode
-                        </p>
+                    <>
+                        {/* Add-ons */}
+                        <div className="mt-6 space-y-3">
+                            <p className="text-sm font-medium">Add-ons</p>
 
-                        <div className="flex gap-3">
-
-                            <button
-                                type="button"
-                                onClick={() => setMeetingType("google")}
-                                className={`flex-1 py-2 rounded-lg border
-                ${meetingType === "google"
+                            <div
+                                onClick={() =>
+                                    setDeliveryMode(
+                                        deliveryMode === "prescription"
+                                            ? "none"
+                                            : "prescription"
+                                    )
+                                }
+                                className={`cursor-pointer rounded-xl border p-3 ${
+                                    deliveryMode === "prescription"
                                         ? "border-navy bg-navy/5"
-                                        : "border-gray-200"}`}
+                                        : "border-gray-200"
+                                }`}
                             >
-                                Google Meet
-                            </button>
+                                Prescription Copy ({currencySymbol}{prescriptionFee})
+                            </div>
 
-                            <button
-                                type="button"
-                                onClick={() => setMeetingType("zoom")}
-                                className={`flex-1 py-2 rounded-lg border
-                ${meetingType === "zoom"
+                            <div
+                                onClick={() =>
+                                    setDeliveryMode(
+                                        deliveryMode === "door" ? "none" : "door"
+                                    )
+                                }
+                                className={`cursor-pointer rounded-xl border p-3 ${
+                                    deliveryMode === "door"
                                         ? "border-navy bg-navy/5"
-                                        : "border-gray-200"}`}
+                                        : "border-gray-200"
+                                }`}
                             >
-                                Zoom
-                            </button>
-
+                                Door-to-door Medicine Delivery
+                            </div>
                         </div>
-                    </div>
+
+                        {/* Meeting Mode */}
+                        <div className="mt-6 space-y-2">
+                            <p className="text-sm font-medium">
+                                Choose Consultation Mode
+                            </p>
+
+                            <div className="flex gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setMeetingType("google")}
+                                    className={`flex-1 py-2 rounded-lg border ${
+                                        meetingType === "google"
+                                            ? "border-navy bg-navy/5"
+                                            : "border-gray-200"
+                                    }`}
+                                >
+                                    Google Meet
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => setMeetingType("zoom")}
+                                    className={`flex-1 py-2 rounded-lg border ${
+                                        meetingType === "zoom"
+                                            ? "border-navy bg-navy/5"
+                                            : "border-gray-200"
+                                    }`}
+                                >
+                                    Zoom
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Address */}
+                        {deliveryMode === "door" && (
+                            <div className="mt-6">
+                                <p className="text-sm font-medium mb-3">
+                                    Delivery Address
+                                </p>
+
+                                <AddressForm value={address} onChange={setAddress} />
+                            </div>
+                        )}
+                    </>
                 )}
 
-                {/* Address */}
-                {deliveryMode === "door" && (
-                    <div className="mt-6">
-                        <p className="text-sm font-medium mb-3">
-                            Delivery Address
-                        </p>
-
-                        <AddressForm value={address} onChange={setAddress} />
-                    </div>
-                )}
-
-                {/* Summary */}
+                {/* Total */}
                 <div className="mt-6 border-t pt-4 flex justify-between text-lg font-semibold">
                     <span>Total Payable</span>
-                    <span>₹{totalAmount}</span>
+                    <span>{currencySymbol}{totalAmount}</span>
                 </div>
 
-                {/* Payment Button */}
+                {/* Pay Button */}
                 <button
                     onClick={handlePayment}
                     disabled={loading}
-                    className="mt-6 w-full rounded-2xl bg-navy py-4 text-white font-semibold hover:opacity-90 transition"
+                    className="mt-6 w-full rounded-2xl bg-navy py-4 text-white font-semibold"
                 >
                     {loading ? "Processing..." : "Proceed to Payment"}
                 </button>
@@ -330,7 +334,6 @@ export default function CheckoutFooter({
                 <p className="mt-4 text-xs text-gray-500 text-center">
                     Secure payment • {paymentMethod.toUpperCase()}
                 </p>
-
             </div>
         </section>
     );
