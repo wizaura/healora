@@ -14,6 +14,7 @@ type Props = {
     options: Option[];
     placeholder?: string;
     className?: string;
+    subClasses?: string;
 };
 
 export default function SelectOption({
@@ -22,6 +23,7 @@ export default function SelectOption({
     options,
     placeholder = "Select option",
     className,
+    subClasses,
 }: Props) {
     const [open, setOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -53,7 +55,7 @@ export default function SelectOption({
                 onClick={() => setOpen(prev => !prev)}
                 className={`
                     w-full flex justify-between items-center
-                    bg-white border rounded-xl px-4 py-2 text-sm
+                    bg-white border ${subClasses ? subClasses : "rounded-xl px-4 py-2" } text-sm
                     text-[#0B2E28]
                     transition
                     ${open

@@ -335,7 +335,7 @@ export default function AddPrescriptionModal({ appointmentId, user, deliveryMode
                         disabled={loading}
                         className="bg-navy hover:bg-navy-dark text-white px-4 py-2 rounded-lg text-sm"
                     >
-                        Save Prescription
+                        {loading ? "Creating Prescription..." : "Save Prescription"}
                     </button>
 
                 </div>
