@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
@@ -36,10 +34,12 @@ export default function CareerFormSection() {
         });
     };
 
-    const specialityOptions = data.map((s: any) => ({
-        label: s.name,
-        value: s.name,
-    }));
+    const specialityOptions = Array.isArray(data)
+        ? data.map((s: any) => ({
+            label: s.name,
+            value: s.name,
+        }))
+        : [];
 
     const validate = () => {
         if (!form.fname.trim()) return toast.error("First name required"), false;

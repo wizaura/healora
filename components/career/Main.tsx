@@ -1,3 +1,5 @@
+"use client"
+
 import CareerFormSection from "./CareerForm";
 import CareerHeader from "./CareerHeader";
 
