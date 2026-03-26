@@ -88,6 +88,12 @@ export default function PatientProfilePage() {
                     <p className="text-sm text-gray-500">
                         {patient.email}
                     </p>
+                    <p className="text-sm text-gray-500">
+                        {patient.age}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                        {patient.sex}
+                    </p>
                 </div>
 
                 <div className="flex gap-6 text-sm">
@@ -139,6 +145,7 @@ export default function PatientProfilePage() {
 
                     <PrescriptionsSection
                         prescriptions={prescriptions}
+                        user={patient}
                         appointmentId={appointmentId}
                         refetch={refetch}
                     />

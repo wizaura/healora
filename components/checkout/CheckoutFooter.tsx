@@ -114,9 +114,12 @@ export default function CheckoutFooter({
         try {
             setLoading(true);
 
+            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
             const bookingRes = await api.post("/booking/initiate", {
                 doctorId,
                 slotId,
+                timeZone,
             });
 
             const { appointmentId } = bookingRes.data.data;

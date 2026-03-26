@@ -38,6 +38,7 @@ const aboutItems = [
 const moreItems = [
     { name: "Blogs", href: "/blog" },
     { name: "FAQs", href: "/faqs" },
+    { name: "Medikits", href: "/medikits" },
     { name: "Contact", href: "/contact" },
 ];
 

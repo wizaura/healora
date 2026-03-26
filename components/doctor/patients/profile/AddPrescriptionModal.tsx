@@ -5,20 +5,42 @@ import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { Trash2, X } from "lucide-react";
 import { getApiError } from "@/lib/util";
+import { useQuery } from "@tanstack/react-query";
 
-export default function AddPrescriptionModal({ appointmentId, onSaved }: any) {
+export default function AddPrescriptionModal({ appointmentId, user, deliveryMode, onSaved }: any) {
 
     const [open, setOpen] = useState(false);
 
     const [medicines, setMedicines] = useState([
         { text: "" }
     ]);
+    const [selectedMedikits, setSelectedMedikits] = useState<any[]>([]);
+
+    const { data: medikits } = useQuery({
+        queryKey: ["medikits"],
+        queryFn: async () => {
+            const res = await api.get("/medikits");
+            return res.data;
+        },
+    });
+    const [age, setAge] = useState(user.age || "");
+    const [sex, setSex] = useState(user.sex || "");
 
     const [instructions, setInstructions] = useState("");
     const [loading, setLoading] = useState(false);
 
     const addMedicine = () => {
         setMedicines([...medicines, { text: "" }]);
+    };
+
+    const toggleMedikit = (kit: any) => {
+        const exists = selectedMedikits.find((k) => k.id === kit.id);
+
+        if (exists) {
+            setSelectedMedikits(selectedMedikits.filter((k) => k.id !== kit.id));
+        } else {
+            setSelectedMedikits([...selectedMedikits, kit]);
+        }
     };
 
     const removeMedicine = (index: number) => {
@@ -39,7 +61,13 @@ export default function AddPrescriptionModal({ appointmentId, onSaved }: any) {
             await api.post("/consultations/prescriptions", {
                 appointmentId,
                 medicines,
-                instructions
+                instructions,
+                age,
+                sex,
+                medikitIds:
+                    deliveryMode === "DOOR"
+                        ? selectedMedikits.map((k) => k.id)
+                        : [],
             });
 
             toast.success("Prescription created");
@@ -151,7 +179,73 @@ export default function AddPrescriptionModal({ appointmentId, onSaved }: any) {
                             + Add another medicine
                         </button>
 
+                        {/* PATIENT DETAILS (ONLY IF MISSING) */}
+
+                        <div className="space-y-4">
+                            <h4 className="text-sm font-semibold text-gray-700">
+                                Patient Details
+                            </h4>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="text-sm text-gray-600">Age</label>
+                                    <input
+                                        type="number"
+                                        value={age}
+                                        onChange={(e) => setAge(e.target.value)}
+                                        className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="text-sm text-gray-600">Sex</label>
+                                    <select
+                                        value={sex}
+                                        onChange={(e) => setSex(e.target.value)}
+                                        className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full"
+                                    >
+                                        <option value="">Select</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
+
+                    {/* MEDIKITS */}
+                    {deliveryMode === "DOOR" && (
+                        <div className="space-y-3">
+                            <h4 className="text-sm font-semibold text-gray-700">
+                                Select Medikits
+                            </h4>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                {medikits?.map((kit: any) => {
+                                    const selected = selectedMedikits.find((k) => k.id === kit.id);
+
+                                    return (
+                                        <div
+                                            key={kit.id}
+                                            onClick={() => toggleMedikit(kit)}
+                                            className={`border rounded-lg p-3 cursor-pointer transition ${selected
+                                                ? "border-teal-600 bg-teal-50"
+                                                : "border-gray-200 hover:border-gray-300"
+                                                }`}
+                                        >
+                                            <p className="font-medium text-sm">{kit.title}</p>
+                                            <p className="text-xs text-gray-500">
+                                                {kit.medicines.length} medicines
+                                            </p>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
 
                     {/* ADDITIONAL INSTRUCTIONS */}
 
@@ -171,6 +265,12 @@ export default function AddPrescriptionModal({ appointmentId, onSaved }: any) {
 
                     </div>
 
+                    <p className="text-gray-800 text-sm bg-gray-100 p-3 rounded-md">
+                        <span className="font-bold">Note: </span>
+                        Your digital signature, seal, and registration details
+                        will be automatically attached to the prescription.
+                    </p>
+
                     {/* PREVIEW */}
 
                     <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
@@ -188,6 +288,24 @@ export default function AddPrescriptionModal({ appointmentId, onSaved }: any) {
                                     </p>
                                 )
                             ))}
+
+                            {selectedMedikits.length > 0 && (
+                                <div className="mt-3 space-y-2">
+                                    {selectedMedikits.map((kit: any, index: number) => (
+                                        <div key={kit.id}>
+                                            <p className="font-medium">
+                                                Medikit: {kit.title}
+                                            </p>
+
+                                            <ul className="ml-4 list-disc">
+                                                {kit.medicines.map((m: string, i: number) => (
+                                                    <li key={i}>{m}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
 
                             {instructions && (
                                 <p className="mt-3 text-gray-600">
