@@ -40,8 +40,8 @@ export default function Payments() {
                 <button
                     onClick={() => setTab("PENDING")}
                     className={`pb-2 ${tab === "PENDING"
-                            ? "border-b-2 border-teal-600 font-medium"
-                            : "text-gray-400"
+                        ? "border-b-2 border-teal-600 font-medium"
+                        : "text-gray-400"
                         }`}
                 >
                     Pending Bills
@@ -50,8 +50,8 @@ export default function Payments() {
                 <button
                     onClick={() => setTab("PAID")}
                     className={`pb-2 ${tab === "PAID"
-                            ? "border-b-2 border-teal-600 font-medium"
-                            : "text-gray-400"
+                        ? "border-b-2 border-teal-600 font-medium"
+                        : "text-gray-400"
                         }`}
                 >
                     Payment History
@@ -87,8 +87,8 @@ export default function Payments() {
                                 </p>
                                 <span
                                     className={`text-xs px-3 py-1 rounded-full ${bill.paymentStatus === "PAID"
-                                            ? "bg-green-100 text-green-700"
-                                            : "bg-yellow-100 text-yellow-700"
+                                        ? "bg-green-100 text-green-700"
+                                        : "bg-yellow-100 text-yellow-700"
                                         }`}
                                 >
                                     {bill.paymentStatus}
@@ -159,7 +159,46 @@ export default function Payments() {
                             </a>
 
                             {bill.paymentStatus === "PENDING" && (
-                                <button className="text-sm bg-teal-600 text-white px-4 py-1 rounded-lg">
+                                <button
+                                    onClick={async () => {
+                                        try {
+                                            const res = await api.post(
+                                                `/payments/pay-prescription/${bill.id}`
+                                            );
+
+                                            console.log(res.data,'res.data')
+
+                                            const data = res.data.data;
+
+                                            // Razorpay
+                                            if (data.gateway === "RAZORPAY") {
+                                                const options = {
+                                                    key: data.key,
+                                                    amount: data.amount,
+                                                    currency: data.currency,
+                                                    name: "Healora",
+                                                    description: "Pharmacy Bill Payment",
+                                                    order_id: data.orderId,
+                                                    handler: function () {
+                                                        window.location.reload();
+                                                    },
+                                                };
+
+                                                const rzp = new (window as any).Razorpay(options);
+                                                rzp.open();
+                                            }
+
+                                            // Stripe
+                                            if (data.gateway === "STRIPE") {
+                                                window.location.href = data.checkoutUrl;
+                                            }
+
+                                        } catch (err) {
+                                            alert("Payment failed to start");
+                                        }
+                                    }}
+                                    className="text-sm bg-teal-600 text-white px-4 py-1 rounded-lg"
+                                >
                                     Pay Now
                                 </button>
                             )}

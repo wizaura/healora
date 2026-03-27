@@ -95,11 +95,11 @@ export default function DoctorsProjection() {
                                 </li>
                             ))}
                         </ul>
-                        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2">
+                        <div className="absolute -bottom-4 md:-bottom-8 left-1/2 -translate-x-1/2">
                             <Link
                                 href="/doctors"
                                 className="
-        px-6 py-3 rounded-xl
+        px-6 py-1 md:py-3 rounded-md md:rounded-xl
         bg-navy text-white
         text-sm font-medium
         shadow-lg
