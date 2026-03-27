@@ -1,4 +1,5 @@
-import CTASection from "@/components/home/CTA";
+
+import CTASection from "@/components/common/CTASection";
 import DoctorsSlider from "@/components/home/Doctors";
 import FAQsSection from "@/components/home/FAQs";
 import GreetingBanner from "@/components/home/GreetingBanner";
@@ -17,7 +18,12 @@ export default function Home() {
       <HowItWorks />
       <ReviewsSection />
       <FAQsSection />
-      <CTASection />
+      <CTASection
+        title="Take the first step towards better health"
+        description="Book an appointment with trusted doctors and specialists. Personalized care, flexible scheduling, and expert guidance — all in one place."
+        buttonLabel="Book Appointment"
+        buttonHref="/doctors"
+      />
     </div>
   );
 }

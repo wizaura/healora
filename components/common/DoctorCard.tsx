@@ -51,29 +51,13 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
                 "
                 >
 
-                    {doctor.imageUrl ? (
-
                         <Image
-                            src={doctor.imageUrl}
+                            src={doctor.imageUrl || '/doctor-placeholder.png'}
                             alt={doctor.user?.name || "Doctor"}
                             fill
                             className="object-cover"
                         />
 
-                    ) : (
-
-                        <div
-                            className="
-                            w-full h-full
-                            flex items-center justify-center
-                            bg-wellness-bg
-                            text-navy
-                        "
-                        >
-                            <Stethoscope size={30} />
-                        </div>
-
-                    )}
 
                     {/* ONLINE INDICATOR (optional future feature) */}
 

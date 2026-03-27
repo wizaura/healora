@@ -103,8 +103,8 @@ export default function FAQPage() {
                     <button
                         onClick={() => setActiveCategory("All")}
                         className={`px-4 py-2 rounded-full border ${activeCategory === "All"
-                                ? "bg-navy text-white"
-                                : "border-gray-300"
+                            ? "bg-navy text-white"
+                            : "border-gray-300"
                             }`}
                     >
                         All
@@ -118,8 +118,8 @@ export default function FAQPage() {
                                 key={cat.id}
                                 onClick={() => setActiveCategory(cat.name)}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full border ${activeCategory === cat.name
-                                        ? "bg-navy text-white"
-                                        : "border-gray-300"
+                                    ? "bg-navy text-white"
+                                    : "border-gray-300"
                                     }`}
                             >
                                 <Icon size={16} />
@@ -178,7 +178,7 @@ export default function FAQPage() {
                                             </button>
 
                                             {openIndex === faq.id && (
-                                                <div className="px-5 pb-5 text-slate-600 text-sm leading-relaxed">
+                                                <div className="px-5 pb-5 text-slate-600 text-sm leading-relaxed whitespace-pre-line">
                                                     {faq.answer}
                                                 </div>
                                             )}

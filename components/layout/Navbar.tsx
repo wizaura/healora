@@ -225,7 +225,7 @@ export default function Navbar() {
 
 
                 {/* Right Side */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1 md:gap-3">
 
                     {user?.role === "ADMIN" && (
                         <Link
@@ -235,7 +235,7 @@ export default function Navbar() {
                             text-sm font-medium text-gray-700 hover:bg-gray-50"
                         >
                             <ShieldCheck size={16} />
-                            Admin
+                            <span className="hidden md:flex">Admin</span>
                         </Link>
                     )}
 
@@ -247,7 +247,7 @@ export default function Navbar() {
                             text-sm font-medium text-gray-700 hover:bg-gray-50"
                         >
                             <Stethoscope size={16} />
-                            Dashboard
+                            <span className="hidden md:flex">Dashboard</span>
                         </Link>
                     )}
 
@@ -259,7 +259,7 @@ export default function Navbar() {
                             text-sm font-medium text-gray-700 hover:bg-gray-50"
                         >
                             <LogIn size={16} />
-                            Login
+                            <span className="hidden md:flex">Login</span>
                         </Link>
                     ) : (
                         <Link
@@ -269,13 +269,13 @@ export default function Navbar() {
                             text-sm font-medium text-gray-700 hover:bg-gray-50"
                         >
                             <User size={16} />
-                            Profile
+                            <span className="hidden md:flex">Profile</span>
                         </Link>
                     )}
 
                     <Link
                         href="/contact"
-                        className="group flex items-center gap-2 rounded-full
+                        className="hidden md:flex group flex items-center gap-2 rounded-full
                         border border-gray-200 bg-white px-5 py-2.5
                         text-sm font-medium text-[#1F2147] shadow-sm
                         transition hover:bg-gray-50"

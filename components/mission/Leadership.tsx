@@ -4,7 +4,7 @@ const leaders = [
     {
         name: "Dr Reenidge Emmanuel",
         role: "Co-Founder & Director",
-        image: "/leaders/reenidge.jpg",
+        image: "/doc_2.png",
         description:
             "Dr. Reenidge Emmanuel is a highly accomplished homeopathic physician and mental-health practitioner with over nine years of clinical experience. He integrates medical science with psychological insight to foster holistic well-being.",
     },
@@ -18,14 +18,14 @@ const leaders = [
     {
         name: "Dr Anu A A",
         role: "Co-Founder & Director",
-        image: "/leaders/anu.jpg",
+        image: "/doc_3.png",
         description:
             "Dr. Anu A. A. is a distinguished homeopathic physician and holistic health practitioner with over 8 years of experience, combining clinical expertise with nutrition and lifestyle medicine.",
     },
     {
         name: "Dr Bittumol Benny",
         role: "Co-Founder & Director",
-        image: "/leaders/bittumol.jpg",
+        image: "/doc_4.png",
         description:
             "Dr. Bittumol Benny is a homeopathic physician with expertise in public health and preventive wellness, focusing on root-cause healing and personalized patient care.",
     },
@@ -71,7 +71,7 @@ export default function LeadershipSection() {
                                     src={leader.image}
                                     alt={leader.name}
                                     fill
-                                    className="object-cover group-hover:scale-105 transition duration-300"
+                                    className="object-cover object-top group-hover:scale-105 transition duration-300"
                                 />
 
                             </div>
