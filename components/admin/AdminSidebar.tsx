@@ -49,11 +49,12 @@ export default function AdminSidebar({
         bg-white border-r border-slate-200
         transition-all duration-300
         ${collapsed ? "w-20" : "w-64"}
+        flex flex-col
     `}
         >
 
             {/* Brand */}
-            <div className="h-16 flex items-center justify-between px-4 border-gray-300 border-b">
+            <div className="h-16 flex items-center justify-between px-4 border-gray-300 border-b shrink-0">
                 {!collapsed && (
                     <span className="text-lg font-semibold text-[#1F2147]">
                         Admin
@@ -68,8 +69,8 @@ export default function AdminSidebar({
                 </button>
             </div>
 
-            {/* Nav */}
-            <nav className="px-3 py-6 space-y-1">
+            {/* Scrollable Nav */}
+            <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-1 scrollbar-hide">
                 {navItems.map((item) => {
                     const isActive = pathname === item.href;
                     const Icon = item.icon;
@@ -79,14 +80,14 @@ export default function AdminSidebar({
                             key={item.href}
                             href={item.href}
                             className={`
-                                group flex items-center gap-3
-                                rounded-lg px-3 py-2.5
-                                text-sm font-medium transition
-                                ${isActive
+                        group flex items-center gap-3
+                        rounded-lg px-3 py-2.5
+                        text-sm font-medium transition
+                        ${isActive
                                     ? "bg-[#1F4BFF]/10 text-[#1F4BFF]"
                                     : "text-slate-600 hover:bg-slate-100"
                                 }
-                            `}
+                    `}
                         >
                             <Icon size={20} />
 

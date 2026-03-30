@@ -7,11 +7,26 @@ import api from "@/lib/api";
 export default function AdminAnalytics() {
 
     const [range, setRange] = useState<"daily" | "weekly" | "monthly">("daily");
+    const [doctorId, setDoctorId] = useState("");
 
-    const { data, isLoading } = useQuery({
-        queryKey: ["admin-analytics", range],
+    /* ---------------- GET DOCTORS ---------------- */
+    const { data: doctors = [] } = useQuery({
+        queryKey: ["doctor-list"],
         queryFn: async () => {
-            const res = await api.get(`/admin/payments/analytics?range=${range}`);
+            const res = await api.get("/admin/doctors");
+            return res.data;
+        }
+    });
+
+    console.log(doctors,'sd')
+
+    /* ---------------- GET ANALYTICS ---------------- */
+    const { data, isLoading } = useQuery({
+        queryKey: ["admin-analytics", range, doctorId],
+        queryFn: async () => {
+            const res = await api.get(`/admin/payments/analytics`, {
+                params: { range, doctorId }
+            });
             return res.data;
         }
     });
@@ -21,43 +36,62 @@ export default function AdminAnalytics() {
     }
 
     return (
-        <div className="pt-28 px-6 max-w-7xl mx-auto space-y-10">
+        <div className="pt-28 px-6 max-w-7xl mx-auto space-y-6">
 
             {/* HEADER */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
                 <div>
-                    <h1 className="text-3xl font-semibold text-navy">
+                    <h1 className="text-3xl font-semibold text-slate-900">
                         Revenue Analytics
                     </h1>
-                    <p className="text-sm text-navy/60 mt-1">
+                    <p className="text-sm text-gray-500 mt-1">
                         Monitor platform revenue and doctor performance
                     </p>
                 </div>
 
-                {/* FILTER */}
-                <div className="flex gap-2 bg-slate-100 p-1 rounded-xl w-fit">
-                    {["daily", "weekly", "monthly"].map((r) => (
-                        <button
-                            key={r}
-                            onClick={() => setRange(r as any)}
-                            className={`
-                                px-4 py-2 text-sm rounded-lg capitalize
-                                ${range === r
-                                    ? "bg-white shadow text-slate-900"
-                                    : "text-slate-600 hover:bg-white/60"
-                                }
-                            `}
-                        >
-                            {r}
-                        </button>
-                    ))}
+                {/* FILTERS */}
+                <div className="flex gap-3 items-center">
+
+                    {/* RANGE FILTER */}
+                    <div className="flex gap-2 bg-slate-100 p-1 rounded-xl">
+                        {["daily", "weekly", "monthly"].map((r) => (
+                            <button
+                                key={r}
+                                onClick={() => setRange(r as any)}
+                                className={`
+                                    px-4 py-2 text-sm rounded-lg capitalize
+                                    ${range === r
+                                        ? "bg-white shadow text-slate-900"
+                                        : "text-slate-600 hover:bg-white/60"
+                                    }
+                                `}
+                            >
+                                {r}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* DOCTOR FILTER */}
+                    <select
+                        value={doctorId}
+                        onChange={(e) => setDoctorId(e.target.value)}
+                        className="border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                    >
+                        <option value="">All Doctors</option>
+                        {doctors.map((d: any) => (
+                            <option key={d.id} value={d?.doctor?.id}>
+                                {d.name}
+                            </option>
+                        ))}
+                    </select>
+
                 </div>
 
             </div>
 
             {/* TOP CARDS */}
-            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-6">
 
                 <Card title="Total Revenue" value={`₹${data.totalRevenue}`} highlight />
 
@@ -66,6 +100,8 @@ export default function AdminAnalytics() {
                 <Card title="Consultation Revenue" value={`₹${data.breakdown.consultationRevenue}`} />
 
                 <Card title="Prescription Revenue" value={`₹${data.breakdown.prescriptionRevenue}`} />
+
+                <Card title="Pharmacy Revenue" value={`₹${data.breakdown.pharmacyRevenue}`} />
 
             </div>
 
@@ -87,7 +123,7 @@ export default function AdminAnalytics() {
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
 
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-lg font-semibold text-navy">
+                    <h2 className="text-lg font-semibold">
                         Doctor Performance
                     </h2>
                 </div>
@@ -103,7 +139,7 @@ export default function AdminAnalytics() {
 
                             <div className="flex justify-between items-center mb-2">
 
-                                <p className="font-medium text-navy">
+                                <p className="font-medium">
                                     {doc.name}
                                 </p>
 
@@ -114,11 +150,12 @@ export default function AdminAnalytics() {
                             </div>
 
                             {/* BREAKDOWN */}
-                            <div className="grid grid-cols-3 gap-4 text-sm text-gray-600">
+                            <div className="grid grid-cols-4 gap-4 text-sm text-gray-600">
 
                                 <Stat label="Slot" value={doc.slotRevenue} />
                                 <Stat label="Consultation" value={doc.consultationRevenue} />
                                 <Stat label="Prescription" value={doc.prescriptionRevenue} />
+                                <Stat label="Pharmacy" value={doc.pharmacyRevenue} />
 
                             </div>
 
@@ -132,6 +169,41 @@ export default function AdminAnalytics() {
                     ))}
 
                 </div>
+
+            </div>
+
+            {/* TRANSACTIONS TABLE */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+
+                <h2 className="text-lg font-semibold mb-4">
+                    Transactions
+                </h2>
+
+                <table className="w-full text-sm">
+                    <thead className="bg-slate-50">
+                        <tr>
+                            <th className="px-4 py-3 text-left">Date</th>
+                            <th className="px-4 py-3 text-left">Doctor</th>
+                            <th className="px-4 py-3 text-left">Type</th>
+                            <th className="px-4 py-3 text-left">Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {data.transactions.map((t: any) => (
+                            <tr key={t.id} className="border-t border-gray-200">
+                                <td className="px-4 py-3">
+                                    {new Date(t.date).toLocaleDateString()}
+                                </td>
+                                <td className="px-4 py-3">{t.doctorName}</td>
+                                <td className="px-4 py-3">{t.type}</td>
+                                <td className="px-4 py-3 font-medium">
+                                    ₹{t.amount}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
 
             </div>
 

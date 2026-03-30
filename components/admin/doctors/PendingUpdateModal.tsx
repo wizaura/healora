@@ -35,36 +35,44 @@ export default function PendingUpdateModal({
                             Current Profile
                         </p>
 
-                        <Info
-                            label="Experience"
-                            value={`${old.experience} years`}
-                            variant={changed(old.experience, updated.experience) ? "old" : undefined}
-                        />
+                        <Info label="Experience" value={`${old.experience} years`}
+                            variant={changed(old.experience, updated.experience) ? "old" : undefined} />
 
-                        <Info
-                            label="Qualification"
-                            value={old.qualification}
-                            variant={changed(old.qualification, updated.qualification) ? "old" : undefined}
-                        />
+                        <Info label="Qualification" value={old.qualification}
+                            variant={changed(old.qualification, updated.qualification) ? "old" : undefined} />
 
-                        <Info
-                            label="Fee"
-                            value={`₹${old.consultationFee}`}
-                            variant={changed(old.consultationFee, updated.consultationFee) ? "old" : undefined}
-                        />
+                        <Info label="Bio" value={old.bio || "—"}
+                            variant={changed(old.bio, updated.bio) ? "old" : undefined} />
 
-                        <Info
-                            label="Bio"
-                            value={old.bio || "—"}
-                            variant={changed(old.bio, updated.bio) ? "old" : undefined}
-                        />
+                        <Info label="Fee (INR)" value={`₹${old.consultationFeeINR}`}
+                            variant={changed(old.consultationFeeINR, updated.consultationFeeINR) ? "old" : undefined} />
 
-                        {old.imageUrl && (
-                            <img
-                                src={old.imageUrl}
-                                className="mt-3 w-24 h-24 object-cover rounded-lg border"
-                            />
-                        )}
+                        <Info label="Fee (USD)" value={`$${old.consultationFeeUSD}`}
+                            variant={changed(old.consultationFeeUSD, updated.consultationFeeUSD) ? "old" : undefined} />
+                        <Info label="Fee (AED)" value={`$${old.consultationFeeAED}`}
+                            variant={changed(old.consultationFeeAED, updated.consultationFeeAED) ? "old" : undefined} />
+                        <Info label="Fee (EUR)" value={`$${old.consultationFeeEUR}`}
+                            variant={changed(old.consultationFeeEUR, updated.consultationFeeEUR) ? "old" : undefined} />
+                        <Info label="Fee (GBP)" value={`$${old.consultationFeeGBP}`}
+                            variant={changed(old.consultationFeeGBP, updated.consultationFeeGBP) ? "old" : undefined} />
+                        <Info label="Fee (CAD)" value={`$${old.consultationFeeCAD}`}
+                            variant={changed(old.consultationFeeCAD, updated.consultationFeeCAD) ? "old" : undefined} />
+
+                        <Info label="Registration No" value={old.registrationNumber}
+                            variant={changed(old.registrationNumber, updated.registrationNumber) ? "old" : undefined} />
+
+                        <Info label="Registration Council" value={old.registrationCouncil}
+                            variant={changed(old.registrationCouncil, updated.registrationCouncil) ? "old" : undefined} />
+
+                        <Info label="Languages" value={(old.languages || []).join(", ")}
+                            variant={changed(old.languages?.join(","), updated.languages?.join(",")) ? "old" : undefined} />
+
+                        <Info label="Mini Specialities" value={(old.miniSpecialities || []).join(", ")}
+                            variant={changed(old.miniSpecialities?.join(","), updated.miniSpecialities?.join(",")) ? "old" : undefined} />
+
+                        {old.imageUrl && <img src={old.imageUrl} className="mt-3 w-24 h-24 rounded-lg border" />}
+                        {old.sealUrl && <img src={old.sealUrl} className="mt-3 w-24 h-24 rounded-lg border" />}
+                        {old.signatureUrl && <img src={old.signatureUrl} className="mt-3 w-24 h-24 rounded-lg border" />}
                     </div>
 
                     {/* UPDATED */}
@@ -73,38 +81,49 @@ export default function PendingUpdateModal({
                             Requested Update
                         </p>
 
-                        <Info
-                            label="Experience"
-                            value={`${updated.experience} years`}
-                            variant={changed(old.experience, updated.experience) ? "new" : undefined}
-                        />
+                        <Info label="Experience" value={`${updated.experience} years`}
+                            variant={changed(old.experience, updated.experience) ? "new" : undefined} />
 
-                        <Info
-                            label="Qualification"
-                            value={updated.qualification}
-                            variant={changed(old.qualification, updated.qualification) ? "new" : undefined}
-                        />
+                        <Info label="Qualification" value={updated.qualification}
+                            variant={changed(old.qualification, updated.qualification) ? "new" : undefined} />
 
-                        <Info
-                            label="Fee"
-                            value={`₹${updated.consultationFee}`}
-                            variant={changed(old.consultationFee, updated.consultationFee) ? "new" : undefined}
-                        />
+                        <Info label="Bio" value={updated.bio || "—"}
+                            variant={changed(old.bio, updated.bio) ? "new" : undefined} />
 
-                        <Info
-                            label="Bio"
-                            value={updated.bio || "—"}
-                            variant={changed(old.bio, updated.bio) ? "new" : undefined}
-                        />
+                        <Info label="Fee (INR)" value={`₹${updated.consultationFeeINR}`}
+                            variant={changed(old.consultationFeeINR, updated.consultationFeeINR) ? "new" : undefined} />
 
-                        {updated.imageUrl && (
-                            <img
-                                src={updated.imageUrl}
-                                className="mt-3 w-24 h-24 object-cover rounded-lg border"
-                            />
-                        )}
+                        <Info label="Fee (USD)" value={`$${updated.consultationFeeUSD}`}
+                            variant={changed(old.consultationFeeUSD, updated.consultationFeeUSD) ? "new" : undefined} />
+
+                        <Info label="Fee (AED)" value={`$${updated.consultationFeeAED}`}
+                            variant={changed(old.consultationFeeAED, updated.consultationFeeAED) ? "new" : undefined} />
+
+                        <Info label="Fee (EUR)" value={`$${updated.consultationFeeEUR}`}
+                            variant={changed(old.consultationFeeEUR, updated.consultationFeeEUR) ? "new" : undefined} />
+
+                        <Info label="Fee (GBP)" value={`$${updated.consultationFeeGBP}`}
+                            variant={changed(old.consultationFeeGBP, updated.consultationFeeGBP) ? "new" : undefined} />
+
+                        <Info label="Fee (CAD)" value={`$${updated.consultationFeeCAD}`}
+                            variant={changed(old.consultationFeeCAD, updated.consultationFeeCAD) ? "new" : undefined} />
+
+                        <Info label="Registration No" value={updated.registrationNumber}
+                            variant={changed(old.registrationNumber, updated.registrationNumber) ? "new" : undefined} />
+
+                        <Info label="Registration Council" value={updated.registrationCouncil}
+                            variant={changed(old.registrationCouncil, updated.registrationCouncil) ? "new" : undefined} />
+
+                        <Info label="Languages" value={(updated.languages || []).join(", ")}
+                            variant={changed(old.languages?.join(","), updated.languages?.join(",")) ? "new" : undefined} />
+
+                        <Info label="Mini Specialities" value={(updated.miniSpecialities || []).join(", ")}
+                            variant={changed(old.miniSpecialities?.join(","), updated.miniSpecialities?.join(",")) ? "new" : undefined} />
+
+                        {updated.imageUrl && <img src={updated.imageUrl} className="mt-3 w-24 h-24 rounded-lg border" />}
+                        {updated.sealUrl && <img src={updated.sealUrl} className="mt-3 w-24 h-24 rounded-lg border" />}
+                        {updated.signatureUrl && <img src={updated.signatureUrl} className="mt-3 w-24 h-24 rounded-lg border" />}
                     </div>
-
                 </div>
 
                 {/* Footer */}

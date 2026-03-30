@@ -11,6 +11,7 @@ import LanguagesPage from "./languages/Main";
 import GreetingBannerSettings from "./greetings/Main";
 import GreetingBannerList from "./greetings/List";
 import Link from "next/link";
+import SettingsHeader from "./Header";
 
 type TabType =
   | "symptoms"
@@ -130,26 +131,28 @@ export default function AdminSettings() {
         </p>
       </div>
 
-      <Link
-        href={"/admin/settings/faqs"}
-        className="px-4 py-2 bg-navy rounded-md text-white w-fit"
-      >
-        FAQ Settings
-      </Link>
+      <SettingsHeader />
 
       {/* BOOKING SETTINGS */}
-      <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-        <h2 className="text-lg font-medium text-navy mb-6">
-          Booking & Prescription Fees (Multi Currency)
-        </h2>
+      <section id="fees" className="bg-white max-w-7xl rounded-2xl border border-gray-200 shadow-sm p-6 max-w-3xl">
+
+        {/* HEADER */}
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-slate-900">
+            Booking & Prescription Fees
+          </h2>
+          <p className="text-sm text-gray-500">
+            Set slot booking and prescription fees for each currency.
+          </p>
+        </div>
 
         {loading ? (
-          <div>Loading...</div>
+          <div className="text-sm text-gray-500">Loading fees...</div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4">
 
             {/* TABLE HEADER */}
-            <div className="grid grid-cols-3 gap-4 font-medium text-navy border-b pb-2">
+            <div className="grid grid-cols-3 gap-4 text-xs font-semibold text-gray-500 border-b pb-2">
               <div>Currency</div>
               <div>Slot Fee</div>
               <div>Prescription Fee</div>
@@ -161,44 +164,58 @@ export default function AdminSettings() {
                 key={currency}
                 className="grid grid-cols-3 gap-4 items-center"
               >
-                <div className="text-navy">
-                  {currency} ({symbols[currency]})
+                {/* Currency */}
+                <div className="font-medium text-slate-800">
+                  {currency}
+                  <span className="text-gray-400 ml-1">
+                    ({symbols[currency]})
+                  </span>
                 </div>
 
                 {/* Slot Fee */}
-                <input
-                  type="number"
-                  value={slotFees[currency]}
-                  onChange={(e) =>
-                    setSlotFees({
-                      ...slotFees,
-                      [currency]: Number(e.target.value),
-                    })
-                  }
-                  className="rounded-xl border border-gray-200 px-4 py-2"
-                />
+                <div className="flex flex-col">
+                  <label className="text-xs text-gray-500 mb-1">
+                    Slot Fee
+                  </label>
+                  <input
+                    type="number"
+                    value={slotFees[currency]}
+                    onChange={(e) =>
+                      setSlotFees({
+                        ...slotFees,
+                        [currency]: Number(e.target.value),
+                      })
+                    }
+                    className="rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                  />
+                </div>
 
                 {/* Prescription Fee */}
-                <input
-                  type="number"
-                  value={prescriptionFees[currency]}
-                  onChange={(e) =>
-                    setPrescriptionFees({
-                      ...prescriptionFees,
-                      [currency]: Number(e.target.value),
-                    })
-                  }
-                  className="rounded-xl border border-gray-200 px-4 py-2"
-                />
+                <div className="flex flex-col">
+                  <label className="text-xs text-gray-500 mb-1">
+                    Prescription Fee
+                  </label>
+                  <input
+                    type="number"
+                    value={prescriptionFees[currency]}
+                    onChange={(e) =>
+                      setPrescriptionFees({
+                        ...prescriptionFees,
+                        [currency]: Number(e.target.value),
+                      })
+                    }
+                    className="rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                  />
+                </div>
               </div>
             ))}
 
-            {/* SAVE BUTTONS */}
-            <div className="flex gap-4 pt-4">
+            {/* ACTIONS */}
+            <div className="flex gap-3 pt-6 border-t border-gray-200">
               <button
                 onClick={saveSlotFees}
                 disabled={saving}
-                className="px-4 py-2 bg-wellness-accent text-white rounded-xl"
+                className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg text-sm"
               >
                 Save Slot Fees
               </button>
@@ -206,7 +223,7 @@ export default function AdminSettings() {
               <button
                 onClick={savePrescriptionFees}
                 disabled={saving}
-                className="px-4 py-2 bg-navy text-white rounded-xl"
+                className="bg-slate-900 hover:bg-black text-white px-5 py-2 rounded-lg text-sm"
               >
                 Save Prescription Fees
               </button>
@@ -217,7 +234,7 @@ export default function AdminSettings() {
       </section>
 
       {/* CONTENT LIBRARY */}
-      <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6">
+      <section id="content" className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6">
         <div>
           <h2 className="text-lg font-medium text-navy">
             Medical Content Library
@@ -263,7 +280,7 @@ export default function AdminSettings() {
       </section>
 
       {/* GREETING BANNER */}
-      <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-8">
+      <section id="greetings" className="bg-white max-w-7xl rounded-2xl border border-gray-100 shadow-sm p-6 space-y-8">
 
         <div>
           <h2 className="text-lg font-medium text-navy">

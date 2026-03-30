@@ -10,19 +10,47 @@ export default function AdminAppointmentsPage() {
     const [selected, setSelected] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [statusFilter, setStatusFilter] = useState("");
-    const [search, setSearch] = useState("");
     const [dateFilter, setDateFilter] = useState("");
+
+    const [status, setStatus] = useState("");
+    const [paymentStatus, setPaymentStatus] = useState("");
+    const [doctorId, setDoctorId] = useState("");
+    const [search, setSearch] = useState("");
+    const [from, setFrom] = useState("");
+    const [to, setTo] = useState("");
+    const [sort, setSort] = useState("new");
+    const [doctors, setDoctors] = useState<any[]>([]);
 
     useEffect(() => {
         fetchAppointments();
-    }, [statusFilter]);
+    }, [status, paymentStatus, doctorId, from, to, sort]);
+
+    useEffect(() => {
+        fetchDoctors();
+    }, []);
+
+    const fetchDoctors = async () => {
+        const res = await api.get("/admin/doctors");
+        setDoctors(res.data);
+    };
+
+    console.log(doctors, 'dos')
 
     const fetchAppointments = async () => {
         try {
             setLoading(true);
+
             const res = await api.get("/appointments", {
-                params: statusFilter ? { status: statusFilter } : {},
+                params: {
+                    status,
+                    paymentStatus,
+                    doctorId,
+                    from,
+                    to,
+                    sort,
+                },
             });
+
             setAppointments(res.data);
         } catch (err) {
             console.error("Failed to fetch appointments", err);
@@ -71,6 +99,15 @@ export default function AdminAppointmentsPage() {
         }
     };
 
+    function Info({ label, children }: any) {
+        return (
+            <div>
+                <p className="text-xs text-gray-500 mb-1">{label}</p>
+                <p className="font-medium text-gray-800">{children}</p>
+            </div>
+        );
+    }
+
     /* ================= Filtering ================= */
 
     const filteredAppointments = useMemo(() => {
@@ -106,44 +143,134 @@ export default function AdminAppointmentsPage() {
                     </div>
                     <button
                         onClick={fetchAppointments}
-                        className="px-4 py-2 bg-[#16A085] text-white rounded-xl shadow hover:bg-[#138d75] transition"
+                        className="px-4 py-2 bg-[#16A085] text-white rounded-md shadow hover:bg-[#138d75] transition"
                     >
                         Refresh
                     </button>
+
                 </div>
 
+                <h2 className="text-sm font-semibold text-gray-700 mb-2">
+                    Filters
+                </h2>
+
                 {/* Filters */}
-                <div className="bg-white rounded-2xl border border-gray-200 p-4 flex flex-wrap gap-4">
-                    <input
-                        type="text"
-                        placeholder="Search patient or doctor"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="border rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-[#16A085] outline-none"
-                    />
+                <div className="bg-white rounded-xl border border-gray-200 p-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-2">
 
-                    <input
-                        type="date"
-                        value={dateFilter}
-                        onChange={(e) => setDateFilter(e.target.value)}
-                        className="border rounded-xl px-3 py-2 text-sm"
-                    />
+                    {/* Search */}
+                    <div className="flex flex-col">
+                        <label className="text-xs text-gray-500 mb-1">
+                            Search
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Patient or Doctor"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                        />
+                    </div>
 
-                    <select
-                        value={statusFilter}
-                        onChange={(e) => setStatusFilter(e.target.value)}
-                        className="border rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-[#16A085] outline-none"
-                    >
-                        <option value="">All Status</option>
-                        <option value="CONFIRMED">CONFIRMED</option>
-                        <option value="COMPLETED">COMPLETED</option>
-                        <option value="CANCELLED">CANCELLED</option>
-                        <option value="NO_SHOW">NO_SHOW</option>
-                    </select>
+                    {/* Doctor */}
+                    <div className="flex flex-col">
+                        <label className="text-xs text-gray-500 mb-1">
+                            Doctor
+                        </label>
+                        <select
+                            value={doctorId}
+                            onChange={(e) => setDoctorId(e.target.value)}
+                            className="border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                        >
+                            <option value="">All Doctors</option>
+                            {doctors.map((d: any) => (
+                                <option key={d.id} value={d.id}>
+                                    {d.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* From Date */}
+                    <div className="flex flex-col">
+                        <label className="text-xs text-gray-500 mb-1">
+                            From Date
+                        </label>
+                        <input
+                            type="date"
+                            value={from}
+                            onChange={(e) => setFrom(e.target.value)}
+                            className="border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                        />
+                    </div>
+
+                    {/* To Date */}
+                    <div className="flex flex-col">
+                        <label className="text-xs text-gray-500 mb-1">
+                            To Date
+                        </label>
+                        <input
+                            type="date"
+                            value={to}
+                            onChange={(e) => setTo(e.target.value)}
+                            className="border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                        />
+                    </div>
+
+                    {/* Status */}
+                    <div className="flex flex-col">
+                        <label className="text-xs text-gray-500 mb-1">
+                            Appointment Status
+                        </label>
+                        <select
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                            className="border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                        >
+                            <option value="">All</option>
+                            <option value="CONFIRMED">CONFIRMED</option>
+                            <option value="COMPLETED">COMPLETED</option>
+                            <option value="CANCELLED">CANCELLED</option>
+                            <option value="NO_SHOW">NO_SHOW</option>
+                        </select>
+                    </div>
+
+                    {/* Payment */}
+                    <div className="flex flex-col">
+                        <label className="text-xs text-gray-500 mb-1">
+                            Payment Status
+                        </label>
+                        <select
+                            value={paymentStatus}
+                            onChange={(e) => setPaymentStatus(e.target.value)}
+                            className="border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                        >
+                            <option value="">All</option>
+                            <option value="PAID">PAID</option>
+                            <option value="PENDING">PENDING</option>
+                            <option value="FAILED">FAILED</option>
+                            <option value="REFUNDED">REFUNDED</option>
+                        </select>
+                    </div>
+
+                    {/* Sort */}
+                    <div className="flex flex-col">
+                        <label className="text-xs text-gray-500 mb-1">
+                            Sort
+                        </label>
+                        <select
+                            value={sort}
+                            onChange={(e) => setSort(e.target.value)}
+                            className="border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                        >
+                            <option value="new">Newest</option>
+                            <option value="old">Oldest</option>
+                        </select>
+                    </div>
+
                 </div>
 
                 {/* Table */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     {loading ? (
                         <div className="p-6 text-center text-gray-500">
                             Loading appointments...
@@ -233,49 +360,110 @@ export default function AdminAppointmentsPage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/40 flex items-center justify-center p-4"
+                        className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50"
                     >
                         <motion.div
-                            initial={{ scale: 0.9 }}
+                            initial={{ scale: 0.95 }}
                             animate={{ scale: 1 }}
-                            exit={{ scale: 0.9 }}
-                            className="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl"
+                            exit={{ scale: 0.95 }}
+                            className="bg-white rounded-2xl w-full max-w-2xl p-6 shadow-xl"
                         >
-                            <div className="flex justify-between items-center mb-4">
-                                <h2 className="text-lg font-semibold">
-                                    Appointment Details
-                                </h2>
+                            {/* Header */}
+                            <div className="flex justify-between items-center mb-4 border-b pb-3">
+                                <div>
+                                    <h2 className="text-lg font-semibold">
+                                        Appointment Details
+                                    </h2>
+                                    <p className="text-xs text-gray-500">
+                                        ID: {selected.id}
+                                    </p>
+                                </div>
                                 <X
                                     className="cursor-pointer"
                                     onClick={() => setSelected(null)}
                                 />
                             </div>
 
-                            <div className="space-y-3 text-sm">
-                                <p>
-                                    <strong>Date:</strong>{" "}
+                            {/* Body */}
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+
+                                <Info label="Date">
                                     {formatDateTime(selected.slot.startTimeUTC)}
-                                </p>
-                                <p>
-                                    <strong>Patient:</strong> {selected.user?.name}
-                                </p>
-                                <p>
-                                    <strong>Doctor:</strong> {selected.doctor?.user?.name}
-                                </p>
-                                <p>
-                                    <strong>Speciality:</strong>{" "}
-                                    {selected.doctor?.speciality?.name}
-                                </p>
-                                <p>
-                                    <strong>Slot Fee:</strong> ₹{selected.slotFee} ({selected.slotPaymentStatus})
-                                </p>
-                                <p>
-                                    <strong>Consultation Fee:</strong> ₹{selected.consultationFee} ({selected.consultationPaymentStatus})
-                                </p>
-                                <p>
-                                    <strong>Status:</strong> {selected.status}
-                                </p>
+                                </Info>
+
+                                <Info label="Status">
+                                    <span className="px-2 py-1 rounded bg-gray-100">
+                                        {selected.status}
+                                    </span>
+                                </Info>
+
+                                <Info label="Patient">
+                                    {selected.user?.name}
+                                </Info>
+
+                                <Info label="Doctor">
+                                    {selected.doctor?.user?.name}
+                                </Info>
+
+                                <Info label="Speciality">
+                                    {selected.doctor?.specialities
+                                        ?.map((s: any) => s.speciality.name)
+                                        .join(", ")}
+                                </Info>
+
+                                <Info label="Meeting Type">
+                                    {selected.meetingType || "—"}
+                                </Info>
+
+                                <Info label="Delivery Mode">
+                                    {selected.deliveryMode || "—"}
+                                </Info>
+
+                                <Info label="Meeting Link">
+                                    {selected.meetingLink ? (
+                                        <a
+                                            href={selected.meetingLink}
+                                            target="_blank"
+                                            className="text-teal-600 underline"
+                                        >
+                                            Join Meeting
+                                        </a>
+                                    ) : "—"}
+                                </Info>
+
                             </div>
+
+                            {/* Payment Section */}
+                            <div className="mt-6 border-t pt-4">
+                                <h3 className="text-sm font-semibold mb-3">
+                                    Payment Details
+                                </h3>
+
+                                <div className="grid grid-cols-2 gap-4 text-sm">
+
+                                    <Info label="Slot Fee">
+                                        ₹{selected.slotFee}
+                                    </Info>
+
+                                    <Info label="Slot Payment">
+                                        <span className="px-2 py-1 rounded bg-gray-100">
+                                            {selected.slotPaymentStatus}
+                                        </span>
+                                    </Info>
+
+                                    <Info label="Consultation Fee">
+                                        ₹{selected.consultationFee}
+                                    </Info>
+
+                                    <Info label="Consultation Payment">
+                                        <span className="px-2 py-1 rounded bg-gray-100">
+                                            {selected.consultationPaymentStatus}
+                                        </span>
+                                    </Info>
+
+                                </div>
+                            </div>
+
                         </motion.div>
                     </motion.div>
                 )}
