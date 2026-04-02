@@ -31,15 +31,15 @@ const steps = [
 
 export default function HowItWorks() {
     return (
-        <section className="bg-navy-dark py-24 m-4 rounded-2xl">
+        <section className="bg-wellness-bg py-24 m-4 rounded-2xl">
             <div className="mx-auto max-w-7xl px-6">
 
                 {/* Header */}
                 <div className="mb-20 text-center">
-                    <h2 className="text-4xl font-semibold text-white md:text-5xl">
+                    <h2 className="text-4xl font-semibold text-gray-800 md:text-5xl">
                         How It Works
                     </h2>
-                    <p className="mt-4 text-white/70 text-lg">
+                    <p className="mt-4 text-black/70 text-lg">
                         Book a consultation in four simple steps
                     </p>
                 </div>

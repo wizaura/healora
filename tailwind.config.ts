@@ -12,8 +12,8 @@ const config: Config = {
         extend: {
             colors: {
                 wellness: {
-                    bg: "#d7fcd7",     // soft green background e8fce8
-                    accent: "#6FBF8E", // accents / icons
+                    bg: "#d7f7fc",     // soft green background e8fce8
+                    accent: "#6facbf", // accents / icons
                 },
                 navy: {
                     DEFAULT: "#0A2540", // main text

@@ -11,7 +11,7 @@ const footerLinks = {
         { name: "Why Homeopathy", href: "/why-homeopathy" },
         { name: "Agro Homeopathy", href: "/agro-homeopathy" },
         { name: "Veterinary Homeopathy", href: "/veterinary-homeopathy" },
-        { name: "Counselling & Psychotherapy", href: "/counselling-psychotherapy" },
+        { name: "Counselling & Psychotherapy", href: "/counselling" },
     ],
 
     company: [

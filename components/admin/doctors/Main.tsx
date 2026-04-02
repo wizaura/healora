@@ -59,7 +59,7 @@ export default function DoctorsPage() {
     };
 
     return (
-        <div className="p-8 pt-24">
+        <div className="">
 
             {/* Header */}
             <div className="mb-6">

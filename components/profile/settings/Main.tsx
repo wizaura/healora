@@ -20,6 +20,8 @@ import { useRouter } from "next/navigation";
 type FormValues = {
     name?: string;
     email?: string;
+    age?: number;
+    gender?: string;
     country?: string;
     password?: string;
     confirmPassword?: string;
@@ -41,6 +43,8 @@ export default function SettingsPage() {
         defaultValues: {
             name: "",
             email: "",
+            age: 0,
+            gender: "",
             country: "",
             password: "",
             confirmPassword: ""
@@ -73,6 +77,8 @@ export default function SettingsPage() {
         reset({
             name: profile.name || "",
             email: profile.email || "",
+            age: profile.age || 0,
+            gender: profile.gender || "",
             country: profile.countryCode || "",
             password: "",
             confirmPassword: ""
@@ -114,7 +120,7 @@ export default function SettingsPage() {
 
     return (
         <div className="min-h-screen bg-slate-50 pt-24 pb-16">
-            <div className="max-w-3xl mx-auto px-6 space-y-8">
+            <div className="max-w-5xl mx-auto px-6 space-y-8">
 
                 {/* HEADER */}
                 <div className="space-y-2">
@@ -135,88 +141,140 @@ export default function SettingsPage() {
 
                 {/* SETTINGS CARD */}
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
 
+                        {/* PERSONAL INFO */}
                         {!isDoctor && (
-                            <>
-                                {/* NAME */}
-                                <InputField label="Full Name">
-                                    <input {...register("name")} className={inputStyle} />
-                                </InputField>
+                            <div className="space-y-4">
+                                <h2 className="text-sm font-semibold text-slate-900 border-b pb-2">
+                                    Personal Information
+                                </h2>
 
-                                {/* EMAIL */}
-                                <InputField label="Email Address">
-                                    <input {...register("email")} className={inputStyle} />
-                                </InputField>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                                {/* COUNTRY */}
-                                <InputField label="Country">
-                                    <Controller
-                                        name="country"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <Select
-                                                options={countries}
-                                                value={countries.find(c => c.value === field.value)}
-                                                onChange={(option) => field.onChange(option?.value)}
-                                                placeholder="Select country"
-                                            />
-                                        )}
-                                    />
-                                </InputField>
+                                    {/* NAME */}
+                                    <InputField label="Full Name">
+                                        <input {...register("name")} className={inputStyle} />
+                                    </InputField>
 
-                                {/* REGION */}
-                                <InputField label="Region">
-                                    <input
-                                        value={profile?.region || ""}
-                                        disabled
-                                        className={inputStyle}
-                                    />
-                                </InputField>
+                                    {/* EMAIL */}
+                                    <InputField label="Email Address">
+                                        <input {...register("email")} className={inputStyle} />
+                                    </InputField>
 
-                                {/* CURRENCY */}
-                                <InputField label="Currency">
-                                    <input
-                                        value={profile?.currency || ""}
-                                        disabled
-                                        className={inputStyle}
-                                    />
-                                </InputField>
-                            </>
+                                    {/* AGE */}
+                                    <InputField label="Age">
+                                        <input
+                                            type="number"
+                                            {...register("age")}
+                                            className={inputStyle}
+                                        />
+                                    </InputField>
+
+                                    {/* GENDER */}
+                                    <InputField label="Gender">
+                                        <select {...register("gender")} className={inputStyle}>
+                                            <option value="">Select gender</option>
+                                            <option value="MALE">Male</option>
+                                            <option value="FEMALE">Female</option>
+                                            <option value="OTHER">Other</option>
+                                        </select>
+                                    </InputField>
+
+                                </div>
+                            </div>
                         )}
 
-                        {/* PASSWORD */}
-                        <PasswordField
-                            label="New Password"
-                            show={showPassword}
-                            toggle={() => setShowPassword(!showPassword)}
-                        >
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                {...register("password")}
-                                className={`${inputStyle} pr-10`}
-                            />
-                        </PasswordField>
+                        {/* LOCATION */}
+                        {!isDoctor && (
+                            <div className="space-y-4">
+                                <h2 className="text-sm font-semibold text-slate-900 border-b pb-2">
+                                    Location & Region
+                                </h2>
 
-                        {/* CONFIRM PASSWORD */}
-                        <PasswordField
-                            label="Confirm Password"
-                            show={showConfirm}
-                            toggle={() => setShowConfirm(!showConfirm)}
-                        >
-                            <input
-                                type={showConfirm ? "text" : "password"}
-                                {...register("confirmPassword")}
-                                className={`${inputStyle} pr-10`}
-                            />
-                        </PasswordField>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                                    {/* COUNTRY */}
+                                    <InputField label="Country">
+                                        <Controller
+                                            name="country"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <Select
+                                                    options={countries}
+                                                    value={countries.find(c => c.value === field.value)}
+                                                    onChange={(option) => field.onChange(option?.value)}
+                                                    placeholder="Select country"
+                                                />
+                                            )}
+                                        />
+                                    </InputField>
+
+                                    {/* REGION */}
+                                    <InputField label="Region">
+                                        <input
+                                            value={profile?.region || ""}
+                                            disabled
+                                            className={inputStyle}
+                                        />
+                                    </InputField>
+
+                                    {/* CURRENCY */}
+                                    <InputField label="Currency">
+                                        <input
+                                            value={profile?.currency || ""}
+                                            disabled
+                                            className={inputStyle}
+                                        />
+                                    </InputField>
+
+                                </div>
+                            </div>
+                        )}
+
+                        {/* SECURITY */}
+                        <div className="space-y-4">
+                            <h2 className="text-sm font-semibold text-slate-900 border-b pb-2">
+                                Security
+                            </h2>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                                {/* PASSWORD */}
+                                <PasswordField
+                                    label="New Password"
+                                    show={showPassword}
+                                    toggle={() => setShowPassword(!showPassword)}
+                                >
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        {...register("password")}
+                                        className={`${inputStyle} pr-10`}
+                                    />
+                                </PasswordField>
+
+                                {/* CONFIRM PASSWORD */}
+                                <PasswordField
+                                    label="Confirm Password"
+                                    show={showConfirm}
+                                    toggle={() => setShowConfirm(!showConfirm)}
+                                >
+                                    <input
+                                        type={showConfirm ? "text" : "password"}
+                                        {...register("confirmPassword")}
+                                        className={`${inputStyle} pr-10`}
+                                    />
+                                </PasswordField>
+
+                            </div>
+                        </div>
 
                         {/* SAVE BUTTON */}
-                        <div className="flex justify-end pt-4 border-t border-slate-200">
+                        <div className="flex justify-end pt-6 border-t border-slate-200">
                             <button
                                 type="submit"
                                 disabled={mutation.isPending}
-                                className="rounded-lg bg-teal-600 px-6 py-2.5 text-sm font-medium text-white"
+                                className="rounded-lg bg-[#1F2147] px-6 py-2.5 text-sm font-medium text-white hover:bg-[#141633] transition"
                             >
                                 {mutation.isPending ? "Saving..." : "Save Changes"}
                             </button>

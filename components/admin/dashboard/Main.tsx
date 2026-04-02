@@ -90,13 +90,13 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="p-8 pt-24 space-y-8">
+    <div className="space-y-8">
       <h1 className="text-2xl font-semibold text-slate-900">
         Admin Dashboard
       </h1>
 
       {/* SUMMARY CARDS */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         {cards.map((card) => {
           const Icon = card.icon;
           return (

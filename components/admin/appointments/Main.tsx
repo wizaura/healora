@@ -129,7 +129,7 @@ export default function AdminAppointmentsPage() {
     }, [appointments, search, dateFilter]);
 
     return (
-        <div className="min-h-screen bg-[#F6FAF8] p-8 pt-20">
+        <div className="min-h-screen bg-[#F6FAF8]">
             <div className="max-w-7xl mx-auto space-y-6">
                 {/* Header */}
                 <div className="flex justify-between items-center">

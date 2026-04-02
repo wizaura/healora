@@ -45,7 +45,7 @@ export default function AdminSidebar({
     return (
         <aside
             className={`
-        fixed inset-y-0 left-0 z-30 mt-16
+        fixed inset-y-0 left-0 z-30
         bg-white border-r border-slate-200
         transition-all duration-300
         ${collapsed ? "w-20" : "w-64"}

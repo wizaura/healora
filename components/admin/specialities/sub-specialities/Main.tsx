@@ -58,11 +58,11 @@ export default function ManageSpecialityPage() {
     }
 
     return (
-        <div className="py-16">
+        <div className="">
 
             {/* HEADER */}
 
-            <div className="max-w-6xl mx-auto px-6 mb-10">
+            <div className="max-w-6xl mx-auto mb-10">
 
                 <button
                     onClick={() => router.back()}

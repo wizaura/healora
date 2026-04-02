@@ -37,7 +37,7 @@ export default function AdminUsers() {
     });
 
     return (
-        <div className="pt-20 pb-10 px-6 max-w-7xl mx-auto space-y-6">
+        <div className="max-w-7xl mx-auto space-y-6">
 
             {/* HEADER */}
             <div>
@@ -117,7 +117,7 @@ export default function AdminUsers() {
 
                         <tbody>
                             {data.map((user: any) => (
-                                <tr key={user.id} className="border-t hover:bg-slate-50">
+                                <tr key={user.id} className="border-t border-gray-200 hover:bg-slate-50">
                                     <td className="px-5 py-4">
                                         <div className="font-medium">{user.name}</div>
                                         <div className="text-xs text-gray-500">{user.email}</div>

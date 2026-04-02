@@ -93,29 +93,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${manrope.variable}`}>
-      <body className="font-sans antialiased bg-white text-gray-900">
+  <body className="font-sans antialiased bg-white text-gray-900">
+    <AuthProvider>
+      <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
+        <ReactQueryProvider>
+          {children}
+        </ReactQueryProvider>
+      </GoogleOAuthProvider>
+    </AuthProvider>
 
-        <AuthProvider>
-          <GoogleOAuthProvider
-            clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
-          >
-            <ReactQueryProvider>
-
-              <Navbar />
-
-              <main className="min-h-screen">
-                {children}
-              </main>
-
-              <Footer />
-
-            </ReactQueryProvider>
-          </GoogleOAuthProvider>
-        </AuthProvider>
-
-        <Toaster position="top-right" />
-
-      </body>
-    </html>
+    <Toaster position="top-right" />
+  </body>
+</html>
   );
 }

@@ -11,7 +11,7 @@ export default function AdminBlogs() {
 
     return (
 
-        <div className="max-w-6xl mx-auto px-6 py-20 space-y-8">
+        <div className="max-w-6xl mx-auto space-y-8">
 
             {/* HEADER */}
 

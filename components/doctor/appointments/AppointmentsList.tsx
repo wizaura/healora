@@ -74,7 +74,7 @@ export default function AppointmentsList({
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
-                            <tr className="text-gray-500 text-xs uppercase tracking-wider border-b">
+                            <tr className="text-gray-500 text-xs uppercase tracking-wider border-b border-gray-200">
                                 <th className="py-3 text-left">Date & Time</th>
                                 <th className="py-3 text-left">Patient</th>
                                 <th className="py-3 text-left">Status</th>
@@ -86,7 +86,7 @@ export default function AppointmentsList({
                             {appointments.map((appt: any) => (
                                 <tr
                                     key={appt.id}
-                                    className="border-b last:border-none hover:bg-gray-50 transition"
+                                    className="border-b border-gray-200 last:border-none hover:bg-gray-50 transition"
                                 >
                                     <td className="py-4 text-gray-700">
                                         {formatDateTime(

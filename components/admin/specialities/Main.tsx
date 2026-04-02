@@ -58,7 +58,7 @@ export default function AdminSpecialitiesPage() {
     });
 
     return (
-        <div className="pt-20 px-6 space-y-4">
+        <div className="space-y-4">
 
             {/* HEADER */}
 

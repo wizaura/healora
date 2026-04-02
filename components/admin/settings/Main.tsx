@@ -119,7 +119,7 @@ export default function AdminSettings() {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto space-y-10 pt-20">
+    <div className="max-w-6xl mx-auto space-y-10">
 
       {/* HEADER */}
       <div>

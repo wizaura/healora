@@ -30,6 +30,16 @@ export default function AppointmentModal({
         }
     };
 
+    const canJoin = (() => {
+        if (!selected?.meetingLink || !selected?.slot?.startTimeUTC) return false;
+
+        const now = new Date();
+        const start = new Date(selected.slot.startTimeUTC);
+
+        const diff = (start.getTime() - now.getTime()) / (1000 * 60);
+        return diff <= 10;
+    })();
+
     const paymentBadge = (status: string) =>
         status === "PAID"
             ? "bg-[#E6F7F4] text-[#1F9E8E]"
@@ -165,6 +175,38 @@ export default function AppointmentModal({
                                         </span>
                                     </div>
                                 </div>
+                                {/* Meeting Section */}
+                                {selected.meetingType && (
+                                    <div className="space-y-3">
+                                        <p className="text-sm font-medium text-[#0B2E28]">
+                                            Meeting Information
+                                        </p>
+
+                                        <div className="bg-white border border-[#E2F0ED] rounded-xl p-4 space-y-2">
+                                            <p className="text-xs text-[#7FA6A0]">
+                                                Meeting Type
+                                            </p>
+
+                                            <p className="text-sm font-medium text-[#0B2E28]">
+                                                {selected.meetingType}
+                                            </p>
+
+                                            {canJoin ? (
+                                                <a
+                                                    href={selected.meetingLink}
+                                                    target="_blank"
+                                                    className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:underline"
+                                                >
+                                                    Join Meeting
+                                                </a>
+                                            ) : (
+                                                <p className="text-xs text-[#7FA6A0]">
+                                                    Meeting link available 10 minutes before consultation.
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
 

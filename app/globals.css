@@ -111,3 +111,22 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@keyframes spinSlow {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 20s linear infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(-50%) translateX(0px); }
+  50% { transform: translateY(-60%) translateX(10px); }
+  100% { transform: translateY(-50%) translateX(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}

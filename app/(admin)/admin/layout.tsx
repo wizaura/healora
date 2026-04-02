@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminHeader from "@/components/admin/AdminHeader";
 
 export default function AdminLayout({
     children,
@@ -24,20 +25,27 @@ export default function AdminLayout({
 
     return (
         <div className="min-h-screen bg-slate-50 flex">
+            {/* Sidebar */}
             <AdminSidebar
                 collapsed={collapsed}
                 setCollapsed={setCollapsed}
             />
 
-            {/* Content */}
-            <main
+            {/* Right Side */}
+            <div
                 className={`
-                    flex-1 p-8 transition-all duration-300
-                    ${collapsed ? "ml-20" : "ml-64"}
-                `}
+      flex-1 flex flex-col transition-all duration-300
+      ${collapsed ? "ml-20" : "ml-64"}
+    `}
             >
-                {children}
-            </main>
+                {/* Header */}
+                <AdminHeader />
+
+                {/* Content */}
+                <main className="p-8">
+                    {children}
+                </main>
+            </div>
         </div>
     );
 }
