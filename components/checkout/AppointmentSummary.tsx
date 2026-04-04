@@ -137,7 +137,7 @@ export default function AppointmentSummary({
 
                         {/* Bio */}
                         {data.bio && (
-                            <p className="italic text-navy/60">
+                            <p className="italic text-navy/60 whitespace-pre-wrap leading-relaxed">
                                 "{data.bio}"
                             </p>
                         )}

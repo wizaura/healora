@@ -14,7 +14,7 @@ export default function AppointmentSummary({ appointment }: any) {
                 </h1>
 
                 <p className="text-sm text-navy/70">
-                    {appointment.date} • {appointment.startTime} – {appointment.endTime}
+                    {appointment.date} • {appointment.startTime} - {appointment.endTime}
                 </p>
 
             </div>

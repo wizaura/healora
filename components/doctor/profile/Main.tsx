@@ -16,6 +16,8 @@ export default function DoctorProfilePage() {
         queryFn: () => api.get("/doctor/profile").then(res => res.data),
     });
 
+    console.log(data,'dar')
+
     useEffect(() => {
         if (data) setProfile(data);
     }, [data]);
@@ -68,7 +70,7 @@ export default function DoctorProfilePage() {
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 flex justify-between items-center shadow-sm">
                     <div>
                         <h1 className="text-2xl font-semibold">Doctor Profile</h1>
-                        <p>{profile?.user?.name} • {profile?.user?.email}</p>
+                        <p>{profile?.name} • {profile?.email}</p>
                         <p className="text-sm text-gray-500">
                             Manage your professional details, fees and documents
                         </p>

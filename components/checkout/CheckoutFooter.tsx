@@ -49,6 +49,7 @@ export default function CheckoutFooter({
     const [payMode, setPayMode] = useState<"slot" | "full">("slot");
 
     const [address, setAddress] = useState<Address>({});
+    const [needsMedicine, setNeedsMedicine] = useState(false);
 
     const router = useRouter();
 
@@ -103,7 +104,7 @@ export default function CheckoutFooter({
             return toast.error("Please select consultation mode");
         }
 
-        if (payMode === "full" && deliveryMode === "none") {
+        if (payMode === "full" && needsMedicine && deliveryMode === "none") {
             return toast.error("Please choose prescription or medicine delivery");
         }
 
@@ -134,7 +135,10 @@ export default function CheckoutFooter({
 
             if (payMode === "full") {
                 payload.meetingType = meetingType;
-                payload.deliveryMode = deliveryMode;
+
+                if (needsMedicine) {
+                    payload.deliveryMode = deliveryMode;
+                }
             }
 
             if (deliveryMode === "door") {
@@ -204,11 +208,10 @@ export default function CheckoutFooter({
                             setDeliveryMode("none");
                             setMeetingType(null);
                         }}
-                        className={`cursor-pointer rounded-xl border p-4 ${
-                            payMode === "slot"
-                                ? "border-navy bg-navy/5"
-                                : "border-gray-200"
-                        }`}
+                        className={`cursor-pointer rounded-xl border p-4 ${payMode === "slot"
+                            ? "border-navy bg-navy/5"
+                            : "border-gray-200"
+                            }`}
                     >
                         <div className="flex justify-between">
                             <span className="font-medium">Pay Slot Fee Only</span>
@@ -218,11 +221,10 @@ export default function CheckoutFooter({
 
                     <div
                         onClick={() => setPayMode("full")}
-                        className={`cursor-pointer rounded-xl border p-4 ${
-                            payMode === "full"
-                                ? "border-navy bg-navy/5"
-                                : "border-gray-200"
-                        }`}
+                        className={`cursor-pointer rounded-xl border p-4 ${payMode === "full"
+                            ? "border-navy bg-navy/5"
+                            : "border-gray-200"
+                            }`}
                     >
                         <div className="flex justify-between">
                             <span className="font-medium">
@@ -233,45 +235,74 @@ export default function CheckoutFooter({
                     </div>
                 </div>
 
+                {/* Ask if medicine/prescription needed */}
+                {/* Ask if medicine/prescription needed */}
+                {payMode === "full" && (
+                    <div className="mt-6">
+                        <label className="flex items-center gap-3 cursor-pointer border rounded-xl p-4 border-slate-200 hover:bg-slate-50">
+                            <input
+                                type="checkbox"
+                                checked={needsMedicine}
+                                onChange={(e) => {
+                                    setNeedsMedicine(e.target.checked);
+                                    if (!e.target.checked) {
+                                        setDeliveryMode("none");
+                                    }
+                                }}
+                                className="h-4 w-4"
+                            />
+                            <div>
+                                <p className="text-sm font-medium text-navy-dark">
+                                    I need prescription / medicine delivery
+                                </p>
+                                <p className="text-xs text-slate-500">
+                                    Optional for homeopathy consultations
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                )}
+
                 {/* Only show below if FULL PAYMENT */}
                 {payMode === "full" && (
                     <>
                         {/* Add-ons */}
-                        <div className="mt-6 space-y-3">
-                            <p className="text-sm font-medium">Add-ons</p>
+                        {needsMedicine && (
 
-                            <div
-                                onClick={() =>
-                                    setDeliveryMode(
-                                        deliveryMode === "prescription"
-                                            ? "none"
-                                            : "prescription"
-                                    )
-                                }
-                                className={`cursor-pointer rounded-xl border p-3 ${
-                                    deliveryMode === "prescription"
+                            <div className="mt-6 space-y-3">
+                                <p className="text-sm font-medium">Add-ons</p>
+
+                                <div
+                                    onClick={() =>
+                                        setDeliveryMode(
+                                            deliveryMode === "prescription"
+                                                ? "none"
+                                                : "prescription"
+                                        )
+                                    }
+                                    className={`cursor-pointer rounded-xl border p-3 ${deliveryMode === "prescription"
                                         ? "border-navy bg-navy/5"
                                         : "border-gray-200"
-                                }`}
-                            >
-                                Prescription Copy ({currencySymbol}{prescriptionFee})
-                            </div>
+                                        }`}
+                                >
+                                    Prescription Copy ({currencySymbol}{prescriptionFee})
+                                </div>
 
-                            <div
-                                onClick={() =>
-                                    setDeliveryMode(
-                                        deliveryMode === "door" ? "none" : "door"
-                                    )
-                                }
-                                className={`cursor-pointer rounded-xl border p-3 ${
-                                    deliveryMode === "door"
+                                <div
+                                    onClick={() =>
+                                        setDeliveryMode(
+                                            deliveryMode === "door" ? "none" : "door"
+                                        )
+                                    }
+                                    className={`cursor-pointer rounded-xl border p-3 ${deliveryMode === "door"
                                         ? "border-navy bg-navy/5"
                                         : "border-gray-200"
-                                }`}
-                            >
-                                Door-to-door Medicine Delivery
+                                        }`}
+                                >
+                                    Door-to-door Medicine Delivery
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* Meeting Mode */}
                         <div className="mt-6 space-y-2">
@@ -283,11 +314,10 @@ export default function CheckoutFooter({
                                 <button
                                     type="button"
                                     onClick={() => setMeetingType("google")}
-                                    className={`flex-1 py-2 rounded-lg border ${
-                                        meetingType === "google"
-                                            ? "border-navy bg-navy/5"
-                                            : "border-gray-200"
-                                    }`}
+                                    className={`flex-1 py-2 rounded-lg border ${meetingType === "google"
+                                        ? "border-navy bg-navy/5"
+                                        : "border-gray-200"
+                                        }`}
                                 >
                                     Google Meet
                                 </button>
@@ -295,11 +325,10 @@ export default function CheckoutFooter({
                                 <button
                                     type="button"
                                     onClick={() => setMeetingType("zoom")}
-                                    className={`flex-1 py-2 rounded-lg border ${
-                                        meetingType === "zoom"
-                                            ? "border-navy bg-navy/5"
-                                            : "border-gray-200"
-                                    }`}
+                                    className={`flex-1 py-2 rounded-lg border ${meetingType === "zoom"
+                                        ? "border-navy bg-navy/5"
+                                        : "border-gray-200"
+                                        }`}
                                 >
                                     Zoom
                                 </button>
@@ -320,7 +349,7 @@ export default function CheckoutFooter({
                 )}
 
                 {/* Total */}
-                <div className="mt-6 border-t pt-4 flex justify-between text-lg font-semibold">
+                <div className="mt-6 border-t border-gray-200 pt-4 flex justify-between text-lg font-semibold">
                     <span>Total Payable</span>
                     <span>{currencySymbol}{totalAmount}</span>
                 </div>

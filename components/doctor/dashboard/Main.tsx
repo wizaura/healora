@@ -1,94 +1,192 @@
 "use client";
 
-import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import api from "@/lib/api";
 import {
-    User,
-    Calendar,
-    Clock,
-    ArrowUpRight,
+  Calendar,
+  Clock,
+  IndianRupee,
+  Users,
 } from "lucide-react";
 
 export default function DoctorDashboard() {
-    return (
-        <div className="p-8 pt-24">
-            {/* Header */}
-            <div className="mb-8">
-                <h1 className="text-2xl font-semibold text-slate-900">
-                    Welcome back 👋
-                </h1>
-                <p className="mt-1 text-sm text-slate-600">
-                    Manage your profile and availability
-                </p>
-            </div>
+  const { data: summary } = useQuery({
+    queryKey: ["doctor-summary"],
+    queryFn: async () => {
+      const res = await api.get("/doctor/dashboard/summary");
+      return res.data;
+    },
+  });
 
-            {/* Cards */}
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {/* Profile */}
-                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-teal-100 text-teal-700">
-                        <User size={18} />
-                    </div>
+  const { data: revenue } = useQuery({
+    queryKey: ["doctor-revenue"],
+    queryFn: async () => {
+      const res = await api.get("/doctor/dashboard/revenue-chart?range=7d");
+      return res.data;
+    },
+  });
 
-                    <h3 className="text-sm font-medium text-slate-700">
-                        Profile
-                    </h3>
-                    <p className="mt-1 text-xs text-slate-500">
-                        Complete your professional details
-                    </p>
+  const { data: appointments } = useQuery({
+    queryKey: ["doctor-appointments-chart"],
+    queryFn: async () => {
+      const res = await api.get("/doctor/dashboard/appointments-chart?range=7d");
+      return res.data;
+    },
+  });
 
-                    <Link
-                        href="/doctor/profile"
-                        className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-teal-600"
-                    >
-                        Edit Profile
-                        <ArrowUpRight size={14} />
-                    </Link>
-                </div>
+  const { data: patients } = useQuery({
+    queryKey: ["doctor-recent-patients"],
+    queryFn: async () => {
+      const res = await api.get("/doctor/dashboard/recent-patients");
+      return res.data;
+    },
+  });
 
-                {/* Availability */}
-                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-100 text-indigo-700">
-                        <Calendar size={18} />
-                    </div>
+  const { data: payments } = useQuery({
+    queryKey: ["doctor-recent-payments"],
+    queryFn: async () => {
+      const res = await api.get("/doctor/dashboard/recent-payments");
+      return res.data;
+    },
+  });
 
-                    <h3 className="text-sm font-medium text-slate-700">
-                        Availability
-                    </h3>
-                    <p className="mt-1 text-xs text-slate-500">
-                        Set your consultation slots
-                    </p>
+  if (!summary) return <div className="p-8 pt-24">Loading...</div>;
 
-                    <Link
-                        href="/doctor/availability"
-                        className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-indigo-600"
-                    >
-                        Manage Slots
-                        <ArrowUpRight size={14} />
-                    </Link>
-                </div>
+  return (
+    <div className="p-8 pt-24 space-y-8">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-semibold text-slate-900">
+          Doctor Dashboard
+        </h1>
+        <p className="text-sm text-slate-500">
+          Overview of your consultations and earnings
+        </p>
+      </div>
 
-                {/* Appointments */}
-                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 text-orange-700">
-                        <Clock size={18} />
-                    </div>
+      {/* Stats */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard
+          title="Today Appointments"
+          value={summary.todayAppointments}
+          icon={<Calendar size={18} />}
+        />
+        <StatCard
+          title="Upcoming"
+          value={summary.upcomingAppointments}
+          icon={<Clock size={18} />}
+        />
+        <StatCard
+          title="Patients"
+          value={summary.totalPatients}
+          icon={<Users size={18} />}
+        />
+        <StatCard
+          title="Revenue"
+          value={`₹${summary.monthRevenue}`}
+          icon={<IndianRupee size={18} />}
+        />
+      </div>
 
-                    <h3 className="text-sm font-medium text-slate-700">
-                        Appointments
-                    </h3>
-                    <p className="mt-1 text-xs text-slate-500">
-                        View upcoming consultations
-                    </p>
+      {/* Charts */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        <ChartCard title="Revenue (7 days)" data={revenue} dataKey="revenue" />
+        <ChartCard title="Appointments (7 days)" data={appointments} dataKey="appointments" />
+      </div>
 
-                    <Link
-                        href="/doctor/appointments"
-                        className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-indigo-600"
-                    >
-                        Manage Appointments
-                        <ArrowUpRight size={14} />
-                    </Link>
-                </div>
-            </div>
+      {/* Recent Data */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        <RecentPatients patients={patients} />
+        <RecentPayments payments={payments} />
+      </div>
+    </div>
+  );
+}
+
+/* ================= COMPONENTS ================= */
+
+function StatCard({ title, value, icon }: any) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="flex justify-between">
+        <div>
+          <p className="text-xs text-slate-500">{title}</p>
+          <p className="text-2xl font-semibold mt-1">{value}</p>
         </div>
-    );
+        <div className="h-10 w-10 rounded-lg bg-slate-100 flex items-center justify-center">
+          {icon}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ChartCard({ title, data, dataKey }: any) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h3 className="font-semibold mb-4">{title}</h3>
+
+      {!data ? (
+        <p className="text-sm text-slate-500">Loading...</p>
+      ) : (
+        <div className="space-y-2">
+          {data.map((d: any) => (
+            <div key={d.date} className="flex justify-between text-sm">
+              <span>{d.date}</span>
+              <span className="font-medium">{d[dataKey]}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function RecentPatients({ patients }: any) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h3 className="font-semibold mb-4">Recent Patients</h3>
+
+      {!patients ? (
+        <p className="text-sm text-slate-500">Loading...</p>
+      ) : (
+        <div className="space-y-3">
+          {patients.map((p: any) => (
+            <div key={p.id} className="border rounded-lg p-3">
+              <p className="font-medium text-sm">{p.user.name}</p>
+              <p className="text-xs text-slate-500">{p.user.email}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function RecentPayments({ payments }: any) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h3 className="font-semibold mb-4">Recent Payments</h3>
+
+      {!payments ? (
+        <p className="text-sm text-slate-500">Loading...</p>
+      ) : (
+        <div className="space-y-3">
+          {payments.map((p: any) => (
+            <div key={p.id} className="border rounded-lg p-3 flex justify-between">
+              <div>
+                <p className="font-medium text-sm">
+                  {p.appointment.user.name}
+                </p>
+                <p className="text-xs text-slate-500">
+                  {new Date(p.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+              <p className="font-semibold">₹{p.amount}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }

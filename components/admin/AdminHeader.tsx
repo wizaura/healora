@@ -33,24 +33,6 @@ export default function AdminHeader() {
         {/* RIGHT */}
         <div className="flex items-center gap-4">
 
-          {/* SEARCH */}
-          <div className="relative hidden md:block">
-            <Search
-              size={16}
-              className="absolute left-3 top-2.5 text-slate-400"
-            />
-            <input
-              placeholder="Search..."
-              className="pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1F2147]/10 focus:border-[#1F2147]"
-            />
-          </div>
-
-          {/* QUICK ACTION */}
-          <button className="flex items-center gap-2 bg-[#1F2147] text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-[#141633] transition">
-            <Plus size={16} />
-            Add
-          </button>
-
           {/* NOTIFICATIONS */}
           <button className="relative p-2 rounded-lg hover:bg-slate-100">
             <Bell size={18} className="text-slate-600" />

@@ -191,7 +191,15 @@ export default function AppointmentModal({
                                                 {selected.meetingType}
                                             </p>
 
-                                            {canJoin ? (
+                                            {selected.status === "COMPLETED" ? (
+                                                <p className="text-xs text-blue-600 font-medium">
+                                                    Appointment already completed.
+                                                </p>
+                                            ) : selected.status !== "CONFIRMED" ? (
+                                                <p className="text-xs text-amber-600 font-medium">
+                                                    Appointment not confirmed yet.
+                                                </p>
+                                            ) : canJoin ? (
                                                 <a
                                                     href={selected.meetingLink}
                                                     target="_blank"

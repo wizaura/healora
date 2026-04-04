@@ -42,21 +42,9 @@ export default function UserAppointments() {
     }, [appointments, search]);
 
     return (
-        <div className="min-h-screen bg-slate-50 pt-24 pb-16">
+        <div className="min-h-screen py-12">
 
             <div className="mx-auto max-w-5xl px-6 space-y-8">
-
-                {/* HEADER */}
-
-                <div>
-                    <h1 className="text-xl font-semibold text-slate-900">
-                        My Appointments
-                    </h1>
-
-                    <p className="text-sm text-slate-500">
-                        View and manage your consultations
-                    </p>
-                </div>
 
                 {/* FILTER BAR */}
 

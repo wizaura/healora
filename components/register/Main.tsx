@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, Lock, User, EyeOff, Eye, Globe } from "lucide-react";
+import { Mail, Lock, User, EyeOff, Eye } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
@@ -13,12 +13,13 @@ export default function Register() {
         name: "",
         email: "",
         password: "",
-        country: "",
+        confirmPassword: "",
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
     const router = useRouter();
 
     const validate = () => {
@@ -40,8 +41,10 @@ export default function Register() {
             newErrors.password = "Password must be at least 8 characters";
         }
 
-        if (!form.country) {
-            newErrors.country = "Country is required";
+        if (!form.confirmPassword) {
+            newErrors.confirmPassword = "Please confirm your password";
+        } else if (form.password !== form.confirmPassword) {
+            newErrors.confirmPassword = "Passwords do not match";
         }
 
         setErrors(newErrors);
@@ -63,7 +66,6 @@ export default function Register() {
                 name: form.name,
                 email: form.email,
                 password: form.password,
-                country: form.country,
             });
 
             toast.success("Account created successfully 🎉");
@@ -72,7 +74,7 @@ export default function Register() {
                 name: "",
                 email: "",
                 password: "",
-                country: "",
+                confirmPassword: "",
             });
 
             router.push("/login");
@@ -83,20 +85,8 @@ export default function Register() {
         }
     };
 
-    const countries = [
-        "India",
-        "United States",
-        "United Kingdom",
-        "Canada",
-        "Australia",
-        "Germany",
-        "France",
-        "UAE",
-        "Singapore",
-    ];
-
     return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 mt-20">
+        <div className="min-h-screen flex items-center justify-center px-4 mt-20">
             <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
 
                 <div className="mb-8 text-center">
@@ -160,37 +150,6 @@ export default function Register() {
                         )}
                     </div>
 
-                    {/* COUNTRY */}
-                    <div>
-                        <label className="text-sm font-medium text-slate-700">
-                            Country
-                        </label>
-                        <div className="relative mt-1">
-                            <Globe className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                            <select
-                                value={form.country}
-                                onChange={(e) =>
-                                    setForm({ ...form, country: e.target.value })
-                                }
-                                className={`w-full rounded-lg border pl-10 pr-4 py-2.5 text-sm bg-white
-                                    ${errors.country
-                                        ? "border-red-400"
-                                        : "border-slate-300 focus:border-teal-500 focus:ring-teal-500"
-                                    }`}
-                            >
-                                <option value="">Select your country</option>
-                                {countries.map((country) => (
-                                    <option key={country} value={country}>
-                                        {country}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        {errors.country && (
-                            <p className="mt-1 text-xs text-red-500">{errors.country}</p>
-                        )}
-                    </div>
-
                     {/* PASSWORD */}
                     <div>
                         <label className="text-sm font-medium text-slate-700">
@@ -214,7 +173,7 @@ export default function Register() {
                             <button
                                 type="button"
                                 onClick={() => setShowPassword((prev) => !prev)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
                             >
                                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
@@ -222,6 +181,41 @@ export default function Register() {
                         {errors.password && (
                             <p className="mt-1 text-xs text-red-500">
                                 {errors.password}
+                            </p>
+                        )}
+                    </div>
+
+                    {/* CONFIRM PASSWORD */}
+                    <div>
+                        <label className="text-sm font-medium text-slate-700">
+                            Confirm Password
+                        </label>
+
+                        <div className="relative mt-1">
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                            <input
+                                type={showConfirm ? "text" : "password"}
+                                value={form.confirmPassword}
+                                onChange={(e) =>
+                                    setForm({ ...form, confirmPassword: e.target.value })
+                                }
+                                className={`w-full rounded-lg border pl-10 pr-10 py-2.5 text-sm
+                                    ${errors.confirmPassword
+                                        ? "border-red-400"
+                                        : "border-slate-300 focus:border-teal-500 focus:ring-teal-500"
+                                    }`}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirm((prev) => !prev)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                            >
+                                {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                        </div>
+                        {errors.confirmPassword && (
+                            <p className="mt-1 text-xs text-red-500">
+                                {errors.confirmPassword}
                             </p>
                         )}
                     </div>

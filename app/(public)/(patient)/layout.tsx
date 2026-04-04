@@ -35,7 +35,7 @@ export default function ProtectedLayout({
 
   /* Logged in → render layout */
   return (
-    <div className="pt-24 pb-12 bg-slate-50 min-h-screen">
+    <div className="pt-24 pb-12 bg-white min-h-screen">
       <ProfileHeader />
       <div className="mx-auto max-w-5xl px-6">
         {children}

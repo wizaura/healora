@@ -37,7 +37,7 @@ export default function DoctorReschedulePage() {
     if (!appointment) return null;
 
     return (
-        <div className="max-w-7xl">
+        <div className="max-w-7xl mx-auto">
 
             {/* SUMMARY */}
 

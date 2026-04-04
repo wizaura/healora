@@ -1,11 +1,13 @@
 import AvailabilityForm from "./AvailabilityForm";
 import ExistingAvailability from "./ExistingAvailability";
 import GoogleCalenderSetup from "./GoogleCalenderSetup";
+import ZoomSetup from "./ZoomSetup";
 
 export default function DoctorAvailability() {
     return (
         <div className="max-w-7xl mx-auto space-y-6 p-3 pt-24 md:p-8">
             <GoogleCalenderSetup />
+            <ZoomSetup />
             <AvailabilityForm />
             <ExistingAvailability />
         </div>

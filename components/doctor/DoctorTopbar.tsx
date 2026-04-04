@@ -16,6 +16,7 @@ import {
     LogOut,
     NotebookIcon,
     Settings,
+    Settings2,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { useQuery } from "@tanstack/react-query";
@@ -28,6 +29,7 @@ const nav = [
     { label: "Appointments", href: "/doctor/appointments", icon: Clock },
     { label: "Patients", href: "/doctor/patients", icon: User2 },
     { label: "Blogs", href: "/doctor/blogs", icon: NotebookIcon },
+    { label: "Settings", href: "/doctor/settings", icon: Settings2 },
 ];
 
 export default function DoctorTopBar() {
@@ -56,7 +58,7 @@ export default function DoctorTopBar() {
                         </div>
 
                         <Link
-                            href="/doctor/profile/settings"
+                            href="/doctor/settings"
                             className="text-sm font-semibold text-red-700 hover:underline"
                         >
                             Change Password

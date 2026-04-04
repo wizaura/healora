@@ -1,5 +1,6 @@
 "use client";
 
+import DoctorFooter from "@/components/doctor/DoctorFooter";
 import DoctorTopBar from "@/components/doctor/DoctorTopbar";
 import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
@@ -31,6 +32,7 @@ export default function DoctorLayout({
             <main className="mx-auto bg-white px-6 pt-24 pb-8">
                 {children}
             </main>
+            <DoctorFooter />
         </div>
     );
 }

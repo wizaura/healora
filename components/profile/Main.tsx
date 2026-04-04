@@ -40,7 +40,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12">
+    <div className="min-h-screen py-12">
       <div className="mx-auto max-w-5xl px-6 space-y-8">
 
         {/* PROFILE HEADER */}
@@ -71,7 +71,7 @@ export default function Profile() {
             Logout
           </button>
         </div>
-        
+
         {/* STATISTICS */}
         <div className="grid gap-6 md:grid-cols-3">
           <DashboardCard

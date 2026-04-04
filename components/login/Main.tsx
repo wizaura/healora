@@ -74,7 +74,7 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 mt-16">
+        <div className="min-h-screen flex items-center justify-center px-4 mt-16">
             <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
 
                 {/* Header */}

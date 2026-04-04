@@ -119,25 +119,8 @@ export default function SettingsPage() {
         "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 disabled:bg-slate-100";
 
     return (
-        <div className="min-h-screen bg-slate-50 pt-24 pb-16">
+        <div className="min-h-screen py-12">
             <div className="max-w-5xl mx-auto px-6 space-y-8">
-
-                {/* HEADER */}
-                <div className="space-y-2">
-                    <button
-                        onClick={() => router.back()}
-                        className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-800"
-                    >
-                        <ArrowLeft size={16} />
-                        Back
-                    </button>
-
-                    <div>
-                        <h1 className="text-2xl font-semibold text-slate-900">
-                            Account Settings
-                        </h1>
-                    </div>
-                </div>
 
                 {/* SETTINGS CARD */}
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -146,7 +129,7 @@ export default function SettingsPage() {
                         {/* PERSONAL INFO */}
                         {!isDoctor && (
                             <div className="space-y-4">
-                                <h2 className="text-sm font-semibold text-slate-900 border-b pb-2">
+                                <h2 className="text-sm font-semibold text-slate-900 border-b border-gray-200 pb-2">
                                     Personal Information
                                 </h2>
 
@@ -188,7 +171,7 @@ export default function SettingsPage() {
                         {/* LOCATION */}
                         {!isDoctor && (
                             <div className="space-y-4">
-                                <h2 className="text-sm font-semibold text-slate-900 border-b pb-2">
+                                <h2 className="text-sm font-semibold text-slate-900 border-b border-gray-200 pb-2">
                                     Location & Region
                                 </h2>
 
@@ -234,7 +217,7 @@ export default function SettingsPage() {
 
                         {/* SECURITY */}
                         <div className="space-y-4">
-                            <h2 className="text-sm font-semibold text-slate-900 border-b pb-2">
+                            <h2 className="text-sm font-semibold text-slate-900 border-b border-gray-200 pb-2">
                                 Security
                             </h2>
 
