@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import AddressForm from "./AddressForm";
+import { getApiError } from "@/lib/util";
 
 declare global {
     interface Window {
@@ -38,6 +39,7 @@ export default function CheckoutFooter({
     const [slotFee, setSlotFee] = useState(0);
     const [consultationFee, setConsultationFee] = useState(0);
     const [currencySymbol, setCurrencySymbol] = useState("₹");
+    const [currency, setCurrency] = useState("INR");
 
     const [prescriptionFee, setPrescriptionFee] = useState(0);
     const [deliveryFee, setDeliveryFee] = useState(0);
@@ -69,6 +71,7 @@ export default function CheckoutFooter({
 
                 setConsultationFee(doctorRes.data.consultationFee || 0);
                 setCurrencySymbol(doctorRes.data.currencySymbol || "₹");
+                setCurrency(doctorRes.data.currency || "INR");
             } catch (err) {
                 console.error("Failed to load fees", err);
             } finally {
@@ -117,35 +120,31 @@ export default function CheckoutFooter({
 
             const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+            /* ================= BOOKING ================= */
+
             const bookingRes = await api.post("/booking/initiate", {
                 doctorId,
                 slotId,
                 timeZone,
+                paymentMethod,
+                currency,
+
+                payMode,
+                meetingType: payMode === "full" ? meetingType : undefined,
+                deliveryMode: needsMedicine ? deliveryMode : "none",
+                address: deliveryMode === "door" ? address : undefined,
             });
 
             const { appointmentId } = bookingRes.data.data;
 
-            const payload: any = {
+            /* ================= PAYMENT ================= */
+
+            const paymentRes = await api.post("/payments/initiate", {
                 appointmentId,
-                doctorId,
-                slotId,
-                payMode,
-                paymentMethod,
-            };
+                paymentMethod, // ✅ ONLY THIS NEEDED
+            });
 
-            if (payMode === "full") {
-                payload.meetingType = meetingType;
-
-                if (needsMedicine) {
-                    payload.deliveryMode = deliveryMode;
-                }
-            }
-
-            if (deliveryMode === "door") {
-                payload.address = address;
-            }
-
-            const paymentRes = await api.post("/payments/initiate", payload);
+            /* ================= HANDLE GATEWAY ================= */
 
             if (paymentMethod === "razorpay") {
                 openRazorpay(paymentRes.data.data, appointmentId);
@@ -154,8 +153,9 @@ export default function CheckoutFooter({
             if (paymentMethod === "stripe") {
                 window.location.href = paymentRes.data.data.checkoutUrl;
             }
+
         } catch (err) {
-            toast.error("Failed to initiate payment");
+            toast.error(getApiError(err));
             console.error(err);
         } finally {
             setLoading(false);

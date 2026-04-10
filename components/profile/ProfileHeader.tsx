@@ -7,30 +7,32 @@ import {
   Calendar,
   Settings,
   CreditCard,
+  FileText,
 } from "lucide-react";
-import { useAuth } from "@/lib/auth-context";
 
 export default function ProfileHeader() {
   const pathname = usePathname();
-  const { user } = useAuth();
-
-  const isDoctor = user?.role === "DOCTOR";
 
   const nav = [
     {
       label: "Profile",
-      href: isDoctor ? "/doctor/profile" : "/profile",
+      href: "/profile",
       icon: User,
     },
     {
       label: "Appointments",
-      href: isDoctor ? "/doctor/appointments" : "/profile/appointments",
+      href: "/profile/appointments",
       icon: Calendar,
     },
     {
       label: "Payments",
-      href: isDoctor ? "/doctor/payments" : "/profile/payments",
+      href: "/profile/payments",
       icon: CreditCard,
+    },
+    {
+      label: "Investigations",
+      href: "/profile/investigations",
+      icon: FileText,
     },
     {
       label: "Settings",
@@ -41,9 +43,7 @@ export default function ProfileHeader() {
 
   return (
     <div className="flex mx-6 justify-center">
-      {/* Scroll Container */}
       <div className="overflow-x-auto no-scrollbar">
-        {/* Pill Container */}
         <div className="flex gap-2 bg-slate-100 p-1 rounded-xl w-max">
           {nav.map(({ href, label, icon: Icon }) => {
             const active =

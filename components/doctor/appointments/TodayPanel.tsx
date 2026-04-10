@@ -2,7 +2,7 @@
 
 import { Clock, User } from "lucide-react";
 
-export default function TodayPanel({ appointments }: any) {
+export default function TodayPanel({ appointments, onSelect }: any) {
 
     const today = new Date();
 
@@ -10,6 +10,7 @@ export default function TodayPanel({ appointments }: any) {
         .filter((appt: any) => {
             const date = new Date(appt.slot.startTimeUTC);
             return (
+                appt.status === "CONFIRMED" &&
                 date.getDate() === today.getDate() &&
                 date.getMonth() === today.getMonth() &&
                 date.getFullYear() === today.getFullYear()
@@ -39,7 +40,7 @@ export default function TodayPanel({ appointments }: any) {
     const now = new Date().getTime();
 
     return (
-        <div className="px-6 py-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
+        <div className="px-6 py-4 bg-white rounded-xl border border-gray-100 shadow-sm">
 
             {/* HEADER */}
             <div className="flex items-center justify-between mb-4">
@@ -123,6 +124,13 @@ export default function TodayPanel({ appointments }: any) {
                                     >
                                         {appt.status}
                                     </span>
+
+                                    <button
+                                        onClick={() => onSelect(appt)}
+                                        className="px-4 py-0.5 text-sm font-medium rounded-md bg-wellness-accent text-white hover:bg-wellness-accent/80 transition"
+                                    >
+                                        View
+                                    </button>
 
                                     {isNext && (
                                         <span className="text-[10px] text-blue-600 font-medium">

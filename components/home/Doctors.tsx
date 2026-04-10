@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
 import Link from "next/link";
+import CTAButton from "../common/CTAButton";
 
 /* ------------------ TYPES ------------------ */
 
@@ -55,28 +56,29 @@ export default function DoctorsProjection() {
         <section className="m-4 rounded-2xl bg-gradient-to-b from-wellness-bg via-white to-wellness-bg py-20">
             <div className="mx-auto max-w-6xl px-6">
 
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-3 items-start">
+                <div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-3 items-start">
 
                     {/* LEFT CARD */}
                     <DoctorCard doctor={leftDoctor} />
 
                     {/* CENTER LIST */}
-                    <div className="relative rounded-3xl bg-blur border border-gray-100 p-4 backdrop-blur">
+                    <div className="relative rounded-2xl bg-white/40 backdrop-blur-xl border border-white/30 p-4 shadow-xs">
 
-                        <ul className="space-y-4">
-                            {doctors.map((doc) => (
+                        <ul className="space-y-3">
+
+                            {/* DOCTORS */}
+                            {doctors.slice(0, 4).map((doc) => (
                                 <li
                                     key={doc.id}
                                     onClick={() => handleSelect(doc)}
                                     className="
-                    flex cursor-pointer items-center gap-4
-                    rounded-xl px-4 py-4
-                    bg-white shadow-xl
-                    hover:bg-gray-50
-                    transition
-                  "
+        flex cursor-pointer items-center gap-4
+        rounded-xl px-4 py-3
+        bg-white shadow-xl
+        hover:bg-gray-50
+        transition
+      "
                                 >
-
                                     <img
                                         src={doc.imageUrl || "/doctor-placeholder.png"}
                                         className="h-10 w-10 rounded-full object-cover"
@@ -91,26 +93,19 @@ export default function DoctorsProjection() {
                                             {doc.specialities?.[0]?.speciality?.name || "General"}
                                         </p>
                                     </div>
-
                                 </li>
                             ))}
-                        </ul>
-                        <div className="absolute -bottom-4 md:-bottom-8 left-1/2 -translate-x-1/2">
-                            <Link
-                                href="/doctors"
-                                className="
-        px-6 py-1 md:py-3 rounded-md md:rounded-xl
-        bg-navy text-white
-        text-sm font-medium
-        shadow-lg
-        hover:bg-wellness-accent
-        transition
-      "
-                            >
-                                View More Doctors
-                            </Link>
-                        </div>
 
+                            {/* CTA AS 5TH ITEM */}
+                            <li className="flex justify-center">
+                                <CTAButton
+                                    label="View All Doctors"
+                                    href="/doctors"
+                                    variant="light"
+                                />
+                            </li>
+
+                        </ul>
                     </div>
 
                     {/* RIGHT CARD */}
@@ -129,7 +124,7 @@ function DoctorCard({ doctor }: { doctor: Doctor | null }) {
 
     if (!doctor) {
         return (
-            <div className="m-auto w-[300px] rounded-3xl bg-blur border border-gray-100 shadow-md p-10 text-center text-navy/50">
+            <div className="m-auto w-[300px] rounded-2xl bg-blur border border-gray-100 shadow-md p-10 text-center text-navy/50">
                 Select a doctor
             </div>
         );
@@ -139,7 +134,7 @@ function DoctorCard({ doctor }: { doctor: Doctor | null }) {
         <div
             className="
         group m-auto w-[300px] overflow-hidden
-        rounded-3xl bg-navy
+        rounded-2xl bg-navy
         shadow-[0_30px_60px_-20px_rgba(0,0,0,0.25)]
         transition-all duration-500
         hover:-translate-y-2
@@ -184,7 +179,7 @@ function DoctorCard({ doctor }: { doctor: Doctor | null }) {
             </div>
 
             {/* IMAGE */}
-            <div className="relative h-[320px] overflow-hidden rounded-2xl mx-3 mb-3">
+            <div className="relative h-[320px] overflow-hidden rounded-xl mx-3 mb-3">
 
                 <img
                     src={doctor.imageUrl || "/doctor-placeholder.png"}

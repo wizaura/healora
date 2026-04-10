@@ -10,6 +10,7 @@ import PrescriptionsSection from "./PrescriptionsSection";
 import { Calendar, FileText, Pill } from "lucide-react";
 import { useEffect, useState } from "react";
 import SelectOption from "@/components/common/SelectOption";
+import InvestigationsSection from "./InvestigationsSection";
 
 export default function PatientProfilePage() {
 
@@ -142,6 +143,8 @@ export default function PatientProfilePage() {
                         appointmentId={appointmentId}
                         refetch={refetch}
                     />
+
+                    <InvestigationsSection patientId={patient.id} />
 
                     <PrescriptionsSection
                         prescriptions={prescriptions}

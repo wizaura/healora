@@ -39,6 +39,8 @@ const moreItems = [
     { name: "Blogs", href: "/blog" },
     { name: "FAQs", href: "/faqs" },
     { name: "Medikits", href: "/medikits" },
+    { name: "Medicine Intake", href: "/medicine-intake" },
+    { name: "Consultation Process", href: "/consultation-process" },
     { name: "Career", href: "/career" },
     { name: "Contact", href: "/contact" },
 ];

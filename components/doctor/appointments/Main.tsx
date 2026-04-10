@@ -60,8 +60,8 @@ export default function DoctorAppointments() {
                 />
 
                 {/* RIGHT SIDE */}
-                <div className="bg-white lg:col-span-2 rounded-xl shadow p-1 md:p-4 space-y-6">
-                    <TodayPanel appointments={appointments} />
+                <div className="lg:col-span-2 space-y-6">
+                    <TodayPanel appointments={appointments} onSelect={setSelected}/>
                     <AppointmentsCalendar
                         appointments={appointments}
                         onSelect={setSelected}

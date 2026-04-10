@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { HelpCircle } from "lucide-react";
+import Link from "next/link";
 
 const faqs = [
     {
@@ -131,9 +132,13 @@ export default function FAQsSection() {
                             {/* Bottom meta */}
                             <div className="mt-8 flex items-center justify-between">
                                 <div className="h-px w-16 bg-wellness-accent/60" />
-                                <span className="text-xs font-medium text-navy/60">
-                                    Healora Care
-                                </span>
+
+                                <Link
+                                    href="/faq"
+                                    className="text-xs font-medium text-navy/60 hover:text-wellness-accent transition"
+                                >
+                                    View FAQs →
+                                </Link>
                             </div>
                         </div>
                     </div>

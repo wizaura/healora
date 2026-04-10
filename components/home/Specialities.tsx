@@ -151,7 +151,8 @@ export default function ServicesScrollSection() {
         from-wellness-bg
         via-white
         to-wellness-bg
-        py-16
+        py-8 md:py-16
+        px-6 md:px-0
         md:h-[350vh] md:py-0
       "
         >
@@ -159,16 +160,16 @@ export default function ServicesScrollSection() {
             <div className="relative md:sticky md:top-0 overflow-hidden mb-6">
 
                 {/* Header */}
-                <div className="mx-auto max-w-6xl px-8 pt-16 md:pt-28 pb-8">
-                    <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-                        <h2 className="text-3xl font-semibold text-navy-dark leading-tight md:text-6xl">
+                <div className="mx-auto max-w-7xl pt-8 md:pt-28 pb-8">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <h2 className="text-4xl font-semibold text-navy-dark leading-tight md:text-6xl">
                             Complete Health
                             <br />
                             Care Solutions.
                         </h2>
 
                         <div className="flex flex-col items-start gap-6 md:items-end md:text-right">
-                            <p className="max-w-md text-navy/80 text-lg">
+                            <p className="max-w-md text-navy/80 text-base md:text-lg">
                                 Modern medical services designed around your
                                 health, comfort, and recovery.
                             </p>
@@ -185,10 +186,10 @@ export default function ServicesScrollSection() {
                 {/* Horizontal cards */}
                 {/* Cards */}
 
-                <div className="relative md:mt-24">
+                <div className="relative md:mt-24 max-w-7xl mx-auto">
 
                     {/* MOBILE / SMALL SCREENS */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 px-6 md:hidden max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:hidden max-w-6xl mx-auto">
                         {services.map((s: any) => (
                             <div  key={s.id} className="w-full">
                                 <SpecialityCard

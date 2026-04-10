@@ -24,7 +24,7 @@ export default function AddPrescriptionModal({ appointmentId, user, deliveryMode
         },
     });
     const [age, setAge] = useState(user.age || "");
-    const [sex, setSex] = useState(user.sex || "");
+    const [gender, setGender] = useState(user.gender || "");
 
     const [instructions, setInstructions] = useState("");
     const [loading, setLoading] = useState(false);
@@ -63,7 +63,7 @@ export default function AddPrescriptionModal({ appointmentId, user, deliveryMode
                 medicines,
                 instructions,
                 age,
-                sex,
+                gender,
                 medikitIds:
                     deliveryMode === "DOOR"
                         ? selectedMedikits.map((k) => k.id)
@@ -200,8 +200,8 @@ export default function AddPrescriptionModal({ appointmentId, user, deliveryMode
                                 <div>
                                     <label className="text-sm text-gray-600">Sex</label>
                                     <select
-                                        value={sex}
-                                        onChange={(e) => setSex(e.target.value)}
+                                        value={gender}
+                                        onChange={(e) => setGender(e.target.value)}
                                         className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full"
                                     >
                                         <option value="">Select</option>

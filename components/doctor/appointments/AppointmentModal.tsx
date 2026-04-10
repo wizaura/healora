@@ -78,7 +78,7 @@ export default function AppointmentModal({
                         </div>
 
                         {/* BODY */}
-                        <div className="p-6 space-y-6">
+                        <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
 
                             {/* Patient */}
                             <div className="flex items-start gap-4">
@@ -201,7 +201,7 @@ export default function AppointmentModal({
                                                 </p>
                                             ) : canJoin ? (
                                                 <a
-                                                    href={selected.meetingLink}
+                                                    href={selected.doctorStartLink ?? selected.meetingLink}
                                                     target="_blank"
                                                     className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:underline"
                                                 >

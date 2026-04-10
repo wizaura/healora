@@ -24,7 +24,7 @@ export default function AppointmentsCalendar({
     }));
 
     return (
-        <div className="calendar-wrapper bg-gradient-to-br from-[#F4FBF9] to-white rounded-3xl border border-[#E2F0ED] p-6 shadow-sm">
+        <div className="calendar-wrapper bg-gradient-to-br from-[#F4FBF9] to-white rounded-xl border border-[#E2F0ED] p-6 shadow-sm">
 
             <FullCalendar
                 plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
