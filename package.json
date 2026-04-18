@@ -19,6 +19,7 @@
     "@tinymce/tinymce-react": "^6.3.0",
     "@tiptap/react": "^3.20.1",
     "@tiptap/starter-kit": "^3.20.1",
+    "aos": "^2.3.4",
     "axios": "^1.13.3",
     "framer-motion": "^12.34.0",
     "lucide-react": "^0.562.0",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/aos": "^3.0.7",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-big-calendar": "^1.16.3",

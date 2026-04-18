@@ -38,6 +38,8 @@ export default function Login() {
         return Object.keys(newErrors).length === 0;
     };
 
+    console.log(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string, 'ps')
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -237,7 +239,7 @@ export default function Login() {
                         Create one
                     </Link>
                 </p>
-            </div>
+            </div>    
         </div>
     );
 }

@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "@/lib/auth-context";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import ReactQueryProvider from "@/providers/react-query-provider";
+import AOSProvider from "@/components/common/AOSProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -95,6 +96,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${manrope.variable}`}>
   <body className="font-sans antialiased bg-white text-gray-900">
     <AuthProvider>
+      <AOSProvider />
       <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
         <ReactQueryProvider>
           {children}

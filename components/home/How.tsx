@@ -5,10 +5,11 @@ import {
     CalendarCheck,
     CreditCard,
     Video,
-    ArrowRight
 } from "lucide-react";
-import Link from "next/link";
 import CTAButton from "../common/CTAButton";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 const steps = [
     {
@@ -38,33 +39,57 @@ const steps = [
 ];
 
 export default function HowItWorks() {
+
+    useEffect(() => {
+        AOS.init({
+            duration: 800,
+            easing: "ease-out-cubic",
+            once: true,
+        });
+    }, []);
+
     return (
-        <section className="bg-gradient-to-b from-wellness-bg via-white to-wellness-bg py-20 m-4 rounded-2xl">
+        <section
+            data-aos="fade-up"
+            className="bg-gradient-to-b from-wellness-bg via-white to-wellness-bg py-20 m-4 rounded-2xl"
+        >
             <div className="mx-auto max-w-7xl px-6">
 
-                {/* Header */}
+                {/* HEADER */}
                 <div className="mx-auto pb-8">
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                        <h2 className="text-4xl font-semibold text-navy-dark leading-tight md:text-6xl">
+
+                        <h2
+                            data-aos="fade-up"
+                            data-aos-delay="100"
+                            className="text-4xl font-semibold text-navy-dark leading-tight md:text-6xl"
+                        >
                             How It Works
                         </h2>
 
-                        <div className="flex flex-col items-start gap-6 md:items-end md:text-right">
+                        <div
+                            data-aos="fade-up"
+                            data-aos-delay="200"
+                            className="flex flex-col items-start gap-6 md:items-end md:text-right"
+                        >
                             <p className="max-w-md text-navy/80 text-base md:text-lg">
                                 Experience seamless online consultation with 
                                 Healora in just a few simple steps
                             </p>
 
-                            <CTAButton
-                                label="View Full Process"
-                                href="/consultation-process"
-                                variant="light"
-                            />
+                            <div data-aos="zoom-in" data-aos-delay="300">
+                                <CTAButton
+                                    label="View Full Process"
+                                    href="/consultation-process"
+                                    variant="light"
+                                />
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
-                {/* Cards */}
+                {/* CARDS */}
                 <div className="grid grid-cols-1 gap-4 md:gap-8 sm:grid-cols-2 lg:grid-cols-4">
                     {steps.map((step, index) => {
                         const Icon = step.icon;
@@ -72,33 +97,33 @@ export default function HowItWorks() {
                         return (
                             <div
                                 key={index}
+                                data-aos="fade-up"
+                                data-aos-delay={100 + index * 100}
                                 className="
-                                group relative
-                                rounded-tl-4xl rounded-br-4xl rounded-tr-md rounded-bl-md bg-white
-                                p-8
-                                shadow-[0_25px_50px_-20px_rgba(0,0,0,0.25)]
-                                transition-all duration-500
-                                hover:-translate-y-2
-                                hover:shadow-[0_35px_70px_-20px_rgba(0,0,0,0.35)]
-                                hover:ring-1 hover:ring-wellness-accent/30
-                            "
+                                    group relative
+                                    rounded-tl-4xl rounded-br-4xl rounded-tr-md rounded-bl-md bg-white
+                                    p-8
+                                    shadow-[0_25px_50px_-20px_rgba(0,0,0,0.25)]
+                                    transition-all duration-500
+                                    hover:-translate-y-2
+                                    hover:shadow-[0_35px_70px_-20px_rgba(0,0,0,0.35)]
+                                    hover:ring-1 hover:ring-wellness-accent/30
+                                "
                             >
-                                {/* Icon */}
+                                {/* ICON */}
                                 <div
                                     className="
-                                    flex h-14 w-14 items-center justify-center
-                                    rounded-xl
-                                    bg-navy
-                                    text-white
-                                    shadow-md
-                                    transition-transform duration-300
-                                    group-hover:scale-110
-                                "
+                                        flex h-14 w-14 items-center justify-center
+                                        rounded-xl bg-navy text-white
+                                        shadow-md
+                                        transition-transform duration-300
+                                        group-hover:scale-110
+                                    "
                                 >
                                     <Icon size={26} />
                                 </div>
 
-                                {/* Content */}
+                                {/* CONTENT */}
                                 <h3 className="mt-6 text-lg font-semibold text-navy">
                                     {step.title}
                                 </h3>
@@ -107,12 +132,13 @@ export default function HowItWorks() {
                                     {step.description}
                                 </p>
 
-                                {/* Accent line */}
+                                {/* ACCENT */}
                                 <div className="mt-6 h-1 w-10 rounded-full bg-wellness-accent group-hover:w-16 transition-all" />
                             </div>
                         );
                     })}
                 </div>
+
             </div>
         </section>
     );

@@ -4,90 +4,24 @@ import { useQuery } from "@tanstack/react-query";
 import { getActiveSpecialities } from "@/lib/specialities.api";
 import { specialityIcons } from "@/lib/speciality-icons";
 import SpecialityCard from "../common/SpecialitiesCard";
-import { useMemo } from "react";
-
-const DUMMY_SPECIALITIES = [
-    {
-        id: "s1",
-        name: "Homeopathy",
-        slug: "homeopathy",
-        description: "Natural and holistic treatment focused on long-term healing.",
-        icon: "Leaf",
-        subSpecialities: [],
-    },
-    {
-        id: "s2",
-        name: "Agro-Homeopathy",
-        slug: "agro-homeopathy",
-        description: "Eco-friendly plant and crop care through homeopathy.",
-        icon: "Sprout",
-        subSpecialities: [],
-    },
-    {
-        id: "s3",
-        name: "Veterinary Homeopathy",
-        slug: "veterinary-homeopathy",
-        description: "Gentle and effective animal healthcare solutions.",
-        icon: "Dog",
-        subSpecialities: [],
-    },
-    {
-        id: "s4",
-        name: "Counseling",
-        slug: "counseling",
-        description: "Professional guidance for emotional and mental wellbeing.\t \n \nnnn \n nn \n mm",
-        icon: "MessageCircle",
-        subSpecialities: [],
-    },
-    {
-        id: "s5",
-        name: "Psychology",
-        slug: "psychology",
-        description: "Evidence-based mental health assessment and therapy.",
-        icon: "Brain",
-        subSpecialities: [],
-    },
-    {
-        id: "s6",
-        name: "Fitness",
-        slug: "fitness",
-        description: "Personalized fitness plans for strength and recovery.",
-        icon: "Dumbbell",
-        subSpecialities: [],
-    },
-    {
-        id: "s7",
-        name: "Diet & Nutrition",
-        slug: "diet-nutrition",
-        description: "Balanced nutrition plans tailored to your lifestyle.",
-        icon: "Apple",
-        subSpecialities: [],
-    },
-    {
-        id: "s8",
-        name: "Physiotherapy",
-        slug: "physiotherapy",
-        description: "Rehabilitation and mobility care by certified therapists.",
-        icon: "Activity",
-        subSpecialities: [],
-    },
-    {
-        id: "s9",
-        name: "Naturopathy",
-        slug: "naturopathy",
-        description: "Drug-free healing using natural therapies.",
-        icon: "Leaf",
-        subSpecialities: [],
-    },
-];
-
+import { useMemo, useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function SpecialtiesSection() {
-    const { data = DUMMY_SPECIALITIES, isLoading, isError } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["specialities"],
         queryFn: getActiveSpecialities,
         retry: false,
     });
+
+    useEffect(() => {
+        AOS.init({
+            duration: 800,
+            easing: "ease-out-cubic",
+            once: true,
+        });
+    }, []);
 
     const sortedSpecialities = useMemo(() => {
         if (!Array.isArray(data)) return [];
@@ -111,8 +45,6 @@ export default function SpecialtiesSection() {
         return [...exactHomeopathy, ...others, ...haveHomeopathy];
     }, [data]);
 
-
-
     if (isLoading) {
         return (
             <section className="py-24 text-center text-navy/60">
@@ -122,27 +54,28 @@ export default function SpecialtiesSection() {
     }
 
     return (
-        <section
-            className="
-        relative m-4 rounded-3xl
-        bg-gradient-to-b
-        from-white via-white to-wellness-bg
-        py-24
-      "
-        >
-            <div className="mx-auto max-w-7xl px-6">
+        <section className="relative m-4 rounded-3xl overflow-hidden">
 
-                {/* Header */}
-                <div className="mb-20 text-center">
+
+            {/* HEADER BG IMAGE */}
+            <div className="relative overflow-hidden">
+
+                {/* BG IMAGE */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="/hero-2.jpeg"
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
+                </div>
+
+                {/* CONTENT */}
+                <div className="relative z-10 py-24 px-6 text-center max-w-5xl mx-auto">
 
                     <h2
-                        className="
-        text-4xl md:text-6xl
-        font-semibold
-        leading-[1.15]
-        tracking-[-0.02em]
-        text-navy
-    "
+                        data-aos="fade-up"
+                        data-aos-delay="100"
+                        className="text-4xl md:text-6xl font-semibold leading-[1.15] tracking-[-0.02em] text-white"
                     >
                         Quality Medical Services
                         <br />
@@ -150,14 +83,9 @@ export default function SpecialtiesSection() {
                     </h2>
 
                     <p
-                        className="
-        mt-6
-        text-lg
-        text-navy/60
-        max-w-2xl
-        mx-auto
-        leading-relaxed
-    "
+                        data-aos="fade-up"
+                        data-aos-delay="200"
+                        className="mt-6 text-lg text-white/90 max-w-2xl mx-auto leading-relaxed"
                     >
                         Discover our range of holistic healthcare services designed
                         to address physical, mental, and emotional wellbeing. Our
@@ -167,22 +95,50 @@ export default function SpecialtiesSection() {
 
                 </div>
 
-                {/* Cards */}
-                <div className="mx-auto grid max-w-5xl gap-4 md:gap-6 md:grid-cols-2">
-                    {sortedSpecialities.map((item: any) => {
-                        const Icon =
-                            specialityIcons[item.icon] || specialityIcons.HeartPulse;
+                {/* ✅ WAVE (FIXED POSITION) */}
+                <div className="absolute bottom-0 left-0 w-full z-10 leading-none">
+                    <svg
+                        viewBox="0 0 1440 120"
+                        className="w-full h-[80px] md:h-[80px]"
+                        preserveAspectRatio="none"
+                    >
+                        <path
+                            d="M0,40 C240,120 480,0 720,40 C960,80 1200,0 1440,40 L1440,120 L0,120 Z"
+                            fill="white"
+                        />
+                    </svg>
+                </div>
 
-                        return (
-                            <SpecialityCard
-                                key={item.id}
-                                name={item.name}
-                                description={item.description}
-                                imageUrl={item.overview?.images?.image1?.url}
-                                slug={item.slug}
-                            />
-                        );
-                    })}
+            </div>
+
+            {/* CARDS */}
+            <div className="bg-gradient-to-b from-white to-wellness-bg py-16 px-4">
+                <div className="max-w-5xl lg:max-w-7xl mx-auto">
+
+                    <div className="mx-auto grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+                        {sortedSpecialities.map((item: any, index: number) => {
+                            const Icon =
+                                specialityIcons[item.icon] || specialityIcons.HeartPulse;
+
+                            return (
+                                <div
+                                    key={item.id}
+                                    data-aos="fade-up"
+                                    data-aos-delay={100 + index * 100}
+                                >
+                                    <SpecialityCard
+                                        name={item.name}
+                                        description={item.description}
+                                        imageUrl={item.overview?.images?.image1?.url}
+                                        slug={item.slug}
+                                    />
+                                </div>
+                            );
+                        })}
+
+                    </div>
+
                 </div>
             </div>
         </section>

@@ -60,7 +60,7 @@ export default function AllDoctors() {
         "
         >
 
-            <div className="mx-auto max-w-7xl px-6">
+            <div className="mx-auto max-w-7xl">
 
                 {/* ================= HEADER ================= */}
 
@@ -109,9 +109,9 @@ export default function AllDoctors() {
 
                 {/* ================= DOCTORS GRID ================= */}
 
-                <div className="mx-auto max-w-5xl">
+                <div className="mx-auto">
 
-                    <div className="grid gap-10 md:grid-cols-2">
+                    <div className="grid gap-6 md:grid-cols-3">
 
                         {filteredDoctors.map((doc: any) => (
 
