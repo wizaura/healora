@@ -68,7 +68,7 @@ export default function DoctorsProjection() {
     return (
         <section
             data-aos="fade-up"
-            className="m-4 rounded-2xl bg-gradient-to-b from-wellness-bg via-white to-wellness-bg py-20"
+            className="m-4 rounded-2xl bg-gradient-to-b from-white via-wellness-bg/50 to-wellness-bg pt-6 pb-20"
         >
             <div className="mx-auto max-w-6xl px-6">
 

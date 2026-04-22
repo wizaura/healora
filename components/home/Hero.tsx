@@ -31,15 +31,28 @@ export default function HomeHero() {
   }, []);
 
   return (
-    <section className="relative m-4 rounded-xl flex min-h-screen items-center justify-center overflow-hidden">
+    <section className="relative m-4 rounded-2xl flex min-h-screen items-center justify-center overflow-hidden">
+
+      {/* BOTTOM WAVE */}
+      <div className="absolute bottom-0 left-0 w-full z-10 leading-none">
+        <svg
+          viewBox="0 0 1440 100"
+          className="w-full h-[120px]"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,40 C240,120 480,0 720,40 C960,80 1200,0 1440,40 L1440,120 L0,120 Z"
+            fill="white"
+          />
+        </svg>
+      </div>
 
       {/* Slideshow */}
       {images.map((img, i) => (
         <div
           key={i}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            i === index ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 transition-opacity duration-1000 ${i === index ? "opacity-100" : "opacity-0"
+            }`}
         >
           <img
             src={img}

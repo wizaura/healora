@@ -18,14 +18,6 @@ export default function DoctorDashboard() {
     },
   });
 
-  const { data: revenue } = useQuery({
-    queryKey: ["doctor-revenue"],
-    queryFn: async () => {
-      const res = await api.get("/doctor/dashboard/revenue-chart?range=7d");
-      return res.data;
-    },
-  });
-
   const { data: appointments } = useQuery({
     queryKey: ["doctor-appointments-chart"],
     queryFn: async () => {
@@ -42,18 +34,10 @@ export default function DoctorDashboard() {
     },
   });
 
-  const { data: payments } = useQuery({
-    queryKey: ["doctor-recent-payments"],
-    queryFn: async () => {
-      const res = await api.get("/doctor/dashboard/recent-payments");
-      return res.data;
-    },
-  });
-
   if (!summary) return <div className="p-8 pt-24">Loading...</div>;
 
   return (
-    <div className="p-8 pt-24 space-y-8">
+    <div className="p-8 pt-24 mx-auto max-w-7xl space-y-8">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-semibold text-slate-900">
@@ -65,7 +49,7 @@ export default function DoctorDashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <StatCard
           title="Today Appointments"
           value={summary.todayAppointments}
@@ -81,23 +65,12 @@ export default function DoctorDashboard() {
           value={summary.totalPatients}
           icon={<Users size={18} />}
         />
-        <StatCard
-          title="Revenue"
-          value={`₹${summary.monthRevenue}`}
-          icon={<IndianRupee size={18} />}
-        />
       </div>
 
       {/* Charts */}
       <div className="grid lg:grid-cols-2 gap-6">
-        <ChartCard title="Revenue (7 days)" data={revenue} dataKey="revenue" />
         <ChartCard title="Appointments (7 days)" data={appointments} dataKey="appointments" />
-      </div>
-
-      {/* Recent Data */}
-      <div className="grid lg:grid-cols-2 gap-6">
         <RecentPatients patients={patients} />
-        <RecentPayments payments={payments} />
       </div>
     </div>
   );
@@ -152,7 +125,7 @@ function RecentPatients({ patients }: any) {
       ) : (
         <div className="space-y-3">
           {patients.map((p: any) => (
-            <div key={p.id} className="border rounded-lg p-3">
+            <div key={p.id} className="border border-gray-200 rounded-lg p-3">
               <p className="font-medium text-sm">{p.user.name}</p>
               <p className="text-xs text-slate-500">{p.user.email}</p>
             </div>

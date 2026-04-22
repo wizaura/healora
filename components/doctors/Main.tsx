@@ -5,12 +5,23 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import api from "@/lib/api";
 import DoctorCard from "@/components/common/DoctorCard";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 export default function AllDoctors() {
 
     const router = useRouter();
 
     const [selectedSpeciality, setSelectedSpeciality] = useState<string>("homeopathy");
+
+    useEffect(() => {
+        AOS.init({
+            duration: 800,
+            easing: "ease-out-cubic",
+            once: true,
+        });
+    }, []);
 
     /* ================= DOCTORS ================= */
 
@@ -55,22 +66,42 @@ export default function AllDoctors() {
         <section
             className="
             relative m-4 rounded-3xl
-            bg-gradient-to-b from-white via-white to-wellness-bg
-            py-24
+            bg-gradient-to-b from-white via-white to-wellness-bg pb-24
         "
         >
 
-            <div className="mx-auto max-w-7xl">
 
-                {/* ================= HEADER ================= */}
+            {/* ================= HEADER (UPDATED LIKE SPECIALITY) ================= */}
 
-                <div className="mb-20 text-center">
+            <div className="relative overflow-hidden rounded-3xl mb-12">
 
-                    <h1 className="text-4xl md:text-6xl font-semibold text-navy-dark">
+                {/* BG IMAGE */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="/hero-2.jpeg"
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
+                </div>
+
+                {/* CONTENT */}
+                <div className="relative z-10 py-24 px-6 text-center max-w-5xl mx-auto">
+
+                    <h1
+                        data-aos="fade-up"
+                        data-aos-delay="100"
+                        className="text-4xl md:text-6xl font-semibold leading-[1.15] tracking-[-0.02em] text-white"
+                    >
                         Find the Right Doctor
+                        <br />
+                        For Your Care
                     </h1>
 
-                    <p className="mx-auto mt-6 max-w-2xl text-lg text-navy/70 leading-relaxed">
+                    <p
+                        data-aos="fade-up"
+                        data-aos-delay="200"
+                        className="mt-6 text-lg text-white/90 max-w-2xl mx-auto leading-relaxed"
+                    >
                         Connect with experienced and verified healthcare professionals
                         across multiple specialities. Whether you need holistic
                         homeopathic care, nutritional guidance, counselling support,
@@ -80,27 +111,51 @@ export default function AllDoctors() {
 
                 </div>
 
+                {/* WAVE */}
+                <div className="absolute bottom-0 left-0 w-full z-10 leading-none">
+                    <svg
+                        viewBox="0 0 1440 120"
+                        className="w-full h-[80px]"
+                        preserveAspectRatio="none"
+                    >
+                        <path
+                            d="M0,40 C240,120 480,0 720,40 C960,80 1200,0 1440,40 L1440,120 L0,120 Z"
+                            fill="white"
+                        />
+                    </svg>
+                </div>
+
+            </div>
+
+            <div className="mx-auto max-w-7xl">
 
                 {/* ================= FILTER ================= */}
 
                 <div className="mb-16 flex flex-wrap justify-center gap-3">
 
-                    <FilterButton
-                        active={selectedSpeciality === "all"}
-                        onClick={() => setSelectedSpeciality("all")}
-                    >
-                        All
-                    </FilterButton>
-
-                    {specialities.map((spec: any) => (
-
+                    <div data-aos="fade-up" data-aos-delay="100">
                         <FilterButton
-                            key={spec.id}
-                            active={selectedSpeciality === spec.slug}
-                            onClick={() => setSelectedSpeciality(spec.slug)}
+                            active={selectedSpeciality === "all"}
+                            onClick={() => setSelectedSpeciality("all")}
                         >
-                            {spec.name}
+                            All
                         </FilterButton>
+                    </div>
+
+                    {specialities.map((spec: any, index: number) => (
+
+                        <div
+                            key={spec.id}
+                            data-aos="fade-up"
+                            data-aos-delay={150 + index * 50}
+                        >
+                            <FilterButton
+                                active={selectedSpeciality === spec.slug}
+                                onClick={() => setSelectedSpeciality(spec.slug)}
+                            >
+                                {spec.name}
+                            </FilterButton>
+                        </div>
 
                     ))}
 
@@ -113,28 +168,20 @@ export default function AllDoctors() {
 
                     <div className="grid gap-6 md:grid-cols-3">
 
-                        {filteredDoctors.map((doc: any) => (
-
-                            <DoctorCard
-                                key={doc.id}
-                                doctor={doc}
-                                onBook={(id) => router.push(`/booking/${id}`)}
-                            />
-
-                        ))}
-
-                        {filteredDoctors.length === 0 && (
+                        {filteredDoctors.map((doc: any, index: number) => (
 
                             <div
-                                className="
-                                col-span-full rounded-3xl bg-white p-12
-                                text-center text-navy/60 shadow
-                            "
+                                key={doc.id}
+                                data-aos="fade-up"
+                                data-aos-delay={100 + index * 80}
                             >
-                                No doctors available for this speciality.
+                                <DoctorCard
+                                    doctor={doc}
+                                    onBook={(id) => router.push(`/booking/${id}`)}
+                                />
                             </div>
 
-                        )}
+                        ))}
 
                     </div>
 
@@ -170,9 +217,9 @@ function FilterButton({
             transition-all duration-300 ease-out
             backdrop-blur
             ${active
-                ? "bg-navy text-white border border-navy shadow-md"
-                : "bg-white/80 text-navy/70 border border-navy/20 hover:border-navy hover:text-navy"
-            }
+                    ? "bg-navy text-white border border-navy shadow-md"
+                    : "bg-white/80 text-navy/70 border border-navy/20 hover:border-navy hover:text-navy"
+                }
         `}
         >
             {children}

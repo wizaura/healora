@@ -13,6 +13,8 @@ export default function DoctorAppointments() {
     const [selected, setSelected] = useState<any>(null);
     const [search, setSearch] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
+    const [page, setPage] = useState(1);
+    const pageSize = 10;
 
     useEffect(() => {
         fetchAppointments();
@@ -44,6 +46,15 @@ export default function DoctorAppointments() {
         });
     }, [appointments, search, statusFilter]);
 
+    const paginatedAppointments = useMemo(() => {
+        const start = (page - 1) * pageSize;
+        return filteredAppointments.slice(start, start + pageSize);
+    }, [filteredAppointments, page]);
+
+    useEffect(() => {
+        setPage(1);
+    }, [search, statusFilter]);
+
     return (
         <div className="min-h-screen md:p-8 pt-24 md:mt-12">
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-6">
@@ -51,17 +62,21 @@ export default function DoctorAppointments() {
                 {/* LEFT SIDE */}
                 <AppointmentsList
                     loading={loading}
-                    appointments={filteredAppointments}
+                    appointments={paginatedAppointments}
                     search={search}
                     setSearch={setSearch}
                     statusFilter={statusFilter}
                     setStatusFilter={setStatusFilter}
                     onSelect={setSelected}
+                    page={page}
+                    setPage={setPage}
+                    total={filteredAppointments.length}
+                    pageSize={pageSize}
                 />
 
                 {/* RIGHT SIDE */}
                 <div className="lg:col-span-2 space-y-6">
-                    <TodayPanel appointments={appointments} onSelect={setSelected}/>
+                    <TodayPanel appointments={appointments} onSelect={setSelected} />
                     <AppointmentsCalendar
                         appointments={appointments}
                         onSelect={setSelected}

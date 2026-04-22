@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import api from "@/lib/api";
 import DoctorBasicInfo from "./DoctorBasicInfo";
 import DoctorProfessionalInfo from "./DoctorProfessionalInfo";
+import { getApiError } from "@/lib/util";
 
 export default function DoctorProfilePage() {
     const [isEditing, setIsEditing] = useState(false);
@@ -57,7 +58,7 @@ export default function DoctorProfilePage() {
             setIsEditing(false);
             refetch();
         },
-        onError: () => toast.error("Update failed"),
+        onError: (err) => toast.error(getApiError(err)),
     });
 
     if (!profile) return null;

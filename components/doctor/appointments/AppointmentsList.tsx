@@ -9,6 +9,10 @@ export default function AppointmentsList({
     statusFilter,
     setStatusFilter,
     onSelect,
+    page,
+    setPage,
+    total,
+    pageSize,
 }: any) {
     const formatDateTime = (date: string) =>
         new Date(date).toLocaleString("en-IN", {
@@ -120,6 +124,47 @@ export default function AppointmentsList({
                             ))}
                         </tbody>
                     </table>
+
+                    {/* Pagination */}
+                    {total > pageSize && (
+                        <div className="flex justify-between items-center pt-4">
+
+                            <button
+                                disabled={page === 1}
+                                onClick={() => setPage(page - 1)}
+                                className="px-4 py-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-700
+                                    shadow-sm transition-all duration-200 hover:bg-gray-50 hover:shadow-md active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                                Prev
+                            </button>
+
+                            <div className="flex gap-2">
+                                {Array.from({ length: Math.ceil(total / pageSize) }).map((_, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => setPage(i + 1)}
+                                        className={`px-3 py-1 rounded-md text-sm ${page === i + 1
+                                                ? "bg-wellness-accent text-white"
+                                                : "bg-gray-100"
+                                            }`}
+                                    >
+                                        {i + 1}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <button
+                                disabled={page === Math.ceil(total / pageSize)}
+                                onClick={() => setPage(page + 1)}
+                                className="
+                                    px-4 py-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-700
+                                    shadow-sm transition-all duration-200 hover:bg-gray-50 hover:shadow-md active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                                Next
+                            </button>
+
+                        </div>
+                    )}
                 </div>
             )}
         </div>
