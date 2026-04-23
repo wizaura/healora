@@ -31,7 +31,7 @@ export default function ContactMethods() {
                     title="Visit Our Clinic"
                     desc="You are welcome to visit our wellness centre during consultation hours."
                     info="Healora Wellness Centre, calicut"
-                    href="https://maps.google.com/?q=Kozhikode"
+                    href="https://maps.app.goo.gl/ev659LvHxH6hHjMVA"
                 />
 
             </div>

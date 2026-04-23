@@ -43,7 +43,7 @@ export default function SubSpecialityOverview({
             {/* HERO HEADER */}
 
             <div
-                className="relative h-[240px] md:h-[320px] flex items-center justify-center text-center rounded-xl mx-4 sm:mx-0"
+                className="relative h-[240px] md:h-[360px] flex items-center justify-center text-center rounded-xl mx-4 sm:mx-0"
                 style={{
                     backgroundImage: `url(${image2})`,
                     backgroundSize: "cover",

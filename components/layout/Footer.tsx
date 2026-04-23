@@ -137,7 +137,7 @@ export default function Footer() {
                                 <MapPin className="mt-0.5 h-4 w-4 text-teal-500" />
 
                                 <a
-                                    href="https://www.google.com/maps/search/?api=1&query=Karuvanpoyil+Koduvally+Kozhikode+Kerala+673572"
+                                    href="https://maps.app.goo.gl/ev659LvHxH6hHjMVA"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="hover:text-teal-400 transition"
