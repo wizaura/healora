@@ -33,7 +33,7 @@ export default function PharmacyModal({ data, onClose, onSubmit }: any) {
       })) || []
   );
 
-  const [deliveryFee, setDeliveryFee] = useState(data.deliveryFee || 0);
+  const [deliveryFee, setDeliveryFee] = useState(data.deliveryCharge || 0);
   const [discount, setDiscount] = useState(data.discount || 0);
   const [currency, setCurrency] = useState(data.currency || "INR");
   const [note, setNote] = useState(data.pharmacyNote || "");

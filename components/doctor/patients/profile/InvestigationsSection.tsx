@@ -7,6 +7,7 @@ import InvestigationViewModal from "./InvestigationViewModal";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
+import AddDoctorInvestigationModal from "./AddInvestigationModal";
 
 export default function InvestigationsSection({ patientId }: any) {
   const [selectedInvestigation, setSelectedInvestigation] = useState<any>(null);
@@ -61,6 +62,10 @@ export default function InvestigationsSection({ patientId }: any) {
         <h2 className="text-lg font-semibold text-gray-800">
           Investigations / Medical Records
         </h2>
+
+        <AddDoctorInvestigationModal 
+          patientId={patientId}
+        />
       </div>
 
       {data?.length === 0 ? (

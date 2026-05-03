@@ -42,7 +42,7 @@ export default function AddDoctorInvestigationModal({
         onClick={() => setOpen(true)}
         className="bg-navy text-white text-sm px-4 py-2 rounded-lg"
       >
-        Add Note
+        Add Investigation
       </button>
     );
   }

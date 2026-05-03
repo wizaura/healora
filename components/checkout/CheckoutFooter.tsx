@@ -28,7 +28,7 @@ type Address = {
 type Props = {
     doctorId: string;
     slotId: string;
-    paymentMethod: "razorpay" | "stripe";
+    paymentMethod: "RAZORPAY" | "STRIPE";
 };
 
 export default function CheckoutFooter({
@@ -48,7 +48,7 @@ export default function CheckoutFooter({
 
     const [meetingType, setMeetingType] = useState<"google" | "zoom" | null>(null);
     const [deliveryMode, setDeliveryMode] = useState<"none" | "prescription" | "door">("none");
-    const [payMode, setPayMode] = useState<"slot" | "full">("slot");
+    const [payMode, setPayMode] = useState<"SLOT" | "FULL">("SLOT");
 
     const [address, setAddress] = useState<Address>({});
     const [needsMedicine, setNeedsMedicine] = useState(false);
@@ -86,7 +86,7 @@ export default function CheckoutFooter({
     const totalAmount = useMemo(() => {
         let total = slotFee;
 
-        if (payMode === "full") {
+        if (payMode === "FULL") {
             total += consultationFee;
 
             if (deliveryMode === "prescription") {
@@ -103,11 +103,11 @@ export default function CheckoutFooter({
 
     /* ---------------- Payment ---------------- */
     const handlePayment = async () => {
-        if (payMode === "full" && !meetingType) {
+        if (payMode === "FULL" && !meetingType) {
             return toast.error("Please select consultation mode");
         }
 
-        if (payMode === "full" && needsMedicine && deliveryMode === "none") {
+        if (payMode === "FULL" && needsMedicine && deliveryMode === "none") {
             return toast.error("Please choose prescription or medicine delivery");
         }
 
@@ -130,7 +130,7 @@ export default function CheckoutFooter({
                 currency,
 
                 payMode,
-                meetingType: payMode === "full" ? meetingType : undefined,
+                meetingType: payMode === "FULL" ? meetingType : undefined,
                 deliveryMode: needsMedicine ? deliveryMode : "none",
                 address: deliveryMode === "door" ? address : undefined,
             });
@@ -146,11 +146,11 @@ export default function CheckoutFooter({
 
             /* ================= HANDLE GATEWAY ================= */
 
-            if (paymentMethod === "razorpay") {
+            if (paymentMethod === "RAZORPAY") {
                 openRazorpay(paymentRes.data.data, appointmentId);
             }
 
-            if (paymentMethod === "stripe") {
+            if (paymentMethod === "STRIPE") {
                 window.location.href = paymentRes.data.data.checkoutUrl;
             }
 
@@ -204,11 +204,11 @@ export default function CheckoutFooter({
                 <div className="space-y-3">
                     <div
                         onClick={() => {
-                            setPayMode("slot");
+                            setPayMode("SLOT");
                             setDeliveryMode("none");
                             setMeetingType(null);
                         }}
-                        className={`cursor-pointer rounded-xl border p-4 ${payMode === "slot"
+                        className={`cursor-pointer rounded-xl border p-4 ${payMode === "SLOT"
                             ? "border-navy bg-navy/5"
                             : "border-gray-200"
                             }`}
@@ -220,8 +220,8 @@ export default function CheckoutFooter({
                     </div>
 
                     <div
-                        onClick={() => setPayMode("full")}
-                        className={`cursor-pointer rounded-xl border p-4 ${payMode === "full"
+                        onClick={() => setPayMode("FULL")}
+                        className={`cursor-pointer rounded-xl border p-4 ${payMode === "FULL"
                             ? "border-navy bg-navy/5"
                             : "border-gray-200"
                             }`}
@@ -236,8 +236,7 @@ export default function CheckoutFooter({
                 </div>
 
                 {/* Ask if medicine/prescription needed */}
-                {/* Ask if medicine/prescription needed */}
-                {payMode === "full" && (
+                {payMode === "FULL" && (
                     <div className="mt-6">
                         <label className="flex items-center gap-3 cursor-pointer border rounded-xl p-4 border-slate-200 hover:bg-slate-50">
                             <input
@@ -264,7 +263,7 @@ export default function CheckoutFooter({
                 )}
 
                 {/* Only show below if FULL PAYMENT */}
-                {payMode === "full" && (
+                {payMode === "FULL" && (
                     <>
                         {/* Add-ons */}
                         {needsMedicine && (

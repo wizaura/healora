@@ -29,11 +29,14 @@ export default function AppointmentCard({ appt, onView }: any) {
     appt.consultationPaymentStatus !== "PAID";
 
   const slotStart = new Date(appt.slot.startTimeUTC).getTime();
+  const slotEnd = new Date(appt.slot.endTimeUTC).getTime();
   const now = Date.now();
 
   const canJoinMeeting =
-    appt.meetingLink &&
-    slotStart - now <= 10 * 60 * 1000;
+    appt.status === "CONFIRMED" &&              // ✅ only confirmed
+    appt.meetingLink &&                        // ✅ link exists
+    now >= slotStart - 10 * 60 * 1000 &&       // ✅ 10 min before
+    now <= slotEnd + 5 * 60 * 1000;            // ✅ optional 5 min buffer after
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -61,21 +64,19 @@ export default function AppointmentCard({ appt, onView }: any) {
         <div className="flex gap-2 mt-1 text-xs">
 
           <span
-            className={`px-2 py-1 rounded-full ${
-              slotPaid
-                ? "bg-green-100 text-green-700"
-                : "bg-yellow-100 text-yellow-700"
-            }`}
+            className={`px-2 py-1 rounded-full ${slotPaid
+              ? "bg-green-100 text-green-700"
+              : "bg-yellow-100 text-yellow-700"
+              }`}
           >
             Slot {appt.slotPaymentStatus}
           </span>
 
           <span
-            className={`px-2 py-1 rounded-full ${
-              consultationPaid
-                ? "bg-green-100 text-green-700"
-                : "bg-gray-100 text-gray-600"
-            }`}
+            className={`px-2 py-1 rounded-full ${consultationPaid
+              ? "bg-green-100 text-green-700"
+              : "bg-gray-100 text-gray-600"
+              }`}
           >
             Consultation {paymentLabel(appt.consultationPaymentStatus)}
           </span>
@@ -101,11 +102,20 @@ export default function AppointmentCard({ appt, onView }: any) {
         )}
 
         {/* SHOW WAIT MESSAGE */}
-        {!canJoinMeeting && appt.meetingLink && (
-          <span className="text-xs text-slate-500">
-            Meeting link available 10 min before
-          </span>
-        )}
+        {appt.meetingLink &&
+          appt.status === "CONFIRMED" &&
+          now < slotStart - 10 * 60 * 1000 && (
+            <span className="text-xs text-slate-500">
+              Meeting starts soon (join available 10 min before)
+            </span>
+          )}
+
+        {appt.meetingLink &&
+          now > slotEnd && (
+            <span className="text-xs text-red-500">
+              Meeting ended
+            </span>
+          )}
 
         {/* PAY FULL */}
         {bothPending && (

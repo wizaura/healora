@@ -22,22 +22,22 @@ export default function PaymentMethodCard({
 
                     {/* Razorpay - India */}
                     <Option
-                        selected={paymentMethod === "razorpay"}
+                        selected={paymentMethod === "RAZORPAY"}
                         icon={<Flag size={16} />}
                         title="Razorpay"
                         tag="India"
                         desc="UPI, Cards, NetBanking (Domestic payments)"
-                        onClick={() => setPaymentMethod("razorpay")}
+                        onClick={() => setPaymentMethod("RAZORPAY")}
                     />
 
                     {/* Stripe - International */}
                     <Option
-                        selected={paymentMethod === "stripe"}
+                        selected={paymentMethod === "STRIPE"}
                         icon={<Globe size={16} />}
                         title="Stripe"
                         tag="International"
                         desc="Cards & global payments"
-                        onClick={() => setPaymentMethod("stripe")}
+                        onClick={() => setPaymentMethod("STRIPE")}
                     />
                 </div>
             </div>

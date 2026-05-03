@@ -16,8 +16,8 @@ export default function CheckoutMainPage() {
     const endTime = searchParams.get("endTime")!;
 
     const [paymentMethod, setPaymentMethod] = useState<
-        "razorpay" | "stripe"
-    >("razorpay");
+        "RAZORPAY" | "STRIPE"
+    >("RAZORPAY");
 
     return (
         <>

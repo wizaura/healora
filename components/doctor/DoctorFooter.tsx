@@ -32,7 +32,7 @@ export default function DoctorFooter() {
           <div>
             <div className="inline-flex items-center gap-3">
               <Image
-                src="/logo.jpeg"
+                src="/logoq.png"
                 alt="Healora Logo"
                 width={60}
                 height={60}

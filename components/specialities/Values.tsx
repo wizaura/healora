@@ -11,7 +11,7 @@ const values = [
             "We celebrate the unique qualities, respect & personal journeys of every patient.",
         description:
             "Personalized care plans, wellness consultations, and continuous support tailored to individual needs.",
-        image: "https://picsum.photos/600/700?1",
+        image: "/healora-main-1.jpeg",
     },
     {
         id: 2,

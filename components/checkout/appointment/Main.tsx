@@ -7,6 +7,7 @@ import { useRouter, useParams } from "next/navigation";
 import Script from "next/script";
 import AddressForm from "@/components/checkout/AddressForm";
 import { ArrowLeft } from "lucide-react";
+import { getApiError } from "@/lib/util";
 
 declare global {
   interface Window {
@@ -20,6 +21,8 @@ export default function AppointmentCheckout() {
 
   const [appointment, setAppointment] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [currencySymbol, setCurrencySymbol] = useState("₹");
+  const [prescriptionFee, setPrescriptionFee] = useState(50);
 
   const [meetingType, setMeetingType] =
     useState<"google" | "zoom" | null>(null);
@@ -28,9 +31,10 @@ export default function AppointmentCheckout() {
     useState<"none" | "prescription" | "door">("none");
 
   const [needsMedicine, setNeedsMedicine] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"RAZORPAY" | "STRIPE">("RAZORPAY");
 
   const [payMode, setPayMode] =
-    useState<"slot" | "consultation" | "full">("slot");
+    useState<"SLOT" | "CONSULTATION" | "FULL">("SLOT");
 
   const [address, setAddress] = useState<any>({});
 
@@ -40,30 +44,38 @@ export default function AppointmentCheckout() {
 
   const fetchAppointment = async () => {
     try {
-      const res = await api.get(
-        `/appointments/${appointmentId}/checkout`
-      );
+      const [res, prescriptionRes] = await Promise.all([
+        api.get(`/appointments/${appointmentId}/checkout`),
+        api.get("/settings/prescription-fee"),
+      ]);
 
       const appt = res.data;
       setAppointment(appt);
 
+      // ✅ currency symbol
+      setCurrencySymbol(appt.symbol || "₹");
+
+      // ✅ dynamic prescription fee
+      setPrescriptionFee(prescriptionRes.data.prescriptionFee || 50);
+      setPaymentMethod(appt.paymentMethod);
+
       /* determine payment mode */
       if (appt.paymentStatus.slot !== "PAID") {
-        setPayMode("slot");
+        setPayMode("SLOT");
       }
 
       if (
         appt.paymentStatus.slot === "PAID" &&
         appt.paymentStatus.consultation !== "PAID"
       ) {
-        setPayMode("consultation");
+        setPayMode("CONSULTATION");
       }
 
       if (
         appt.paymentStatus.slot !== "PAID" &&
         appt.paymentStatus.consultation !== "PAID"
       ) {
-        setPayMode("full");
+        setPayMode("FULL");
       }
 
       /* prefill */
@@ -91,33 +103,29 @@ export default function AppointmentCheckout() {
 
     let total = 0;
 
-    if (payMode === "slot") {
+    if (payMode === "SLOT") {
       total += appointment.fees.slotFee;
     }
 
-    if (payMode === "consultation") {
+    if (payMode === "CONSULTATION") {
       total += appointment.fees.consultationFee;
     }
 
-    if (payMode === "full") {
+    if (payMode === "FULL") {
       total +=
         appointment.fees.slotFee +
         appointment.fees.consultationFee;
     }
 
     if (needsMedicine && deliveryMode === "prescription") {
-      total += 50;
-    }
-
-    if (needsMedicine && deliveryMode === "door") {
-      total += 100;
+      total += prescriptionFee;
     }
 
     return total;
   }, [appointment, payMode, deliveryMode, needsMedicine]);
 
   const handlePayment = async () => {
-    if (payMode !== "slot" && !meetingType) {
+    if (payMode !== "SLOT" && !meetingType) {
       return toast.error("Please select consultation mode");
     }
 
@@ -160,8 +168,8 @@ export default function AppointmentCheckout() {
       if (appointment.paymentProvider === "stripe") {
         window.location.href = order.checkoutUrl;
       }
-    } catch {
-      toast.error("Failed to initiate payment");
+    } catch(err) {
+      toast.error(getApiError(err));
     }
   };
 
@@ -232,7 +240,7 @@ export default function AppointmentCheckout() {
           </div>
 
           {/* CONSULTATION MODE */}
-          {payMode !== "slot" && (
+          {payMode !== "SLOT" && (
             <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
               <p className="text-sm font-medium text-navy-dark mb-3">
                 Consultation Mode
@@ -241,22 +249,20 @@ export default function AppointmentCheckout() {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => setMeetingType("google")}
-                  className={`py-3 rounded-xl border text-sm font-medium ${
-                    meetingType === "google"
-                      ? "border-teal-600 bg-teal-50 text-teal-700"
-                      : "border-slate-200"
-                  }`}
+                  className={`py-3 rounded-xl border text-sm font-medium ${meetingType === "google"
+                    ? "border-teal-600 bg-teal-50 text-teal-700"
+                    : "border-slate-200"
+                    }`}
                 >
                   Google Meet
                 </button>
 
                 <button
                   onClick={() => setMeetingType("zoom")}
-                  className={`py-3 rounded-xl border text-sm font-medium ${
-                    meetingType === "zoom"
-                      ? "border-teal-600 bg-teal-50 text-teal-700"
-                      : "border-slate-200"
-                  }`}
+                  className={`py-3 rounded-xl border text-sm font-medium ${meetingType === "zoom"
+                    ? "border-teal-600 bg-teal-50 text-teal-700"
+                    : "border-slate-200"
+                    }`}
                 >
                   Zoom
                 </button>
@@ -265,7 +271,7 @@ export default function AppointmentCheckout() {
           )}
 
           {/* CHECKBOX */}
-          {payMode !== "slot" && (
+          {payMode !== "SLOT" && (
             <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
               <label className="flex items-center gap-3 cursor-pointer">
                 <input
@@ -306,13 +312,12 @@ export default function AppointmentCheckout() {
                         : "prescription"
                     )
                   }
-                  className={`cursor-pointer rounded-xl border p-4 ${
-                    deliveryMode === "prescription"
-                      ? "border-teal-600 bg-teal-50"
-                      : "border-slate-200"
-                  }`}
+                  className={`cursor-pointer rounded-xl border p-4 ${deliveryMode === "prescription"
+                    ? "border-teal-600 bg-teal-50"
+                    : "border-slate-200"
+                    }`}
                 >
-                  Prescription Copy (₹50)
+                  Prescription Copy ({currencySymbol}{prescriptionFee})
                 </div>
 
                 <div
@@ -321,11 +326,10 @@ export default function AppointmentCheckout() {
                       deliveryMode === "door" ? "none" : "door"
                     )
                   }
-                  className={`cursor-pointer rounded-xl border p-4 ${
-                    deliveryMode === "door"
-                      ? "border-teal-600 bg-teal-50"
-                      : "border-slate-200"
-                  }`}
+                  className={`cursor-pointer rounded-xl border p-4 ${deliveryMode === "door"
+                    ? "border-teal-600 bg-teal-50"
+                    : "border-slate-200"
+                    }`}
                 >
                   Door Delivery
                 </div>
@@ -343,16 +347,51 @@ export default function AppointmentCheckout() {
               <AddressForm value={address} onChange={setAddress} />
             </div>
           )}
-        </div>
 
-        {/* TOTAL */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 flex justify-between items-center shadow-sm">
-          <span className="text-lg font-semibold text-navy-dark">
-            Total Payable
-          </span>
-          <span className="text-2xl font-semibold text-teal-600">
-            ₹{totalAmount}
-          </span>
+          {/* TOTAL */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+
+            <div className="flex justify-between items-center">
+              <span className="text-lg font-semibold text-navy-dark">
+                Payment Summary
+              </span>
+            </div>
+
+            {/* SLOT */}
+            {payMode !== "CONSULTATION" && (
+              <div className="flex justify-between text-sm text-slate-600">
+                <span>Slot Fee</span>
+                <span>{currencySymbol}{appointment.fees.slotFee}</span>
+              </div>
+            )}
+
+            {/* CONSULTATION */}
+            {payMode !== "SLOT" && (
+              <div className="flex justify-between text-sm text-slate-600">
+                <span>Consultation Fee</span>
+                <span>{currencySymbol}{appointment.fees.consultationFee}</span>
+              </div>
+            )}
+
+            {/* PRESCRIPTION */}
+            {needsMedicine && deliveryMode === "prescription" && (
+              <div className="flex justify-between text-sm text-slate-600">
+                <span>Prescription Fee</span>
+                <span>{currencySymbol}{prescriptionFee}</span>
+              </div>
+            )}
+
+            {/* DIVIDER */}
+            <div className="border-t pt-3 flex justify-between items-center">
+              <span className="text-lg font-semibold text-navy-dark">
+                Total Payable
+              </span>
+              <span className="text-2xl font-semibold text-teal-600">
+                {currencySymbol}{totalAmount}
+              </span>
+            </div>
+
+          </div>
         </div>
 
         {/* PAY BUTTON */}
@@ -361,7 +400,7 @@ export default function AppointmentCheckout() {
             onClick={handlePayment}
             className="px-10 py-4 rounded-xl bg-teal-600 text-white font-semibold hover:bg-teal-700"
           >
-            Pay with {appointment.paymentProvider}
+            Pay with {paymentMethod}
           </button>
         </div>
       </div>
