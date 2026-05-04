@@ -15,7 +15,7 @@ export default function ServicesScrollSection() {
   const { data } = useQuery({
     queryKey: ["specialities", "home"],
     queryFn: getActiveSpecialities,
-    retry: false,   
+    retry: false,
   });
 
   const sortedSpecialities = useMemo(() => {
@@ -68,7 +68,7 @@ export default function ServicesScrollSection() {
       const progress = scrolled / totalScroll;
 
       const maxTranslate =
-        track.scrollWidth - window.innerWidth + 160;
+        track.scrollWidth - window.innerWidth + 300;
 
       track.style.transform = `translateX(-${progress * maxTranslate}px)`;
     };
@@ -87,23 +87,23 @@ export default function ServicesScrollSection() {
         from-wellness-bg
         via-white
         to-wellness-bg
-        py-8 md:py-16
-        px-6 md:px-0
-        md:h-[350vh] md:py-0
+        py-8 md:py-8
+        px-4 md:px-6
+        md:h-[250vh]
       "
     >
       {/* Sticky viewport */}
-      <div className="relative md:sticky md:top-0 overflow-hidden mb-6">
+      <div className="relative md:sticky md:top-10 lg:top-25 overflow-hidden mb-6">
 
         {/* HEADER */}
-        <div className="mx-auto max-w-7xl pt-8 md:pt-28 pb-8">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="mx-auto max-w-7xl px-2 md:px-12 pt-10 md:pt-12 pb-10">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 md:items-center">
 
             {/* LEFT TITLE */}
             <h2
               data-aos="fade-up"
               data-aos-delay="100"
-              className="text-4xl font-semibold text-navy-dark leading-tight md:text-6xl"
+              className="text-4xl md:text-5xl lg:text-6xl font-semibold text-navy-dark leading-[1.1]"
             >
               Complete Health
               <br />
@@ -114,9 +114,9 @@ export default function ServicesScrollSection() {
             <div
               data-aos="fade-up"
               data-aos-delay="200"
-              className="flex flex-col items-start gap-6 md:items-end md:text-right"
+              className="flex flex-col gap-6 md:items-end md:text-right max-w-md ml-auto"
             >
-              <p className="max-w-md text-navy/80 text-base md:text-lg">
+              <p className="text-navy/80 text-base md:text-lg">
                 Modern medical services designed around your
                 health, comfort, and recovery.
               </p>
@@ -134,10 +134,10 @@ export default function ServicesScrollSection() {
         </div>
 
         {/* CARDS */}
-        <div className="relative md:mt-24 max-w-7xl mx-auto">
+        <div className="relative lg:mt-8 max-w-6xl mx-auto">
 
           {/* MOBILE */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:hidden max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:hidden max-w-6xl mx-auto px-2">
             {services.map((s: any, index: number) => (
               <div
                 key={s.id}
@@ -158,10 +158,9 @@ export default function ServicesScrollSection() {
 
           {/* DESKTOP */}
           <div className="hidden md:block overflow-hidden">
-
             <div
               ref={trackRef}
-              className="flex gap-6 px-24 py-3 will-change-transform"
+              className="flex gap-6 px-4 md:px-0 py-3 will-change-transform"
             >
               {services.map((s: any, index: number) => (
                 <div
@@ -179,7 +178,6 @@ export default function ServicesScrollSection() {
                 </div>
               ))}
             </div>
-
           </div>
 
         </div>

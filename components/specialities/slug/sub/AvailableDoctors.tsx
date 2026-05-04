@@ -32,7 +32,7 @@ export default function SubSpecialityDoctors({ subSlug, miniSlug }: Props) {
     });
 
     return (
-        <section className="py-20 bg-gradient-to-b from-wellness-bg via-white to-white my-2 rounded-2xl">
+        <section className="py-12 bg-gradient-to-b from-wellness-bg via-white to-white my-2 rounded-2xl">
 
             <div className="max-w-7xl mx-auto px-6">
 

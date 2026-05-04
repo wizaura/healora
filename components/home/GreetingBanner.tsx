@@ -40,7 +40,7 @@ export default function GreetingBanner() {
                     <img
                         src={data.imageUrl}
                         alt="Greeting Banner"
-                        className="w-full object-cover"
+                        className="w-full h-150 object-cover"
                     />
 
                     {/* SOCIAL BUTTONS */}

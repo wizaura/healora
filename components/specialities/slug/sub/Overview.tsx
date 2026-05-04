@@ -71,7 +71,7 @@ export default function SubSpecialityOverview({
 
             {/* MAIN CONTENT */}
 
-            <div className="max-w-7xl mx-auto px-6 py-20 space-y-6 sm:space-y-16">
+            <div className="max-w-7xl mx-auto px-6 py-8 space-y-6 sm:space-y-16">
 
                 {/* TOP ROW */}
 

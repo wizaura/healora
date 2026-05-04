@@ -58,6 +58,7 @@ export default function AppointmentsList({
                         options={[
                             { label: "All", value: "" },
                             { label: "Confirmed", value: "CONFIRMED" },
+                            { label: "Pending", value: "PENDING" },
                             { label: "Completed", value: "COMPLETED" },
                             { label: "Cancelled", value: "CANCELLED" },
                         ]}
@@ -87,41 +88,47 @@ export default function AppointmentsList({
                         </thead>
 
                         <tbody>
-                            {appointments.map((appt: any) => (
-                                <tr
-                                    key={appt.id}
-                                    className="border-b border-gray-200 last:border-none hover:bg-gray-50 transition"
-                                >
-                                    <td className="py-4 text-gray-700">
-                                        {formatDateTime(
-                                            appt.slot.startTimeUTC
-                                        )}
-                                    </td>
+                            {[...appointments]
+                                .sort(
+                                    (a, b) =>
+                                        new Date(a.slot.startTimeUTC).getTime() -
+                                        new Date(b.slot.startTimeUTC).getTime()
+                                )
+                                .map((appt: any) => (
+                                    <tr
+                                        key={appt.id}
+                                        className="border-b border-gray-200 last:border-none hover:bg-gray-50 transition"
+                                    >
+                                        <td className="py-4 text-gray-700">
+                                            {formatDateTime(
+                                                appt.slot.startTimeUTC
+                                            )}
+                                        </td>
 
-                                    <td className="py-4 font-medium text-gray-800">
-                                        {appt.user?.name}
-                                    </td>
+                                        <td className="py-4 font-medium text-gray-800">
+                                            {appt.user?.name}
+                                        </td>
 
-                                    <td className="py-4">
-                                        <span
-                                            className={`px-3 py-1 rounded-full text-xs font-medium ${statusColor(
-                                                appt.status
-                                            )}`}
-                                        >
-                                            {appt.status}
-                                        </span>
-                                    </td>
+                                        <td className="py-4">
+                                            <span
+                                                className={`px-3 py-1 rounded-full text-xs font-medium ${statusColor(
+                                                    appt.status
+                                                )}`}
+                                            >
+                                                {appt.status}
+                                            </span>
+                                        </td>
 
-                                    <td className="py-4 text-right">
-                                        <button
-                                            onClick={() => onSelect(appt)}
-                                            className="px-4 py-1 text-sm font-medium rounded-md bg-wellness-accent text-white hover:bg-wellness-accent/80 transition"
-                                        >
-                                            View
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                                        <td className="py-4 text-right">
+                                            <button
+                                                onClick={() => onSelect(appt)}
+                                                className="px-4 py-1 text-sm font-medium rounded-md bg-wellness-accent text-white hover:bg-wellness-accent/80 transition"
+                                            >
+                                                View
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
                         </tbody>
                     </table>
 
@@ -144,8 +151,8 @@ export default function AppointmentsList({
                                         key={i}
                                         onClick={() => setPage(i + 1)}
                                         className={`px-3 py-1 rounded-md text-sm ${page === i + 1
-                                                ? "bg-wellness-accent text-white"
-                                                : "bg-gray-100"
+                                            ? "bg-wellness-accent text-white"
+                                            : "bg-gray-100"
                                             }`}
                                     >
                                         {i + 1}

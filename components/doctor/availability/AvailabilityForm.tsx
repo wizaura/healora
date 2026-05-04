@@ -6,6 +6,7 @@ import api from "@/lib/api";
 import DatePicker from "@/components/common/DatePicker";
 import { CalendarDays, Clock, Timer } from "lucide-react";
 import { DateRange } from "react-day-picker";
+import CustomTimeInput from "@/components/common/TimeInput";
 
 export default function AvailabilityForm() {
     const [isOpen, setIsOpen] = useState(false);
@@ -116,7 +117,7 @@ export default function AvailabilityForm() {
                 <div className="mt-8 grid gap-8 md:grid-cols-2">
 
                     {/* LEFT — RANGE CALENDAR */}
-                    <div className="rounded-2xl text-center bg-gray-50">
+                    <div className="rounded-2xl text-center">
                         <h2 className="text-2xl mb-6 font-medium text-[#1F2147]">
                             Select time & slot duration
                         </h2>
@@ -136,8 +137,19 @@ export default function AvailabilityForm() {
                         </h2>
 
                         <div className="grid grid-cols-2 gap-8">
-                            <TimeSelect label="Start time" value={start} onChange={setStart} />
-                            <TimeSelect label="End time" value={end} onChange={setEnd} />
+                            <CustomTimeInput
+                                label="Start time"
+                                value={start}
+                                onChange={setStart}
+                                duration={duration}
+                            />
+
+                            <CustomTimeInput
+                                label="End time"
+                                value={end}
+                                onChange={setEnd}
+                                duration={duration}
+                            />
                         </div>
 
                         <div className="flex gap-3">
@@ -209,49 +221,3 @@ const generateTimes = () => {
     }
     return times;
 };
-
-const TIME_OPTIONS = generateTimes();
-
-function TimeSelect({
-    label,
-    value,
-    onChange,
-}: {
-    label: string;
-    value: string;
-    onChange: (v: string) => void;
-}) {
-    return (
-        <div className="space-y-3">
-            <p className="text-sm font-medium text-gray-700">
-                {label}
-            </p>
-
-            <div className="flex gap-2 overflow-x-auto pb-1">
-                {TIME_OPTIONS.map((t) => {
-                    const active = value === t;
-
-                    return (
-                        <button
-                            key={t}
-                            type="button"
-                            onClick={() => onChange(t)}
-                            className={`
-                                min-w-[72px]
-                                rounded-xl px-4 py-2
-                                text-sm font-medium
-                                transition
-                                ${active
-                                    ? "bg-navy text-white shadow"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                }
-                            `}
-                        >
-                            {t}
-                        </button>
-                    );
-                })}
-            </div>
-        </div>
-    );
-}

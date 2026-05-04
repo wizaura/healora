@@ -13,7 +13,7 @@ export default function AllDoctors() {
 
     const router = useRouter();
 
-    const [selectedSpeciality, setSelectedSpeciality] = useState<string>("homeopathy");
+    const [selectedSpeciality, setSelectedSpeciality] = useState<string>("all");
 
     useEffect(() => {
         AOS.init({

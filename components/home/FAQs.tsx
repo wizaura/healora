@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HelpCircle } from "lucide-react";
 import Link from "next/link";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import CTAButton from "../common/CTAButton";
 
 const faqs = [
     {
@@ -35,38 +38,65 @@ const faqs = [
 export default function FAQsSection() {
     const [active, setActive] = useState(0);
 
+    useEffect(() => {
+        AOS.init({
+            duration: 800,
+            easing: "ease-out-cubic",
+            once: true,
+        });
+    }, []);
+
     return (
-        <section className="relative overflow-hidden bg-gradient-to-br from-wellness-bg via-white to-wellness-bg py-24 m-4 rounded-2xl">
+        <section className="relative m-4 rounded-xl bg-gradient-to-b from-wellness-bg via-white to-wellness-bg py-20">
 
-            {/* Background glow */}
-            <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-wellness-accent/20 blur-3xl" />
-            <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-wellness-accent/15 blur-3xl" />
+            <div className="mx-auto max-w-6xl px-4">
 
-            <div className="relative mx-auto max-w-7xl px-6">
+                {/* HEADER (like speciality) */}
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-center mb-16">
 
-                {/* Header */}
-                <div className="mb-16 text-center">
-                    <h2 className="text-4xl font-semibold text-navy md:text-5xl">
-                        FAQs — Why Healora
+                    <h2
+                        data-aos="fade-up"
+                        className="text-4xl md:text-6xl font-semibold text-navy-dark leading-[1.1]"
+                    >
+                        Frequently Asked
+                        <br />
+                        Questions.
                     </h2>
-                    <p className="mt-4 text-navy/70 text-lg">
-                        Clear answers to help you book with confidence
-                    </p>
+
+                    <div
+                        data-aos="fade-up"
+                        data-aos-delay="150"
+                        className="flex flex-col gap-6 md:items-end md:text-right max-w-md ml-auto"
+                    >
+                        <p className="text-navy/70 text-base md:text-lg">
+                            Everything you need to know about Healora and how it works.
+                        </p>
+
+                        <div data-aos="zoom-in" data-aos-delay="300">
+                            <CTAButton
+                                label="View All FAQs"
+                                href="/faq"
+                                variant="light"
+                            />
+                        </div>
+                    </div>
+
                 </div>
 
-                <div className="grid grid-cols-1 gap-14 lg:grid-cols-2">
+                {/* CONTENT */}
+                <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
 
-                    {/* Questions Stack */}
-                    <div className="flex flex-col gap-4">
+                    {/* QUESTIONS */}
+                    <div className="flex flex-col gap-3">
                         {faqs.map((faq, index) => (
                             <button
                                 key={index}
                                 onClick={() => setActive(index)}
                                 className={`
-                  group flex items-center gap-4 rounded-2xl p-5 text-left transition-all
+                  group flex items-center gap-4 rounded-xl px-4 py-2 text-left transition-all
                   ${active === index
-                                        ? "bg-white shadow-lg scale-[1.02]"
-                                        : "bg-white/60 hover:bg-white hover:opacity-100 opacity-70"
+                                        ? "bg-white shadow-md scale-[1.02]"
+                                        : "bg-white/60 hover:bg-white opacity-80"
                                     }
                 `}
                             >
@@ -89,56 +119,50 @@ export default function FAQsSection() {
                         ))}
                     </div>
 
-                    {/* Active Answer Card */}
-                    <div className="relative flex items-center justify-center">
-
-                        {/* Glow */}
-                        <div className="absolute h-72 w-72 rounded-full bg-wellness-accent/20 blur-3xl" />
+                    <div
+                        data-aos="fade-left"
+                        className="relative flex items-start justify-center"
+                    >
+                        {/* Background glow */}
+                        <div className="absolute w-72 h-72 bg-wellness-accent/20 blur-3xl rounded-full" />
 
                         <div
                             className="
-                relative w-full max-w-lg
-                rounded-[32px] bg-white
-                p-10
-                shadow-[0_30px_80px_-20px_rgba(0,0,0,0.25)]
-                transition-all duration-500
-              "
+                                relative w-full max-w-lg
+                                rounded-3xl
+                                bg-white p-8
+                                shadow-[0_20px_60px_-10px_rgba(0,0,0,0.2)]
+                                min-h-[280px]
+                                flex flex-col justify-between
+                                overflow-hidden
+                            "
                         >
-                            {/* Top Accent */}
-                            <div className="absolute inset-x-0 top-0 h-1.5 rounded-t-[32px] bg-wellness-accent" />
+                            {/* Top accent line */}
+                            <div className="absolute top-0 left-0 right-0 h-1.5 bg-wellness-accent" />
 
-                            {/* Icon */}
-                            <div
-                                className="
-                  absolute -top-6 left-8
-                  flex h-12 w-12 items-center justify-center
-                  rounded-full
-                  bg-wellness-accent text-white
-                  shadow-lg
-                "
-                            >
-                                <span className="text-xl font-bold">?</span>
+                            {/* Floating icon */}
+                            <div className="absolute z-40 top-3 left-2 w-8 h-8 flex items-center justify-center rounded-full bg-wellness-accent text-white shadow-lg text-lg font-bold">
+                                ?
                             </div>
 
                             {/* Content */}
-                            <h3 className="mt-6 text-xl font-semibold leading-snug text-navy">
-                                {faqs[active].question}
-                            </h3>
+                            <div className="mt-6">
+                                <h3 className="text-xl md:text-2xl font-semibold text-navy leading-snug">
+                                    {faqs[active].question}
+                                </h3>
 
-                            <p className="mt-4 text-navy/70 leading-relaxed">
-                                {faqs[active].answer}
-                            </p>
+                                <p className="mt-4 text-navy/70 leading-relaxed text-[15px]">
+                                    {faqs[active].answer}
+                                </p>
+                            </div>
 
-                            {/* Bottom meta */}
+                            {/* Bottom section */}
                             <div className="mt-8 flex items-center justify-between">
-                                <div className="h-px w-16 bg-wellness-accent/60" />
+                                <div className="h-[2px] w-20 bg-wellness-accent/60 rounded-full" />
 
-                                <Link
-                                    href="/faq"
-                                    className="text-xs font-medium text-navy/60 hover:text-wellness-accent transition"
-                                >
-                                    View FAQs →
-                                </Link>
+                                <span className="text-xs font-medium text-navy/50">
+                                    {active + 1} / {faqs.length}
+                                </span>
                             </div>
                         </div>
                     </div>

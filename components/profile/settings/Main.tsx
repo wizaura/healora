@@ -16,6 +16,7 @@ import {
     ArrowLeft
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import AddressForm from "./AddressForm";
 
 type FormValues = {
     name?: string;
@@ -23,6 +24,11 @@ type FormValues = {
     age?: number;
     gender?: string;
     country?: string;
+
+    phone?: string;
+    whatsapp?: string;
+    address?: string;
+
     password?: string;
     confirmPassword?: string;
 };
@@ -46,6 +52,9 @@ export default function SettingsPage() {
             age: 0,
             gender: "",
             country: "",
+            phone: "",
+            whatsapp: "",
+            address: "",
             password: "",
             confirmPassword: ""
         }
@@ -80,6 +89,9 @@ export default function SettingsPage() {
             age: profile.age || 0,
             gender: profile.gender || "",
             country: profile.countryCode || "",
+            phone: profile.phone || "",
+            whatsapp: profile.whatsappNumber || "",
+            address: profile.address || "",
             password: "",
             confirmPassword: ""
         });
@@ -210,6 +222,20 @@ export default function SettingsPage() {
                                             className={inputStyle}
                                         />
                                     </InputField>
+
+                                    {/* ADDRESS FORM */}
+                                    <div className="md:col-span-2">
+                                        <Controller
+                                            name="address"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <AddressForm
+                                                    value={field.value || {}}
+                                                    onChange={field.onChange}
+                                                />
+                                            )}
+                                        />
+                                    </div>
 
                                 </div>
                             </div>

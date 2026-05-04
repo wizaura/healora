@@ -159,7 +159,7 @@ export default function SubSpecialityDetailPage() {
             {/* ================= MINI SPECIALITIES ================= */}
 
             {hasMiniSpecialities && (
-                <section id="conditions" className="py-12 bg-gradient-to-b from-white to-wellness-bg rounded-2xl">
+                <section id="conditions" className="pt-6 pb-12 bg-gradient-to-b from-white to-wellness-bg rounded-2xl">
 
                     <div className="max-w-6xl mx-auto px-6 text-center">
 

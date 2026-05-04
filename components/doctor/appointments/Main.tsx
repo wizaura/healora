@@ -12,7 +12,7 @@ export default function DoctorAppointments() {
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState<any>(null);
     const [search, setSearch] = useState("");
-    const [statusFilter, setStatusFilter] = useState("");
+    const [statusFilter, setStatusFilter] = useState("CONFIRMED");
     const [page, setPage] = useState(1);
     const pageSize = 10;
 

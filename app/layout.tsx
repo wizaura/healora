@@ -11,6 +11,7 @@ import { AuthProvider } from "@/lib/auth-context";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import ReactQueryProvider from "@/providers/react-query-provider";
 import AOSProvider from "@/components/common/AOSProvider";
+import ScrollToTop from "@/components/common/ScrollToTop";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -99,6 +100,7 @@ export default function RootLayout({
       <AOSProvider />
       <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
         <ReactQueryProvider>
+          <ScrollToTop />
           {children}
         </ReactQueryProvider>
       </GoogleOAuthProvider>

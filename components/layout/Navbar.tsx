@@ -27,9 +27,9 @@ const navItems = [
 ];
 
 const aboutItems = [
-    { name: "About", href: "/about" },
+    { name: "About Healora", href: "/about" },
     { name: "Vision & Mission", href: "/mission" },
-    { name: "Why Homeopathy", href: "/why-homeopathy" },
+    { name: "Homeopathy", href: "/why-homeopathy" },
     { name: "Agro Homeopathy", href: "/agro-homeopathy" },
     { name: "Veterinary Homeopathy", href: "/veterinary-homeopathy" },
     { name: "Counselling & Psychotherapy", href: "/counselling" },
@@ -59,16 +59,24 @@ export default function Navbar() {
                 {/* Logo */}
                 <Link
                     href="/"
-                    className="flex items-center gap-2">
+                    className="flex items-center gap-1"
+                >
                     <Image
                         src="/logo.png"
                         alt="Healora Logo"
-                        width={49}
-                        height={49}
-                        className="rounded-md object-cover" />
-                    <span className="text-2xl font-semibold tracking-tight mb-2 text-[#1F2147]">
-                        Healora
-                    </span>
+                        width={48}
+                        height={48}
+                        className="rounded-md object-cover"
+                    />
+
+                    <div className="flex flex-col leading-none">
+                        <span className="text-2xl font-semibold tracking-tight text-[#1F2147]">
+                            Healora
+                        </span>
+                        <span className="text-xs font-semibold text-navy/60 tracking-wide -mt-1">
+                            Wellness Centre
+                        </span>
+                    </div>
                 </Link>
 
                 {/* Desktop Nav */}
@@ -208,7 +216,7 @@ export default function Navbar() {
                             text-sm font-medium text-gray-700 hover:bg-gray-50"
                         >
                             <ShieldCheck size={16} />
-                            <span className="hidden md:flex">Admin</span>
+                            <span className="hidden md:flex">Dashboard</span>
                         </Link>
                     )}
 
@@ -224,7 +232,7 @@ export default function Navbar() {
                         </Link>
                     )}
 
-                    {!user ? (
+                    {!user && (
                         <Link
                             href="/login"
                             className="flex items-center gap-2 rounded-full
@@ -234,7 +242,8 @@ export default function Navbar() {
                             <LogIn size={16} />
                             <span className="hidden md:flex">Login</span>
                         </Link>
-                    ) : (
+                    )}
+                    {user?.role === "PATIENT" && (
                         <Link
                             href="/profile"
                             className="flex items-center gap-2 rounded-full

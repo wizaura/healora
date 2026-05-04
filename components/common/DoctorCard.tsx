@@ -89,7 +89,7 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
 
                     {doctor.qualification && (
 
-                        <p className="text-xs text-navy/85 mt-1">
+                        <p className="text-xs text-navy/85 mt-1 line-clamp-2">
                             <span className="font-semibold text-sm text-gray-800">Qualifications:</span> {doctor.qualification}
                         </p>
 
@@ -158,7 +158,7 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
                             <span className="font-semibold text-md text-gray-800">Language:</span>
                         </div>
 
-                        <span>
+                        <span className="truncate block max-w-[200px]">
                             {doctor.languages
                                 .map((l: any) => l.language.name)
                                 .join(", ")}

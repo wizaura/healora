@@ -24,9 +24,14 @@ export default function AppointmentDetailsModal({ appointment, onClose }: any) {
         });
 
     const slotStart = new Date(appointment.slot.startTimeUTC).getTime();
+    const slotEnd = new Date(appointment.slot.endTimeUTC).getTime();
     const now = Date.now();
 
-    const canJoin = slotStart - now <= 10 * 60 * 1000;
+    const canJoinMeeting =
+        appointment.status === "CONFIRMED" &&              // ✅ only confirmed
+        appointment.meetingLink &&                        // ✅ link exists
+        now >= slotStart - 10 * 60 * 1000 &&       // ✅ 10 min before
+        now <= slotEnd + 5 * 60 * 1000;            // ✅ optional 5 min buffer after
 
     const canReschedule =
         appointment.status === "CONFIRMED" &&
@@ -38,7 +43,7 @@ export default function AppointmentDetailsModal({ appointment, onClose }: any) {
         appointment.slotPaymentStatus === "PAID" &&
         (appointment.consultationPaymentStatus === "PAID" ||
             appointment.consultationPaymentStatus === "PENDING") &&
-            appointment.status === "CONFIRMED";
+        appointment.status === "CONFIRMED";
 
     const handleCancel = async () => {
         try {
@@ -154,7 +159,7 @@ export default function AppointmentDetailsModal({ appointment, onClose }: any) {
                                     {appointment.meetingType}
                                 </div>
 
-                                {canJoin ? (
+                                {canJoinMeeting ? (
 
                                     <a
                                         href={appointment.meetingLink}
