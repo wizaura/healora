@@ -13,6 +13,7 @@ import SubSpecialityDoctors from "../AvailableDoctors";
 
 import { FooterQuestions } from "../FooterQuestions";
 import { QuickFacts } from "../QuickFacts";
+import Loader from "@/components/common/Loader";
 
 /* ================= TYPE ================= */
 type Section = {
@@ -110,11 +111,7 @@ export default function MiniSpeciality() {
     /* ================= RETURNS ================= */
 
     if (isLoading) {
-        return (
-            <div className="py-32 text-center text-navy/60">
-                Loading...
-            </div>
-        );
+        return <Loader fullScreen />;
     }
 
     if (!data) return null;

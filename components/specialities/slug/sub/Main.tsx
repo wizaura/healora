@@ -15,6 +15,7 @@ import { FooterQuestions } from "./FooterQuestions";
 import { QuickFacts } from "./QuickFacts";
 
 import SpecialityCard from "@/components/common/SpecialitiesCard";
+import Loader from "@/components/common/Loader";
 
 type Section = {
     id: string;
@@ -102,11 +103,7 @@ export default function SubSpecialityDetailPage() {
     }, [sections]);
 
     if (isLoading) {
-        return (
-            <div className="py-32 text-center text-navy/60">
-                Loading...
-            </div>
-        );
+        return <Loader fullScreen />;
     }
 
     if (!data) return null;

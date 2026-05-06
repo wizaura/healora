@@ -9,7 +9,6 @@ const doctorLinks = {
     { name: "Dashboard", href: "/doctor/dashboard" },
     { name: "Appointments", href: "/doctor/appointments" },
     { name: "Patients", href: "/doctor/patients" },
-    { name: "Earnings", href: "/doctor/earnings" },
     { name: "Availability", href: "/doctor/availability" },
   ],
   settings: [
@@ -38,9 +37,14 @@ export default function DoctorFooter() {
                 height={60}
                 className="object-contain rounded-full"
               />
-              <h3 className="text-2xl font-extrabold text-welnnes-bg">
-                Healora Doctor
-              </h3>
+              <div className="flex flex-col leading-none gap-0.5">
+                <span className="text-[35px] font-semibold font-bold tracking-tight text-wellness-bg">
+                  Healora
+                </span>
+                <span className="text-[15px] font-semibold text-wellness-bg/60 tracking-wide -mt-1">
+                  &nbsp;Wellness Centre
+                </span>
+              </div>
             </div>
 
             <p className="mt-4 max-w-sm text-sm leading-relaxed">
@@ -112,7 +116,7 @@ export default function DoctorFooter() {
 
         {/* Bottom bar */}
         <div className="mt-10 border-t border-white/10 pt-6 text-xs text-gray-500 flex justify-between">
-          <p>© {new Date().getFullYear()} Healora Doctor Panel</p>
+          <p>© {new Date().getFullYear()} Healora Wellness Centre Doctor Panel</p>
           <div className="flex gap-6">
             <Link href="/privacy-policy" className="hover:text-teal-400">
               Privacy Policy

@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, ChevronUp, BadgeCheck } from "lucide-react";
 import api from "@/lib/api";
 import Link from "next/link";
+import Loader from "../common/Loader";
 
 export default function DoctorSummary({ doctorId }: { doctorId: string }) {
   const [expanded, setExpanded] = useState(false);
@@ -16,13 +17,7 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
   });
 
   if (isLoading || !data) {
-    return (
-      <section className="relative m-4 rounded-3xl bg-white/60 py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="h-40 animate-pulse rounded-3xl bg-white/70" />
-        </div>
-      </section>
-    );
+    return <Loader fullScreen />;
   }
 
   return (

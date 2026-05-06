@@ -37,7 +37,7 @@ export default function DoctorDashboard() {
   if (!summary) return <div className="p-8 pt-24">Loading...</div>;
 
   return (
-    <div className="p-8 pt-24 mx-auto max-w-7xl space-y-8">
+    <div className="p-8 pt-12 mx-auto max-w-7xl space-y-8">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-semibold text-slate-900">

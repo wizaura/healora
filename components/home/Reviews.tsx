@@ -6,6 +6,7 @@ import api from "@/lib/api";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import CTAButton from "../common/CTAButton";
 
 type Review = {
   name: string;
@@ -34,27 +35,39 @@ export default function ReviewsSection() {
   return (
     <section
       data-aos="fade-up"
-      className="bg-gradient-to-b from-white via-white to-wellness-bg py-24 m-4 rounded-2xl"
+      className="bg-gradient-to-b from-wellness-bg via-white to-wellness-bg py-16 m-4 rounded-2xl"
     >
       <div className="mx-auto max-w-7xl px-6">
 
         {/* HEADER */}
-        <div className="mb-20 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:items-center mb-16">
+
+          {/* LEFT */}
           <h2
             data-aos="fade-up"
-            data-aos-delay="100"
-            className="text-4xl font-semibold text-navy md:text-5xl"
+            className="text-3xl sm:text-4xl md:text-6xl font-semibold text-navy leading-[1.1] break-words"
           >
             What Our Patients Say
           </h2>
 
-          <p
+          {/* RIGHT */}
+          <div
             data-aos="fade-up"
-            data-aos-delay="200"
-            className="mt-4 text-navy/70 text-lg"
+            data-aos-delay="150"
+            className="flex flex-col gap-6 md:items-end md:text-right max-w-md ml-auto min-w-0"
           >
-            Real experiences from people who trusted Healora
-          </p>
+            <p className="text-navy/70 text-sm sm:text-base md:text-lg break-words">
+              Real experiences from people who trusted Healora and improved their health journey.
+            </p>
+
+            {/* CTA BUTTON */}
+            <CTAButton
+              label="View All Reviews"
+              href="https://maps.app.goo.gl/ev659LvHxH6hHjMVA"
+              variant="light"
+            />
+          </div>
+
         </div>
 
         {/* REVIEWS */}

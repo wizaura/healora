@@ -56,7 +56,7 @@ export default function DoctorAppointments() {
     }, [search, statusFilter]);
 
     return (
-        <div className="min-h-screen md:p-8 pt-24 md:mt-12">
+        <div className="min-h-screen md:p-8 pt-12">
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-6">
 
                 {/* LEFT SIDE */}

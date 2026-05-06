@@ -33,6 +33,7 @@ const aboutItems = [
     { name: "Agro Homeopathy", href: "/agro-homeopathy" },
     { name: "Veterinary Homeopathy", href: "/veterinary-homeopathy" },
     { name: "Counselling & Psychotherapy", href: "/counselling" },
+    { name: "Diet & Nutrition", href: "/diet-and-nutrition" },
 ];
 
 const moreItems = [
@@ -54,7 +55,7 @@ export default function Navbar() {
     return (
         <header className="fixed inset-x-0 top-0 z-50 bg-white/80 border-b border-gray-200 backdrop-blur-md">
 
-            <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+            <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 md:px-6 py-2">
 
                 {/* Logo */}
                 <Link
@@ -64,23 +65,23 @@ export default function Navbar() {
                     <Image
                         src="/logo.png"
                         alt="Healora Logo"
-                        width={48}
-                        height={48}
+                        width={56}
+                        height={56}
                         className="rounded-md object-cover"
                     />
 
-                    <div className="flex flex-col leading-none">
-                        <span className="text-2xl font-semibold tracking-tight text-[#1F2147]">
+                    <div className="flex flex-col leading-none gap-0.5">
+                        <span className="text-[28px] font-semibold font-bold tracking-tight text-[#1F2147]">
                             Healora
                         </span>
-                        <span className="text-xs font-semibold text-navy/60 tracking-wide -mt-1">
-                            Wellness Centre
+                        <span className="text-[12px] font-semibold text-navy/60 tracking-wide -mt-1">
+                            &nbsp;Wellness Centre
                         </span>
                     </div>
                 </Link>
 
                 {/* Desktop Nav */}
-                <div className="hidden md:flex rounded-full bg-gray-100 p-1 items-center">
+                <div className="hidden lg:flex rounded-full bg-gray-100 p-1 items-center">
 
                     {navItems.map((item) => {
 
@@ -273,23 +274,23 @@ export default function Navbar() {
                         Contact Us
                     </Link>
 
+                    {/* Mobile Menu Button */}
+                    <button
+                        onClick={() => setOpen(!open)}
+                        className="lg:hidden"
+                    >
+                        {open ? <X /> : <Menu />}
+                    </button>
                 </div>
 
 
-                {/* Mobile Menu Button */}
-                <button
-                    onClick={() => setOpen(!open)}
-                    className="md:hidden"
-                >
-                    {open ? <X /> : <Menu />}
-                </button>
 
             </nav>
 
 
             {/* Mobile Menu */}
             {open && (
-                <div className="md:hidden bg-white shadow-lg">
+                <div className="lg:hidden bg-white shadow-lg">
 
                     <div className="space-y-3 px-6 py-6">
 
@@ -320,7 +321,7 @@ export default function Navbar() {
                                     href={item.href}
                                     onClick={() => setOpen(false)}
                                     className="block rounded-lg px-4 py-2
-      text-sm font-medium text-gray-700 hover:bg-gray-100"
+                                        text-sm font-medium text-gray-700 hover:bg-gray-100"
                                 >
                                     {item.name}
                                 </Link>

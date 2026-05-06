@@ -87,7 +87,7 @@ export default function ServicesScrollSection() {
         from-wellness-bg
         via-white
         to-wellness-bg
-        py-8 md:py-8
+        py-8 md:py-4
         px-4 md:px-6
         md:h-[250vh]
       "

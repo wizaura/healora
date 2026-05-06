@@ -8,6 +8,7 @@ import DoctorCard from "@/components/common/DoctorCard";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import Loader from "../common/Loader";
 
 export default function AllDoctors() {
 
@@ -53,11 +54,7 @@ export default function AllDoctors() {
 
 
     if (isLoading) {
-        return (
-            <section className="py-24 text-center text-gray-500">
-                Loading doctors...
-            </section>
-        );
+        return <Loader fullScreen />;
     }
 
 

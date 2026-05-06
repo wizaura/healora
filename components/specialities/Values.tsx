@@ -80,15 +80,15 @@ export default function ValuesSection() {
 
                 {/* MAIN GRID */}
                 <div
-                    className="
-            mx-auto grid max-w-6xl gap-4 md:gap-8
-            rounded-3xl bg-white p-4 md:p-8
-            md:grid-cols-[220px_1fr_420px]
-            shadow-xl
-          "
-                >
+  className="
+    mx-auto grid max-w-6xl gap-4 md:gap-8
+    rounded-3xl bg-white p-4 md:p-8
+    grid-cols-1 md:grid-cols-2 lg:grid-cols-[200px_1fr_380px]
+    shadow-xl
+  "
+>
                     {/* LEFT – SIDE NAV */}
-                    <ul className="space-y-6">
+                    <ul className="space-y-6 min-w-0">
                         {values.map((item, index) => (
                             <li
                                 key={item.id}
@@ -120,7 +120,7 @@ export default function ValuesSection() {
                     </ul>
 
                     {/* CENTER – CONTENT */}
-                    <div className="rounded-3xl bg-wellness-bg/60 p-5 md:p-10">
+                    <div className="rounded-3xl bg-wellness-bg/60 p-5 md:p-10 min-w-0">
                         <span className="text-sm text-navy/40">
                             {String(current.id).padStart(2, "0")} / 05
                         </span>
@@ -135,7 +135,7 @@ export default function ValuesSection() {
                     </div>
 
                     {/* RIGHT – IMAGE */}
-                    <div className="relative overflow-hidden rounded-2xl">
+                    <div className="relative overflow-hidden rounded-2xl w-full min-w-0">
                         <Image
                             src={current.image}
                             alt={current.label}

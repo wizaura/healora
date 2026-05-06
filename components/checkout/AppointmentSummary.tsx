@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import api from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
+import Loader from "../common/Loader";
 
 export default function AppointmentSummary({
     doctorId,
@@ -25,11 +26,7 @@ export default function AppointmentSummary({
     });
 
     if (isLoading || !data) {
-        return (
-            <div className="mx-auto max-w-4xl rounded-3xl bg-white p-16 text-center shadow">
-                Loading appointment…
-            </div>
-        );
+        return <Loader fullScreen />;
     }
 
     const dateObj = new Date(`${date}T00:00:00`);

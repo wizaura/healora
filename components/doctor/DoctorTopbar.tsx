@@ -70,17 +70,26 @@ export default function DoctorTopBar() {
             <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
 
                 {/* Logo */}
-                <Link href="/doctor" className="flex items-center gap-2">
+                <Link
+                    href="/doctor"
+                    className="flex items-center gap-1"
+                >
                     <Image
                         src="/logo.png"
                         alt="Healora Logo"
-                        width={42}
-                        height={42}
+                        width={56}
+                        height={56}
                         className="rounded-md object-cover"
                     />
-                    <span className="text-xl font-semibold tracking-tight text-[#1F2147]">
-                        Healora Doctor
-                    </span>
+
+                    <div className="flex flex-col leading-none gap-0.5">
+                        <span className="text-[28px] font-semibold font-bold tracking-tight text-[#1F2147]">
+                            Healora
+                        </span>
+                        <span className="text-[12px] font-semibold text-navy/60 tracking-wide -mt-1">
+                            &nbsp;Wellness Centre
+                        </span>
+                    </div>
                 </Link>
 
                 {/* Desktop Navigation */}

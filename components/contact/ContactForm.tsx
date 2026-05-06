@@ -14,7 +14,22 @@ export default function ContactFormSection() {
         message: "",
     });
 
+    const [image, setImage] = useState<File | null>(null);
+    const [preview, setPreview] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (file.size > 5 * 1024 * 1024) {
+            toast.error("Image must be less than 5MB");
+            return;
+        }
+
+        setImage(file);
+        setPreview(URL.createObjectURL(file));
+    };
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -62,11 +77,21 @@ export default function ContactFormSection() {
 
         try {
 
-            await api.post("/consultations/contact", {
-                name: form.name,
-                email: form.email,
-                subject: form.subject,
-                message: form.message,
+            const formData = new FormData();
+
+            formData.append("name", form.name);
+            formData.append("email", form.email);
+            formData.append("subject", form.subject);
+            formData.append("message", form.message);
+
+            if (image) {
+                formData.append("image", image);
+            }
+
+            await api.post("/consultations/contact", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
             });
 
             toast.success("Message sent successfully!");
@@ -77,6 +102,9 @@ export default function ContactFormSection() {
                 subject: "",
                 message: "",
             });
+
+            setImage(null);
+            setPreview(null);
 
         } catch (err: any) {
 
@@ -151,6 +179,60 @@ export default function ContactFormSection() {
                         placeholder="Your Message"
                         className="w-full border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
                     />
+
+                    <div className="space-y-3">
+
+                        {/* LABEL */}
+                        <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                            Attach Image (optional)
+                            <span className="text-xs bg-gray-100 px-2 py-0.5 rounded-full text-gray-500">
+                                Max 5MB
+                            </span>
+                        </label>
+
+                        {/* INPUT */}
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="
+            w-full text-sm
+            border border-slate-200 rounded-lg
+            px-3 py-2
+            file:mr-3 file:px-3 file:py-1.5
+            file:border-0 file:bg-teal-50
+            file:text-teal-700 file:rounded-md
+            hover:file:bg-teal-100
+        "
+                        />
+
+                        {/* PREVIEW */}
+                        {preview && (
+                            <div className="relative w-32 h-32 mt-2">
+                                <img
+                                    src={preview}
+                                    className="w-full h-full object-cover rounded-lg border"
+                                />
+
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setImage(null);
+                                        setPreview(null);
+                                    }}
+                                    className="
+                    absolute -top-2 -right-2
+                    bg-black text-white text-xs
+                    rounded-full w-6 h-6 flex items-center justify-center
+                    hover:bg-red-500
+                "
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        )}
+
+                    </div>
 
                     <button
                         type="submit"

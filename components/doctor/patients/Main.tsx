@@ -46,7 +46,7 @@ export default function PatientsPage() {
   }, [data, search, filter]);
 
   return (
-    <div className="bg-white max-w-7xl mx-auto px-6 py-20 space-y-6">
+    <div className="bg-white max-w-7xl mx-auto px-6 py-12 space-y-6">
 
       {/* HEADER */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">

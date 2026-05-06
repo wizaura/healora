@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Script from "next/script";
 import AddressForm from "./AddressForm";
 import { getApiError } from "@/lib/util";
+import Loader from "../common/Loader";
 
 declare global {
     interface Window {
@@ -185,7 +186,9 @@ export default function CheckoutFooter({
         rzp.open();
     };
 
-    if (loading) return null;
+    if (loading) {
+        return <Loader fullScreen />;
+    }
 
     return (
         <section className="rounded-2xl bg-white shadow-sm max-h-[650px] flex flex-col">

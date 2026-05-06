@@ -13,7 +13,7 @@ export default function GoogleCalenderSetup() {
   if (isLoading) return null;
 
   return (
-    <div className="border max-w-7xl mx-auto border-gray-200 rounded-xl mt-28 p-5 flex items-center justify-between">
+    <div className="border max-w-7xl mx-auto border-gray-200 rounded-xl p-5 flex items-center justify-between">
       <div>
         <p className="font-medium">Google Calendar</p>
         <p className="text-sm text-gray-500">

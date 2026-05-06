@@ -17,7 +17,7 @@ export default function DoctorProfilePage() {
         queryFn: () => api.get("/doctor/profile").then(res => res.data),
     });
 
-    console.log(data,'dar')
+    console.log(data, 'dar')
 
     useEffect(() => {
         if (data) setProfile(data);
@@ -49,7 +49,7 @@ export default function DoctorProfilePage() {
             if (profile.signatureFile) formData.append("signature", profile.signatureFile);
 
 
-            return api.post("/doctor/profile", formData,{
+            return api.post("/doctor/profile", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
         },
@@ -64,29 +64,88 @@ export default function DoctorProfilePage() {
     if (!profile) return null;
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-24 pb-16">
-            <div className="max-w-6xl mx-auto space-y-8">
+        <div className="min-h-screen pt-12 pb-16">
+            <div className="max-w-6xl mx-auto space-y-4">
 
                 {/* HEADER */}
-                <div className="bg-white border border-gray-200 rounded-2xl p-6 flex justify-between items-center shadow-sm">
-                    <div>
-                        <h1 className="text-2xl font-semibold">Doctor Profile</h1>
-                        <p>{profile?.name} • {profile?.email}</p>
-                        <p className="text-sm text-gray-500">
-                            Manage your professional details, fees and documents
-                        </p>
-                    </div>  
+                <div className="
+                    relative overflow-hidden
+                    bg-gradient-to-br from-white via-white to-teal-50/40
+                    border border-gray-200
+                    rounded-2xl p-6 sm:p-8
+                    shadow-sm
+                    flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6
+                ">
 
+                    {/* LEFT CONTENT */}
+                    <div className="flex items-center gap-4">
+
+                        {/* Avatar */}
+                        <div
+                            className="
+                                h-14 w-14 rounded-full
+                                bg-teal-100 text-teal-700
+                                flex items-center justify-center
+                                font-semibold text-lg
+                                shadow-inner
+                                flex-shrink-0 overflow-hidden
+                            "
+                        >
+                            {profile?.imageUrl ? (
+                                <img
+                                    src={profile.imageUrl}
+                                    alt={profile?.name || "Doctor"}
+                                    className="h-full w-full object-cover"
+                                />
+                            ) : (
+                                <span>
+                                    {profile?.name?.charAt(0)?.toUpperCase() || "D"}
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Text */}
+                        <div className="min-w-0">
+                            <h1 className="text-2xl font-semibold text-gray-900">
+                                Doctor Profile
+                            </h1>
+
+                            <p className="text-sm text-gray-600 mt-1 truncate">
+                                {profile?.name} • {profile?.email}
+                            </p>
+
+                            <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                                Manage your professional details, fees and documents
+                            </p>
+                        </div>
+
+                    </div>
+
+                    {/* RIGHT ACTION */}
                     <button
                         onClick={() => setIsEditing(!isEditing)}
-                        className={`px-5 py-2 rounded-lg text-sm font-medium border transition
-          ${isEditing
-                                ? "bg-yellow-50 border-yellow-300 text-yellow-700"
-                                : "bg-teal-600 text-white border-teal-600 hover:bg-teal-700"}
-        `}
+                        className={`
+                            group flex items-center justify-center gap-2
+                            px-5 py-2.5 rounded-xl text-sm font-medium
+                            transition-all duration-200
+                            shadow-sm
+                            ${isEditing
+                                ? "bg-yellow-50 text-yellow-700 border border-yellow-300 hover:bg-yellow-100"
+                                : "bg-wellness-accent text-white hover:bg-teal-700"
+                            }
+                        `}
                     >
                         {isEditing ? "Editing Mode" : "Edit Profile"}
+
+                        {/* subtle arrow */}
+                        <span className="group-hover:translate-x-0.5 transition">
+                            →
+                        </span>
                     </button>
+
+                    {/* subtle glow */}
+                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-teal-100/40 blur-3xl rounded-full pointer-events-none" />
+
                 </div>
 
                 {/* BASIC INFO */}

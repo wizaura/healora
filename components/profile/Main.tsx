@@ -73,7 +73,7 @@ export default function Profile() {
         </div>
 
         {/* STATISTICS */}
-        <div className="grid gap-6 md:grid-cols-3">
+        {/* <div className="grid gap-6 md:grid-cols-3">
           <DashboardCard
             title="Upcoming Appointments"
             value="2"
@@ -89,7 +89,7 @@ export default function Profile() {
             value="3"
             description="Doctors you follow."
           />
-        </div>
+        </div> */}
 
         {/* PERSONAL INFO CARD */}
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">

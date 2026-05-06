@@ -13,7 +13,6 @@ const footerLinks = {
         { name: "Veterinary Homeopathy", href: "/veterinary-homeopathy" },
         { name: "Counselling & Psychotherapy", href: "/counselling" },
     ],
-
     company: [
         { name: "About Healora", href: "/about" },
         { name: "Blogs", href: "/blog" },
@@ -26,40 +25,39 @@ const footerLinks = {
 
 export default function Footer() {
     return (
-        <footer className="relative bg-[#0B1215] text-gray-400">
+        <footer className="relative overflow-x-hidden bg-[#0B1215] text-gray-400">
 
-            {/* Top glow line */}
+            {/* Glow */}
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-teal-500/40 to-transparent" />
 
-            <div className="mx-auto max-w-7xl px-6 py-12">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
 
-                {/* MAIN GRID */}
-
-                <div className="grid grid-cols-1 gap-14 md:grid-cols-4">
+                {/* GRID */}
+                <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
 
                     {/* BRAND */}
-
-                    <div>
+                    <div className="min-w-0">
                         <div className="inline-flex items-center gap-3">
-
                             <Image
                                 src="/logoq.png"
                                 alt="Healora Logo"
-                                width={66}
-                                height={66}
-                                className="object-contain rounded-full"
+                                width={60}
+                                height={60}
+                                className="object-contain rounded-full flex-shrink-0"
                             />
-
-                            <h3 className="text-2xl font-extrabold text-welnnes-bg">
-                                Healora
-                            </h3>
-
+                            <div className="flex flex-col leading-none gap-0.5">
+                                <span className="text-[35px] font-semibold font-bold tracking-tight text-wellness-bg">
+                                    Healora
+                                </span>
+                                <span className="text-[15px] font-semibold text-wellness-bg/60 tracking-wide -mt-1">
+                                    &nbsp;Wellness Centre
+                                </span>
+                            </div>
                         </div>
 
-                        <p className="mt-4 max-w-sm text-sm leading-relaxed">
-                            A trusted doctor consultation platform connecting
-                            patients with verified healthcare professionals —
-                            securely and seamlessly.
+                        <p className="mt-4 text-sm leading-relaxed break-words">
+                            A trusted doctor consultation platform connecting patients with
+                            verified healthcare professionals — securely and seamlessly.
                         </p>
 
                         <Link
@@ -71,8 +69,7 @@ export default function Footer() {
                     </div>
 
                     {/* PLATFORM */}
-
-                    <div>
+                    <div className="min-w-0">
                         <h4 className="mb-5 text-sm font-semibold uppercase tracking-wide text-white">
                             Platform
                         </h4>
@@ -82,7 +79,7 @@ export default function Footer() {
                                 <li key={item.name}>
                                     <Link
                                         href={item.href}
-                                        className="text-sm transition hover:text-teal-400"
+                                        className="text-sm transition hover:text-teal-400 break-words"
                                     >
                                         {item.name}
                                     </Link>
@@ -92,8 +89,7 @@ export default function Footer() {
                     </div>
 
                     {/* COMPANY */}
-
-                    <div>
+                    <div className="min-w-0">
                         <h4 className="mb-5 text-sm font-semibold uppercase tracking-wide text-white">
                             Company
                         </h4>
@@ -103,7 +99,7 @@ export default function Footer() {
                                 <li key={item.name}>
                                     <Link
                                         href={item.href}
-                                        className="text-sm transition hover:text-teal-400"
+                                        className="text-sm transition hover:text-teal-400 break-words"
                                     >
                                         {item.name}
                                     </Link>
@@ -113,8 +109,7 @@ export default function Footer() {
                     </div>
 
                     {/* CONNECT */}
-
-                    <div>
+                    <div className="min-w-0">
                         <h4 className="mb-5 text-sm font-semibold uppercase tracking-wide text-white">
                             Connect
                         </h4>
@@ -122,109 +117,75 @@ export default function Footer() {
                         <ul className="space-y-4 text-sm">
 
                             {/* EMAIL */}
-                            <li className="flex items-start gap-3">
-                                <Mail className="mt-0.5 h-4 w-4 text-teal-500" />
+                            <li className="flex items-start gap-3 min-w-0">
+                                <Mail className="mt-0.5 h-4 w-4 text-teal-500 flex-shrink-0" />
                                 <a
                                     href="mailto:healorawellnesscentre@gmail.com"
-                                    className="hover:text-teal-400 transition"
+                                    className="hover:text-teal-400 transition break-all"
                                 >
                                     healorawellnesscentre@gmail.com
                                 </a>
                             </li>
 
                             {/* ADDRESS */}
-                            <li className="flex items-start gap-3">
-                                <MapPin className="mt-0.5 h-4 w-4 text-teal-500" />
+                            <li className="flex items-start gap-3 min-w-0">
+                                <MapPin className="mt-0.5 h-4 w-4 text-teal-500 flex-shrink-0" />
 
                                 <a
                                     href="https://maps.app.goo.gl/ev659LvHxH6hHjMVA"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="hover:text-teal-400 transition"
+                                    className="hover:text-teal-400 transition break-words"
                                 >
                                     Healora Wellness Centre<br />
                                     Karuvanpoyil, Koduvally<br />
                                     Kozhikode, Kerala<br />
                                     India — 673572
                                 </a>
-
                             </li>
-
                         </ul>
 
-                        {/* SOCIAL LINKS */}
-
+                        {/* SOCIAL */}
                         <div className="mt-6 flex items-center gap-4">
-
-                            <a
-                                href="#"
-                                className="text-gray-400 hover:text-teal-400 transition"
-                            >
+                            <a href="https://www.instagram.com/heal_ora_" className="hover:text-teal-400">
                                 <Instagram size={18} />
                             </a>
-
-                            <a
-                                href="#"
-                                className="text-gray-400 hover:text-teal-400 transition"
-                            >
+                            <a className="hover:text-teal-400">
                                 <Linkedin size={18} />
                             </a>
-
-                            <a
-                                href="#"
-                                className="text-gray-400 hover:text-teal-400 transition"
-                            >
+                            <a className="hover:text-teal-400">
                                 <Youtube size={18} />
                             </a>
-
                         </div>
-
                     </div>
-
                 </div>
 
+                {/* LEGAL */}
+                <div className="mt-10 border-t border-white/10 pt-6">
 
-                {/* LEGAL BAR */}
+                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
-                <div className="mt-10 border-t border-white/10 pt-8">
-
-                    <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-
-                        <p className="text-xs text-gray-500">
-                            © {new Date().getFullYear()} Healora. All rights reserved.
+                        <p className="text-xs text-gray-500 text-center md:text-left">
+                            © {new Date().getFullYear()} Healora Wellness Centre. All rights reserved.
                         </p>
 
-                        <div className="flex items-center gap-6 text-xs">
-
-                            <Link
-                                href="/privacy-policy"
-                                className="transition hover:text-teal-400"
-                            >
+                        <div className="flex flex-wrap justify-center gap-4 text-xs">
+                            <Link href="/privacy-policy" className="hover:text-teal-400">
                                 Privacy Policy
                             </Link>
-
-                            <Link
-                                href="/terms"
-                                className="transition hover:text-teal-400"
-                            >
+                            <Link href="/terms" className="hover:text-teal-400">
                                 Terms & Conditions
                             </Link>
-
-                            <Link
-                                href="/cookie-policy"
-                                className="transition hover:text-teal-400"
-                            >
+                            <Link href="/cookie-policy" className="hover:text-teal-400">
                                 Cookie Policy
                             </Link>
-
                         </div>
 
-                        <p className="text-xs text-gray-600">
+                        <p className="text-xs text-gray-600 text-center md:text-right">
                             Built with care for better healthcare access
                         </p>
 
                     </div>
-
                 </div>
 
             </div>

@@ -10,20 +10,7 @@ import SpecialityOverview from "../slug/sub/Overview";
 import { QuickFacts } from "../slug/sub/QuickFacts";
 import { FooterQuestions } from "../slug/sub/FooterQuestions";
 import { useEffect, useState } from "react";
-
-const DUMMY_SPECIALITY = {
-    id: "sp1",
-    name: "Homeopathy",
-    description:
-        "Natural and holistic treatment focused on long-term healing.",
-    overview: {},
-    quickFacts: [],
-    subSpecialities: [
-        { id: "sub1", name: "General Homeopathy", slug: "general-homeopathy" },
-        { id: "sub2", name: "Chronic Care", slug: "chronic-care" },
-        { id: "sub3", name: "Pediatric Homeopathy", slug: "pediatric-homeopathy" },
-    ],
-};
+import Loader from "@/components/common/Loader";
 
 export default function SpecialityPage() {
 
@@ -63,7 +50,7 @@ export default function SpecialityPage() {
     const params = useParams();
     const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
 
-    const { data: speciality = DUMMY_SPECIALITY, isError } = useQuery({
+    const { data: speciality, isError } = useQuery({
         queryKey: ["speciality", slug],
         queryFn: async () => {
             const res = await api.get(`/specialities/${slug}`);
@@ -73,6 +60,10 @@ export default function SpecialityPage() {
     });
 
     const overview = speciality?.overview || {};
+
+    if (!speciality) {
+        return <Loader fullScreen/>;
+    }
 
     return (
         <div className="bg-white m-4">
@@ -91,7 +82,7 @@ export default function SpecialityPage() {
                                         ? "text-navy-dark border-b-2 border-navy-dark pb-1"
                                         : "text-navy/60 hover:text-navy-dark"}
                                     `}
-                                >
+                            >
                                 {section.label}
                             </button>
                         ))}

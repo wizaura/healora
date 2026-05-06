@@ -7,6 +7,7 @@ import SpecialityCard from "../common/SpecialitiesCard";
 import { useMemo, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Loader from "../common/Loader";
 
 export default function SpecialtiesSection() {
     const { data, isLoading } = useQuery({
@@ -46,11 +47,7 @@ export default function SpecialtiesSection() {
     }, [data]);
 
     if (isLoading) {
-        return (
-            <section className="py-24 text-center text-navy/60">
-                Loading specialities…
-            </section>
-        );
+        return <Loader fullScreen />;
     }
 
     return (
