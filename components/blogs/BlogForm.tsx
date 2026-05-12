@@ -15,6 +15,9 @@ export default function BlogForm({
     onSuccess?: () => void;
 }) {
 
+    const inputClass =
+        "w-full border border-gray-200 rounded-lg px-3 py-2 text-sm disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition";
+
     const [title, setTitle] = useState(blog?.title || "");
     const [content, setContent] = useState(blog?.content || "");
 
@@ -96,12 +99,12 @@ export default function BlogForm({
 
     return (
 
-        <div className="space-y-6">
+        <div className="space-y-6 bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
 
             {/* TITLE */}
 
-            <div>
-                <label className="text-sm font-medium">
+            <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700">
                     Blog Title
                 </label>
 
@@ -109,21 +112,22 @@ export default function BlogForm({
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Enter blog title"
-                    className="w-full border border-slate-300 rounded-xl px-4 py-3 mt-1"
+                    className={inputClass}
                 />
             </div>
 
             {/* IMAGE */}
 
-            <div className="space-y-2">
+            <div className="space-y-3">
 
-                <label className="text-sm font-medium">
+                <label className="text-sm font-semibold text-slate-700">
                     Featured Image
                 </label>
 
                 <input
                     type="file"
                     accept="image/*"
+                    className={inputClass}
                     onChange={(e) =>
                         handleImageChange(e.target.files?.[0] || null)
                     }
@@ -131,17 +135,17 @@ export default function BlogForm({
 
                 {preview && (
 
-                    <div className="relative">
+                    <div className="relative overflow-hidden rounded-xl border border-slate-200">
 
                         <img
                             src={preview}
-                            className="w-full max-h-60 object-cover rounded-lg border"
+                            className="w-full max-h-72 object-cover"
                         />
 
                         <button
                             type="button"
                             onClick={removeImage}
-                            className="absolute top-2 right-2 bg-red-500 text-white rounded-full px-2 py-1 text-xs"
+                            className="absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white rounded-lg px-3 py-1.5 text-xs font-medium transition"
                         >
                             Remove
                         </button>
@@ -154,16 +158,18 @@ export default function BlogForm({
 
             {/* EDITOR */}
 
-            <div>
+            <div className="space-y-2">
 
-                <label className="text-sm font-medium mb-2 block">
+                <label className="text-sm font-semibold text-slate-700">
                     Blog Content
                 </label>
 
-                <TinyEditor
-                    content={content}
-                    onChange={setContent}
-                />
+                <div className="border border-slate-200 rounded-xl overflow-hidden">
+                    <TinyEditor
+                        content={content}
+                        onChange={setContent}
+                    />
+                </div>
 
             </div>
 
@@ -172,7 +178,7 @@ export default function BlogForm({
             <button
                 onClick={submit}
                 disabled={loading}
-                className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-lg"
+                className="bg-teal-600 hover:bg-teal-700 disabled:opacity-70 text-white px-6 py-2.5 rounded-xl text-sm font-medium transition"
             >
                 {loading
                     ? "Saving..."

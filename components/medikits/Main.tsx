@@ -5,6 +5,7 @@ import api from "@/lib/api";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import MedikitViewModal from "./MedikitViewModal";
+import Loader from "../common/Loader";
 
 const LIMIT = 6;
 
@@ -49,7 +50,7 @@ export default function MedikitsPage() {
   }, [hasNextPage]);
 
   if (isLoading) {
-    return <div className="text-center py-24">Loading medikits...</div>;
+    return <Loader fullScreen />;
   }
 
   return (
@@ -57,9 +58,6 @@ export default function MedikitsPage() {
 
       {/* HEADER */}
       <div className="mb-20 mt-4 text-center">
-        <span className="inline-block mb-6 rounded-full border border-navy/10 bg-white/80 px-8 py-2 text-sm font-medium text-navy/70 backdrop-blur">
-          Healora Medikits
-        </span>
 
         <h1 className="text-4xl md:text-6xl font-semibold leading-[1.15] tracking-[-0.02em] text-navy">
           Ready-to-use

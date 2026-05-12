@@ -10,7 +10,7 @@ const faqs = [
   {
     question: "Why should I choose Healora?",
     answer:
-      "Healora offers verified doctors, transparent pricing, secure payments, and flexible consultation options — all in one trusted healthcare platform.",
+      "Healora offers verified doctors, transparent pricing, secure payments, and flexible consultation options, all in one trusted healthcare platform.",
   },
   {
     question: "Are doctors on Healora verified?",

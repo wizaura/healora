@@ -8,45 +8,49 @@ const values = [
         id: 1,
         label: "Compassion",
         title:
-            "We celebrate the unique qualities, respect & personal journeys of every patient.",
+            "Care that puts people first.",
         description:
-            "Personalized care plans, wellness consultations, and continuous support tailored to individual needs.",
+            "We provide thoughtful support and personalized healthcare for every patient.",
         image: "/healora-main-1.jpeg",
     },
+
     {
         id: 2,
         label: "Respect",
         title:
-            "Every interaction is guided by dignity, empathy, and understanding.",
+            "Every patient matters.",
         description:
-            "We foster trust by honoring patient choices and individual healthcare journeys.",
+            "We treat everyone with dignity, empathy, and understanding.",
         image: "https://picsum.photos/600/700?2",
     },
+
     {
         id: 3,
         label: "Integrity",
         title:
-            "Honesty, transparency, and accountability define our medical practices.",
+            "Honest and ethical care.",
         description:
-            "Ethical care and responsible decision-making are at the core of everything we do.",
+            "Transparency and trust guide every medical decision we make.",
         image: "https://picsum.photos/600/700?3",
     },
+
     {
         id: 4,
         label: "Excellence",
         title:
-            "We strive for excellence through innovation, expertise, and continuous improvement.",
+            "Committed to better outcomes.",
         description:
-            "Delivering outstanding clinical outcomes and patient experiences every day.",
+            "We continuously improve care through expertise and innovation.",
         image: "https://picsum.photos/600/700?4",
     },
+
     {
         id: 5,
         label: "Community",
         title:
-            "Building meaningful relationships for healthier communities.",
+            "Supporting healthier lives together.",
         description:
-            "We support communities through care, education, and long-term engagement.",
+            "We build strong connections through accessible and compassionate healthcare.",
         image: "https://picsum.photos/600/700?5",
     },
 ];
@@ -80,13 +84,13 @@ export default function ValuesSection() {
 
                 {/* MAIN GRID */}
                 <div
-  className="
+                    className="
     mx-auto grid max-w-6xl gap-4 md:gap-8
     rounded-3xl bg-white p-4 md:p-8
     grid-cols-1 md:grid-cols-2 lg:grid-cols-[200px_1fr_380px]
     shadow-xl
   "
->
+                >
                     {/* LEFT – SIDE NAV */}
                     <ul className="space-y-6 min-w-0">
                         {values.map((item, index) => (

@@ -13,6 +13,7 @@ import {
     Search
 } from "lucide-react";
 import PageHeader from "../common/PageHeader";
+import Loader from "../common/Loader";
 
 const ICON_MAP: any = {
     stethoscope: Stethoscope,
@@ -131,7 +132,7 @@ export default function FAQPage() {
 
                 {/* FAQ LIST */}
                 {loading && (
-                    <p className="text-center text-gray-400">Loading FAQs...</p>
+                    <Loader fullScreen />
                 )}
 
                 {!loading && visibleGroups.length === 0 && (

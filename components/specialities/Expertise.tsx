@@ -9,7 +9,7 @@ export default function ExpertiseSection() {
         <section
             className="
         relative m-4 rounded-3xl
-        bg-gradient-to-b from-white via-white to-wellness-bg
+        bg-gradient-to-b from-wellness-bg via-white to-wellness-bg
         py-20
       "
         >

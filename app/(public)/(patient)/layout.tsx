@@ -37,7 +37,7 @@ export default function ProtectedLayout({
   return (
     <div className="pt-24 pb-12 bg-white min-h-screen">
       <ProfileHeader />
-      <div className="mx-auto max-w-5xl px-6">
+      <div className="mx-auto min-h-screen py-12 mt-8 max-w-7xl bg-gradient-to-b from-wellness-bg via-white to-wellness-bg rounded-2xl">
         {children}
       </div>
     </div>

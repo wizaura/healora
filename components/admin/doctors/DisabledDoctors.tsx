@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import api from "@/lib/api";
 import toast from "react-hot-toast";
 import ConfirmModal from "@/components/common/ConfirmModal";
+import { DoctorService } from "@/services/doctor.service";
 
 export default function DisabledDoctorsTable({ doctors, refetch }: any) {
 
@@ -25,14 +25,17 @@ export default function DisabledDoctorsTable({ doctors, refetch }: any) {
         try {
 
             if (actionData.type === "restore") {
-                await api.patch(`/doctor/${actionData.doc.id}/approval`, {
-                    isApproved: true,
-                });
+                await DoctorService.approveDoctor(
+                    actionData.doc.id,
+                    true
+                );
                 toast.success("Doctor restored");
             }
 
             if (actionData.type === "delete") {
-                await api.delete(`/doctor/${actionData.doc.id}/delete`);
+                await DoctorService.deleteDoctor(
+                    actionData.doc.id
+                );
                 toast.success("Doctor deleted permanently");
             }
 

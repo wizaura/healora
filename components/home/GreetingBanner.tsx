@@ -47,10 +47,11 @@ export default function GreetingBanner() {
                     <div className="absolute bottom-4 right-4 flex gap-3">
 
                         {/* YouTube */}
-                        <a
-                            href={data.youtubeUrl || "#"}
-                            target="_blank"
-                            className="
+                        {data.youtubeUrl && (
+                            <a
+                                href={data.youtubeUrl || "#"}
+                                target="_blank"
+                                className="
                                 flex items-center gap-2
                                 bg-red-600 text-white
                                 px-4 py-2 rounded-full
@@ -59,16 +60,18 @@ export default function GreetingBanner() {
                                 hover:bg-red-700
                                 transition
                             "
-                        >
-                            <Youtube size={16} />
-                            YouTube
-                        </a>
+                            >
+                                <Youtube size={16} />
+                                YouTube
+                            </a>
+                        )}
 
                         {/* Instagram */}
-                        <a
-                            href={data.instagramUrl || "#"}
-                            target="_blank"
-                            className="
+                        {data.instagramUrl && (
+                            <a
+                                href={data.instagramUrl || "#"}
+                                target="_blank"
+                                className="
                                 flex items-center gap-2
                                 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500
                                 text-white
@@ -78,10 +81,11 @@ export default function GreetingBanner() {
                                 hover:opacity-90
                                 transition
                             "
-                        >
-                            <Instagram size={16} />
-                            Instagram
-                        </a>
+                            >
+                                <Instagram size={16} />
+                                Instagram
+                            </a>
+                        )}
 
                     </div>
 

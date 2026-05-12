@@ -5,6 +5,7 @@ import api from "@/lib/api";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
+import Loader from "../common/Loader";
 
 const LIMIT = 6;
 
@@ -39,7 +40,7 @@ export default function Blog() {
 
 
     if (isLoading) {
-        return <div className="text-center py-24">Loading blogs...</div>;
+        return <Loader fullScreen />
     }
 
     return (
@@ -49,21 +50,6 @@ export default function Blog() {
             {/* HEADER */}
 
             <div className="mb-20 mt-4 text-center">
-
-                <span
-                    className="
-        inline-block mb-6
-        rounded-full
-        border border-navy/10
-        bg-white/80
-        px-8 py-2
-        text-sm font-medium
-        text-navy/70
-        backdrop-blur
-    "
-                >
-                    Healora Insights
-                </span>
 
                 <h1
                     className="

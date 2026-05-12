@@ -49,12 +49,8 @@ export default function AppointmentSummary({
     });
 
     return (
-        <section className="m-4 rounded-3xl bg-gradient-to-b from-white to-wellness-bg py-16 shadow-sm">
+        <section className="m-4 rounded-3xl bg-gradient-to-b from-white to-wellness-bg pt-20 pb-16 shadow-sm">
             <div className="mx-auto max-w-5xl px-6 text-center space-y-6">
-
-                <span className="inline-block rounded-full border border-navy/10 bg-white px-6 py-2 text-sm font-medium text-navy/70">
-                    Appointment summary
-                </span>
 
                 {/* Doctor Name */}
                 <h2 className="text-3xl md:text-5xl font-semibold text-navy">

@@ -35,23 +35,13 @@ export default function DoctorBlogs() {
             {/* ADD BLOG DROPDOWN */}
 
             {open && (
-
-                <div className="border border-slate-200 rounded-2xl bg-white p-6 shadow-sm">
-
-                    <h2 className="text-lg font-semibold mb-4">
-                        Write Blog
-                    </h2>
-
-                    <BlogForm role="DOCTOR" />
-
-                </div>
-
+                <BlogForm role="DOCTOR" />
             )}
 
 
             {/* BLOG LIST */}
 
-            <BlogList role="DOCTOR"/>
+            <BlogList role="DOCTOR" />
 
         </div>
 

@@ -106,9 +106,9 @@ export default function SpecialityPage() {
             <section
                 id="treatments"
                 className="
-                relative rounded-3xl
-                bg-white
-                py-12
+                relative rounded-2xl
+                bg-gradient-to-b from-white to-wellness-bg
+                py-12 my-4
                 "
             >
                 <div className="mx-auto max-w-7xl px-6">

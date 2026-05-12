@@ -147,7 +147,7 @@ export default function MissionVisionSection() {
                         <PillarCard
                             icon={<Layers size={22} />}
                             title="Integration"
-                            desc="Blending diverse disciplines—from Homeopathy to Psychology—for a complete 360° approach to health."
+                            desc="Blending diverse disciplinesfrom Homeopathy to Psychology for a complete 360° approach to health."
                         />
 
                         <PillarCard

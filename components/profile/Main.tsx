@@ -16,6 +16,7 @@ import {
   Cake,
   VenusAndMars,
 } from "lucide-react";
+import Loader from "../common/Loader";
 
 export default function Profile() {
   const { user, logout, loading } = useAuth();
@@ -27,7 +28,7 @@ export default function Profile() {
     enabled: !!user?.sub,
   });
 
-  if (loading || profileLoading) return null;
+  if (loading || profileLoading) return <Loader fullScreen />;
 
   if (!user) {
     router.replace("/login");
@@ -41,10 +42,10 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen py-12">
-      <div className="mx-auto max-w-5xl px-6 space-y-8">
+      <div className="mx-auto max-w-5xl px-6 space-y-6">
 
         {/* PROFILE HEADER */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
 
           <div className="flex items-center gap-4">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-teal-100 text-teal-700 overflow-hidden text-xl font-semibold">
@@ -72,27 +73,8 @@ export default function Profile() {
           </button>
         </div>
 
-        {/* STATISTICS */}
-        {/* <div className="grid gap-6 md:grid-cols-3">
-          <DashboardCard
-            title="Upcoming Appointments"
-            value="2"
-            description="You have 2 upcoming visits."
-          />
-          <DashboardCard
-            title="Past Visits"
-            value="8"
-            description="Completed consultations."
-          />
-          <DashboardCard
-            title="Saved Doctors"
-            value="3"
-            description="Doctors you follow."
-          />
-        </div> */}
-
         {/* PERSONAL INFO CARD */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-slate-900 mb-6">
             Personal Information
           </h2>

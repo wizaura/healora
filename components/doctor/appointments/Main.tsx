@@ -6,6 +6,7 @@ import AppointmentsList from "./AppointmentsList";
 import TodayPanel from "./TodayPanel";
 import AppointmentsCalendar from "./AppointmentsCalendar";
 import AppointmentModal from "./AppointmentModal";
+import { AppointmentService } from "@/services/appointment.service";
 
 export default function DoctorAppointments() {
     const [appointments, setAppointments] = useState<any[]>([]);
@@ -23,8 +24,9 @@ export default function DoctorAppointments() {
     const fetchAppointments = async () => {
         try {
             setLoading(true);
-            const res = await api.get("/appointments/doctor");
-            setAppointments(res.data);
+            const data =
+                await AppointmentService.getDoctorAppointments();
+            setAppointments(data);
         } catch (err) {
             console.error(err);
         } finally {

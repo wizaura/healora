@@ -102,7 +102,7 @@ export default function AllDoctors() {
                         Connect with experienced and verified healthcare professionals
                         across multiple specialities. Whether you need holistic
                         homeopathic care, nutritional guidance, counselling support,
-                        or wellness consultations — Healora helps you find the right
+                        or wellness consultations, Healora helps you find the right
                         doctor for your needs.
                     </p>
 
@@ -124,7 +124,7 @@ export default function AllDoctors() {
 
             </div>
 
-            <div className="mx-auto max-w-7xl">
+            <div className="mx-auto max-w-7xl sm:px-4">
 
                 {/* ================= FILTER ================= */}
 
@@ -163,14 +163,14 @@ export default function AllDoctors() {
 
                 <div className="mx-auto">
 
-                    <div className="grid gap-6 md:grid-cols-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 items-stretch">
 
                         {filteredDoctors.map((doc: any, index: number) => (
 
                             <div
                                 key={doc.id}
                                 data-aos="fade-up"
-                                data-aos-delay={100 + index * 80}
+                                data-aos-delay={200}
                             >
                                 <DoctorCard
                                     doctor={doc}

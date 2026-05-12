@@ -59,12 +59,50 @@ export default function Login() {
 
             if (!user) return;
 
+            const redirectUrl =
+                sessionStorage.getItem(
+                    "afterLoginRedirect"
+                );
+
+            const loginFrom =
+                sessionStorage.getItem(
+                    "loginFrom"
+                );
+
+            // clear storage
+            sessionStorage.removeItem(
+                "afterLoginRedirect"
+            );
+
+            sessionStorage.removeItem(
+                "loginFrom"
+            );
+
+            if (redirectUrl) {
+
+                router.replace(redirectUrl);
+
+                return;
+            }
+
+            if (loginFrom) {
+
+                router.replace(loginFrom);
+
+                return;
+            }
+
             if (user.role === "ADMIN") {
-                router.push("/admin");
+
+                router.replace("/admin");
+
             } else if (user.role === "DOCTOR") {
-                router.push("/doctor");
+
+                router.replace("/doctor");
+
             } else {
-                router.push("/");
+
+                router.replace("/");
             }
         } catch (err: any) {
             toast.error(getApiError(err));
@@ -237,7 +275,7 @@ export default function Login() {
                         Create one
                     </Link>
                 </p>
-            </div>    
+            </div>
         </div>
     );
 }

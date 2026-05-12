@@ -5,25 +5,35 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import MedikitModal from "./MedikitModal";
+import { MedikitService } from "@/services/medikit.service";
 
 export default function AdminMedikit() {
   const [selected, setSelected] = useState<any>(null);
   const [open, setOpen] = useState(false);
 
-  const { data, isLoading, refetch } = useQuery({
+  const {
+    data,
+    isLoading,
+    refetch,
+  } = useQuery({
+
     queryKey: ["medikits"],
-    queryFn: async () => {
-      const res = await api.get("/medikits");
-      return res.data;
-    },
+
+    queryFn: () =>
+      MedikitService.getAll(),
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      await api.delete(`/medikits/${id}`);
-    },
+
+    mutationFn: (id: string) =>
+      MedikitService.delete(id),
+
     onSuccess: () => {
-      toast.success("Medikit deleted");
+
+      toast.success(
+        "Medikit deleted"
+      );
+
       refetch();
     },
   });

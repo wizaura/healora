@@ -21,44 +21,33 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import { AdminDashboardService } from "@/services/admin-dashboard.service";
 
 export default function AdminDashboard() {
   const [range, setRange] = useState("7d");
 
   const { data: summary } = useQuery({
     queryKey: ["admin-summary"],
-    queryFn: async () => {
-      const res = await api.get("/admin/dashboard/summary");
-      return res.data;
-    },
+    queryFn: () =>
+      AdminDashboardService.getSummary(),
   });
 
   const { data: revenueChart } = useQuery({
     queryKey: ["revenue-chart", range],
-    queryFn: async () => {
-      const res = await api.get(
-        `/admin/dashboard/revenue-chart?range=${range}`
-      );
-      return res.data;
-    },
+    queryFn: () =>
+      AdminDashboardService.getRevenueChart(range),
   });
-
-  console.log(revenueChart,'revCh')
 
   const { data: payments } = useQuery({
     queryKey: ["recent-payments"],
-    queryFn: async () => {
-      const res = await api.get("/admin/dashboard/payments");
-      return res.data;
-    },
+    queryFn: () =>
+      AdminDashboardService.getRecentPayments(),
   });
 
   const { data: topDoctors } = useQuery({
     queryKey: ["top-doctors"],
-    queryFn: async () => {
-      const res = await api.get("/admin/dashboard/top-doctors");
-      return res.data;
-    },
+    queryFn: () =>
+      AdminDashboardService.getTopDoctors(),
   });
 
   const cards = [
@@ -127,9 +116,8 @@ export default function AdminDashboard() {
           <button
             key={r}
             onClick={() => setRange(r)}
-            className={`px-4 py-1 rounded-lg border border-gray-200 ${
-              range === r ? "bg-teal-600 text-white" : "bg-white"
-            }`}
+            className={`px-4 py-1 rounded-lg border border-gray-200 ${range === r ? "bg-teal-600 text-white" : "bg-white"
+              }`}
           >
             {r}
           </button>

@@ -27,6 +27,7 @@ export default function DoctorProfilePage() {
         mutationFn: async () => {
             const formData = new FormData();
 
+            formData.append("graduation", profile.graduation);
             formData.append("experience", profile.experience);
             formData.append("qualification", profile.qualification);
             formData.append("bio", profile.bio);

@@ -7,18 +7,14 @@ export default function PaymentMethodCard({
     setPaymentMethod,
 }: any) {
     return (
-        <section className="rounded-3xl bg-white shadow-sm border border-gray-100 p-8">
-            <div className="mx-auto max-w-lg text-center">
-
-                <span className="mb-4 inline-block rounded-full border border-gray-200 bg-white px-6 py-2 text-sm font-medium text-gray-600">
-                    Payment
-                </span>
+        <section className="rounded-2xl max-h-[60vh] bg-white shadow-sm border border-gray-100 p-8">
+            <div className="mx-auto max-w-lg">
 
                 <h2 className="text-2xl font-semibold text-navy">
                     Choose payment method
                 </h2>
 
-                <div className="mt-8 space-y-4 text-left">
+                <div className="mt-8 space-y-4 text-center">
 
                     {/* Razorpay - India */}
                     <Option

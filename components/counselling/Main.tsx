@@ -113,7 +113,7 @@ export default function CounsellingPsychotherapy() {
 
                         <p>
                             Seeking help is a sign of strength and
-                            self-awareness — a step toward building a
+                            self-awareness, a step toward building a
                             healthier and more fulfilling life.
                         </p>
 
@@ -203,7 +203,7 @@ export default function CounsellingPsychotherapy() {
                     </p>
 
                     <p className="text-slate-700 font-medium">
-                        Welcome to Healora — where your journey toward a
+                        Welcome to Healora, where your journey toward a
                         balanced and fulfilling life begins.
                     </p>
 

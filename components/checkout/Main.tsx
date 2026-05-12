@@ -22,7 +22,7 @@ export default function CheckoutMainPage() {
     return (
         <>
             {/* ================= HERO / SUMMARY ================= */}
-            <section className="py-6">
+            <section>
                 <AppointmentSummary
                     doctorId={doctorId}
                     date={date}
@@ -32,8 +32,8 @@ export default function CheckoutMainPage() {
             </section>
 
             {/* ================= CHECKOUT CONTENT ================= */}
-            <section className="mx-auto max-w-7xl px-6 pb-24">
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            <section className="bg-gradient-to-b from-wellness-bg via-white to-wellness-bg px-6 py-16 m-4 rounded-2xl">
+                <div className="mx-auto max-w-7xl grid grid-cols-1 gap-8 md:grid-cols-2">
 
                     {/* LEFT — PAYMENT METHOD */}
                     <PaymentMethodCard

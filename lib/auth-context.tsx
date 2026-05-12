@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "@/lib/api";
+import { AuthService } from "@/services/auth.service";
 
 type User = {
     sub: string;
@@ -28,9 +29,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const fetchMe = async () => {
         try {
-            const res = await api.get("/auth/me");
-            setUser(res.data);
-            return res.data;
+            const user = await AuthService.me();
+            setUser(user);
+            return user;
         } catch {
             setUser(null);
             return null;
@@ -44,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     const logout = async () => {
-        await api.post("/auth/logout");
+        await AuthService.logout();
         setUser(null);
     };
 

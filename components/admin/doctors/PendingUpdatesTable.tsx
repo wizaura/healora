@@ -6,6 +6,7 @@ import api from "@/lib/api";
 import toast from "react-hot-toast";
 import PendingUpdateModal from "./PendingUpdateModal";
 import ConfirmModal from "@/components/common/ConfirmModal";
+import { DoctorService } from "@/services/doctor.service";
 
 type PendingUpdate = {
     id: string;
@@ -35,8 +36,10 @@ export default function PendingUpdatesTable() {
     const [confirmData, setConfirmData] = useState<any>(null);
 
     const fetchUpdates = async () => {
-        const res = await api.get("/admin/doctors/pending");
-        setUpdates(res.data);
+        const data =
+            await DoctorService.getPendingUpdates();
+
+        setUpdates(data);
         setLoading(false);
     };
 
@@ -45,8 +48,10 @@ export default function PendingUpdatesTable() {
     }, []);
 
     const openReview = async (id: string) => {
-        const res = await api.get(`/admin/doctors/pending/${id}`);
-        setReviewData(res.data);
+        const data =
+            await DoctorService.getPendingUpdateById(id);
+
+        setReviewData(data);
         setReviewOpen(true);
     };
 
@@ -58,9 +63,10 @@ export default function PendingUpdatesTable() {
             id: string;
             isApproved: boolean;
         }) =>
-            api.patch(`/doctor/${id}/approve`, {
-                isApproved,
-            }),
+            DoctorService.approveProfileUpdate(
+                id,
+                isApproved
+            ),
 
         onSuccess: (_, variables) => {
             toast.success(

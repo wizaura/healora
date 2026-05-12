@@ -26,7 +26,7 @@ export default function NutritionSection() {
 
                     <p className="mt-6 text-base sm:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
                         Welcome to the foundational pillar of your health journey. At Healora Wellness Centre,
-                        we believe that nutrition is not just about "eating well" — it is about fueling your body's unique potential.
+                        we believe that nutrition is not just about "eating well", it is about fueling your body's unique potential.
                     </p>
                 </div>
 

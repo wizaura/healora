@@ -21,18 +21,13 @@ export default function DoctorBasicInfo({ profile, setProfile, isEditing }: any)
       <h2 className="font-semibold text-lg">Basic Information</h2>
 
       {/* Profile Image */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Profile Image</label>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Profile Image</label>
 
-        {imagePreview && (
-          <img
-            src={imagePreview}
-            className="h-28 w-28 object-cover rounded-xl border border-gray-200"
-          />
-        )}
 
-        {isEditing && (
-          <input
+          {isEditing && (
+            <input
             type="file"
             onChange={(e: any) => {
               const file = e.target.files[0];
@@ -40,8 +35,31 @@ export default function DoctorBasicInfo({ profile, setProfile, isEditing }: any)
               setImagePreview(URL.createObjectURL(file));
             }}
             className={inputClass}
+            />
+          )}
+          
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              className="h-28 w-28 object-cover rounded-xl border border-gray-200"
+            />
+          )}
+        </div>
+        <div>
+          <label className="text-sm font-medium">Graduated From</label>
+          <input
+            disabled={!isEditing}
+            value={profile.graduation || ""}
+            onChange={(e) =>
+              setProfile((prev: any) => ({
+                ...prev,
+                experience: e.target.value,
+              }))
+            }
+            className={inputClass}
           />
-        )}
+        </div>
+
       </div>
 
       {/* Experience + Qualification */}

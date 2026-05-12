@@ -19,18 +19,15 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
     return (
         <div
             className="
-            group
-            relative
-            bg-white
-            border border-gray-100
-            rounded-xl
-            p-6
-            shadow-sm
-            transition-all
-            duration-300
-            hover:-translate-y-1
-            hover:shadow-xl
-        "
+    group relative
+    bg-white border border-gray-100
+    rounded-xl p-6
+    shadow-sm
+    transition-all duration-300
+    hover:-translate-y-1 hover:shadow-xl
+
+    flex flex-col h-full
+  "
         >
 
             {/* HEADER */}
@@ -51,12 +48,12 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
                 "
                 >
 
-                        <Image
-                            src={doctor.imageUrl || '/doctor-placeholder.png'}
-                            alt={doctor.user?.name || "Doctor"}
-                            fill
-                            className="object-cover"
-                        />
+                    <Image
+                        src={doctor.imageUrl || '/doctor-placeholder.png'}
+                        alt={doctor.user?.name || "Doctor"}
+                        fill
+                        className="object-cover"
+                    />
 
                 </div>
 
@@ -173,7 +170,7 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
 
             {/* CTA */}
 
-            <div className="mt-6 pt-4 border-t border-gray-100">
+            <div className="mt-auto pt-4 border-t border-gray-100">
 
                 <button
                     onClick={() => onBook?.(doctor.id)}

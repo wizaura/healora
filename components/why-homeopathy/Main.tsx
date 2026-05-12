@@ -78,7 +78,7 @@ export default function HomeopathySection() {
                         <p>
                             This principle was later formalized by the German
                             physician <strong>Dr. Samuel Hahnemann</strong> in 1807
-                            as the <em>Law of Similars</em> — the philosophy that
+                            as the <em>Law of Similars</em>, the philosophy that
                             “like cures like”.
                         </p>
 

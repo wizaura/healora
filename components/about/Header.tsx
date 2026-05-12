@@ -32,7 +32,7 @@ export default function AboutHeroSection() {
                     leading-relaxed
                     "
                 >
-                    Healora Wellness Centre is built on a simple belief —
+                    Healora Wellness Centre is built on a simple belief,
                     quality healthcare should never be limited by geography.
                     Our mission is to connect patients with compassionate,
                     expert care through an integrated digital platform

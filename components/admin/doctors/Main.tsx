@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import api from "@/lib/api";
 
 import DoctorsTable from "./DoctorTable";
 import DisabledDoctorsTable from "./DisabledDoctors";
 import PendingUpdatesTable from "./PendingUpdatesTable";
 import DoctorForm from "./DoctorForm";
+import { DoctorService } from "@/services/doctor.service";
 
 export default function DoctorsPage() {
 
@@ -22,35 +22,37 @@ export default function DoctorsPage() {
     const [sort, setSort] = useState("new");
 
     const { data: doctors = [], refetch } = useQuery({
-        queryKey: ["doctors", search, specialityId, languageId, approval, sort],
-        queryFn: async () => {
-            const res = await api.get("/admin/doctors", {
-                params: {
-                    search,
-                    specialityId,
-                    languageId,
-                    approval,
-                    sort,
-                },
-            });
-            return res.data;
-        },
+        queryKey: [
+            "doctors",
+            search,
+            specialityId,
+            languageId,
+            approval,
+            sort,
+        ],
+
+        queryFn: () =>
+            DoctorService.getDoctors({
+                search,
+                specialityId,
+                languageId,
+                approval,
+                sort,
+            }),
     });
 
     const { data: specialities = [] } = useQuery({
         queryKey: ["specialities"],
-        queryFn: async () => {
-            const res = await api.get("/admin/lookup/specialities");
-            return res.data;
-        },
+
+        queryFn: () =>
+            DoctorService.getSpecialities(),
     });
 
     const { data: languages = [] } = useQuery({
         queryKey: ["languages"],
-        queryFn: async () => {
-            const res = await api.get("/admin/lookup/languages");
-            return res.data;
-        },
+
+        queryFn: () =>
+            DoctorService.getLanguages(),
     });
 
     const closeForm = () => {

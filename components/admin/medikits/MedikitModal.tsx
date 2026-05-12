@@ -4,6 +4,7 @@ import { useState } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
+import { MedikitService } from "@/services/medikit.service";
 
 export default function MedikitModal({ data, onClose, onSuccess }: any) {
     const isEdit = !!data;
@@ -62,21 +63,36 @@ export default function MedikitModal({ data, onClose, onSuccess }: any) {
         }
 
         try {
+
             if (isEdit) {
-                await api.patch(`/medikits/${data.id}`, formData, {
-                    headers: { "Content-Type": "multipart/form-data" },
-                });
-                toast.success("Medikit updated");
+
+                await MedikitService.update(
+                    data.id,
+                    formData
+                );
+
+                toast.success(
+                    "Medikit updated"
+                );
+
             } else {
-                await api.post("/medikits", formData, {
-                    headers: { "Content-Type": "multipart/form-data" },
-                });
-                toast.success("Medikit created");
+
+                await MedikitService.create(
+                    formData
+                );
+
+                toast.success(
+                    "Medikit created"
+                );
             }
 
             onSuccess();
+
         } catch (err) {
-            toast.error("Error saving medikit");
+
+            toast.error(
+                "Error saving medikit"
+            );
         }
 
         setLoading(false);

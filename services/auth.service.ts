@@ -1,18 +1,61 @@
 import api from "@/lib/api";
 
+import { API_ENDPOINTS }
+    from "./api-endpoints";
+
 export const AuthService = {
-    register: (data: {
+
+    async register(data: {
         name: string;
         email: string;
         password: string;
-    }) => api.post("/auth/register", data),
+    }) {
 
-    login: (data: {
+        const res = await api.post(
+            API_ENDPOINTS.AUTH.REGISTER,
+            data
+        );
+
+        return res.data;
+    },
+
+    async login(data: {
         email: string;
         password: string;
-    }) => api.post("/auth/login", data),
+    }) {
 
-    logout: () => api.post("/auth/logout"),
+        const res = await api.post(
+            API_ENDPOINTS.AUTH.LOGIN,
+            data
+        );
 
-    me: () => api.get("/auth/me"),
+        return res.data;
+    },
+
+    async logout() {
+
+        const res = await api.post(
+            API_ENDPOINTS.AUTH.LOGOUT
+        );
+
+        return res.data;
+    },
+
+    async me() {
+
+        const res = await api.get(
+            API_ENDPOINTS.AUTH.ME
+        );
+
+        return res.data;
+    },
+
+    async refresh() {
+
+        const res = await api.post(
+            API_ENDPOINTS.AUTH.REFRESH
+        );
+
+        return res.data;
+    },
 };

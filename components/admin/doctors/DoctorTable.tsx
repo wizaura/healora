@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import api from "@/lib/api";
 import toast from "react-hot-toast";
 import DoctorViewModal from "./DoctorViewModal";
 import ConfirmModal from "@/components/common/ConfirmModal";
+import { DoctorService } from "@/services/doctor.service";
 
 export default function DoctorsTable({
     doctors,
@@ -35,9 +35,10 @@ export default function DoctorsTable({
 
         setLoading(true);
         try {
-            await api.patch(`/doctor/${actionDoctor.id}/approval`, {
-                isApproved: false,
-            });
+            await DoctorService.approveDoctor(
+                actionDoctor.id,
+                false
+            );
 
             toast.success("Doctor disabled");
             refetch();

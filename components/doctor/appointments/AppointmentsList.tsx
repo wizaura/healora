@@ -1,3 +1,4 @@
+import Loader from "@/components/common/Loader";
 import SelectOption from "@/components/common/SelectOption";
 import React from "react";
 
@@ -68,9 +69,7 @@ export default function AppointmentsList({
 
             {/* Content */}
             {loading ? (
-                <div className="text-gray-500 text-sm animate-pulse">
-                    Loading appointments...
-                </div>
+                <Loader fullScreen />
             ) : appointments.length === 0 ? (
                 <div className="text-center py-10 text-gray-400">
                     No appointments found

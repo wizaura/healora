@@ -21,7 +21,7 @@ export default function HealoraAboutSection() {
 
                         <p>
                             At Healora Wellness Centre, our name reflects our
-                            promise — Healing and Wellness. We believe
+                            promise, Healing and Wellness. We believe
                             healthcare should be accessible, compassionate,
                             and centered around the individual.
                         </p>
@@ -161,8 +161,8 @@ export default function HealoraAboutSection() {
                         <p className="text-slate-600 text-lg leading-relaxed">
 
                             Quality healthcare should never be limited by geography.
-                            Healora bridges the distance between patients and doctors
-                            — one consultation at a time.
+                            Healora bridges the distance between patients and doctors,
+                            one consultation at a time.
 
                         </p>
 

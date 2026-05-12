@@ -191,7 +191,7 @@ export default function CheckoutFooter({
     }
 
     return (
-        <section className="rounded-2xl bg-white shadow-sm max-h-[650px] flex flex-col">
+        <section className="rounded-2xl max-h-[60vh] bg-white shadow-sm flex flex-col">
             <Script
                 src="https://checkout.razorpay.com/v1/checkout.js"
                 strategy="afterInteractive"

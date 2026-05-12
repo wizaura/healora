@@ -61,7 +61,7 @@ export default function AppointmentCard({ appt, onView }: any) {
           {appt.status}
         </div>
 
-        <div className="flex gap-2 mt-1 text-xs">
+        <div className="grid grid-col-2 md:grid-col-1 gap-2 mt-1 text-xs">
 
           <span
             className={`px-2 py-1 rounded-full ${slotPaid
@@ -87,7 +87,7 @@ export default function AppointmentCard({ appt, onView }: any) {
 
       {/* ACTIONS */}
 
-      <div className="flex flex-wrap gap-3 items-center">
+      <div className="flex flex-col gap-3 items-end justify-end">
 
         {/* JOIN MEETING */}
         {canJoinMeeting && (
@@ -112,53 +112,113 @@ export default function AppointmentCard({ appt, onView }: any) {
 
         {appt.meetingLink &&
           now > slotEnd && (
-            <span className="text-xs text-red-500">
+            <span className="text-xs text-red-500 font-bold">
               Meeting ended
             </span>
-          )}
+          )}  
 
-        {/* PAY FULL */}
+        {/* PAY BOTH */}
         {bothPending && (
+
           <button
             onClick={() =>
               router.push(`/checkout/${appt.id}`)
             }
-            className="flex items-center gap-1 bg-teal-600 text-white px-3 py-1.5 rounded-lg text-sm"
+            className="
+            flex items-center gap-2
+
+            rounded-lg
+
+            bg-teal-600
+            hover:bg-teal-700
+
+            px-4 py-2
+
+            text-sm font-medium text-white
+
+            transition
+        "
           >
-            <CreditCard size={14} />
-            Pay Now
+            <CreditCard size={15} />
+
+            Complete Payment
           </button>
         )}
 
         {/* PAY CONSULTATION */}
         {consultationPending && (
+
           <button
             onClick={() =>
               router.push(`/checkout/${appt.id}`)
             }
-            className="flex items-center gap-1 bg-teal-600 text-white px-3 py-1.5 rounded-lg text-sm"
+            className="
+            flex items-center gap-2
+
+            rounded-lg
+
+            border border-teal-200
+            bg-teal-50
+            hover:bg-teal-100
+
+            px-4 py-2
+
+            text-sm font-medium text-teal-700
+
+            transition
+        "
           >
-            <CreditCard size={14} />
+            <CreditCard size={15} />
+
             Pay Consultation
           </button>
         )}
 
         {/* RETRY SLOT */}
         {slotFailed && (
+
           <button
             onClick={() =>
               router.push(`/checkout/${appt.id}`)
             }
-            className="flex items-center gap-1 bg-red-500 text-white px-3 py-1.5 rounded-lg text-sm"
+            className="
+            flex items-center gap-2
+
+            rounded-lg
+
+            bg-red-500
+            hover:bg-red-600
+
+            px-4 py-2
+
+            text-sm font-medium text-white
+
+            transition
+        "
           >
-            <RefreshCw size={14} />
-            Retry Slot
+            <RefreshCw size={15} />
+
+            Retry Payment
           </button>
         )}
 
         <button
           onClick={onView}
-          className="text-sm font-medium text-indigo-600"
+          className="
+        inline-flex items-center gap-1
+
+        rounded-lg
+
+        border border-slate-200
+        bg-white
+        hover:bg-slate-50
+
+        px-3 py-1.5
+
+        text-sm font-medium text-slate-700
+
+        transition
+    "
         >
           View
         </button>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
+import { DoctorService } from "@/services/doctor.service";
 
 type Props = {
     doctor?: any;
@@ -62,32 +63,55 @@ export default function DoctorForm({ doctor, onSuccess, onClose }: Props) {
 
     /* ---------------- FETCH SPECIALITIES ---------------- */
     useEffect(() => {
-        api.get("/admin/specialities").then((res) => {
-            setSpecialities(res.data);
-        });
+        DoctorService.getSpecialities()
+            .then(setSpecialities);
     }, []);
 
     /* ---------------- FETCH SUB SPECIALITIES ---------------- */
     useEffect(() => {
-        if (!selectedSpecialities.length) {
-            setSubSpecialities([]);
-            setSelectedSubs([]);
-            return;
-        }
 
-        api
-            .get(`/admin/sub-specialities/by-specialities?ids=${selectedSpecialities.join(",")}`)
-            .then((res) => {
-                setSubSpecialities(res.data);
+        const fetchSubSpecialities = async () => {
 
-                // Re-apply selected subs
-                if (doctor?.doctor?.subSpecialities) {
-                    const subIds = doctor.doctor.subSpecialities.map(
-                        (s: any) => s.subSpeciality.id
+            if (!selectedSpecialities.length) {
+
+                setSubSpecialities([]);
+                setSelectedSubs([]);
+
+                return;
+            }
+
+            try {
+
+                const data =
+                    await DoctorService.getSubSpecialities(
+                        selectedSpecialities
                     );
+
+                setSubSpecialities(data);
+
+                // re-apply selected sub specialities on edit
+                if (doctor?.doctor?.subSpecialities) {
+
+                    const subIds =
+                        doctor.doctor.subSpecialities.map(
+                            (s: any) =>
+                                s.subSpeciality.id
+                        );
+
                     setSelectedSubs(subIds);
                 }
-            });
+
+            } catch (err) {
+
+                console.error(
+                    "Failed to fetch sub specialities",
+                    err
+                );
+            }
+        };
+
+        fetchSubSpecialities();
+
     }, [selectedSpecialities, doctor]);
 
     /* ---------------- TOGGLE SELECT ---------------- */
@@ -159,18 +183,20 @@ export default function DoctorForm({ doctor, onSuccess, onClose }: Props) {
             });
 
             if (doctor) {
-                await api.patch(`/admin/doctors/${doctor.id}`, formData, {
-                    headers: { "Content-Type": "multipart/form-data" },
-                });
+                await DoctorService.updateDoctor(
+                    doctor.id,
+                    formData
+                );
                 toast.success("Doctor updated");
             } else {
-                const res = await api.post("/admin/doctors", formData, {
-                    headers: { "Content-Type": "multipart/form-data" },
-                });
+                const data =
+                    await DoctorService.createDoctor(
+                        formData
+                    );
                 toast.success("Doctor created");
 
-                if (res.data?.tempPassword) {
-                    toast(`Temporary password: ${res.data.tempPassword}`, {
+                if (data?.tempPassword) {
+                    toast(`Temporary password: ${data.tempPassword}`, {
                         duration: 7000,
                     });
                 }

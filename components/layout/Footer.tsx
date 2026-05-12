@@ -8,18 +8,22 @@ const footerLinks = {
     platform: [
         { name: "Specialities", href: "/specialities" },
         { name: "Doctors", href: "/doctors" },
-        { name: "Why Homeopathy", href: "/why-homeopathy" },
+        { name: "Homeopathy", href: "/why-homeopathy" },
         { name: "Agro Homeopathy", href: "/agro-homeopathy" },
         { name: "Veterinary Homeopathy", href: "/veterinary-homeopathy" },
         { name: "Counselling & Psychotherapy", href: "/counselling" },
+        { name: "Diet & Nutrition", href: "/diet-and-nutrition" },
+        { name: "Medicine Intake", href: "/medicine-intake" },
     ],
     company: [
         { name: "About Healora", href: "/about" },
+        { name: "Vision & Mission", href: "/mission" },
         { name: "Blogs", href: "/blog" },
         { name: "FAQs", href: "/faqs" },
         { name: "Contact", href: "/contact" },
         { name: "Career", href: "/career" },
         { name: "Medikits", href: "/medikits" },
+        { name: "Consultation Process", href: "/consultation-process" },
     ],
 };
 
@@ -57,12 +61,12 @@ export default function Footer() {
 
                         <p className="mt-4 text-sm leading-relaxed break-words">
                             A trusted doctor consultation platform connecting patients with
-                            verified healthcare professionals — securely and seamlessly.
+                            verified healthcare professionals, securely and seamlessly.
                         </p>
 
                         <Link
                             href="/doctors"
-                            className="mt-6 inline-block rounded-xl bg-wellness-accent px-5 py-2.5 text-sm font-semibold text-navy shadow-md transition hover:scale-[1.03]"
+                            className="mt-6 inline-block rounded-lg bg-wellness-accent px-5 py-2.5 text-sm font-semibold text-navy shadow-md transition hover:scale-[1.03]"
                         >
                             Book an Appointment
                         </Link>
@@ -140,7 +144,7 @@ export default function Footer() {
                                     Healora Wellness Centre<br />
                                     Karuvanpoyil, Koduvally<br />
                                     Kozhikode, Kerala<br />
-                                    India — 673572
+                                    India, 673572
                                 </a>
                             </li>
                         </ul>
