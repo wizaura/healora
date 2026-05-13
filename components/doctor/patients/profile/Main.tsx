@@ -76,7 +76,7 @@ export default function PatientProfilePage() {
     }));
 
     return (
-        <div className="p-6 max-w-7xl mx-auto py-20 space-y-8">
+        <div className="p-6 max-w-7xl mx-auto py-8 space-y-8">
 
             {/* HEADER */}
 

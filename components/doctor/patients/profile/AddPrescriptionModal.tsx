@@ -157,7 +157,7 @@ export default function AddPrescriptionModal({ appointmentId, user, deliveryMode
                                 </div>
 
                                 <textarea
-                                    placeholder="Example: Psorinum 1M (10 pack) EMES 1 in 2 days"
+                                    placeholder="Example: Psorinum 1M (10 pack) EMES 1 in 2 days / 1 month"
                                     value={m.text}
                                     onChange={(e) => {
                                         const copy = [...medicines];

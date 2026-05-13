@@ -8,12 +8,14 @@ import AvailabilityModal from "./AvailabilityModal";
 /* ---------- TYPES ---------- */
 
 export type SlotStatus = "AVAILABLE" | "INACTIVE" | "BOOKED";
+export type SlotCategory = "FIRST_TIME" | "FOLLOW_UP";
 
 export type Slot = {
   id: string;
   startTimeUTC: string;
   endTimeUTC: string;
   status: SlotStatus;
+  category: SlotCategory;
 };
 
 export type Availability = {

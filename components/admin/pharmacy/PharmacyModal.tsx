@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { X } from "lucide-react";
+import api from "@/lib/api";
+import toast from "react-hot-toast";
 
 export default function PharmacyModal({ data, onClose, onSubmit }: any) {
   const user = data.appointment.user;
@@ -9,6 +11,7 @@ export default function PharmacyModal({ data, onClose, onSubmit }: any) {
   const address = data.appointment.deliveryAddress;
   const UserCurrency = data.appointment.currency;
 
+  const isPaid = data.paymentStatus === "PAID";
   const isInvoice = !!data.totalAmount;
 
   const [items, setItems] = useState(
@@ -38,6 +41,7 @@ export default function PharmacyModal({ data, onClose, onSubmit }: any) {
   const [currency, setCurrency] = useState(data.currency || "INR");
   const [note, setNote] = useState(data.pharmacyNote || "");
   const [loading, setLoading] = useState(false);
+  const [trackingId, setTrackingId] = useState(data.trackingId || "");
 
   const subtotal = useMemo(() => {
     const medicineTotal = items.reduce((acc: number, item: any) => {
@@ -83,6 +87,25 @@ export default function PharmacyModal({ data, onClose, onSubmit }: any) {
 
     setLoading(false);
   };
+
+  const handleSubmitTrackingId = async (
+    id: string,
+    trackingId: string
+  ) => {
+    try {
+      setLoading(true);
+
+      await api.patch(
+        `/pharmacy/${id}/invoice/track`,
+        { trackingId }
+      );
+      toast.success("Tracking Id saved")
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
@@ -338,6 +361,59 @@ export default function PharmacyModal({ data, onClose, onSubmit }: any) {
             />
           </div>
         </div>
+
+        {/* TRACKING ID */}
+        {/* TRACKING SECTION */}
+        {isPaid && isInvoice && (
+          <div className="border border-gray-200 rounded-xl p-5 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-base">
+                  Shipment Tracking
+                </h3>
+
+                <p className="text-sm text-gray-500">
+                  Add courier tracking information
+                </p>
+              </div>
+
+              {data.trackingId && (
+                <span className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                  Tracking Added
+                </span>
+              )}
+            </div>
+
+            <div className="flex gap-3">
+              <input
+                type="text"
+                value={trackingId}
+                onChange={(e) => setTrackingId(e.target.value)}
+                placeholder="Enter tracking ID"
+                className="flex-1 border border-gray-200 rounded-lg px-4 py-2"
+              />
+
+              <button
+                onClick={() =>
+                  handleSubmitTrackingId(data.id, trackingId)
+                }
+                disabled={loading || !trackingId}
+                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-5 py-2 rounded-lg"
+              >
+                {loading ? "Saving..." : data.trackingId ? "Update" : "Save"}
+              </button>
+            </div>
+
+            {data.trackingId && (
+              <div className="text-sm text-gray-600">
+                Current Tracking ID:
+                <span className="font-medium ml-2">
+                  {data.trackingId}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* FOOTER */}
         {!isInvoice && (

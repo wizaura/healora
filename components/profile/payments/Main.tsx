@@ -274,48 +274,151 @@ export default function Payments() {
             >
 
               {/* TOP */}
-              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div
+                className="
+    flex flex-col lg:flex-row lg:items-center lg:justify-between
+    gap-5
+    rounded-xl
+    border border-slate-200
+    bg-white
+    p-5
+    shadow-sm
+  "
+              >
 
-                <div>
+                {/* LEFT */}
+                <div className="flex-1 space-y-4">
 
-                  <p className="font-semibold text-slate-900">
-                    Invoice #{bill.invoiceNumber}
-                  </p>
+                  {/* Invoice Meta */}
+                  <div className="flex flex-wrap items-center gap-3">
 
-                  <p className="text-sm text-slate-500 mt-1">
-                    {new Date(
-                      bill.createdAt
-                    ).toLocaleDateString()}
-                  </p>
+                    <div
+                      className="
+          inline-flex items-center
+          rounded-full
+          bg-slate-100
+          px-3 py-1
+          text-xs font-medium text-slate-600
+        "
+                    >
+                      Invoice
+                    </div>
+
+                    <p className="text-lg font-semibold text-slate-900">
+                      #{bill.invoiceNumber}
+                    </p>
+
+                    <span className="text-sm text-slate-400">
+                      •
+                    </span>
+
+                    <p className="text-sm text-slate-500">
+                      {new Date(bill.createdAt).toLocaleDateString()}
+                    </p>
+
+                  </div>
+
+                  {/* Tracking */}
+                  {bill.trackingId && (
+                    <div
+                      className="
+          flex flex-col sm:flex-row sm:items-center
+          gap-3
+        "
+                    >
+
+                      <div>
+                        <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                          Tracking ID
+                        </p>
+
+                        <div
+                          className="
+              mt-1
+              inline-flex items-center gap-2
+              rounded-2xl
+              border border-slate-200
+              bg-slate-50
+              px-4 py-2
+            "
+                        >
+
+                          <span
+                            className="
+                font-mono
+                text-sm
+                font-semibold
+                text-slate-800
+              "
+                          >
+                            {bill.trackingId}
+                          </span>
+
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                bill.trackingId
+                              );
+                            }}
+                            className="
+                rounded-lg
+                bg-white
+                border border-slate-200
+                px-2 py-1
+                text-xs font-medium
+                text-teal-600
+                hover:border-teal-300
+                hover:bg-teal-50
+                transition
+              "
+                          >
+                            Copy
+                          </button>
+
+                        </div>
+                      </div>
+
+                    </div>
+                  )}
 
                 </div>
 
-                <div className="sm:text-right">
+                {/* RIGHT */}
+                <div
+                  className="
+      flex flex-col items-start
+      lg:items-end
+      gap-3
+    "
+                >
 
-                  <p className="text-xl font-semibold text-slate-900">
-                    {bill.currency}{" "}
-                    {bill.totalAmount}
-                  </p>
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-slate-400">
+                      Total Amount
+                    </p>
+
+                    <p className="text-3xl font-bold text-slate-900 mt-1">
+                      {bill.currency} {bill.totalAmount}
+                    </p>
+                  </div>
 
                   <span
                     className={`
-                                            inline-flex items-center
+        inline-flex items-center
+        rounded-full
+        px-4 py-1.5
+        text-xs font-semibold
+        tracking-wide
 
-                                            mt-2
-
-                                            rounded-full
-
-                                            px-3 py-1
-
-                                            text-xs font-medium
-
-                                            ${bill.paymentStatus === "PAID"
+        ${bill.paymentStatus === "PAID"
                         ? "bg-emerald-100 text-emerald-700"
                         : "bg-amber-100 text-amber-700"
                       }
-                                        `}
+      `}
                   >
-                    {bill.paymentStatus}
+                    {bill.paymentStatus === "PAID"
+                      ? "Paid"
+                      : "Pending Payment"}
                   </span>
 
                 </div>

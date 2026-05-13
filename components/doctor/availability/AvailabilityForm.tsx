@@ -15,6 +15,9 @@ export default function AvailabilityForm() {
     const [end, setEnd] = useState("17:00");
     const [duration, setDuration] = useState<30 | 60>(30);
     const [loading, setLoading] = useState(false);
+    const [category, setCategory] = useState<
+        "FIRST_TIME" | "FOLLOW_UP"
+    >("FOLLOW_UP");
 
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -69,6 +72,7 @@ export default function AvailabilityForm() {
                 startTime: start,
                 endTime: end,
                 slotDuration: duration,
+                category,
                 timezone,
             });
 
@@ -94,7 +98,7 @@ export default function AvailabilityForm() {
             : 0;
 
     return (
-        <section className="rounded-2xl md:pt-12">
+        <section className="rounded-2xl md:pt-2">
             <div className="flex items-center justify-between">
                 <div>
                     <h2 className="text-lg sm:text-3xl font-semibold text-[#1F2147]">
@@ -168,6 +172,86 @@ export default function AvailabilityForm() {
                             ))}
                         </div>
 
+                        <div className="space-y-3">
+                            <p className="text-sm font-medium text-gray-700">
+                                Consultation Category
+                            </p>
+
+                            <div className="grid grid-cols-2 gap-3">
+
+                                <button
+                                    type="button"
+                                    onClick={() => setCategory("FIRST_TIME")}
+                                    className={`
+                                        rounded-2xl
+                                        border
+                                        px-4 py-4
+                                        text-sm font-medium
+                                        transition-all
+
+                                        ${category === "FIRST_TIME"
+                                            ? "border-navy bg-navy text-white"
+                                            : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
+                                        }
+                                    `}
+                                >
+                                    <div className="flex flex-col items-center gap-1">
+                                        <span className="text-base">
+                                            First Time
+                                        </span>
+
+                                        <span
+                                            className={`
+                                                text-xs
+                                                ${category === "FIRST_TIME"
+                                                    ? "text-white/80"
+                                                    : "text-gray-500"
+                                                }
+                                            `}
+                                        >
+                                            New patient consultation
+                                        </span>
+                                    </div>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => setCategory("FOLLOW_UP")}
+                                    className={`
+                                        rounded-2xl
+                                        border
+                                        px-4 py-4
+                                        text-sm font-medium
+                                        transition-all
+
+                                        ${category === "FOLLOW_UP"
+                                            ? "border-navy bg-navy text-white"
+                                            : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
+                                        }
+                                    `}
+                                >
+                                    <div className="flex flex-col items-center gap-1">
+                                        <span className="text-base">
+                                            Follow Up
+                                        </span>
+
+                                        <span
+                                            className={`
+                                                text-xs
+                                                ${category === "FOLLOW_UP"
+                                                    ? "text-white/80"
+                                                    : "text-gray-500"
+                                                }
+                                            `}
+                                        >
+                                            Existing patient review
+                                        </span>
+                                    </div>
+                                </button>
+
+                            </div>
+                        </div>
+
                         {/* Summary */}
                         <div className="rounded-2xl border bg-white p-5 shadow-sm">
                             <div className="flex flex-wrap gap-3 justify-center">
@@ -189,6 +273,14 @@ export default function AvailabilityForm() {
                                 <div className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-xl">
                                     <Timer className="h-4 w-4 text-navy" />
                                     {duration} min slots
+                                </div>
+
+                                <div className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-xl">
+                                    <span className="text-sm font-semibold text-navy">
+                                        {category === "FIRST_TIME"
+                                            ? "First Time"
+                                            : "Follow Up"}
+                                    </span>
                                 </div>
 
                             </div>

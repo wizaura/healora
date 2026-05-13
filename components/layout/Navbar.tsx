@@ -13,6 +13,7 @@ import {
     ShieldCheck,
     ChevronDown,
     AlertTriangle,
+    Phone,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
@@ -256,23 +257,220 @@ export default function Navbar() {
                         </Link>
                     )}
 
-                    <Link
-                        href="/contact"
-                        className="hidden md:flex group flex items-center gap-2 rounded-full
-                        border border-gray-200 bg-white px-5 py-2.5
-                        text-sm font-medium text-[#1F2147] shadow-sm
-                        transition hover:bg-gray-50"
-                    >
-                        <span
-                            className="flex h-6 w-6 items-center justify-center
-                            rounded-full bg-[#2F4CFF] text-white
-                            transition group-hover:scale-105"
-                        >
-                            <ArrowUpRight size={16} />
-                        </span>
+                    {/* ACTION BUTTONS */}
+                    <div className="flex items-center gap-3">
 
-                        Contact Us
-                    </Link>
+                        {/* CONTACT */}
+                        <div className="relative hidden md:block group">
+
+                            <Link
+                                href="/contact"
+                                className="
+                flex h-11 w-11
+                items-center justify-center
+
+                rounded-full
+
+                border border-gray-200
+
+                bg-white
+
+                text-[#1F2147]
+
+                shadow-sm
+
+                transition-all duration-300
+
+                hover:-translate-y-0.5
+                hover:border-[#2F4CFF]/20
+                hover:shadow-md
+            "
+                            >
+
+                                <Phone
+                                    size={18}
+                                    className="
+                    transition
+                    group-hover:scale-110
+                "
+                                />
+
+                            </Link>
+
+                            {/* TOOLTIP */}
+                            <div
+                                className="
+                pointer-events-none
+
+                absolute left-1/2 top-[120%]
+                -translate-x-1/2
+
+                whitespace-nowrap
+
+                rounded-lg
+
+                bg-[#1F2147]
+
+                px-3 py-1.5
+
+                text-xs font-medium text-white
+
+                shadow-lg
+
+                opacity-0
+                translate-y-1
+
+                transition-all duration-200
+
+                group-hover:opacity-100
+                group-hover:translate-y-0
+            "
+                            >
+
+                                Contact Us
+
+                                <div
+                                    className="
+                    absolute left-1/2 top-0
+
+                    h-2 w-2
+
+                    -translate-x-1/2
+                    -translate-y-1/2
+                    rotate-45
+
+                    bg-[#1F2147]
+                "
+                                />
+
+                            </div>
+
+                        </div>
+
+                        {/* BE A DOCTOR */}
+                        <div className="relative group">
+
+                            <Link
+                                href="/become-doctor"
+                                className="
+                relative overflow-hidden
+
+                flex items-center gap-2
+
+                rounded-full
+
+                bg-gradient-to-r
+                from-[#1F2147]
+                to-[#2F4CFF]
+
+                px-4 md:px-5
+                py-2.5
+
+                text-sm font-medium text-white
+
+                shadow-md shadow-[#2F4CFF]/20
+
+                transition-all duration-300
+
+                hover:-translate-y-0.5
+                hover:shadow-lg hover:shadow-[#2F4CFF]/30
+            "
+                            >
+
+                                {/* GLOW */}
+                                <div
+                                    className="
+                    absolute inset-0
+
+                    bg-white/10
+
+                    opacity-0
+
+                    transition
+
+                    group-hover:opacity-100
+                "
+                                />
+
+                                {/* ICON */}
+                                <div
+                                    className="
+                    relative
+
+                    flex h-7 w-7
+                    items-center justify-center
+
+                    rounded-full
+
+                    bg-white/15
+                    backdrop-blur-sm
+                "
+                                >
+
+                                    <Stethoscope size={15} />
+
+                                </div>
+
+                                {/* TEXT */}
+                                <span className="relative hidden sm:block">
+                                    Be a Doctor
+                                </span>
+
+                            </Link>
+
+                            {/* MOBILE TOOLTIP */}
+                            <div
+                                className="
+                pointer-events-none
+
+                absolute left-1/2 top-[120%]
+                -translate-x-1/2
+
+                whitespace-nowrap
+
+                rounded-lg
+
+                bg-[#1F2147]
+
+                px-3 py-1.5
+
+                text-xs font-medium text-white
+
+                shadow-lg
+
+                opacity-0
+                translate-y-1
+
+                transition-all duration-200
+
+                group-hover:opacity-100
+                group-hover:translate-y-0
+
+                sm:hidden
+            "
+                            >
+
+                                Be a Doctor
+
+                                <div
+                                    className="
+                    absolute left-1/2 top-0
+
+                    h-2 w-2
+
+                    -translate-x-1/2
+                    -translate-y-1/2
+                    rotate-45
+
+                    bg-[#1F2147]
+                "
+                                />
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                     {/* Mobile Menu Button */}
                     <button

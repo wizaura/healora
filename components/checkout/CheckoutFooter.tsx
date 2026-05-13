@@ -326,6 +326,7 @@ export default function CheckoutFooter({
 
                                 <button
                                     type="button"
+                                    disabled
                                     onClick={() => setMeetingType("zoom")}
                                     className={`flex-1 py-2 rounded-lg border ${meetingType === "zoom"
                                         ? "border-navy bg-navy/5"

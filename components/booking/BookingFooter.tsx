@@ -147,106 +147,148 @@ export default function BookingFooter({
             {/* FOOTER */}
             <div
                 className="
-                    sticky bottom-0 z-20
+        sticky bottom-0 z-20
 
-                    border-t border-slate-200
+        border-t border-slate-200
 
-                    bg-white/95
-                    backdrop-blur
+        bg-white/95
+        backdrop-blur
 
-                    shadow-[0_-4px_20px_rgba(0,0,0,0.04)]
-                "
+        shadow-[0_-4px_20px_rgba(0,0,0,0.04)]
+    "
             >
 
                 <div
                     className="
-                        mx-auto
-
-                        max-w-7xl
-
-                        px-6 py-4
-                    "
+            mx-auto
+            max-w-7xl
+            px-6 py-4
+        "
                 >
 
                     <div
                         className="
-                            flex flex-col lg:flex-row
-                            lg:items-center
-                            lg:justify-between
-
-                            gap-5
-                        "
+                flex flex-col lg:flex-row
+                lg:items-center
+                lg:justify-between
+                gap-5
+            "
                     >
 
                         {/* LEFT */}
-                        <div className="space-y-3">
+                        <div className="space-y-4">
 
+                            {/* HEADER */}
                             <div className="flex items-center gap-2">
 
-                                <ShieldCheck
-                                    size={18}
-                                    className="text-emerald-600"
-                                />
+                                <div
+                                    className="
+                            flex h-8 w-8
+                            items-center justify-center
+                            rounded-full
+                            bg-emerald-100
+                        "
+                                >
+                                    <ShieldCheck
+                                        size={16}
+                                        className="text-emerald-600"
+                                    />
+                                </div>
 
-                                <p className="text-sm font-semibold text-slate-900">
-                                    Selected Appointment
-                                </p>
+                                <div>
+                                    <p className="text-sm font-semibold text-slate-900">
+                                        Appointment Selected
+                                    </p>
+
+                                    <p className="text-xs text-slate-500">
+                                        Your consultation slot will be reserved temporarily
+                                    </p>
+                                </div>
 
                             </div>
 
+                            {/* DETAILS */}
                             <div className="flex flex-wrap gap-3">
 
                                 {/* DATE */}
                                 <div
                                     className="
-                                        flex items-center gap-2
+                            flex items-center gap-3
 
-                                        rounded-lg
+                            rounded-lg
 
-                                        border border-slate-200
+                            border border-slate-200
 
-                                        bg-slate-50
+                            bg-slate-50
 
-                                        px-4 py-2.5
-                                    "
+                            px-4 py-3
+                        "
                                 >
 
-                                    <CalendarDays
-                                        size={16}
-                                        className="text-teal-600"
-                                    />
+                                    <div
+                                        className="
+                                flex h-9 w-9
+                                items-center justify-center
+                                rounded-full
+                                bg-teal-100
+                            "
+                                    >
+                                        <CalendarDays
+                                            size={16}
+                                            className="text-teal-700"
+                                        />
+                                    </div>
 
-                                    <span className="text-sm text-slate-700">
-                                        {dateLabel}
-                                    </span>
+                                    <div className="text-left">
+                                        <p className="text-xs text-slate-500">
+                                            Appointment Date
+                                        </p>
+
+                                        <p className="text-sm font-medium text-slate-800">
+                                            {dateLabel}
+                                        </p>
+                                    </div>
 
                                 </div>
 
                                 {/* TIME */}
                                 <div
                                     className="
-                                        flex items-center gap-2
+                            flex items-center gap-3
 
-                                        rounded-lg
+                            rounded-lg
 
-                                        border border-slate-200
+                            border border-slate-200
 
-                                        bg-slate-50
+                            bg-slate-50
 
-                                        px-4 py-2.5
-                                    "
+                            px-4 py-3
+                        "
                                 >
 
-                                    <Clock3
-                                        size={16}
-                                        className="text-indigo-600"
-                                    />
+                                    <div
+                                        className="
+                                flex h-9 w-9
+                                items-center justify-center
+                                rounded-full
+                                bg-indigo-100
+                            "
+                                    >
+                                        <Clock3
+                                            size={16}
+                                            className="text-indigo-700"
+                                        />
+                                    </div>
 
-                                    <span className="text-sm text-slate-700">
-                                        {startTime}
-                                        {" – "}
-                                        {endTime}
-                                    </span>
+                                    <div className="text-left">
+                                        <p className="text-xs text-slate-500">
+                                            Consultation Time
+                                        </p>
+
+                                        <p className="text-sm font-medium text-slate-800">
+                                            {startTime}
+                                        </p>
+                                    </div>
 
                                 </div>
 
@@ -257,25 +299,25 @@ export default function BookingFooter({
                         {/* BUTTON */}
                         <button
                             onClick={handleContinue}
-
                             disabled={loading}
-
                             className="
-                                inline-flex items-center justify-center gap-2
+                    inline-flex items-center justify-center gap-2
 
-                                rounded-lg
+                    rounded-lg
 
-                                bg-[#1F2147]
-                                hover:bg-[#151736]
+                    bg-[#1F2147]
+                    hover:bg-[#151736]
 
-                                disabled:opacity-60
+                    disabled:opacity-60
 
-                                px-6 py-3
+                    px-7 py-3.5
 
-                                text-sm font-medium text-white
+                    text-sm font-semibold text-white
 
-                                transition
-                            "
+                    shadow-lg shadow-[#1F2147]/10
+
+                    transition-all duration-200
+                "
                         >
 
                             {loading
@@ -477,7 +519,7 @@ export default function BookingFooter({
                                         redirectUrl
                                     );
 
-                                    sessionStorage.setItem( 
+                                    sessionStorage.setItem(
                                         "loginFrom",
                                         window.location.pathname
                                     );

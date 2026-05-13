@@ -166,6 +166,24 @@ export default function AvailabilityModal({
                                         {formatTime(slot.startTimeUTC)} –{" "}
                                         {formatTime(slot.endTimeUTC)}
                                     </p>
+                                    <span
+                                        className={`
+                                            inline-flex items-center
+                                            rounded-full
+                                            px-3 py-1
+                                            text-xs font-semibold
+                                            tracking-wide
+
+                                            ${slot.category === "FIRST_TIME"
+                                                ? "bg-blue-100 text-blue-700"
+                                                : "bg-emerald-100 text-emerald-700"
+                                            }
+        `}
+                                    >
+                                        {slot.category === "FIRST_TIME"
+                                            ? "First Time"
+                                            : "Follow Up"}
+                                    </span>
 
                                     <button
                                         disabled={isBooked}

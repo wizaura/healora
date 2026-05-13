@@ -53,7 +53,7 @@ export default function DoctorBasicInfo({ profile, setProfile, isEditing }: any)
             onChange={(e) =>
               setProfile((prev: any) => ({
                 ...prev,
-                experience: e.target.value,
+                graduation: e.target.value,
               }))
             }
             className={inputClass}

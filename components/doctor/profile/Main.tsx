@@ -65,7 +65,7 @@ export default function DoctorProfilePage() {
     if (!profile) return null;
 
     return (
-        <div className="min-h-screen pt-12 pb-16">
+        <div className="min-h-screen pt-8 pb-16">
             <div className="max-w-6xl mx-auto space-y-4">
 
                 {/* HEADER */}

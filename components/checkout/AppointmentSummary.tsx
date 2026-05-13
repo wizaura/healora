@@ -75,7 +75,7 @@ export default function AppointmentSummary({
                         {formattedDate}
                     </span>
                     <span className="text-sm font-semibold text-white">
-                        {time} - {timeEnd}
+                        {time}
                     </span>
                 </div>
 
