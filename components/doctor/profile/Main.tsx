@@ -106,18 +106,64 @@ export default function DoctorProfilePage() {
                         </div>
 
                         {/* Text */}
+                        {/* Text */}
                         <div className="min-w-0">
-                            <h1 className="text-2xl font-semibold text-gray-900">
-                                Doctor Profile
-                            </h1>
 
-                            <p className="text-sm text-gray-600 mt-1 truncate">
+                            <div className="flex flex-wrap items-center gap-3">
+
+                                <h1 className="text-2xl font-semibold text-gray-900">
+                                    Doctor Profile
+                                </h1>
+
+                                {/* RATING */}
+                                {profile?.ratingCount > 0 && (
+
+                                    <div
+                                        className="
+                    inline-flex items-center gap-1.5
+
+                    rounded-full
+
+                    border border-yellow-200
+
+                    bg-yellow-50
+
+                    px-3 py-1
+
+                    text-sm font-medium
+
+                    text-yellow-700
+                "
+                                    >
+
+                                        <span className="text-yellow-500">
+                                            ⭐
+                                        </span>
+
+                                        <span>
+                                            {Number(
+                                                profile.averageRating || 0
+                                            ).toFixed(1)}
+                                        </span>
+
+                                        <span className="text-yellow-600/70">
+                                            ({profile.ratingCount})
+                                        </span>
+
+                                    </div>
+
+                                )}
+
+                            </div>
+
+                            <p className="text-sm text-gray-600 mt-2 truncate">
                                 {profile?.name} • {profile?.email}
                             </p>
 
                             <p className="text-xs sm:text-sm text-gray-500 mt-1">
                                 Manage your professional details, fees and documents
                             </p>
+
                         </div>
 
                     </div>

@@ -7,6 +7,7 @@ import AppointmentDetailsModal from "./AppointmentModal";
 import { CalendarX2, Search } from "lucide-react";
 import Loader from "@/components/common/Loader";
 import SelectOption from "@/components/common/SelectOption";
+import AppointmentReviewModal from "./AppointmentReviewModal";
 
 export default function UserAppointments() {
 
@@ -15,10 +16,29 @@ export default function UserAppointments() {
     const [selected, setSelected] = useState<any>(null);
     const [statusFilter, setStatusFilter] = useState("");
     const [search, setSearch] = useState("");
+    const [reviewAppointment, setReviewAppointment] = useState<any>(null);
 
     useEffect(() => {
         fetchAppointments();
     }, [statusFilter]);
+
+    useEffect(() => {
+
+        const pendingReview =
+            appointments.find(
+                (a) =>
+                    a.status === "COMPLETED" &&
+                    a.doctorRatingStatus ===
+                    "PENDING"
+            );
+
+        if (pendingReview) {
+            setReviewAppointment(
+                pendingReview
+            );
+        }
+
+    }, [appointments]);
 
     const fetchAppointments = async () => {
         try {
@@ -275,6 +295,16 @@ export default function UserAppointments() {
                 <AppointmentDetailsModal
                     appointment={selected}
                     onClose={() => setSelected(null)}
+                />
+            )}
+
+            {reviewAppointment && (
+                <AppointmentReviewModal
+                    appointment={reviewAppointment}
+                    onClose={() =>
+                        setReviewAppointment(null)
+                    }
+                    onSubmitted={fetchAppointments}
                 />
             )}
 

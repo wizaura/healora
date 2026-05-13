@@ -89,12 +89,62 @@ export default function ReviewsSection() {
               "
             >
               {/* AVATAR */}
-              <div className="absolute z-10 -top-6 left-8 h-14 w-14 rounded-full bg-wellness-bg p-1 shadow-md">
-                <img
-                  src={item.avatar}
-                  alt={item.name}
-                  className="h-full w-full rounded-full object-cover"
-                />
+              <div
+                className="
+    absolute z-10
+
+    -top-6 left-8
+
+    h-14 w-14
+
+    overflow-hidden
+
+    rounded-full
+
+    bg-wellness-bg
+
+    p-1
+
+    shadow-md
+  "
+              >
+
+                {item.avatar ? (
+
+                  <img
+                    src={item.avatar}
+                    alt={item.name}
+                    className="
+        h-full w-full
+
+        rounded-full
+
+        object-cover
+      "
+                  />
+
+                ) : (
+
+                  <div
+                    className="
+        flex h-full w-full
+        items-center justify-center
+
+        rounded-full
+
+        bg-gradient-to-br
+        from-[#1F2147]
+        to-[#2E3363]
+
+        text-lg font-semibold
+        text-white
+      "
+                  >
+                    {item.name?.[0]?.toUpperCase()}
+                  </div>
+
+                )}
+
               </div>
 
               {/* STARS */}
@@ -125,9 +175,41 @@ export default function ReviewsSection() {
                 <p className="font-semibold text-navy">
                   {item.name}
                 </p>
-                <p className="text-xs text-navy/60">
-                  Google Review
-                </p>
+                <div
+                  className="
+    inline-flex items-center gap-1.5
+
+    rounded-full
+
+    bg-navy/5
+
+    px-2.5 py-1
+
+    text-[11px] font-medium
+
+    text-navy/70
+  "
+                >
+
+                  {item.avatar ? (
+                    <>
+                      <span className="text-blue-500">
+                        ✦
+                      </span>
+
+                      Google Review
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-teal-500">
+                        ♥
+                      </span>
+
+                      Healora Review
+                    </>
+                  )}
+
+                </div>
               </div>
             </div>
           ))}

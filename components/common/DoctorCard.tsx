@@ -62,23 +62,63 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
 
                 <div className="flex-1">
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
 
                         <h3 className="font-semibold text-navy-dark text-lg">
                             {doctor.user?.name}
                         </h3>
 
+                        {/* VERIFIED */}
                         {doctor.isApproved && (
 
                             <span
                                 className="
-                                inline-flex items-center gap-1
-                                text-xs
-                                text-green-600
-                            "
+                inline-flex items-center gap-1
+                text-xs
+                text-green-600
+            "
                             >
                                 <BadgeCheck size={14} />
                             </span>
+
+                        )}
+
+                        {/* RATING */}
+                        {doctor.ratingCount > 0 && (
+
+                            <div
+                                className="
+                inline-flex items-center gap-1
+
+                rounded-full
+
+                border border-yellow-200
+
+                bg-yellow-50
+
+                px-2 py-0.5
+
+                text-xs font-medium
+
+                text-yellow-700
+            "
+                            >
+
+                                <span className="text-yellow-500">
+                                    ⭐
+                                </span>
+
+                                <span>
+                                    {Number(
+                                        doctor.averageRating || 0
+                                    ).toFixed(1)}
+                                </span>
+
+                                <span className="text-yellow-700/70">
+                                    ({doctor.ratingCount})
+                                </span>
+
+                            </div>
 
                         )}
 

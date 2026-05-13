@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import UserModal from "./UserModal";
+import AdminReviews from "./Reviews";
 
 export default function AdminUsers() {
 
@@ -169,6 +170,8 @@ export default function AdminUsers() {
                     }}
                 />
             )}
+
+            <AdminReviews />
         </div>
     );
 }

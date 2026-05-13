@@ -351,7 +351,7 @@ export default function Navbar() {
                         <div className="relative group">
 
                             <Link
-                                href="/become-doctor"
+                                href="/carrer"
                                 className="
                 relative overflow-hidden
 

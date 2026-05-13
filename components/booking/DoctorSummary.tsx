@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDown, ChevronUp, BadgeCheck } from "lucide-react";
+import { ChevronDown, ChevronUp, BadgeCheck, Star } from "lucide-react";
 import api from "@/lib/api";
 import Link from "next/link";
 import Loader from "../common/Loader";
@@ -21,7 +21,7 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
   }
 
   return (
-    <section className="relative m-4 rounded-3xl bg-gradient-to-b from-white to-wellness-bg pt-20 pb-12">
+    <section className="relative m-4 rounded-3xl bg-gradient-to-b from-wellness-bg via-white to-wellness-bg pt-20 pb-12">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid items-start gap-16 md:grid-cols-2">
 
@@ -37,12 +37,77 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
               {data.name}
             </h1>
 
-            {data.isApproved && (
-              <div className="inline-flex items-center gap-2 text-sm text-emerald-700">
-                <BadgeCheck size={16} />
-                Verified Doctor
-              </div>
-            )}
+            <div className="flex flex-wrap items-center justify-center gap-3 md:justify-start">
+
+              {/* VERIFIED */}
+              {data.isApproved && (
+
+                <div
+                  className="
+        inline-flex items-center gap-2
+
+        rounded-full
+
+        border border-emerald-200
+
+        bg-emerald-50
+
+        px-4 py-1.5
+
+        text-sm font-medium
+
+        text-emerald-700
+      "
+                >
+
+                  <BadgeCheck size={16} />
+
+                  Verified Doctor
+
+                </div>
+
+              )}
+
+              {/* RATING */}
+              {data.ratingCount > 0 && (
+
+                <div
+                  className="
+        inline-flex items-center gap-2
+
+        rounded-full
+
+        border border-yellow-200
+
+        bg-yellow-50
+
+        px-4 py-1.5
+
+        text-sm font-medium
+
+        text-yellow-700
+      "
+                >
+
+                  <span className="text-yellow-500 text-base">
+                    <Star />
+                  </span>
+
+                  <span>
+                    {Number(
+                      data.averageRating || 0
+                    ).toFixed(1)}
+                  </span>
+
+                  <span className="text-yellow-700/70">
+                    ({data.ratingCount} reviews)
+                  </span>
+
+                </div>
+
+              )}
+
+            </div>
 
             {/* Qualification + Experience */}
             <div className="text-md text-navy/90 space-y-1">
@@ -51,6 +116,13 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
                   Qualification:
                 </span>{" "}
                 {data.qualification}
+              </p>
+
+              <p>
+                <span className="font-medium text-lg text-navy">
+                  Graduated From:
+                </span>{" "}
+                {data.graduation}
               </p>
 
               <p>

@@ -61,6 +61,34 @@ export default function AppointmentCard({ appt, onView }: any) {
           {appt.status}
         </div>
 
+        {appt.doctorRating && (
+
+          <div
+            className="
+        inline-flex items-center gap-1
+
+        rounded-full
+
+        bg-yellow-50
+
+        px-2.5 py-1
+
+        text-xs font-medium
+
+        text-yellow-700
+      "
+          >
+
+            <span>⭐</span>
+
+            <span>
+              {appt.doctorRating}/5
+            </span>
+
+          </div>
+
+        )}
+
         <div className="grid grid-col-2 md:grid-col-1 gap-2 mt-1 text-xs">
 
           <span
@@ -115,7 +143,7 @@ export default function AppointmentCard({ appt, onView }: any) {
             <span className="text-xs text-red-500 font-bold">
               Meeting ended
             </span>
-          )}  
+          )}
 
         {/* PAY BOTH */}
         {bothPending && (
