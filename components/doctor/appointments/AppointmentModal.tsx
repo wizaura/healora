@@ -2,7 +2,7 @@
 
 import api from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Calendar, User, CreditCard } from "lucide-react";
+import { X, Calendar, User, CreditCard, Trash2 } from "lucide-react";
 
 export default function AppointmentModal({
     selected,
@@ -31,13 +31,37 @@ export default function AppointmentModal({
     };
 
     const canJoin = (() => {
-        if (!selected?.meetingLink || !selected?.slot?.startTimeUTC) return false;
 
-        const now = new Date();
-        const start = new Date(selected.slot.startTimeUTC);
+        if (
+            !selected?.meetingLink ||
+            !selected?.slot?.startTimeUTC ||
+            !selected?.slot?.endTimeUTC
+        ) {
+            return false;
+        }
 
-        const diff = (start.getTime() - now.getTime()) / (1000 * 60);
-        return diff <= 10;
+        const now = Date.now();
+
+        const start =
+            new Date(
+                selected.slot.startTimeUTC
+            ).getTime();
+
+        const end =
+            new Date(
+                selected.slot.endTimeUTC
+            ).getTime();
+
+        /* JOIN WINDOW:
+           - 10 min before
+           - until 1 hour after end
+        */
+
+        return (
+            now >= start - 10 * 60 * 1000 &&
+            now <= end + 60 * 60 * 1000
+        );
+
     })();
 
     const paymentBadge = (status: string) =>
@@ -128,6 +152,130 @@ export default function AppointmentModal({
                                 </div>
                             </div>
 
+                            {/* CANCELLATION INFO */}
+                            {selected.status === "CANCELLED" && (
+
+                                <div
+                                    className="
+            rounded-xl
+
+            border border-red-200
+
+            bg-red-50
+
+            p-5
+        "
+                                >
+
+                                    <div className="flex items-start gap-3">
+
+                                        <div
+                                            className="
+                    flex h-10 w-10
+                    shrink-0
+                    items-center justify-center
+
+                    rounded-xl
+
+                    bg-red-100
+                "
+                                        >
+
+                                            <Trash2
+                                                size={18}
+                                                className="text-red-600"
+                                            />
+
+                                        </div>
+
+                                        <div className="flex-1">
+
+                                            <p
+                                                className="
+                        text-sm font-semibold
+
+                        text-red-700
+                    "
+                                            >
+                                                Appointment Cancelled
+                                            </p>
+
+                                            {selected.cancelledAt && (
+
+                                                <p
+                                                    className="
+                            mt-1
+
+                            text-xs
+
+                            text-red-600/80
+                        "
+                                                >
+
+                                                    Cancelled on{" "}
+
+                                                    {new Date(
+                                                        selected.cancelledAt
+                                                    ).toLocaleString()}
+
+                                                </p>
+
+                                            )}
+
+                                            {selected.cancelReason && (
+
+                                                <div
+                                                    className="
+                            mt-4
+
+                            rounded-xl
+
+                            border border-red-100
+
+                            bg-white/70
+
+                            p-4
+                        "
+                                                >
+
+                                                    <p
+                                                        className="
+                                text-xs font-medium
+
+                                uppercase tracking-wide
+
+                                text-red-500
+                            "
+                                                    >
+                                                        Reason
+                                                    </p>
+
+                                                    <p
+                                                        className="
+                                mt-2
+
+                                text-sm leading-relaxed
+
+                                text-slate-700
+                            "
+                                                    >
+                                                        {
+                                                            selected.cancelReason
+                                                        }
+                                                    </p>
+
+                                                </div>
+
+                                            )}
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            )}
+
                             {/* Payment Section */}
                             <div className="space-y-3">
                                 <p className="text-sm font-medium text-[#0B2E28]">
@@ -191,26 +339,50 @@ export default function AppointmentModal({
                                                 {selected.meetingType}
                                             </p>
 
-                                            {selected.status === "COMPLETED" ? (
+                                            {selected.status === "CANCELLED" ? (
+
+                                                <p className="text-xs text-red-600 font-medium">
+                                                    Appointment was cancelled.
+                                                </p>
+
+                                            ) : selected.status === "COMPLETED" ? (
+
                                                 <p className="text-xs text-blue-600 font-medium">
                                                     Appointment already completed.
                                                 </p>
+
                                             ) : selected.status !== "CONFIRMED" ? (
+
                                                 <p className="text-xs text-amber-600 font-medium">
                                                     Appointment not confirmed yet.
                                                 </p>
+
                                             ) : canJoin ? (
+
                                                 <a
-                                                    href={selected.doctorStartLink ?? selected.meetingLink}
+                                                    href={
+                                                        selected.doctorStartLink ??
+                                                        selected.meetingLink
+                                                    }
                                                     target="_blank"
-                                                    className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:underline"
+                                                    className="
+            inline-flex items-center gap-2
+
+            text-sm font-medium
+
+            text-indigo-600
+            hover:underline
+        "
                                                 >
                                                     Join Meeting
                                                 </a>
+
                                             ) : (
+
                                                 <p className="text-xs text-[#7FA6A0]">
                                                     Meeting link available 10 minutes before consultation.
                                                 </p>
+
                                             )}
                                         </div>
                                     </div>

@@ -83,7 +83,7 @@ export default function Profile() {
 
             <InfoItem icon={<User size={16} />} label="Full Name" value={profile?.name} />
             <InfoItem icon={<Mail size={16} />} label="Email" value={profile?.email} />
-            <InfoItem icon={<Phone size={16} />} label="Phone" value={profile?.phone || "—"} />
+            <InfoItem icon={<Phone size={16} />} label="Phone" value={profile?.address?.phone || "—"} />
             <InfoItem icon={<Cake size={16} />} label="Age" value={profile?.age || "—"} />
             <InfoItem icon={<VenusAndMars size={16} />} label="Gender" value={profile?.gender || "—"} />
 

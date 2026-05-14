@@ -28,7 +28,20 @@ export default function AllDoctors() {
 
     const { data: doctors = [], isLoading } = useQuery({
         queryKey: ["all-doctors"],
-        queryFn: () => api.get("/doctor").then(res => res.data),
+
+        queryFn: async () => {
+
+            const res =
+                await api.get("/doctor");
+
+            const doctors =
+                res.data || [];
+
+            // shuffle doctors
+            return doctors.sort(
+                () => Math.random() - 0.5
+            );
+        },
     });
 
     /* ================= SPECIALITIES ================= */

@@ -14,19 +14,70 @@ export default function AppointmentCard({ appt, onView }: any) {
       hour: "2-digit",
       minute: "2-digit",
     });
+    
 
-  const slotPaid = appt.slotPaymentStatus === "PAID";
-  const consultationPaid = appt.consultationPaymentStatus === "PAID";
+    console.log(appt,'a')
 
-  const slotFailed = appt.slotPaymentStatus === "FAILED";
+  const slotPaid =
+    appt.slotPaymentStatus === "PAID";
+
+  const consultationPaid =
+    appt.consultationPaymentStatus === "PAID";
+
+  const slotFailed =
+    appt.slotPaymentStatus === "FAILED";
+
+  const consultationFailed =
+    appt.consultationPaymentStatus === "FAILED";
+
+  const isConfirmed =
+    appt.status === "CONFIRMED";
+
+  const isCancelled =
+    appt.status === "CANCELLED";
+
+  const isPending =
+    appt.status === "PENDING";
+
+  /* ======================================================
+     COMPLETE PAYMENT
+  ====================================================== */
 
   const bothPending =
-    appt.slotPaymentStatus !== "PAID" &&
-    appt.consultationPaymentStatus !== "PAID";
+    !isCancelled &&
+    isPending &&
+    (
+      appt.slotPaymentStatus === "PENDING" ||
+      appt.slotPaymentStatus === "FAILED"
+    ) &&
+    (
+      appt.consultationPaymentStatus === "PENDING" ||
+      appt.consultationPaymentStatus === "FAILED" ||
+      appt.consultationPaymentStatus === "NOT_REQUIRED"
+    );
+
+  /* ======================================================
+     CONSULTATION PAYMENT ONLY
+  ====================================================== */
 
   const consultationPending =
-    appt.slotPaymentStatus === "PAID" &&
-    appt.consultationPaymentStatus !== "PAID";
+    !isCancelled &&
+    isConfirmed &&
+    slotPaid &&
+    (
+      appt.consultationPaymentStatus === "PENDING" ||
+      appt.consultationPaymentStatus === "FAILED" ||
+      appt.consultationPaymentStatus === "NOT_REQUIRED"
+    );
+
+  /* ======================================================
+     SLOT RETRY ONLY
+  ====================================================== */
+
+  const retrySlotPayment =
+    !isCancelled &&
+    isPending &&
+    slotFailed;
 
   const slotStart = new Date(appt.slot.startTimeUTC).getTime();
   const slotEnd = new Date(appt.slot.endTimeUTC).getTime();
@@ -111,6 +162,8 @@ export default function AppointmentCard({ appt, onView }: any) {
 
         </div>
 
+
+
       </div>
 
       {/* ACTIONS */}
@@ -146,6 +199,7 @@ export default function AppointmentCard({ appt, onView }: any) {
           )}
 
         {/* PAY BOTH */}
+        {/* COMPLETE PAYMENT */}
         {bothPending && (
 
           <button
@@ -167,10 +221,13 @@ export default function AppointmentCard({ appt, onView }: any) {
             transition
         "
           >
+
             <CreditCard size={15} />
 
             Complete Payment
+
           </button>
+
         )}
 
         {/* PAY CONSULTATION */}
@@ -196,14 +253,17 @@ export default function AppointmentCard({ appt, onView }: any) {
             transition
         "
           >
+
             <CreditCard size={15} />
 
             Pay Consultation
+
           </button>
+
         )}
 
-        {/* RETRY SLOT */}
-        {slotFailed && (
+        {/* RETRY SLOT PAYMENT */}
+        {retrySlotPayment && (
 
           <button
             onClick={() =>
@@ -224,10 +284,13 @@ export default function AppointmentCard({ appt, onView }: any) {
             transition
         "
           >
+
             <RefreshCw size={15} />
 
             Retry Payment
+
           </button>
+
         )}
 
         <button

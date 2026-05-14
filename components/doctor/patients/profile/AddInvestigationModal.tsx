@@ -10,7 +10,7 @@ export default function AddDoctorInvestigationModal({
   onSaved,
 }: any) {
   const [open, setOpen] = useState(false);
-  const [note, setNote] = useState("");
+  const [note, setNote] = useState("1. ");
   const [loading, setLoading] = useState(false);
 
   const save = async () => {
@@ -34,6 +34,52 @@ export default function AddDoctorInvestigationModal({
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+
+    if (e.key !== "Enter") return;
+
+    e.preventDefault();
+
+    const target = e.currentTarget;
+
+    const cursorPos =
+      target.selectionStart;
+
+    const textBeforeCursor =
+      note.substring(0, cursorPos);
+
+    const textAfterCursor =
+      note.substring(cursorPos);
+
+    const lines =
+      textBeforeCursor.split("\n");
+
+    const nextNumber =
+      lines.length + 1;
+
+    const insertText =
+      `\n${nextNumber}. `;
+
+    const updated =
+      textBeforeCursor +
+      insertText +
+      textAfterCursor;
+
+    setNote(updated);
+
+    requestAnimationFrame(() => {
+
+      const newPos =
+        cursorPos +
+        insertText.length;
+
+      target.selectionStart = newPos;
+      target.selectionEnd = newPos;
+    });
   };
 
   if (!open) {
@@ -65,9 +111,33 @@ export default function AddDoctorInvestigationModal({
         <textarea
           placeholder="Write investigation advice..."
           value={note}
-          onChange={(e) => setNote(e.target.value)}
-          className="border rounded-lg w-full p-2 text-sm"
-          rows={5}
+
+          onChange={(e) =>
+            setNote(e.target.value)
+          }
+
+          onKeyDown={handleKeyDown}
+
+          className="
+        w-full
+
+        rounded-lg
+        border border-slate-200
+
+        p-4
+
+        text-sm
+        leading-7
+
+        focus:outline-none
+        focus:ring-4
+        focus:ring-navy/10
+        focus:border-navy
+
+        transition
+    "
+
+          rows={7}
         />
 
         {/* Submit */}
