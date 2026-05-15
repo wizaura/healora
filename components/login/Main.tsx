@@ -21,6 +21,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const validate = () => {
         const newErrors: Record<string, string> = {};
 
@@ -52,6 +53,7 @@ export default function Login() {
             const res = await api.post("/auth/login", {
                 email: form.email,
                 password: form.password,
+                timezone: timezone
             });
 
             toast.success("Logged in successfully 👋");
