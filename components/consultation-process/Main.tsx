@@ -45,7 +45,7 @@ export default function ConsultationProcess() {
 
             <Card
               icon={<Calendar />}
-              title="BSelect Your Slot"
+              title="Select Your Slot"
               desc="Select your preferred date and time. First Consultation is First Visit, Follow-ups are further visits."
             />
 

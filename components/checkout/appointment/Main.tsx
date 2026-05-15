@@ -86,6 +86,8 @@ export default function AppointmentCheckout() {
 
       const appt = res.data;
 
+      console.log(appt,'appt')
+
       setAppointment(appt);
 
       setCurrencySymbol(
@@ -134,15 +136,15 @@ export default function AppointmentCheckout() {
    ========================================= */
 
       if (
-        appt.slotPaymentStatus !== "PAID" &&
-        appt.consultationPaymentStatus !== "PAID"
+        appt.paymentStatus.slot !== "PAID" &&
+        appt.paymentStatus.consultation !== "PAID"
       ) {
 
         setCheckoutStage("FULL");
 
       } else if (
-        appt.slotPaymentStatus === "PAID" &&
-        appt.consultationPaymentStatus !== "PAID"
+        appt.paymentStatus.slot === "PAID" &&
+        appt.paymentStatus.consultation !== "PAID"
       ) {
 
         setCheckoutStage("CONSULTATION");
