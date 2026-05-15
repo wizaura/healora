@@ -112,7 +112,7 @@ export default function AdminDashboard() {
 
       {/* FILTER */}
       <div className="flex gap-2">
-        {["7d", "30d", "12m"].map((r) => (
+        {["7d", "30d", "1y"].map((r) => (
           <button
             key={r}
             onClick={() => setRange(r)}
@@ -147,7 +147,11 @@ export default function AdminDashboard() {
               <XAxis dataKey="date" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="appointments" />
+              <Bar
+                dataKey="appointments"
+                fill="#10B981"
+                radius={[6, 6, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>

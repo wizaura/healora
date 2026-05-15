@@ -10,6 +10,7 @@ export default function PharmacyModal({ data, onClose, onSubmit }: any) {
   const slot = data.appointment.slot;
   const address = data.appointment.deliveryAddress;
   const UserCurrency = data.appointment.currency;
+  const deliveryType = data.appointment.deliveryType;
 
   const isPaid = data.paymentStatus === "PAID";
   const isInvoice = !!data.totalAmount;
@@ -130,6 +131,7 @@ export default function PharmacyModal({ data, onClose, onSubmit }: any) {
             <p className="font-semibold">{user.name}</p>
             <p className="text-sm text-gray-500">{user.email}</p>
             <p className="text-md text-gray-700">User base currency: {UserCurrency}</p>
+            <p className="text-md text-gray-700">Delivery Type: {deliveryType}</p>
             <p className="text-sm text-gray-500">
               {new Date(slot.startTimeUTC).toLocaleString()}
             </p>

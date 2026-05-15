@@ -131,22 +131,6 @@ export default function Footer() {
                                 </a>
                             </li>
 
-                            {/* ADDRESS */}
-                            <li className="flex items-start gap-3 min-w-0">
-                                <MapPin className="mt-0.5 h-4 w-4 text-teal-500 flex-shrink-0" />
-
-                                <a
-                                    href="https://maps.app.goo.gl/ev659LvHxH6hHjMVA"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="hover:text-teal-400 transition break-words"
-                                >
-                                    Healora Wellness Centre<br />
-                                    Karuvanpoyil, Koduvally<br />
-                                    Kozhikode, Kerala<br />
-                                    India, 673572
-                                </a>
-                            </li>
                         </ul>
 
                         {/* SOCIAL */}

@@ -18,11 +18,6 @@ const faqs = [
       "Yes. Every doctor goes through credential verification, experience checks, and continuous quality reviews before joining Healora.",
   },
   {
-    question: "Can I consult doctors online?",
-    answer:
-      "Absolutely. Healora supports secure online consultations along with in-clinic visits, giving you full flexibility.",
-  },
-  {
     question: "Is payment secure on Healora?",
     answer:
       "Yes. Payments are encrypted and processed via industry-standard secure gateways to protect your data.",

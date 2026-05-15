@@ -11,6 +11,7 @@ export default function BlogViewModal({
     onEdit,
     onDelete,
     onApprove,
+    onReject,
     role
 }: any) {
 
@@ -39,33 +40,105 @@ export default function BlogViewModal({
 
                             {/* ADMIN APPROVE */}
 
+                            {/* ADMIN ACTIONS */}
+
                             {role === "ADMIN" && blog.status === "PENDING" && (
 
-                                <button
-                                    onClick={() => setConfirmApprove(true)}
-                                    className="text-green-600 flex items-center gap-1 text-sm hover:underline"
-                                >
-                                    <Check size={14} />
-                                    Approve
-                                </button>
+                                <>
+
+                                    {/* APPROVE */}
+
+                                    <button
+                                        onClick={() =>
+                                            setConfirmApprove(true)
+                                        }
+
+                                        className="
+                flex items-center gap-1
+
+                text-sm text-green-600
+
+                hover:underline
+            "
+                                    >
+
+                                        <Check size={14} />
+
+                                        Approve
+
+                                    </button>
+
+                                    {/* REJECT */}
+
+                                    <button
+                                        onClick={() =>
+                                            onReject?.()
+                                        }
+
+                                        className="
+                flex items-center gap-1
+
+                text-sm text-rose-600
+
+                hover:underline
+            "
+                                    >
+
+                                        <X size={14} />
+
+                                        Reject
+
+                                    </button>
+
+                                </>
 
                             )}
 
-                            <button
-                                onClick={onEdit}
-                                className="text-blue-600 flex items-center gap-1 text-sm hover:underline"
-                            >
-                                <Pencil size={14} />
-                                Edit
-                            </button>
+                            {/* EDIT */}
 
                             <button
-                                onClick={() => setConfirmDelete(true)}
-                                className="text-red-600 flex items-center gap-1 text-sm hover:underline"
+                                onClick={onEdit}
+
+                                className="
+        flex items-center gap-1
+
+        text-sm text-blue-600
+
+        hover:underline
+    "
                             >
-                                <Trash size={14} />
-                                Delete
+
+                                <Pencil size={14} />
+
+                                Edit
+
                             </button>
+
+                            {/* DELETE ONLY FOR DOCTOR */}
+
+                            {role === "DOCTOR" && (
+
+                                <button
+                                    onClick={() =>
+                                        setConfirmDelete(true)
+                                    }
+
+                                    className="
+            flex items-center gap-1
+
+            text-sm text-red-600
+
+            hover:underline
+        "
+                                >
+
+                                    <Trash size={14} />
+
+                                    Delete
+
+                                </button>
+
+                            )}
 
                             <button
                                 onClick={onClose}

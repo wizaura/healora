@@ -21,7 +21,7 @@ const steps = [
     {
         title: "Book Your Slot",
         description:
-            "Pick your preferred date and time. First sessions are 60 minutes, follow-ups 30 minutes.",
+            "Pick your preferred date and time. First Consultation is First Visit, Follow-ups are further visits.",
         icon: CalendarCheck,
     },
     {

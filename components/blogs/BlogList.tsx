@@ -73,6 +73,36 @@ export default function BlogList({ role }: { role: "ADMIN" | "DOCTOR" }) {
         approveMutation.mutate(selectedBlog.id);
     };
 
+    /* ---------------- REJECT ---------------- */
+
+    const rejectMutation = useMutation({
+
+        mutationFn: (id: string) =>
+            api.patch(`/blogs/${id}/reject`),
+
+        onSuccess: () => {
+
+            toast.success(
+                "Blog rejected"
+            );
+
+            queryClient.invalidateQueries({
+                queryKey: ["blogs"]
+            });
+
+            closeAll();
+        },
+    });
+
+    const handleReject = () => {
+
+        if (!selectedBlog) return;
+
+        rejectMutation.mutate(
+            selectedBlog.id
+        );
+    };
+
     if (isLoading) {
         return <div className="text-slate-500">Loading blogs...</div>;
     }
@@ -115,9 +145,16 @@ export default function BlogList({ role }: { role: "ADMIN" | "DOCTOR" }) {
 
                             <span
                                 className={`text-xs px-2 py-1 rounded-full
-                                ${blog.status === "APPROVED"
+
+                                    ${blog.status === "APPROVED"
+
                                         ? "bg-green-100 text-green-700"
-                                        : "bg-yellow-100 text-yellow-700"
+
+                                        : blog.status === "REJECTED"
+
+                                            ? "bg-red-100 text-red-700"
+
+                                            : "bg-yellow-100 text-yellow-700"
                                     }`}
                             >
                                 {blog.status}
@@ -142,6 +179,7 @@ export default function BlogList({ role }: { role: "ADMIN" | "DOCTOR" }) {
                 onEdit={() => setEditing(true)}
                 onDelete={handleDelete}
                 onApprove={handleApprove}
+                onReject={handleReject}
             />
 
 

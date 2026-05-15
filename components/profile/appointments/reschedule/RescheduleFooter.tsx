@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { useState } from "react";
+import { getApiError } from "@/lib/util";
 
 export default function RescheduleFooter({
     appointmentId,
@@ -95,11 +96,9 @@ export default function RescheduleFooter({
                 "/profile/appointments"
             );
 
-        } catch {
+        } catch(err) {
 
-            toast.error(
-                "Failed to reschedule appointment"
-            );
+            toast.error(getApiError(err));
 
         } finally {
 

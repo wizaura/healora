@@ -7,7 +7,7 @@ import AvailabilityModal from "./AvailabilityModal";
 
 /* ---------- TYPES ---------- */
 
-export type SlotStatus = "AVAILABLE" | "INACTIVE" | "BOOKED";
+export type SlotStatus = "AVAILABLE" | "INACTIVE" | "BOOKED" | "PENDING_PAYMENT";
 export type SlotCategory = "FIRST_TIME" | "FOLLOW_UP";
 
 export type Slot = {
@@ -18,13 +18,19 @@ export type Slot = {
   category: SlotCategory;
 };
 
+type Props = {
+  refreshKey?: number;
+};
+
 export type Availability = {
   id: string;
   date: string;
   slots: Slot[];
 };
 
-export default function ExistingAvailability() {
+export default function ExistingAvailability({
+  refreshKey,
+}: Props) {
   const [data, setData] = useState<Availability[]>([]);
   const [activeDay, setActiveDay] = useState<Availability | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -43,7 +49,7 @@ export default function ExistingAvailability() {
 
   useEffect(() => {
     fetchAvailability(currentMonth);
-  }, [currentMonth]);
+  }, [currentMonth, refreshKey]);
 
   /* ---------- MONTH SWITCH ---------- */
 

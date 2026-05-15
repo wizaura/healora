@@ -598,9 +598,7 @@ export default function AppointmentDetailsModal({ appointment, onClose }: any) {
                                                 text-xs text-slate-500
                                             "
                                         >
-                                            Meeting starts soon
-                                            <br />
-                                            Join available 10 min before
+                                            Consultation link will be available<br/> 10 minutes before appointment
                                         </div>
 
                                     ) : appointment.meetingLink &&

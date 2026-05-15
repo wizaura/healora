@@ -19,6 +19,7 @@ type Props = {
     date: Date | undefined;
     selectedSlot: Slot | null;
     setSelectedSlot: (slot: Slot | null) => void;
+    timezone: string;
 };
 
 /* ---------- COMPONENT ---------- */
@@ -28,6 +29,7 @@ export default function SlotGrid({
     date,
     selectedSlot,
     setSelectedSlot,
+    timezone,
 }: Props) {
 
     const [slots, setSlots] = useState<Slot[]>([]);
@@ -35,7 +37,7 @@ export default function SlotGrid({
 
     const [selectedCategory, setSelectedCategory] = useState<
         "FOLLOW_UP" | "FIRST_TIME"
-    >("FOLLOW_UP");
+    >("FIRST_TIME");
 
     /* ---------- DATE STRING ---------- */
 
@@ -65,6 +67,7 @@ export default function SlotGrid({
                         params: {
                             doctorId,
                             date: dateStr,
+                            timezone,
                         },
                     }
                 );
@@ -285,7 +288,11 @@ export default function SlotGrid({
                                 </p>
 
                                 <p className="text-sm text-navy/50">
-                                    Try another category or date
+
+                                    {selectedCategory === "FOLLOW_UP"
+                                        ? "Try a First Time consultation slot or choose another date"
+                                        : "Try a Follow Up slot or choose another date"}
+
                                 </p>
 
                             </div>

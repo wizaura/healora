@@ -85,56 +85,509 @@ export default function AppointmentSummary({
                 </div>
 
                 {/* Learn More Toggle */}
+
                 <button
                     onClick={() => setExpanded(!expanded)}
-                    className="flex items-center justify-center gap-2 text-sm text-navy font-medium mx-auto"
+                    className="
+        mx-auto flex items-center justify-center gap-2
+
+        rounded-full
+
+        border border-navy/10
+
+        bg-white
+
+        px-5 py-2.5
+
+        text-sm font-medium text-navy
+
+        transition
+
+        hover:border-teal-200
+        hover:bg-teal-50
+    "
                 >
-                    {expanded ? "Hide details" : "Learn more"}
-                    {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+
+                    {expanded
+                        ? "Hide booking guide"
+                        : "How booking works"}
+
+                    {expanded
+                        ? <ChevronUp size={16} />
+                        : <ChevronDown size={16} />
+                    }
+
                 </button>
 
+                {/* BOOKING GUIDE */}
+
                 {expanded && (
-                    <div className="mt-6 space-y-4 text-sm text-navy/70 max-w-2xl mx-auto">
 
-                        {/* Sub Specialities */}
-                        {data.subSpecialities?.length > 0 && (
-                            <p>
-                                <strong>Sub-specialities:</strong>{" "}
-                                {data.subSpecialities.map((s: any) => s.name).join(", ")}
-                            </p>
-                        )}
+                    <div
+                        className="
+            mx-auto mt-6 max-w-3xl
 
-                        {/* Mini Specialities */}
-                        {data.miniSpecialities?.length > 0 && (
-                            <p>
-                                <strong>Areas of Expertise:</strong>{" "}
-                                {data.miniSpecialities.map((m: any) => m.name).join(", ")}
-                            </p>
-                        )}
+            rounded-3xl
 
-                        {/* Languages */}
-                        {data.languages?.length > 0 && (
-                            <p>
-                                <strong>Languages:</strong>{" "}
-                                {data.languages.map((l: any) => l.name).join(", ")}
-                            </p>
-                        )}
+            border border-slate-200
 
-                        {/* Registration */}
-                        {data.registrationCouncil && (
-                            <p>
-                                <strong>Registered with:</strong>{" "}
-                                {data.registrationCouncil}
-                            </p>
-                        )}
+            bg-white
 
-                        {/* Bio */}
-                        {data.bio && (
-                            <p className="italic text-navy/60 whitespace-pre-wrap leading-relaxed">
-                                "{data.bio}"
-                            </p>
-                        )}
+            p-5 md:p-6
+
+            text-left
+
+            shadow-sm
+        "
+                    >
+
+                        <div className="space-y-4">
+
+                            {/* Step 1 */}
+
+                            <div
+                                className="
+                    rounded-2xl
+
+                    border border-slate-200
+
+                    bg-slate-50
+
+                    p-4
+                "
+                            >
+
+                                <div className="flex items-start gap-3">
+
+                                    <div
+                                        className="
+                            flex h-8 w-8 shrink-0
+                            items-center justify-center
+
+                            rounded-full
+
+                            bg-teal-100
+
+                            text-sm font-bold
+                            text-teal-700
+                        "
+                                    >
+                                        1
+                                    </div>
+
+                                    <div>
+
+                                        <h4 className="font-semibold text-navy">
+                                            Choose your payment gateway
+                                        </h4>
+
+                                        <p className="mt-1 text-sm leading-6 text-slate-600">
+
+                                            Select
+
+                                            <span className="font-semibold text-navy">
+                                                {" "}Razorpay{" "}
+                                            </span>
+
+                                            for Indian payments or
+
+                                            <span className="font-semibold text-navy">
+                                                {" "}Stripe{" "}
+                                            </span>
+
+                                            for international payments.
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {/* Step 2 */}
+
+                            <div
+                                className="
+                    rounded-2xl
+
+                    border border-slate-200
+
+                    bg-slate-50
+
+                    p-4
+                "
+                            >
+
+                                <div className="flex items-start gap-3">
+
+                                    <div
+                                        className="
+                            flex h-8 w-8 shrink-0
+                            items-center justify-center
+
+                            rounded-full
+
+                            bg-indigo-100
+
+                            text-sm font-bold
+                            text-indigo-700
+                        "
+                                    >
+                                        2
+                                    </div>
+
+                                    <div>
+
+                                        <h4 className="font-semibold text-navy">
+                                            Select consultation type
+                                        </h4>
+
+                                        <p className="mt-1 text-sm leading-6 text-slate-600">
+
+                                            You can choose between:
+
+                                        </p>
+
+                                        <div className="mt-3 flex flex-wrap gap-2">
+
+                                            <span
+                                                className="
+                                    rounded-full
+
+                                    border border-slate-200
+
+                                    bg-white
+
+                                    px-3 py-1
+
+                                    text-xs font-medium
+                                    text-slate-700
+                                "
+                                            >
+                                                Slot Only
+                                            </span>
+
+                                            <span
+                                                className="
+                                    rounded-full
+
+                                    border border-slate-200
+
+                                    bg-white
+
+                                    px-3 py-1
+
+                                    text-xs font-medium
+                                    text-slate-700
+                                "
+                                            >
+                                                Consultation
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {/* Step 3 */}
+
+                            <div
+                                className="
+                    rounded-2xl
+
+                    border border-slate-200
+
+                    bg-slate-50
+
+                    p-4
+                "
+                            >
+
+                                <div className="flex items-start gap-3">
+
+                                    <div
+                                        className="
+                            flex h-8 w-8 shrink-0
+                            items-center justify-center
+
+                            rounded-full
+
+                            bg-emerald-100
+
+                            text-sm font-bold
+                            text-emerald-700
+                        "
+                                    >
+                                        3
+                                    </div>
+
+                                    <div>
+
+                                        <h4 className="font-semibold text-navy">
+                                            Choose consultation mode
+                                        </h4>
+
+                                        <p className="mt-1 text-sm leading-6 text-slate-600">
+
+                                            If you select consultation,
+                                            you can choose your preferred
+                                            online meeting platform.
+
+                                        </p>
+
+                                        <div className="mt-3 flex flex-wrap gap-2">
+
+                                            <span
+                                                className="
+                                    rounded-full
+
+                                    border border-slate-200
+
+                                    bg-white
+
+                                    px-3 py-1
+
+                                    text-xs font-medium
+                                    text-slate-700
+                                "
+                                            >
+                                                Google Meet
+                                            </span>
+
+                                            <span
+                                                className="
+                                    rounded-full
+
+                                    border border-slate-200
+
+                                    bg-white
+
+                                    px-3 py-1
+
+                                    text-xs font-medium
+                                    text-slate-700
+                                "
+                                            >
+                                                Zoom
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {/* Step 4 */}
+
+                            <div
+                                className="
+                    rounded-2xl
+
+                    border border-slate-200
+
+                    bg-slate-50
+
+                    p-4
+                "
+                            >
+
+                                <div className="flex items-start gap-3">
+
+                                    <div
+                                        className="
+                            flex h-8 w-8 shrink-0
+                            items-center justify-center
+
+                            rounded-full
+
+                            bg-amber-100
+
+                            text-sm font-bold
+                            text-amber-700
+                        "
+                                    >
+                                        4
+                                    </div>
+
+                                    <div>
+
+                                        <h4 className="font-semibold text-navy">
+                                            Prescription options
+                                        </h4>
+
+                                        <p className="mt-1 text-sm leading-6 text-slate-600">
+
+                                            For
+
+                                            <span className="font-semibold text-navy">
+                                                {" "}homeopathy,
+                                            </span>
+
+                                            <span className="font-semibold text-navy">
+                                                {" "}agro homeopathy
+                                            </span>
+
+                                            and
+
+                                            <span className="font-semibold text-navy">
+                                                {" "}veterinary homeopathy
+                                            </span>
+
+                                            {" "}consultations, you can request prescriptions.
+
+                                        </p>
+
+                                        <div className="mt-3 flex flex-wrap gap-2">
+
+                                            <span
+                                                className="
+                                    rounded-full
+
+                                    border border-slate-200
+
+                                    bg-white
+
+                                    px-3 py-1
+
+                                    text-xs font-medium
+                                    text-slate-700
+                                "
+                                            >
+                                                Prescription Only
+                                            </span>
+
+                                            <span
+                                                className="
+                                    rounded-full
+
+                                    border border-slate-200
+
+                                    bg-white
+
+                                    px-3 py-1
+
+                                    text-xs font-medium
+                                    text-slate-700
+                                "
+                                            >
+                                                Door Delivery
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {/* Step 5 */}
+
+                            <div
+                                className="
+                    rounded-2xl
+
+                    border border-slate-200
+
+                    bg-slate-50
+
+                    p-4
+                "
+                            >
+
+                                <div className="flex items-start gap-3">
+
+                                    <div
+                                        className="
+                            flex h-8 w-8 shrink-0
+                            items-center justify-center
+
+                            rounded-full
+
+                            bg-rose-100
+
+                            text-sm font-bold
+                            text-rose-700
+                        "
+                                    >
+                                        5
+                                    </div>
+
+                                    <div>
+
+                                        <h4 className="font-semibold text-navy">
+                                            Delivery preference & payment
+                                        </h4>
+
+                                        <p className="mt-1 text-sm leading-6 text-slate-600">
+
+                                            If you choose door delivery,
+                                            you can select:
+
+                                        </p>
+
+                                        <div className="mt-3 flex flex-wrap gap-2">
+
+                                            <span
+                                                className="
+                                    rounded-full
+
+                                    border border-slate-200
+
+                                    bg-white
+
+                                    px-3 py-1
+
+                                    text-xs font-medium
+                                    text-slate-700
+                                "
+                                            >
+                                                Fast Delivery
+                                            </span>
+
+                                            <span
+                                                className="
+                                    rounded-full
+
+                                    border border-slate-200
+
+                                    bg-white
+
+                                    px-3 py-1
+
+                                    text-xs font-medium
+                                    text-slate-700
+                                "
+                                            >
+                                                Normal Delivery
+                                            </span>
+
+                                        </div>
+
+                                        <p className="mt-3 text-sm leading-6 text-slate-600">
+
+                                            Complete your payment securely
+                                            to confirm the appointment and
+                                            reserve your slot.
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
+
                 )}
 
                 <p className="text-sm font-medium text-emerald-700">

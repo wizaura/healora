@@ -80,14 +80,28 @@ export default function AddressForm({
                     {/* PHONE */}
                     <div className="space-y-1.5">
 
-                        <label className={label}>
+                        <label
+                            className="
+                                flex items-center gap-1
+
+                                text-sm font-medium
+
+                                text-slate-700
+                            "
+                        >
+
                             Phone Number
+
+                            <span className="text-rose-500">
+                                *
+                            </span>
+
                         </label>
 
                         <input
                             type="tel"
 
-                            placeholder="+91 9876543210"
+                            placeholder="+91 0000000000"
 
                             value={value.phone || ""}
 
@@ -115,7 +129,7 @@ export default function AddressForm({
                         <input
                             type="tel"
 
-                            placeholder="+91 9876543210"
+                            placeholder="+91 0000000000"
 
                             value={value.whatsapp || ""}
 

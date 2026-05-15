@@ -7,6 +7,7 @@ import SpecialityCard from "../common/SpecialitiesCard";
 import { getActiveSpecialities } from "@/lib/specialities.api";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import MainSpecialityCard from "../common/HomeSpecialityCard";
 
 export default function ServicesScrollSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -105,9 +106,9 @@ export default function ServicesScrollSection() {
               data-aos-delay="100"
               className="text-4xl md:text-5xl lg:text-6xl font-semibold text-navy-dark leading-[1.1]"
             >
-              Complete Health
+              Trusted Doctors for
               <br />
-              Care Solutions.
+              Every Speciality.
             </h2>
 
             {/* RIGHT CONTENT */}
@@ -145,9 +146,8 @@ export default function ServicesScrollSection() {
                 data-aos-delay={100 + index * 100}
                 className="w-full"
               >
-                <SpecialityCard
+                <MainSpecialityCard
                   name={s.name}
-                  description={s.description}
                   slug={s.slug}
                   imageUrl={s.overview?.images?.image1?.url}
                   aosDelay={index * 100}
@@ -167,11 +167,10 @@ export default function ServicesScrollSection() {
                   key={s.id}
                   data-aos="fade-up"
                   data-aos-delay={100 + index * 100}
-                  className="flex-shrink-0 w-[420px]"
+                  className="flex-shrink-0 w-[360px]"
                 >
-                  <SpecialityCard
+                  <MainSpecialityCard
                     name={s.name}
-                    description={s.description}
                     slug={s.slug}
                     imageUrl={s.overview?.images?.image1?.url}
                   />

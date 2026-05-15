@@ -38,6 +38,9 @@ export default function PendingUpdateModal({
                         <Info label="Experience" value={`${old.experience} years`}
                             variant={changed(old.experience, updated.experience) ? "old" : undefined} />
 
+                        <Info label="Graduation" value={`${old.graduation}`}
+                            variant={changed(old.graduation, updated.graduation) ? "old" : undefined} />
+
                         <Info label="Qualification" value={old.qualification}
                             variant={changed(old.qualification, updated.qualification) ? "old" : undefined} />
 

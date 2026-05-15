@@ -7,8 +7,15 @@ import DatePicker from "@/components/common/DatePicker";
 import { CalendarDays, Clock, Timer } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import CustomTimeInput from "@/components/common/TimeInput";
+import { getApiError } from "@/lib/util";
 
-export default function AvailabilityForm() {
+type Props = {
+    onSuccess?: () => void;
+};
+
+export default function AvailabilityForm({
+    onSuccess,
+}: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const [range, setRange] = useState<DateRange | undefined>();
     const [start, setStart] = useState("09:00");
@@ -82,8 +89,9 @@ export default function AvailabilityForm() {
 
             setIsOpen(false);
             setRange(undefined);
+            onSuccess?.();
         } catch (error: any) {
-            toast.error(error.message || "Something went wrong");
+            toast.error(getApiError(error));
         } finally {
             setLoading(false);
         }

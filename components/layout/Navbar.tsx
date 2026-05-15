@@ -413,7 +413,7 @@ export default function Navbar() {
 
                                 {/* TEXT */}
                                 <span className="relative hidden sm:block">
-                                    Be a Doctor
+                                    Join our Team
                                 </span>
 
                             </Link>

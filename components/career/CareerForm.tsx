@@ -98,7 +98,7 @@ export default function CareerFormSection() {
             <div className="max-w-4xl mx-auto px-6 pb-16">
                 <div className="text-center mb-14">
                     <h2 className="text-2xl md:text-4xl font-semibold text-slate-900">
-                        Apply to Join Healora
+                        Apply to Join Healora Faculty
                     </h2>
 
                     <p className="text-slate-600 mt-4 max-w-xl mx-auto">

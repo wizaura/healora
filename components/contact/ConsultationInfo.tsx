@@ -27,8 +27,8 @@ export default function ConsultationInfoSection() {
 
                     <StepCard
                         icon={<MessageCircle size={22} />}
-                        title="Send Your Request"
-                        desc="Contact us or book through our doctor page to begin your consultation."
+                        title="Book an Appointment"
+                        desc="Book through our doctor page to begin your consultation."
                     />
 
                     <StepCard
@@ -39,7 +39,7 @@ export default function ConsultationInfoSection() {
 
                     <StepCard
                         icon={<HeartPulse size={22} />}
-                        title="Receive Personalized Care"
+                        title="Receive Personalized Consultation"
                         desc="Get expert guidance, treatment plans, and follow-up support."
                     />
 

@@ -1,17 +1,67 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import DoctorSummary from "./DoctorSummary";
 import DatePickerCard from "./DatePicker";
 import SlotGrid from "./SlotGrid";
 import BookingFooter from "./BookingFooter";
+import api from "@/lib/api";
 
 export default function BookingMainPage() {
     const { doctorId } = useParams<{ doctorId: string }>();
 
     const [date, setDate] = useState<Date | undefined>(undefined);
     const [selectedSlot, setSelectedSlot] = useState<any>(null);
+    const [availableDates, setAvailableDates] =
+        useState<string[]>([]);
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    useEffect(() => {
+
+        const fetchAvailableDays = async () => {
+
+            try {
+
+                const current =
+                    date || new Date();
+
+                const month = [
+                    current.getFullYear(),
+                    String(
+                        current.getMonth() + 1
+                    ).padStart(2, "0"),
+                ].join("-");
+
+                const res = await api.get(
+                    "/availability/days",
+                    {
+                        params: {
+                            doctorId,
+                            month,
+                            timezone,
+                        },
+                    }
+                );
+
+                setAvailableDates(
+                    res.data.map(
+                        (d: any) => d.date
+                    )
+                );
+
+            } catch (err) {
+
+                console.error(
+                    "Failed to fetch available days",
+                    err
+                );
+            }
+        };
+
+        fetchAvailableDays();
+
+    }, [doctorId, timezone, date]);
 
     return (
         <>
@@ -67,7 +117,7 @@ export default function BookingMainPage() {
 
             <section className="mx-auto grid grid-cols-1 md:grid-cols-2 max-w-7xl space-y-4 px-6 pb-16">
 
-                <DatePickerCard date={date} setDate={setDate} />
+                <DatePickerCard date={date} setDate={setDate} availableDates={availableDates} />
 
                 {date && (
                     <SlotGrid
@@ -75,6 +125,7 @@ export default function BookingMainPage() {
                         date={date}
                         selectedSlot={selectedSlot}
                         setSelectedSlot={setSelectedSlot}
+                        timezone={timezone}
                     />
                 )}
 

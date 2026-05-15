@@ -40,8 +40,13 @@ export default function ReschedulePage() {
     const [selectedSlot, setSelectedSlot] =
         useState<any>(null);
 
+    const [availableDates, setAvailableDates] =
+        useState<string[]>([]);
+
     const [loading, setLoading] =
         useState(true);
+
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     useEffect(() => {
 
@@ -73,6 +78,56 @@ export default function ReschedulePage() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+
+        const fetchAvailableDays = async () => {
+
+            if(!appointment){
+                return;
+            }
+
+            try {
+
+                const current =
+                    date || new Date();
+
+                const month = [
+                    current.getFullYear(),
+                    String(
+                        current.getMonth() + 1
+                    ).padStart(2, "0"),
+                ].join("-");
+
+                const res = await api.get(
+                    "/availability/days",
+                    {
+                        params: {
+                            doctorId: appointment.doctorId,
+                            month,
+                            timezone,
+                        },
+                    }
+                );
+
+                setAvailableDates(
+                    res.data.map(
+                        (d: any) => d.date
+                    )
+                );
+
+            } catch (err) {
+
+                console.error(
+                    "Failed to fetch available days",
+                    err
+                );
+            }
+        };
+
+        fetchAvailableDays();
+
+    }, [appointment, timezone, date]);
 
     /* ---------------- LOADING ---------------- */
 
@@ -128,82 +183,59 @@ export default function ReschedulePage() {
                         </div>
 
                         {/* STEPS */}
-                        <div className="flex flex-wrap gap-3">
+                        <div className="flex flex-wrap items-center gap-5 text-sm text-slate-500">
 
                             {/* STEP */}
-                            <div
-                                className="
-                                    flex items-center gap-2
 
-                                    rounded-lg
+                            <div className="flex items-center gap-2">
 
-                                    border border-slate-200
+                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-teal-50">
+                                    <CalendarDays
+                                        size={15}
+                                        className="text-teal-600"
+                                    />
+                                </div>
 
-                                    bg-slate-50
-
-                                    px-4 py-2.5
-                                "
-                            >
-
-                                <CalendarDays
-                                    size={16}
-                                    className="text-teal-600"
-                                />
-
-                                <span className="text-sm font-medium text-slate-700">
+                                <span className="font-medium">
                                     Select Date
                                 </span>
 
                             </div>
 
+                            <div className="h-1 w-1 rounded-full bg-slate-300" />
+
                             {/* STEP */}
-                            <div
-                                className="
-                                    flex items-center gap-2
 
-                                    rounded-lg
+                            <div className="flex items-center gap-2">
 
-                                    border border-slate-200
+                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-50">
+                                    <Clock3
+                                        size={15}
+                                        className="text-indigo-600"
+                                    />
+                                </div>
 
-                                    bg-slate-50
-
-                                    px-4 py-2.5
-                                "
-                            >
-
-                                <Clock3
-                                    size={16}
-                                    className="text-indigo-600"
-                                />
-
-                                <span className="text-sm font-medium text-slate-700">
+                                <span className="font-medium">
                                     Choose Slot
                                 </span>
 
                             </div>
 
+                            <div className="h-1 w-1 rounded-full bg-slate-300" />
+
                             {/* STEP */}
-                            <div
-                                className="
-                                    flex items-center gap-2
 
-                                    rounded-lg
+                            <div className="flex items-center gap-2">
 
-                                    border border-slate-200
+                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-50">
+                                    <CheckCircle2
+                                        size={15}
+                                        className="text-emerald-600"
+                                    />
+                                </div>
 
-                                    bg-slate-50
-
-                                    px-4 py-2.5
-                                "
-                            >
-
-                                <CheckCircle2
-                                    size={16}
-                                    className="text-emerald-600"
-                                />
-
-                                <span className="text-sm font-medium text-slate-700">
-                                    Confirm
+                                <span className="font-medium">
+                                    Confirm Booking
                                 </span>
 
                             </div>
@@ -283,6 +315,7 @@ export default function ReschedulePage() {
                             <DatePickerCard
                                 date={date}
                                 setDate={setDate}
+                                availableDates={availableDates}
                             />
 
                         </div>
@@ -322,6 +355,7 @@ export default function ReschedulePage() {
                                     setSelectedSlot={
                                         setSelectedSlot
                                     }
+                                    timezone={timezone}
                                 />
 
                             ) : (

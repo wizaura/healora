@@ -83,6 +83,10 @@ export default function BlogForm({
 
             }
 
+            setTitle("");
+            setContent("");
+            setImage(null);
+            setPreview(null);
             onSuccess?.();
 
         } catch {

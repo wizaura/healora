@@ -60,6 +60,7 @@ export default function DoctorViewModal({
             <div className="grid gap-4 md:grid-cols-2">
               <Info label="Name" value={doctor.name} />
               <Info label="Email" value={doctor.email} />
+              <Info label="Graduated" value={profile.graduation || "-"} />
               <Info label="Experience" value={`${profile?.experience || 0} years`} />
               <Info label="Qualification" value={profile?.qualification || "—"} />
             </div>

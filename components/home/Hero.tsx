@@ -109,7 +109,7 @@ export default function HomeHero() {
             <img src="https://randomuser.me/api/portraits/men/32.jpg" className="h-7 w-7 rounded-full border-2 border-white" />
             <img src="https://randomuser.me/api/portraits/women/68.jpg" className="h-7 w-7 rounded-full border-2 border-white" />
           </div>
-          <span className="text-sm text-navy">20,000+ happy patients served!</span>
+          <span className="text-sm text-navy">100+ happy patients served!</span>
         </div>
 
         {/* Heading */}

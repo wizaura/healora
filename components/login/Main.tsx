@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ShieldCheck, HeartPulse } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
@@ -112,170 +112,353 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 mt-16">
-            <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
+        <div className="m-4 min-h-screen rounded-2xl bg-gradient-to-b from-wellness-bg via-white to-wellness-bg py-16 md:py-24">
 
-                {/* Header */}
-                <div className="mb-8 text-center">
-                    <h1 className="text-2xl font-semibold text-slate-900">
-                        Welcome back to Healora
-                    </h1>
-                    <p className="mt-2 text-sm text-slate-500">
-                        Login to manage your appointments and care
-                    </p>
-                </div>
+            <div className="flex items-center justify-center px-4">
 
-                {/* Form */}
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="w-full max-w-md rounded-[28px] border border-slate-200 bg-white shadow-xl">
 
-                    {/* Email */}
-                    <div>
-                        <label className="text-sm font-medium text-slate-700">
-                            Email address
-                        </label>
-                        <div className="relative mt-1">
-                            <Mail
-                                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                                size={18}
-                            />
-                            <input
-                                type="email"
-                                value={form.email}
-                                onChange={(e) =>
-                                    setForm({ ...form, email: e.target.value })
-                                }
-                                className={`w-full rounded-lg border pl-10 pr-4 py-2.5 text-sm
-                                    focus:ring-teal-500
-                                    ${errors.email
-                                        ? "border-red-400"
-                                        : "border-slate-300 focus:border-teal-500"}`}
-                            />
+                    {/* Header */}
+
+                    <div className="relative rounded-t-[28px] bg-gradient-to-r from-teal-500 to-cyan-500 px-6 pt-8 pb-16 text-center">
+
+                        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-lg">
+
+                            <HeartPulse className="h-8 w-8 text-teal-600" />
+
                         </div>
-                        {errors.email && (
-                            <p className="mt-1 text-xs text-red-500">
-                                {errors.email}
-                            </p>
-                        )}
+
+                        <h1 className="mt-4 text-2xl font-bold text-white">
+                            Welcome Back
+                        </h1>
+
+                        <p className="mt-2 text-sm text-white/90">
+                            Login to continue your wellness journey with Healora.
+                        </p>
+
                     </div>
 
-                    {/* Password */}
-                    <div>
-                        <label className="text-sm font-medium text-slate-700">
-                            Password
-                        </label>
+                    {/* Floating Content */}
 
-                        <div className="relative mt-1">
-                            <Lock
-                                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                                size={18}
-                            />
+                    <div className="relative z-10 -mt-10 px-5 pb-5">
 
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                value={form.password}
-                                onChange={(e) =>
-                                    setForm({ ...form, password: e.target.value })
-                                }
-                                className={`w-full rounded-lg border pl-10 pr-10 py-2.5 text-sm
-                                    focus:ring-teal-500
-                                    ${errors.password
-                                        ? "border-red-400"
-                                        : "border-slate-300 focus:border-teal-500"}`}
-                            />
+                        <div className="rounded-3xl border border-slate-100 bg-white p-5 shadow-lg">
 
-                            {/* Eye toggle */}
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword((prev) => !prev)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2
-                                text-slate-400 hover:text-slate-600"
-                                aria-label={showPassword ? "Hide password" : "Show password"}
+                            {/* FORM */}
+
+                            <form
+                                onSubmit={handleSubmit}
+                                className="space-y-5 mt-3"
                             >
-                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                            </button>
+
+                                {/* EMAIL */}
+
+                                <div>
+
+                                    <label className="text-sm font-semibold text-slate-700">
+                                        Email address
+                                    </label>
+
+                                    <div className="relative mt-2">
+
+                                        <Mail
+                                            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                                            size={18}
+                                        />
+
+                                        <input
+                                            type="email"
+                                            value={form.email}
+                                            onChange={(e) => {
+                                                setErrors({
+                                                    ...errors,
+                                                    email: ""
+                                                })
+
+                                                setForm({
+                                                    ...form,
+                                                    email: e.target.value,
+                                                })
+                                            }
+                                            }
+                                            placeholder="Enter your email"
+                                            className={`
+                                            w-full rounded-2xl border
+                                            py-3 pl-11 pr-4 text-sm
+                                            outline-none transition
+
+                                            ${errors.email
+                                                    ? `
+                                                    border-red-400
+                                                    focus:border-red-400
+                                                    focus:ring-4 focus:ring-red-100
+                                                `
+                                                    : `
+                                                    border-slate-200
+                                                    focus:border-teal-500
+                                                    focus:ring-4 focus:ring-teal-100
+                                                `
+                                                }
+                                        `}
+                                        />
+
+                                    </div>
+
+                                    {errors.email && (
+                                        <p className="mt-1.5 text-xs text-red-500">
+                                            {errors.email}
+                                        </p>
+                                    )}
+
+                                </div>
+
+                                {/* PASSWORD */}
+
+                                <div>
+
+                                    <label className="text-sm font-semibold text-slate-700">
+                                        Password
+                                    </label>
+
+                                    <div className="relative mt-2">
+
+                                        <Lock
+                                            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                                            size={18}
+                                        />
+
+                                        <input
+                                            type={
+                                                showPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            value={form.password}
+                                            onChange={(e) => {
+                                                setErrors({
+                                                    ...errors,
+                                                    password: ""
+                                                })
+                                                setForm({
+                                                    ...form,
+                                                    password: e.target.value,
+                                                })
+                                            }
+                                            }
+                                            placeholder="Enter your password"
+                                            className={`
+                                            w-full rounded-2xl border
+                                            py-3 pl-11 pr-11 text-sm
+                                            outline-none transition
+
+                                            ${errors.password
+                                                    ? `
+                                                    border-red-400
+                                                    focus:border-red-400
+                                                    focus:ring-4 focus:ring-red-100
+                                                `
+                                                    : `
+                                                    border-slate-200
+                                                    focus:border-teal-500
+                                                    focus:ring-4 focus:ring-teal-100
+                                                `
+                                                }
+                                        `}
+                                        />
+
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setShowPassword(
+                                                    (prev) => !prev
+                                                )
+                                            }
+                                            className="
+                                            absolute right-4 top-1/2
+                                            -translate-y-1/2
+                                            text-slate-400 transition
+                                            hover:text-slate-600
+                                        "
+                                        >
+
+                                            {showPassword ? (
+                                                <EyeOff size={18} />
+                                            ) : (
+                                                <Eye size={18} />
+                                            )}
+
+                                        </button>
+
+                                    </div>
+
+                                    {errors.password && (
+                                        <p className="mt-1.5 text-xs text-red-500">
+                                            {errors.password}
+                                        </p>
+                                    )}
+
+                                </div>
+
+                                {/* Forgot */}
+
+                                <div className="flex items-center justify-end">
+
+                                    <Link
+                                        href="/forgot-password"
+                                        className="
+                                        inline-flex items-center gap-2
+
+                                        rounded-full
+
+                                        bg-teal-50
+
+                                        px-4 py-2
+
+                                        text-sm font-medium
+
+                                        text-teal-700
+
+                                        transition
+
+                                        hover:bg-teal-100
+                                    "
+                                    >
+                                        Forgot password?
+                                    </Link>
+
+                                </div>
+
+                                {/* SUBMIT */}
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className={`
+                                    w-full rounded-2xl py-3.5
+                                    text-sm font-semibold text-white
+                                    transition-all
+
+                                    ${loading
+                                            ? `
+                                            cursor-not-allowed
+                                            bg-teal-400
+                                        `
+                                            : `
+                                            bg-gradient-to-r
+                                            from-teal-600
+                                            to-cyan-600
+
+                                            hover:scale-[1.01]
+
+                                            hover:shadow-lg
+                                            hover:shadow-teal-100
+                                        `
+                                        }
+                                `}
+                                >
+
+                                    {loading
+                                        ? "Logging in..."
+                                        : "Login"}
+
+                                </button>
+
+                            </form>
+
                         </div>
 
-                        {errors.password && (
-                            <p className="mt-1 text-xs text-red-500">
-                                {errors.password}
-                            </p>
-                        )}
+                        {/* Divider */}
+
+                        <div className="my-6 flex items-center gap-3">
+
+                            <div className="h-px w-full bg-slate-200" />
+
+                            <span className="text-xs font-medium text-slate-400">
+                                OR
+                            </span>
+
+                            <div className="h-px w-full bg-slate-200" />
+
+                        </div>
+
+                        {/* GOOGLE */}
+
+                        <div className="overflow-hidden rounded-2xl">
+
+                            <GoogleLogin
+                                onSuccess={async (
+                                    credentialResponse
+                                ) => {
+
+                                    try {
+
+                                        setLoading(true);
+
+                                        await api.post(
+                                            "/auth/google",
+                                            {
+                                                token:
+                                                    credentialResponse.credential,
+                                            }
+                                        );
+
+                                        toast.success(
+                                            "Logged in with Google 👋"
+                                        );
+
+                                        const user =
+                                            await refreshUser();
+
+                                        if (!user) return;
+
+                                        router.push("/");
+
+                                    } catch {
+
+                                        toast.error(
+                                            "Google login failed"
+                                        );
+
+                                    } finally {
+
+                                        setLoading(false);
+                                    }
+                                }}
+
+                                onError={() => {
+                                    toast.error(
+                                        "Google authentication failed"
+                                    );
+                                }}
+                            />
+
+                        </div>
+
+                        {/* FOOTER */}
+
+                        <p className="mt-7 text-center text-sm text-slate-500">
+
+                            Don’t have an account?{" "}
+
+                            <Link
+                                href="/register"
+                                className="
+                                font-semibold
+                                text-teal-600
+                                hover:text-teal-700
+                            "
+                            >
+                                Create one
+                            </Link>
+
+                        </p>
+
                     </div>
 
-                    {/* Remember + Forgot */}
-                    <div className="flex items-center justify-between text-sm">
-                        <label className="flex items-center gap-2 text-slate-600">
-                            <input type="checkbox" className="rounded border-slate-300" />
-                            Remember me
-                        </label>
-
-                        <Link
-                            href="/forgot-password"
-                            className="text-teal-600 hover:underline"
-                        >
-                            Forgot password?
-                        </Link>
-                    </div>
-
-                    {/* Submit */}
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`w-full rounded-lg py-3 text-sm font-semibold text-white
-                            transition
-                            ${loading
-                                ? "bg-teal-400 cursor-not-allowed"
-                                : "bg-teal-600 hover:bg-teal-700"}`}
-                    >
-                        {loading ? "Logging in..." : "Login"}
-                    </button>
-                </form>
-
-                {/* Divider */}
-                <div className="my-6 flex items-center gap-3">
-                    <div className="h-px w-full bg-slate-200" />
-                    <span className="text-xs text-slate-400">OR</span>
-                    <div className="h-px w-full bg-slate-200" />
                 </div>
 
-                {/* Google Auth */}
-                <GoogleLogin
-                    onSuccess={async (credentialResponse) => {
-                        try {
-                            setLoading(true);
-
-                            await api.post("/auth/google", {
-                                token: credentialResponse.credential,
-                            });
-
-                            toast.success("Logged in with Google 👋");
-
-                            const user = await refreshUser();
-                            if (!user) return;
-
-                            router.push("/");
-                        } catch (err) {
-                            toast.error("Google login failed");
-                        } finally {
-                            setLoading(false);
-                        }
-                    }}
-                    onError={() => {
-                        toast.error("Google authentication failed");
-                    }}
-                />
-
-                {/* Footer */}
-                <p className="mt-6 text-center text-sm text-slate-500">
-                    Don’t have an account?{" "}
-                    <Link
-                        href="/register"
-                        className="font-medium text-teal-600 hover:underline"
-                    >
-                        Create one
-                    </Link>
-                </p>
             </div>
+
         </div>
     );
 }

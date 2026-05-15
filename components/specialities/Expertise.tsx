@@ -83,7 +83,7 @@ export default function ExpertiseSection() {
                         <div className="mt-10 space-y-6 border-t border-navy/10 pt-6">
                             <div className="flex items-center gap-4 text-navy/80">
                                 <Users className="text-wellness-accent" size={22} />
-                                <span>Thousands of patients trust our care and expertise.</span>
+                                <span>Thousands of patients trust our doctors and expertise.</span>
                             </div>
 
                             <div className="flex items-center gap-4 text-navy/80">

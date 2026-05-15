@@ -55,7 +55,7 @@ export default function DoctorProfilePage() {
             });
         },
         onSuccess: () => {
-            toast.success("Profile updated");
+            toast.success("Profile pending for admin approval");
             setIsEditing(false);
             refetch();
         },

@@ -22,6 +22,7 @@ export default function DoctorsPage() {
     const [sort, setSort] = useState("new");
 
     const { data: doctors = [], refetch } = useQuery({
+
         queryKey: [
             "doctors",
             search,
@@ -31,14 +32,45 @@ export default function DoctorsPage() {
             sort,
         ],
 
-        queryFn: () =>
-            DoctorService.getDoctors({
-                search,
-                specialityId,
-                languageId,
-                approval,
-                sort,
-            }),
+        queryFn: async () => {
+
+            const doctors =
+                await DoctorService.getDoctors({
+
+                    search,
+                    specialityId,
+                    languageId,
+                    approval,
+                    sort,
+                });
+
+            return [...doctors].sort((a, b) => {
+
+                const aHasPending =
+                    (a.doctor?.profileUpdates?.length || 0) > 0;
+
+                const bHasPending =
+                    (b.doctor?.profileUpdates?.length || 0) > 0;
+
+                if (
+                    aHasPending &&
+                    !bHasPending
+                ) {
+
+                    return -1;
+                }
+
+                if (
+                    !aHasPending &&
+                    bHasPending
+                ) {
+
+                    return 1;
+                }
+
+                return 0;
+            });
+        },
     });
 
     const { data: specialities = [] } = useQuery({
@@ -76,7 +108,7 @@ export default function DoctorsPage() {
             {/* Tabs */}
             <div className="mb-6 flex items-center justify-between">
                 <div className="flex gap-3">
-                    {["doctors", "disabled", "pending"].map((t) => (
+                    {["doctors", "pending", "disabled"].map((t) => (
                         <button
                             key={t}
                             onClick={() => {
@@ -126,7 +158,15 @@ export default function DoctorsPage() {
                     setLanguageId={setLanguageId}
                     setApproval={setApproval}
                     setSort={setSort}
-                    onEdit={(doc: any) => setFormDoctor(doc)}
+                    onEdit={(doc: any) => {
+
+                        setFormDoctor(doc);
+
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "smooth",
+                        });
+                    }}
                     refetch={refetch}
                 />
             )}

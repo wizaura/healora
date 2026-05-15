@@ -11,29 +11,35 @@ type Slot = {
     startTime: string;
     endTime: string;
     duration: 30 | 60;
+    category: "FIRST_TIME" | "FOLLOW_UP";
 };
 
 type Props = {
     doctorId: string;
     date: Date | undefined;
-    currentSlotId: string;
     selectedSlot: Slot | null;
     setSelectedSlot: (slot: Slot | null) => void;
+    currentSlotId: string;
+    timezone: string;
 };
 
 /* ---------- COMPONENT ---------- */
 
-export default function RescheduleSlotGrid({
+export default function SlotGrid({
     doctorId,
     date,
-    currentSlotId,
     selectedSlot,
     setSelectedSlot,
+    currentSlotId,
+    timezone,
 }: Props) {
 
     const [slots, setSlots] = useState<Slot[]>([]);
     const [loading, setLoading] = useState(false);
-    const [duration, setDuration] = useState<30 | 60>(30);
+
+    const [selectedCategory, setSelectedCategory] = useState<
+        "FOLLOW_UP" | "FIRST_TIME"
+    >("FIRST_TIME");
 
     /* ---------- DATE STRING ---------- */
 
@@ -48,6 +54,7 @@ export default function RescheduleSlotGrid({
     /* ---------- FETCH SLOTS ---------- */
 
     useEffect(() => {
+
         if (!doctorId || !dateStr) return;
 
         const fetchSlots = async () => {
@@ -56,33 +63,62 @@ export default function RescheduleSlotGrid({
                 setLoading(true);
                 setSelectedSlot(null);
 
-                const res = await api.get("/availability/slots", {
-                    params: { doctorId, date: dateStr },
-                });
+                const res = await api.get(
+                    "/availability/slots",
+                    {
+                        params: {
+                            doctorId,
+                            date: dateStr,
+                            timezone,
+                        },
+                    }
+                );
 
-                const mapped: Slot[] = res.data.map((s: any) => {
+                const mapped: Slot[] =
+                    res.data.map((s: any) => {
 
-                    const start = new Date(s.startTimeUTC);
-                    const end = new Date(s.endTimeUTC);
+                        const start = new Date(
+                            s.startTimeUTC
+                        );
 
-                    const diffMinutes =
-                        (end.getTime() - start.getTime()) / (1000 * 60);
+                        const end = new Date(
+                            s.endTimeUTC
+                        );
 
-                    return {
-                        id: s.id,
-                        startTime: s.startTimeUTC,
-                        endTime: s.endTimeUTC,
-                        duration: diffMinutes as 30 | 60,
-                    };
-                });
+                        const diffMinutes =
+                            (end.getTime() -
+                                start.getTime()) /
+                            (1000 * 60);
+
+                        return {
+                            id: s.id,
+                            startTime:
+                                s.startTimeUTC,
+                            endTime:
+                                s.endTimeUTC,
+                            duration:
+                                diffMinutes as
+                                30 | 60,
+                            category:
+                                s.category,
+                        };
+                    });
 
                 setSlots(mapped);
 
             } catch (err) {
-                console.error("Failed to fetch slots", err);
+
+                console.error(
+                    "Failed to fetch slots",
+                    err
+                );
+
                 setSlots([]);
+
             } finally {
+
                 setLoading(false);
+
             }
         };
 
@@ -90,16 +126,33 @@ export default function RescheduleSlotGrid({
 
     }, [doctorId, dateStr, setSelectedSlot]);
 
-    /* ---------- FILTER BY DURATION ---------- */
+    /* ---------- GROUPED ---------- */
 
-    const visibleSlots = useMemo(
-        () => slots.filter((s) => s.duration === duration),
-        [slots, duration]
-    );
+    const groupedSlots = useMemo(() => {
+
+        return {
+            FIRST_TIME: slots.filter(
+                (s) =>
+                    s.category ===
+                    "FIRST_TIME"
+            ),
+
+            FOLLOW_UP: slots.filter(
+                (s) =>
+                    s.category ===
+                    "FOLLOW_UP"
+            ),
+        };
+
+    }, [slots]);
+
+    const visibleSlots =
+        groupedSlots[selectedCategory];
 
     /* ---------- LOADING ---------- */
 
     if (loading) {
+
         return (
             <div className="rounded-3xl border border-navy/10 bg-white p-8 text-center">
                 <p className="text-sm font-medium text-navy/60">
@@ -109,45 +162,108 @@ export default function RescheduleSlotGrid({
         );
     }
 
-    /* ---------- GRID ---------- */
+    /* ---------- UI ---------- */
 
     return (
+
         <div className="rounded-2xl bg-white p-6">
 
-            <div className="mx-auto max-w-lg text-center">
+            <div className="mx-auto max-w-2xl text-center">
 
                 <span className="mb-4 inline-block rounded-full border border-gray-200 bg-white px-6 py-2 text-sm font-medium text-gray-600">
                     Time Slots
                 </span>
 
                 <h2 className="text-2xl font-medium tracking-[-0.02em] text-[#1F2147]">
-                    Choose a new time slot
+                    Choose a time slot
                 </h2>
 
-                {/* Duration selector */}
+                {/* CATEGORY SELECTOR */}
 
-                <div className="my-6 flex justify-center gap-3">
+                <div className="mt-6 flex justify-center gap-3">
 
-                    {[30, 60].map((d) => (
+                    <button
+                        onClick={() => {
+                            setSelectedCategory(
+                                "FOLLOW_UP"
+                            );
 
-                        <button
-                            key={d}
-                            onClick={() => {
-                                setDuration(d as 30 | 60);
-                                setSelectedSlot(null);
-                            }}
+                            setSelectedSlot(
+                                null
+                            );
+                        }}
+                        className={`
+                            rounded-full px-5 py-2 text-sm font-medium transition
+
+                            ${selectedCategory === "FOLLOW_UP"
+                                ? "bg-emerald-600 text-white shadow"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            }
+                        `}
+                    >
+                        Follow Up
+                    </button>
+
+                    <button
+                        onClick={() => {
+                            setSelectedCategory(
+                                "FIRST_TIME"
+                            );
+
+                            setSelectedSlot(
+                                null
+                            );
+                        }}
+                        className={`
+                            rounded-full px-5 py-2 text-sm font-medium transition
+
+                            ${selectedCategory === "FIRST_TIME"
+                                ? "bg-blue-600 text-white shadow"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            }
+                        `}
+                    >
+                        First Visit
+                    </button>
+
+                </div>
+
+                {/* SLOT HEADER */}
+
+                <div className="mt-8 mb-5 flex items-center justify-between">
+
+                    <div className="flex items-center gap-3">
+
+                        <span
                             className={`
-                rounded-full px-5 py-2 text-sm font-medium transition
-                ${duration === d
-                                    ? "bg-navy text-white shadow"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                }
-              `}
-                        >
-                            {d} min
-                        </button>
+                                rounded-full px-4 py-1.5 text-xs font-semibold
 
-                    ))}
+                                ${selectedCategory === "FIRST_TIME"
+                                    ? "bg-blue-100 text-blue-700"
+                                    : "bg-emerald-100 text-emerald-700"
+                                }
+                            `}
+                        >
+                            {selectedCategory ===
+                                "FIRST_TIME"
+                                ? "First Visit"
+                                : "Follow Up"}
+                        </span>
+
+                        <p className="text-sm text-gray-500">
+
+                            {selectedCategory ===
+                                "FIRST_TIME"
+                                ? "New patient consultation"
+                                : "Review consultation"}
+
+                        </p>
+
+                    </div>
+
+                    <span className="text-xs text-gray-400">
+                        {visibleSlots.length} slots
+                    </span>
 
                 </div>
 
@@ -162,15 +278,19 @@ export default function RescheduleSlotGrid({
                             <div className="text-center space-y-3">
 
                                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-navy/5">
-                                    <Clock10 className="text-navy/40" />
+
+                                    <span className="text-2xl text-navy/40">
+                                        <Clock10 />
+                                    </span>
+
                                 </div>
 
                                 <p className="text-base font-semibold text-navy">
-                                    No {duration}-minute slots
+                                    No slots available
                                 </p>
 
                                 <p className="text-sm text-navy/50">
-                                    Try a different duration or date
+                                    Try another category or date
                                 </p>
 
                             </div>
@@ -181,61 +301,72 @@ export default function RescheduleSlotGrid({
 
                     {visibleSlots.map((slot) => {
 
-                        const start = formatTime(slot.startTime);
-                        const end = formatTime(slot.endTime);
+                        const start =
+                            formatTime(
+                                slot.startTime
+                            );
 
-                        const isSelected = selectedSlot?.id === slot.id;
-                        const isCurrent = slot.id === currentSlotId;
+                        const isSelected =
+                            selectedSlot?.id ===
+                            slot.id;
 
                         return (
 
                             <button
                                 key={slot.id}
-                                disabled={isCurrent}
                                 onClick={() =>
-                                    !isCurrent &&
-                                    setSelectedSlot(isSelected ? null : slot)
+                                    setSelectedSlot(
+                                        isSelected
+                                            ? null
+                                            : slot
+                                    )
                                 }
                                 className={`
-                  rounded-xl border px-4 py-4
-                  text-sm font-semibold transition
+                                    group relative overflow-hidden
+                                    rounded-2xl border px-4 py-4
+                                    transition-all duration-200
 
-                  ${isCurrent
-                                        ? "border-amber-400 bg-amber-50 text-amber-700 cursor-not-allowed"
-                                        : isSelected
-                                            ? "border-navy bg-navy text-white shadow"
-                                            : "border-gray-200 bg-white text-navy hover:border-navy/40"
+                                    ${isSelected
+                                        ? "border-navy bg-navy text-white shadow-lg scale-[1.02]"
+                                        : "border-gray-200 bg-white hover:border-navy/30 hover:shadow-sm"
                                     }
-                `}
+                                `}
                             >
 
-                                <div>{start}</div>
+                                <div className="space-y-1">
 
-                                <div className="text-xs opacity-70">
-                                    → {end}
+                                    <p
+                                        className={`
+                                            text-lg font-semibold
+
+                                            ${isSelected
+                                                ? "text-white"
+                                                : "text-[#1F2147]"
+                                            }
+                                        `}
+                                    >
+                                        {start}
+                                    </p>
+
                                 </div>
-
-                                {isCurrent && (
-                                    <div className="text-[10px] mt-1">
-                                        Current slot
-                                    </div>
-                                )}
 
                             </button>
 
                         );
-
                     })}
 
                 </div>
 
                 {/* TIMEZONE */}
 
-                <p className="mt-4 text-xs text-gray-500">
+                <p className="mt-6 text-xs text-gray-500">
 
                     Times shown in your local timezone (
-                    {Intl.DateTimeFormat().resolvedOptions().timeZone}
-                    )
+                    {
+                        Intl.DateTimeFormat()
+                            .resolvedOptions()
+                            .timeZone
+                    })
 
                 </p>
 
@@ -248,6 +379,7 @@ export default function RescheduleSlotGrid({
 /* ---------- HELPERS ---------- */
 
 const formatTime = (utc: string) => {
+
     const d = new Date(utc);
 
     return d.toLocaleTimeString([], {

@@ -6,14 +6,13 @@ import Image from "next/image";
 
 const doctorLinks = {
   dashboard: [
-    { name: "Dashboard", href: "/doctor/dashboard" },
+    { name: "Dashboard", href: "/doctor" },
     { name: "Appointments", href: "/doctor/appointments" },
     { name: "Patients", href: "/doctor/patients" },
     { name: "Availability", href: "/doctor/availability" },
   ],
   settings: [
-    { name: "Profile Settings", href: "/doctor/settings" },
-    { name: "Change Password", href: "/doctor/settings/security" },
+    { name: "Change Password", href: "/doctor/settings" },
   ],
 };
 
@@ -48,15 +47,15 @@ export default function DoctorFooter() {
             </div>
 
             <p className="mt-4 max-w-sm text-sm leading-relaxed">
-              Manage your appointments, patients, consultations, and earnings —
-              all in one place.
+              Manage your appointments, patients, consultations, and earnings.
+              All in one place.
             </p>
           </div>
 
           {/* DASHBOARD LINKS */}
           <div>
             <h4 className="mb-5 text-sm font-semibold uppercase tracking-wide text-white">
-              Dashboard
+              Pages
             </h4>
             <ul className="space-y-3">
               {doctorLinks.dashboard.map((item) => (

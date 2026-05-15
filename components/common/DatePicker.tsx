@@ -31,12 +31,12 @@ export default function DatePicker(props: DatePickerProps) {
             active: (date: Date) => isAllowedDate(date),
         },
         modifiersClassNames: {
-            selected: "bg-navy-dark text-white font-bold",
+            selected: "bg-wellness-accent text-navy font-bold",
             range_middle: "bg-navy/20 text-navy",
             range_start: "bg-navy text-white",
             range_end: "bg-navy text-white",
-            active: "text-navy font-semibold",
-            today: "text-teal-400 bg-teal-50 font-bold",
+            active: "text-green-600 font-semibold",
+            today: "text-teal-800 bg-teal-50 font-bold",
         },
         styles: {
             caption: {

@@ -39,31 +39,31 @@ export default function ConsultationProcess() {
 
             <Card
               icon={<Stethoscope />}
-              title="Choose Your Doctor"
+              title="Choose Your Speciality or Doctor"
               desc="Select a doctor directly or choose a speciality first, then pick the doctor best suited for your condition."
             />
 
             <Card
               icon={<Calendar />}
-              title="Book Appointment"
-              desc="Select your preferred date and time. First consultation is 60 minutes, follow-ups are 30 minutes."
+              title="BSelect Your Slot"
+              desc="Select your preferred date and time. First Consultation is First Visit, Follow-ups are further visits."
             />
 
             <Card
               icon={<CreditCard />}
-              title="Make Payment"
-              desc="Use Razorpay for Indian payments and Stripe for international payments."
+              title="Book an Appointment"
+              desc="Select your preferred payment method to confirm the appointment. Use Razorpay for Indian payments and Stripe for international payments."
             />
 
             <Card
               icon={<Video />}
               title="Attend Consultation"
-              desc="Consult via Google Meet or Zoom based on your preference."
+              desc="Consult via Google Meet or Zoom based on your preference. The link will be available in the website 10 min prior."
             />
 
             <Card
               icon={<FileText />}
-              title="Share Medical Records"
+              title="Share Your Medical Records"
               desc="Upload reports, prescriptions, and images through your profile before consultation."
             />
 
@@ -79,7 +79,7 @@ export default function ConsultationProcess() {
         {/* PAYMENT OPTIONS */}
         <div className="mb-24">
           <h2 className="text-3xl font-semibold text-center mb-12 text-slate-900">
-            Payment Options
+            Boooking Payment Options
           </h2>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -100,10 +100,10 @@ export default function ConsultationProcess() {
         {/* POST CONSULTATION OPTIONS */}
         <div className="mb-24">
           <h2 className="text-3xl font-semibold text-center mb-12 text-slate-900">
-            After Consultation Options
+            Delivery Payment Options
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
 
             <Card
               icon={<FileText />}
@@ -114,13 +114,7 @@ export default function ConsultationProcess() {
             <Card
               icon={<Truck />}
               title="Doorstep Delivery"
-              desc="Get medicines delivered to your home after completing payment."
-            />
-
-            <Card
-              icon={<Globe />}
-              title="Consultation Only"
-              desc="Applicable for non-homeopathy services like other specialties."
+              desc="Get medicines delivered to your home after completing payment with fast or normal delivery options"
             />
 
           </div>
@@ -136,7 +130,7 @@ export default function ConsultationProcess() {
 
             <Note text="Consultation charges must be paid in advance to confirm appointments." />
             <Note text="Medicine and shipping charges must be paid before dispatch." />
-            <Note text="Consultation and slot fees are non-refundable." />
+            <Note text="Consultation, slot and prescription fees are non-refundable." />
             <Note text="Medicine charges are non-refundable once dispatched." />
             <Note text="Courier delivery depends on availability and external conditions." />
             <Note text="Homeopathic medicines are personalized and not routinely prescribed." />
@@ -181,7 +175,7 @@ function InfoCard({ title, desc }: any) {
 function Note({ text }: any) {
   return (
     <div className="flex gap-3 p-4 rounded-xl border border-slate-200 bg-white shadow-sm">
-      <AlertCircle className="text-red-500 mt-1" size={18} />
+      <AlertCircle className="text-yellow-500" size={18} />
       <p className="text-sm text-slate-600">{text}</p>
     </div>
   );

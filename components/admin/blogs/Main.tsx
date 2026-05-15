@@ -42,7 +42,7 @@ export default function AdminBlogs() {
                         Write Blog
                     </h2>
 
-                    <BlogForm role="DOCTOR" />
+                    <BlogForm role="ADMIN" onSuccess={() => setOpen(false)}/>
 
                 </div>
 

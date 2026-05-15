@@ -50,6 +50,9 @@ export default function CheckoutFooter({
     const [meetingType, setMeetingType] = useState<"google" | "zoom" | null>(null);
     const [deliveryMode, setDeliveryMode] = useState<"none" | "prescription" | "door">("none");
     const [payMode, setPayMode] = useState<"SLOT" | "FULL">("SLOT");
+    const [deliveryType, setDeliveryType] = useState<
+        "FAST" | "NORMAL" | null
+    >(null);
 
     const [address, setAddress] = useState<Address>({});
     const [needsMedicine, setNeedsMedicine] = useState(false);
@@ -112,6 +115,10 @@ export default function CheckoutFooter({
             return toast.error("Please choose prescription or medicine delivery");
         }
 
+        if (deliveryMode === "door" && !deliveryType) {
+            return toast.error("Please choose delivery speed");
+        }
+
         if (deliveryMode === "door" && !address.line1) {
             return toast.error("Please enter delivery address");
         }
@@ -133,6 +140,7 @@ export default function CheckoutFooter({
                 payMode,
                 meetingType: payMode === "FULL" ? meetingType : undefined,
                 deliveryMode: needsMedicine ? deliveryMode : "none",
+                deliveryType: deliveryMode === "door" ? deliveryType : undefined,
                 address: deliveryMode === "door" ? address : undefined,
             });
 
@@ -191,7 +199,7 @@ export default function CheckoutFooter({
     }
 
     return (
-        <section className="rounded-2xl max-h-[60vh] bg-white shadow-sm flex flex-col">
+        <section className="rounded-2xl md:max-h-[60vh] bg-white shadow-sm flex flex-col">
             <Script
                 src="https://checkout.razorpay.com/v1/checkout.js"
                 strategy="afterInteractive"
@@ -291,17 +299,166 @@ export default function CheckoutFooter({
                                 </div>
 
                                 <div
-                                    onClick={() =>
-                                        setDeliveryMode(
-                                            deliveryMode === "door" ? "none" : "door"
-                                        )
-                                    }
-                                    className={`cursor-pointer rounded-xl border p-3 ${deliveryMode === "door"
-                                        ? "border-navy bg-navy/5"
-                                        : "border-gray-200"
-                                        }`}
+                                    className={`
+        rounded-2xl border p-4 transition
+
+        ${deliveryMode === "door"
+                                            ? "border-navy"
+                                            : "border-gray-200"
+                                        }
+    `}
                                 >
-                                    Door-to-door Medicine Delivery
+
+                                    <div
+                                        onClick={() =>
+                                            setDeliveryMode(
+                                                deliveryMode === "door"
+                                                    ? "none"
+                                                    : "door"
+                                            )
+                                        }
+                                        className="cursor-pointer"
+                                    >
+
+                                        <div className="flex items-start justify-between gap-3">
+
+                                            <div>
+
+                                                <p className="font-medium text-navy-dark">
+                                                    Door-to-door Medicine Delivery
+                                                </p>
+
+                                                <p className="mt-1 text-xs text-slate-500 leading-5">
+                                                    Get medicines delivered directly to your address.
+                                                </p>
+
+                                            </div>
+
+                                            <div
+                                                className={`
+                    mt-1 h-5 w-5 rounded-full border-2 transition
+
+                    ${deliveryMode === "door"
+                                                        ? "border-navy bg-navy"
+                                                        : "border-slate-300"
+                                                    }
+                `}
+                                            />
+
+                                        </div>
+
+                                    </div>
+
+                                    {/* DELIVERY TYPE */}
+
+                                    {deliveryMode === "door" && (
+
+                                        <div className="mt-5 border-t border-slate-200 pt-5">
+
+                                            <p className="mb-3 text-sm font-medium text-navy">
+                                                Choose delivery speed
+                                            </p>
+
+                                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+
+                                                {/* FAST */}
+
+                                                <button
+                                                    type="button"
+
+                                                    onClick={() =>
+                                                        setDeliveryType("FAST")
+                                                    }
+
+                                                    className={`
+                        rounded-2xl border p-4 text-left transition
+
+                        ${deliveryType === "FAST"
+                                                            ? "border-emerald-500 bg-emerald-50"
+                                                            : "border-slate-200 hover:border-emerald-200"
+                                                        }
+                    `}
+                                                >
+
+                                                    <div className="flex items-center justify-between">
+
+                                                        <span className="font-semibold text-navy">
+                                                            Fast Delivery
+                                                        </span>
+
+                                                        <span
+                                                            className="
+                                rounded-full
+                                bg-emerald-100
+                                px-2 py-1
+                                text-[10px]
+                                font-semibold
+                                text-emerald-700
+                            "
+                                                        >
+                                                            Priority
+                                                        </span>
+
+                                                    </div>
+
+                                                    <p className="mt-2 text-xs leading-5 text-slate-500">
+                                                        Faster processing and quicker medicine dispatch.
+                                                    </p>
+
+                                                </button>
+
+                                                {/* NORMAL */}
+
+                                                <button
+                                                    type="button"
+
+                                                    onClick={() =>
+                                                        setDeliveryType("NORMAL")
+                                                    }
+
+                                                    className={`
+                        rounded-2xl border p-4 text-left transition
+
+                        ${deliveryType === "NORMAL"
+                                                            ? "border-navy bg-navy/5"
+                                                            : "border-slate-200 hover:border-slate-300"
+                                                        }
+                    `}
+                                                >
+
+                                                    <div className="flex items-center justify-between">
+
+                                                        <span className="font-semibold text-navy">
+                                                            Normal Delivery
+                                                        </span>
+
+                                                        <span
+                                                            className="
+                                rounded-full
+                                bg-slate-100
+                                px-2 py-1
+                                text-[10px]
+                                font-semibold
+                                text-slate-600
+                            "
+                                                        >
+                                                            Standard
+                                                        </span>
+
+                                                    </div>
+
+                                                    <p className="mt-2 text-xs leading-5 text-slate-500">
+                                                        Standard delivery timing with regular dispatch.
+                                                    </p>
+
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    )}
+
                                 </div>
                             </div>
                         )}
@@ -327,13 +484,46 @@ export default function CheckoutFooter({
                                 <button
                                     type="button"
                                     disabled
-                                    onClick={() => setMeetingType("zoom")}
-                                    className={`flex-1 py-2 rounded-lg border ${meetingType === "zoom"
-                                        ? "border-navy bg-navy/5"
-                                        : "border-gray-200"
-                                        }`}
+                                    className="
+        relative flex-1 overflow-hidden
+
+        rounded-lg border border-slate-200
+
+        bg-slate-50
+
+        py-3
+
+        text-sm font-medium text-slate-400
+
+        cursor-not-allowed
+    "
                                 >
-                                    Zoom
+
+                                    <span>
+                                        Zoom
+                                    </span>
+
+                                    <span
+                                        className="
+            absolute right-2 top-2
+
+            rounded-full
+
+            bg-amber-100
+
+            px-2 py-0.5
+
+            text-[8px]
+            font-semibold
+
+            uppercase tracking-wide
+
+            text-amber-700
+        "
+                                    >
+                                        Coming Soon
+                                    </span>
+
                                 </button>
                             </div>
                         </div>

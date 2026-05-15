@@ -76,10 +76,10 @@ export default function AppointmentSummary({
                         "
                     >
 
-                        {doctor?.user?.imageUrl ? (
+                        {appointment?.imageUrl ? (
 
                             <img
-                                src={doctor.user?.imageUrl}
+                                src={appointment?.imageUrl}
 
                                 alt={
                                     appointment.doctorName

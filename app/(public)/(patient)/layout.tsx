@@ -17,6 +17,17 @@ export default function ProtectedLayout({
     if (!loading && !user) {
       router.replace("/login");
     }
+    if (
+      !loading &&
+      user &&
+      user.role !== "PATIENT"
+    ) {
+
+      router.replace(
+        "/"
+      );
+    }
+
   }, [user, loading, router]);
 
   /* Loading state */
@@ -30,6 +41,11 @@ export default function ProtectedLayout({
 
   /* Not logged in → render nothing while redirecting */
   if (!user) {
+    return null;
+  }
+  if (
+    user.role !== "PATIENT"
+  ) {
     return null;
   }
 

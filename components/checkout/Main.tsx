@@ -33,7 +33,7 @@ export default function CheckoutMainPage() {
 
             {/* ================= CHECKOUT CONTENT ================= */}
             <section className="bg-gradient-to-b from-wellness-bg via-white to-wellness-bg px-6 py-16 m-4 rounded-2xl">
-                <div className="mx-auto max-w-7xl grid grid-cols-1 gap-8 md:grid-cols-2">
+                <div className="mx-auto max-w-7xl grid grid-cols-1 gap-4 md:gap-8 md:grid-cols-2">
 
                     {/* LEFT — PAYMENT METHOD */}
                     <PaymentMethodCard

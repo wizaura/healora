@@ -186,8 +186,8 @@ export default function AppointmentCard({ appt, onView }: any) {
         {appt.meetingLink &&
           appt.status === "CONFIRMED" &&
           now < slotStart - 10 * 60 * 1000 && (
-            <span className="text-xs text-slate-500">
-              Meeting starts soon (join available 10 min before)
+            <span className="text-xs inline text-end text-slate-500">
+              Consultation link will be available<br/> 10 minutes before appointment
             </span>
           )}
 

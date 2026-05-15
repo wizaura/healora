@@ -47,9 +47,9 @@ export default function GreetingBanner() {
                     <div className="absolute bottom-4 right-4 flex gap-3">
 
                         {/* YouTube */}
-                        {data.youtubeUrl && (
+                        {data.youtube && (
                             <a
-                                href={data.youtubeUrl || "#"}
+                                href={data.youtube || "#"}
                                 target="_blank"
                                 className="
                                 flex items-center gap-2
@@ -67,9 +67,9 @@ export default function GreetingBanner() {
                         )}
 
                         {/* Instagram */}
-                        {data.instagramUrl && (
+                        {data.instagram && (
                             <a
-                                href={data.instagramUrl || "#"}
+                                href={data.instagram || "#"}
                                 target="_blank"
                                 className="
                                 flex items-center gap-2
