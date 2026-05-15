@@ -163,7 +163,7 @@ export default function BookingSuccess() {
                                         </p>
 
                                         <p className="text-sm font-semibold text-[#1F2147]">
-                                            {data.startTime} – {data.endTime}
+                                            {data.startTime} - {data.endTime}
                                         </p>
                                     </div>
 
