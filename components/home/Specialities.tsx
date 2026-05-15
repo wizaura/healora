@@ -126,7 +126,7 @@ export default function ServicesScrollSection() {
                 <CTAButton
                   label="View All Specialities"
                   href="/specialities"
-                  variant="light"
+                  variant="primary"
                 />
               </div>
             </div>

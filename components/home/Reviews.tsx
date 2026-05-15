@@ -316,11 +316,11 @@ export default function ReviewsSection() {
             </p>
 
             <CTAButton
-              label="View All Reviews"
+              label="Know About Us"
 
-              href="https://maps.app.goo.gl/ev659LvHxH6hHjMVA"
+              href="/about"
 
-              variant="light"
+              variant="primary"
             />
 
           </div>

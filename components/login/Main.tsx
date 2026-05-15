@@ -56,7 +56,7 @@ export default function Login() {
                 timezone: timezone
             });
 
-            toast.success("Logged in successfully 👋");
+            toast.success("Logged in successfully");
             const user = await refreshUser();
 
             if (!user) return;
@@ -405,7 +405,7 @@ export default function Login() {
                                         );
 
                                         toast.success(
-                                            "Logged in with Google 👋"
+                                            "Logged in with Google"
                                         );
 
                                         const user =

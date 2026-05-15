@@ -182,27 +182,6 @@ export default function SlotGrid({
 
                 <div className="mt-6 flex justify-center gap-3">
 
-                    <button
-                        onClick={() => {
-                            setSelectedCategory(
-                                "FOLLOW_UP"
-                            );
-
-                            setSelectedSlot(
-                                null
-                            );
-                        }}
-                        className={`
-                            rounded-full px-5 py-2 text-sm font-medium transition
-
-                            ${selectedCategory === "FOLLOW_UP"
-                                ? "bg-emerald-600 text-white shadow"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                            }
-                        `}
-                    >
-                        Follow Up
-                    </button>
 
                     <button
                         onClick={() => {
@@ -216,14 +195,35 @@ export default function SlotGrid({
                         }}
                         className={`
                             rounded-full px-5 py-2 text-sm font-medium transition
-
+                            
                             ${selectedCategory === "FIRST_TIME"
                                 ? "bg-blue-600 text-white shadow"
                                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                             }
-                        `}
+                            `}
                     >
                         First Visit
+                    </button>
+                    <button
+                        onClick={() => {
+                            setSelectedCategory(
+                                "FOLLOW_UP"
+                            );
+
+                            setSelectedSlot(
+                                null
+                            );
+                        }}
+                        className={`
+                                    rounded-full px-5 py-2 text-sm font-medium transition
+        
+                                    ${selectedCategory === "FOLLOW_UP"
+                                ? "bg-emerald-600 text-white shadow"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            }
+                                `}
+                    >
+                        Follow Up
                     </button>
 
                 </div>

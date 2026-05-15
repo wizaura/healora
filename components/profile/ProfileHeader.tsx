@@ -81,7 +81,7 @@ export default function ProfileHeader() {
       });
 
       toast.success(
-        "Thank you for your feedback ❤️"
+        "Thank you for your feedback"
       );
 
       setShowReviewModal(false);

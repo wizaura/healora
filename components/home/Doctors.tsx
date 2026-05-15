@@ -117,7 +117,7 @@ export default function DoctorsProjection() {
                                 <CTAButton
                                     label="View All Doctors"
                                     href="/doctors"
-                                    variant="light"
+                                    variant="primary"
                                 />
                             </li>
 

@@ -21,7 +21,7 @@ export default function ExpertiseSection() {
                         {/* IMAGE 1 */}
                         <div className="relative z-10 overflow-hidden rounded-3xl shadow-xl border-8 border-white">
                             <Image
-                                src="https://picsum.photos/600/600"
+                                src="/expertise-1.jpeg"
                                 alt="Doctor"
                                 width={420}
                                 height={420}
@@ -43,7 +43,7 @@ export default function ExpertiseSection() {
               "
                         >
                             <Image
-                                src="https://picsum.photos/601/601"
+                                src="/expertise-2.jpeg"
                                 alt="Patient care"
                                 width={420}
                                 height={420}
@@ -83,7 +83,7 @@ export default function ExpertiseSection() {
                         <div className="mt-10 space-y-6 border-t border-navy/10 pt-6">
                             <div className="flex items-center gap-4 text-navy/80">
                                 <Users className="text-wellness-accent" size={22} />
-                                <span>Thousands of patients trust our doctors and expertise.</span>
+                                <span>10,000+ of patients trust our doctors and expertise.</span>
                             </div>
 
                             <div className="flex items-center gap-4 text-navy/80">

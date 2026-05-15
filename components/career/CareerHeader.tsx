@@ -1,35 +1,40 @@
 export default function CareerHeader() {
   return (
-    <section className="max-w-7xl mx-auto px-6 pt-28">
-      <div className="mb-20 text-center">
+    <section className="max-w-7xl mx-auto px-6 pt-24 md:pt-32 pb-16 bg-white">
+      <div className="text-center">
+        <span className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-wider text-navy uppercase bg-slate-100 px-3.5 py-1.5 rounded-full">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          Faculty Positions Active
+        </span>
+        
         <h1
           className="
+          mt-6
           text-4xl md:text-6xl
-          font-semibold
-          leading-[1.15]
-          tracking-[-0.02em]
+          font-bold
+          leading-[1.12]
+          tracking-[-0.03em]
           text-navy
           "
         >
-          Join Healora
-          <br />
-          Build the Future of Healthcare
+          Join Healora Team
+          <span className="block text-slate-400 font-medium text-3xl md:text-5xl mt-2">
+            Build the Future of Healthcare
+          </span>
         </h1>
 
         <p
           className="
           mt-6
-          text-lg
-          text-slate-600
+          text-base md:text-lg
+          text-slate-500
           max-w-2xl
           mx-auto
           leading-relaxed
           "
         >
-          We're always looking for passionate doctors and healthcare
-          professionals who believe in holistic healing and modern
-          telemedicine. Join Healora Wellness Centre and be part of a
-          mission-driven team transforming digital healthcare.
+          We are evaluating passionate medical professionals who believe in hybrid clinical workflows, 
+          preventative digital diagnostics, and modern telemedicine ecosystems.
         </p>
       </div>
     </section>

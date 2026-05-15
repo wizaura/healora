@@ -90,7 +90,7 @@ export default function Register() {
             );
 
             toast.success(
-                "Account created successfully 🎉"
+                "Account created successfully"
             );
 
             /* =========================================
@@ -598,7 +598,7 @@ export default function Register() {
                                         );
 
                                         toast.success(
-                                            "Logged in with Google 👋"
+                                            "Logged in with Google"
                                         );
 
                                         const user =

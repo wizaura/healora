@@ -116,7 +116,7 @@ export default function MedikitsPage() {
       </div>
 
       {/* LOAD MORE */}
-      <div
+      {/* <div
         ref={loadMoreRef}
         className="flex justify-center py-10 text-slate-500"
       >
@@ -125,7 +125,7 @@ export default function MedikitsPage() {
           : hasNextPage
           ? "Scroll to load more"
           : "No more medikits"}
-      </div>
+      </div> */}
 
       {/* MODAL */}
       {selected && (

@@ -84,7 +84,7 @@ export default function AdminSidebar({
                         rounded-lg px-3 py-2.5
                         text-sm font-medium transition
                         ${isActive
-                                    ? "bg-[#1F4BFF]/10 text-[#1F4BFF]"
+                                    ? "bg-teal-50 text-teal-700"
                                     : "text-slate-600 hover:bg-slate-100"
                                 }
                     `}

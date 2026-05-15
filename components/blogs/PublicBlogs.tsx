@@ -177,7 +177,7 @@ export default function Blog() {
 
             {/* LOAD MORE TRIGGER */}
 
-            <div
+            {/* <div
                 ref={loadMoreRef}
                 className="flex justify-center py-10 text-slate-500"
             >
@@ -186,7 +186,7 @@ export default function Blog() {
                     : hasNextPage
                         ? "Scroll to load more"
                         : "No more blogs"}
-            </div>
+            </div> */}
 
         </div>
 

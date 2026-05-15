@@ -81,7 +81,7 @@ export default function HowItWorks() {
                                 <CTAButton
                                     label="View Full Process"
                                     href="/consultation-process"
-                                    variant="light"
+                                    variant="primary"
                                 />
                             </div>
                         </div>

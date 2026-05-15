@@ -8,7 +8,7 @@ import "aos/dist/aos.css";
 const images = [
   "/healora-main-1.jpeg",
   "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1582750433449-648ed127bb54?q=80&w=2070&auto=format&fit=crop"
+  "/hero-main-2.jpeg"
 ];
 
 export default function HomeHero() {
@@ -105,9 +105,9 @@ export default function HomeHero() {
           className="mx-auto mb-8 flex w-fit items-center gap-3 rounded-full bg-white/90 backdrop-blur px-4 py-2 shadow-sm"
         >
           <div className="flex -space-x-2">
-            <img src="https://randomuser.me/api/portraits/women/44.jpg" className="h-7 w-7 rounded-full border-2 border-white" />
-            <img src="https://randomuser.me/api/portraits/men/32.jpg" className="h-7 w-7 rounded-full border-2 border-white" />
-            <img src="https://randomuser.me/api/portraits/women/68.jpg" className="h-7 w-7 rounded-full border-2 border-white" />
+            <img src="/hero-o-1.jpeg" className="h-7 w-7 rounded-full border-2 border-white" />
+            <img src="/hero-o-2.jpeg" className="h-7 w-7 rounded-full border-2 border-white" />
+            <img src="/hero-o-3.jpeg" className="h-7 w-7 rounded-full border-2 border-white" />
           </div>
           <span className="text-sm text-navy">100+ happy patients served!</span>
         </div>

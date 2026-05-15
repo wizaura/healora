@@ -25,7 +25,7 @@ const faqs = [
   {
     question: "Can I reschedule or cancel appointments?",
     answer:
-      "Yes. Appointments can be rescheduled or cancelled easily within the allowed time window from your account.",
+      "Yes. Appointments can be rescheduled once and cancelled anytime directly from your account.",
   },
 ];
 
@@ -60,7 +60,7 @@ export default function FAQsSection() {
             <CTAButton
               label="View All FAQs"
               href="/faqs"
-              variant="light"
+              variant="primary"
             />
           </div>
         </div>

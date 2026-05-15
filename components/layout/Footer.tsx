@@ -134,15 +134,15 @@ export default function Footer() {
                         </ul>
 
                         {/* SOCIAL */}
-                        <div className="mt-6 flex items-center gap-4">
+                        <div className="mt-6 flex flex-col gap-4">
                             <a href="https://www.instagram.com/heal_ora_" className="hover:text-teal-400">
-                                <Instagram size={18} />
+                                Instagram
                             </a>
                             <a className="hover:text-teal-400">
-                                <Linkedin size={18} />
+                                 Youtube
                             </a>
                             <a className="hover:text-teal-400">
-                                <Youtube size={18} />
+                                 LinkedIn
                             </a>
                         </div>
                     </div>

@@ -238,12 +238,12 @@ export default function ContactFormSection() {
                         type="submit"
                         disabled={loading}
                         className="
-                        bg-teal-600
+                        bg-navy
                         text-white
                         px-6 py-3
                         rounded-lg
                         font-medium
-                        hover:bg-teal-700
+                        hover:bg-navy-dark
                         transition
                         disabled:opacity-60
                         disabled:cursor-not-allowed

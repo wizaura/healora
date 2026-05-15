@@ -52,6 +52,16 @@ export default function AdminDashboard() {
 
   const cards = [
     {
+      title: "Total Revenue",
+      value: `₹${summary?.totalRevenue || 0}`,
+      icon: IndianRupee,
+    },
+    {
+      title: "Total Appointments",
+      value: summary?.totalAppointments || 0,
+      icon: Calendar,
+    },
+    {
       title: "Total Doctors",
       value: summary?.totalDoctors || 0,
       icon: Stethoscope,
@@ -62,19 +72,9 @@ export default function AdminDashboard() {
       icon: Users,
     },
     {
-      title: "Appointments",
-      value: summary?.totalAppointments || 0,
-      icon: Calendar,
-    },
-    {
-      title: "Payments",
+      title: "Total Payments",
       value: summary?.totalPayments || 0,
       icon: CreditCard,
-    },
-    {
-      title: "Revenue",
-      value: `₹${summary?.totalRevenue || 0}`,
-      icon: IndianRupee,
     },
   ];
 

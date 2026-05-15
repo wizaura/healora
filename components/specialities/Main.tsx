@@ -74,9 +74,9 @@ export default function SpecialtiesSection() {
                         data-aos-delay="100"
                         className="text-4xl md:text-6xl font-semibold leading-[1.15] tracking-[-0.02em] text-white"
                     >
-                        Quality Medical Services
+                        Expert Online Consultations
                         <br />
-                        For Every Patient
+                        Across Every Speciality
                     </h2>
 
                     <p

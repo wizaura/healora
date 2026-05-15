@@ -40,7 +40,7 @@ export default function GreetingBanner() {
                     <img
                         src={data.imageUrl}
                         alt="Greeting Banner"
-                        className="w-full h-150 object-cover"
+                        className="w-full aspect-[16/9] object-cover"
                     />
 
                     {/* SOCIAL BUTTONS */}
@@ -51,41 +51,69 @@ export default function GreetingBanner() {
                             <a
                                 href={data.youtube || "#"}
                                 target="_blank"
+
                                 className="
-                                flex items-center gap-2
-                                bg-red-600 text-white
-                                px-4 py-2 rounded-full
-                                text-sm font-medium
-                                shadow-md
-                                hover:bg-red-700
-                                transition
-                            "
+        flex items-center gap-2
+
+        rounded-full
+
+        bg-red-600
+
+        px-3 py-3 sm:px-4 sm:py-2
+
+        text-white
+
+        shadow-md
+
+        transition
+
+        hover:bg-red-700
+    "
                             >
+
                                 <Youtube size={16} />
-                                YouTube
+
+                                <span className="hidden sm:block text-sm font-medium">
+                                    YouTube
+                                </span>
+
                             </a>
                         )}
 
                         {/* Instagram */}
-                        {data.instagram && (
-                            <a
-                                href={data.instagram || "#"}
-                                target="_blank"
-                                className="
-                                flex items-center gap-2
-                                bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500
-                                text-white
-                                px-4 py-2 rounded-full
-                                text-sm font-medium
-                                shadow-md
-                                hover:opacity-90
-                                transition
-                            "
-                            >
-                                <Instagram size={16} />
+                        <a
+                            href={data.instagram || "#"}
+                            target="_blank"
+
+                            className="
+        flex items-center gap-2
+
+        rounded-full
+
+        bg-gradient-to-r
+        from-pink-500
+        via-red-500
+        to-yellow-500
+
+        px-3 py-3 sm:px-4 sm:py-2
+
+        text-white
+
+        shadow-md
+
+        transition
+
+        hover:opacity-90
+    "
+                        >
+
+                            <Instagram size={16} />
+
+                            <span className="hidden sm:block text-sm font-medium">
                                 Instagram
-                            </a>
-                        )}
+                            </span>
+
+                        </a>
 
                     </div>
 

@@ -108,8 +108,8 @@ export default function AddInvestigationModal({
 
                     rounded-lg
 
-                    bg-teal-600
-                    hover:bg-teal-700
+                    bg-navy
+                    hover:bg-navy-dark
 
                     px-4 py-2.5
 
@@ -471,8 +471,8 @@ export default function AddInvestigationModal({
 
                             rounded-lg
 
-                            bg-teal-600
-                            hover:bg-teal-700
+                            bg-navy
+                            hover:bg-navy-dark
 
                             disabled:opacity-60
 

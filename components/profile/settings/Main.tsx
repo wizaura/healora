@@ -403,7 +403,7 @@ export default function SettingsPage() {
 
                                         rounded-xl
 
-                                        bg-teal-600
+                                        bg-navy
 
                                         px-5 py-3
 
@@ -412,7 +412,7 @@ export default function SettingsPage() {
 
                                         transition
 
-                                        hover:bg-teal-700
+                                        hover:bg-navy-dark
                                     "
                                 >
 

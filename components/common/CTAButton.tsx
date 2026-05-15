@@ -23,8 +23,8 @@ export default function CTAButton({
         hover:bg-navy-dark
       `,
             icon: `
-        bg-wellness-accent text-navy-dark border border-wellness-accent
-        group-hover:bg-white group-hover:text-navy group-hover:border-wellness-accent
+        bg-wellness-accent/80 text-navy-dark
+        group-hover:bg-wellness-accent group-hover:text-navy
       `,
         },
         light: {

@@ -21,7 +21,7 @@ const values = [
             "Every patient matters.",
         description:
             "We treat everyone with dignity, empathy, and understanding.",
-        image: "https://picsum.photos/600/700?2",
+        image: "/values-respect.jpeg",
     },
 
     {
@@ -31,7 +31,7 @@ const values = [
             "Honest and ethical care.",
         description:
             "Transparency and trust guide every medical decision we make.",
-        image: "https://picsum.photos/600/700?3",
+        image: "/values-integrity.jpeg",
     },
 
     {
@@ -41,7 +41,7 @@ const values = [
             "Committed to better outcomes.",
         description:
             "We continuously improve care through expertise and innovation.",
-        image: "https://picsum.photos/600/700?4",
+        image: "/values-excellence.jpeg",
     },
 
     {
@@ -51,7 +51,7 @@ const values = [
             "Supporting healthier lives together.",
         description:
             "We build strong connections through accessible and compassionate healthcare.",
-        image: "https://picsum.photos/600/700?5",
+        image: "/values-community.jpeg",
     },
 ];
 

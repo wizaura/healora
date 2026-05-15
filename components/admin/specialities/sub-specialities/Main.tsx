@@ -336,7 +336,7 @@ function SubSpecialitySection({ speciality, specialityId, refetch }: any) {
                         >
 
                             <span className="text-sm font-medium text-navy-dark">
-                                {sub.name}
+                                {sub.name} {sub.isActive}
                             </span>
 
                             <Link

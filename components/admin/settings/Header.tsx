@@ -147,32 +147,6 @@ export default function SettingsHeader() {
 
                 </div>
 
-                {/* ACTIVE BAR */}
-
-                <div
-                    className="
-                        absolute bottom-0
-
-                        h-[2px]
-
-                        rounded-full
-
-                        bg-teal-600
-
-                        transition-all duration-300
-                    "
-                    style={{
-                        width: `${100 / tabs.length}%`,
-                        left: `${
-                            (100 / tabs.length) *
-                            tabs.findIndex(
-                                (t) =>
-                                    t.hash ===
-                                    active
-                            )
-                        }%`,
-                    }}
-                />
 
             </div>
 

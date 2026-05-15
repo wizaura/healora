@@ -100,7 +100,7 @@ export default function Payments() {
                     transition
 
                     ${tab === "PENDING"
-                    ? "bg-teal-600 text-white"
+                    ? "bg-navy text-white"
                     : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                   }
                 `}
@@ -122,7 +122,7 @@ export default function Payments() {
                     transition
 
                     ${tab === "PAID"
-                    ? "bg-teal-600 text-white"
+                    ? "bg-navy text-white"
                     : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                   }
                 `}
@@ -623,7 +623,7 @@ export default function Payments() {
 
                                             rounded-lg
 
-                                            bg-teal-600
+                                            bg-navy
                                             hover:bg-teal-700
 
                                             px-5 py-2

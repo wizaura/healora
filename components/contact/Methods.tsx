@@ -29,8 +29,22 @@ export default function ContactMethods() {
                 <ContactCard
                     icon={<MapPin size={22} />}
                     title="Visit Our Clinic"
-                    desc="You are welcome to visit our wellness centre during consultation hours."
-                    info="Healora Wellness Centre, calicut"
+
+                    info={
+                        <>
+                            Healora Wellness Centre
+                            <br />
+
+                            Karuvanpoyil, Koduvally
+                            <br />
+
+                            Kozhikode, Kerala
+                            <br />
+
+                            India, 673572
+                        </>
+                    }
+
                     href="https://maps.app.goo.gl/ev659LvHxH6hHjMVA"
                 />
 
@@ -89,7 +103,7 @@ function ContactCard({ icon, title, desc, info, href }: any) {
                     {desc}
                 </p>
 
-                <p className="text-sm font-medium text-slate-900 group-hover:text-emerald-600">
+                <p className="text-sm text-slate-700 group-hover:text-emerald-600">
                     {info}
                 </p>
 

@@ -66,7 +66,7 @@ export default function Profile() {
 
           <button
             onClick={handleLogout}
-            className="mt-4 md:mt-0 flex items-center gap-2 rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600 transition"
+            className="mt-4 md:mt-0 flex items-center gap-2 rounded-lg outline outline-red-500 text-red-500 hover:bg-red-500 px-4 py-2 text-sm font-medium hover:text-white transition"
           >
             <LogOut size={16} />
             Logout
