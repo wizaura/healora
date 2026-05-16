@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { X } from "lucide-react";
 
 export default function AddConsultationNoteModal({
-    appointmentId,
+    appointment,
     onSaved
 }: any) {
 
@@ -22,7 +22,7 @@ export default function AddConsultationNoteModal({
         try {
 
             await api.post("/consultations/notes", {
-                appointmentId,
+                appointmentId: appointment.id,
                 symptoms,
                 diagnosis,
                 advice,
@@ -64,17 +64,150 @@ export default function AddConsultationNoteModal({
 
                 {/* HEADER */}
 
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-300">
+                <div className="border-b border-slate-200 px-6 py-5">
 
-                    <h3 className="text-lg font-semibold">
-                        Add Consultation Note
-                    </h3>
+                    {/* TOP */}
 
-                    <button onClick={() => setOpen(false)}>
-                        <X size={18} className="hover:text-red-500 cursor-pointer" />
-                    </button>
+                    <div className="flex items-start justify-between gap-4">
+
+                        <div>
+
+                            <h3 className="text-xl font-semibold text-slate-900">
+                                Add Consultation Note
+                            </h3>
+
+                            <p className="mt-1 text-sm text-slate-500">
+                                Record symptoms, diagnosis, and treatment plan for this consultation.
+                            </p>
+
+                        </div>
+
+                        <button
+                            onClick={() => setOpen(false)}
+
+                            className="
+                rounded-lg
+
+                p-2
+
+                text-slate-400
+
+                transition
+
+                hover:bg-slate-100
+                hover:text-red-500
+            "
+                        >
+
+                            <X size={18} />
+
+                        </button>
+
+                    </div>
+
+                    {/* CONSULTATION INFO */}
+
+                    <div className="mt-5 flex flex-wrap gap-2">
+
+                        {/* DATE */}
+
+                        <div
+                            className="
+                inline-flex items-center gap-2
+
+                rounded-full
+
+                border border-slate-200
+
+                bg-slate-50
+
+                px-3 py-1.5
+
+                text-xs font-medium
+
+                text-slate-700
+            "
+                        >
+
+                            {new Date(
+                                appointment.slot.startTimeUTC
+                            ).toLocaleString(
+                                "en-GB",
+                                {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+
+                                    hour: "numeric",
+                                    minute: "2-digit",
+
+                                    hour12: true,
+                                }
+                            )}
+
+                        </div>
+
+                        {/* DELIVERY MODE */}
+
+                        <div
+                            className="
+                inline-flex items-center gap-2
+
+                rounded-full
+
+                bg-teal-50
+
+                px-3 py-1.5
+
+                text-xs font-medium
+
+                uppercase tracking-wide
+
+                text-teal-700
+            "
+                        >
+
+                            {appointment.deliveryMode}
+
+                        </div>
+
+                        {/* STATUS */}
+
+                        <div
+                            className={`
+                inline-flex items-center gap-2
+
+                rounded-full
+
+                px-3 py-1.5
+
+                text-xs font-medium
+
+                uppercase tracking-wide
+
+                ${appointment.status === "COMPLETED"
+
+                                    ? `
+                        bg-green-50
+                        text-green-700
+                    `
+
+                                    : `
+                        bg-yellow-50
+                        text-yellow-700
+                    `
+                                }
+            `}
+                        >
+
+                            {appointment.status}
+
+                        </div>
+
+                    </div>
 
                 </div>
+
 
                 {/* SCROLLABLE BODY */}
 

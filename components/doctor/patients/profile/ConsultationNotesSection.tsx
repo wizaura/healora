@@ -7,11 +7,9 @@ import AddConsultationNoteModal from "./AddConsultationNoteModal";
 
 export default function ConsultationNotesSection({
     notes,
-    appointmentId,
+    appointment,
     refetch
 }: any) {
-
-    const [editing, setEditing] = useState<any>(null);
 
     const deleteNote = async (id: string) => {
 
@@ -45,7 +43,7 @@ export default function ConsultationNotesSection({
                 </h2>
 
                 <AddConsultationNoteModal
-                    appointmentId={appointmentId}
+                    appointment={appointment}
                     onSaved={refetch}
                 />
 
@@ -75,7 +73,23 @@ export default function ConsultationNotesSection({
                         {/* DATE */}
 
                         <div className="text-xs text-gray-400">
-                            {formatDate(note.createdAt)}
+
+                            {new Date(
+                                note.appointment?.slot?.startTimeUTC
+                            ).toLocaleString(
+                                "en-GB",
+                                {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+
+                                    hour: "numeric",
+                                    minute: "2-digit",
+
+                                    hour12: true,
+                                }
+                            )}
+
                         </div>
 
                         {/* CONTENT */}
@@ -121,13 +135,6 @@ export default function ConsultationNotesSection({
                         {/* ACTIONS */}
 
                         <div className="flex gap-4 text-sm pt-2">
-
-                            <button
-                                onClick={() => setEditing(note)}
-                                className="text-blue-600 hover:underline"
-                            >
-                                Edit
-                            </button>
 
                             <button
                                 onClick={() => deleteNote(note.id)}

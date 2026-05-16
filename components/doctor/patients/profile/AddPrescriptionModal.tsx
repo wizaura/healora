@@ -7,7 +7,7 @@ import { Trash2, X } from "lucide-react";
 import { getApiError } from "@/lib/util";
 import { useQuery } from "@tanstack/react-query";
 
-export default function AddPrescriptionModal({ appointmentId, user, deliveryMode, onSaved }: any) {
+export default function AddPrescriptionModal({ appointment, user, deliveryMode, onSaved }: any) {
 
     const [open, setOpen] = useState(false);
 
@@ -53,13 +53,15 @@ export default function AddPrescriptionModal({ appointmentId, user, deliveryMode
 
 
     const save = async () => {
-
+        
         try {
+
+            console.log(appointment.id,'ss')
 
             setLoading(true);
 
             await api.post("/consultations/prescriptions", {
-                appointmentId,
+                appointmentId: appointment.id,
                 medicines,
                 instructions,
                 age,
@@ -108,15 +110,145 @@ export default function AddPrescriptionModal({ appointmentId, user, deliveryMode
 
                 {/* HEADER */}
 
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-300">
+                <div className="border-b border-slate-200 px-6 py-5">
 
-                    <h3 className="text-lg font-semibold">
-                        Create Prescription
-                    </h3>
+                    {/* TOP */}
 
-                    <button onClick={() => setOpen(false)}>
-                        <X size={18} className="hover:text-red-500" />
-                    </button>
+                    <div className="flex items-start justify-between gap-4">
+
+                        <div>
+
+                            <h3 className="text-xl font-semibold text-slate-900">
+                                Create Prescription
+                            </h3>
+
+                            <p className="mt-1 text-sm text-slate-500">
+                                Add medicines, dosage instructions, and treatment details for this consultation.
+                            </p>
+
+                        </div>
+
+                        <button
+                            onClick={() => setOpen(false)}
+
+                            className="
+                rounded-lg
+
+                p-2
+
+                text-slate-400
+
+                transition
+
+                hover:bg-slate-100
+                hover:text-red-500
+            "
+                        >
+
+                            <X size={18} />
+
+                        </button>
+
+                    </div>
+
+                    {/* CONSULTATION INFO */}
+
+                    <div className="mt-5 flex flex-wrap gap-2">
+
+                        {/* DATE + TIME */}
+
+                        <div
+                            className="
+                inline-flex items-center gap-2
+
+                rounded-full
+
+                border border-slate-200
+
+                bg-slate-50
+
+                px-3 py-1.5
+
+                text-xs font-medium
+
+                text-slate-700
+            "
+                        >
+
+                            {appointment?.date}{"   "}
+
+                            •
+
+                            {appointment?.startTime}{"   "}
+
+                        </div>
+
+                        {/* DELIVERY MODE */}
+
+                        {appointment?.deliveryMode && (
+
+                            <div
+                                className="
+                    inline-flex items-center gap-2
+
+                    rounded-full
+
+                    bg-teal-50
+
+                    px-3 py-1.5
+
+                    text-xs font-medium
+
+                    uppercase tracking-wide
+
+                    text-teal-700
+                "
+                            >
+
+                                {appointment.deliveryMode}
+
+                            </div>
+
+                        )}
+
+                        {/* STATUS */}
+
+                        {appointment?.status && (
+
+                            <div
+                                className={`
+                    inline-flex items-center gap-2
+
+                    rounded-full
+
+                    px-3 py-1.5
+
+                    text-xs font-medium
+
+                    uppercase tracking-wide
+
+                    ${appointment.status === "COMPLETED"
+
+                                        ? `
+                            bg-green-50
+                            text-green-700
+                        `
+
+                                        : `
+                            bg-yellow-50
+                            text-yellow-700
+                        `
+                                    }
+                `}
+                            >
+
+                                {appointment.status}
+
+                            </div>
+
+                        )}
+
+                    </div>
 
                 </div>
 

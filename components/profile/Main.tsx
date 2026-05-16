@@ -243,7 +243,7 @@ export default function Profile() {
                             {/* EDIT */}
 
                             <Link
-                                href="/settings"
+                                href="/profile/settings"
                             >
 
                                 <button
@@ -431,14 +431,14 @@ export default function Profile() {
                     <InfoCard
                         icon={<Phone size={18} />}
                         label="Phone Number"
-                        value={profile?.address.phone || profile?.phone || "—"}
+                        value={profile?.address?.phone || profile?.phone || "—"}
                     />
 
                     <InfoCard
                         icon={<MessageCircle size={18} />}
                         label="WhatsApp Number"
                         value={
-                            profile?.whatsapp || profile?.whatsappNumber || "—"
+                            profile?.address?.whatsapp || profile?.whatsappNumber || "—"
                         }
                     />
 

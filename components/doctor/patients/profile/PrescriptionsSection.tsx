@@ -38,7 +38,7 @@ export default function PrescriptionsSection({
         </h2>
 
         <AddPrescriptionModal
-          appointmentId={appointmentId}
+          appointment={appointment}
           user={user}
           deliveryMode={appointment?.deliveryMode}
           onSaved={refetch}
