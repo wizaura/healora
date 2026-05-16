@@ -103,50 +103,6 @@ export default function Register() {
             if (!user) return;
 
             /* =========================================
-               REDIRECTS
-               ========================================= */
-
-            const redirectUrl =
-                sessionStorage.getItem(
-                    "afterLoginRedirect"
-                );
-
-            const loginFrom =
-                sessionStorage.getItem(
-                    "loginFrom"
-                );
-
-            sessionStorage.removeItem(
-                "afterLoginRedirect"
-            );
-
-            sessionStorage.removeItem(
-                "loginFrom"
-            );
-
-            /* =========================================
-               PRIORITY REDIRECTS
-               ========================================= */
-
-            if (redirectUrl) {
-
-                router.replace(
-                    redirectUrl
-                );
-
-                return;
-            }
-
-            if (loginFrom) {
-
-                router.replace(
-                    loginFrom
-                );
-
-                return;
-            }
-
-            /* =========================================
                DEFAULT USER REDIRECT
                ========================================= */
 

@@ -3,651 +3,1084 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { useState } from "react";
-import { CreditCard } from "lucide-react";
+
+import {
+    CreditCard,
+    Download,
+    Copy,
+} from "lucide-react";
+
 import Loader from "@/components/common/Loader";
+
+declare global {
+    interface Window {
+        Razorpay: any;
+    }
+}
 
 export default function Payments() {
 
-  const [tab, setTab] =
-    useState("PENDING");
+    const [tab, setTab] =
+        useState("PENDING");
 
-  const {
-    data = [],
-    isLoading,
-  } = useQuery({
+    const {
+        data = [],
+        isLoading,
+    } = useQuery({
 
-    queryKey: ["my-bills"],
+        queryKey: ["my-bills"],
 
-    queryFn: async () => {
+        queryFn: async () => {
 
-      const res = await api.get(
-        "/consultations/my-bills"
-      );
+            const res = await api.get(
+                "/consultations/my-bills"
+            );
 
-      return res.data;
-    },
-  });
+            return res.data;
+        },
+    });
 
-  if (isLoading) {
+    if (isLoading) {
 
-    return <Loader fullScreen />
-  }
+        return <Loader fullScreen />;
+    }
 
-  const filtered = data.filter((b: any) =>
+    const filtered = data.filter((b: any) =>
 
-    tab === "PENDING"
+        tab === "PENDING"
 
-      ? b.paymentStatus === "PENDING"
+            ? b.paymentStatus === "PENDING"
 
-      : b.paymentStatus === "PAID"
-  );
+            : b.paymentStatus === "PAID"
+    );
 
-  const pendingCount =
-    data.filter(
-      (b: any) =>
-        b.paymentStatus === "PENDING"
-    ).length;
+    const pendingCount =
+        data.filter(
+            (b: any) =>
+                b.paymentStatus === "PENDING"
+        ).length;
 
-  const paidCount =
-    data.filter(
-      (b: any) =>
-        b.paymentStatus === "PAID"
-    ).length;
+    const paidCount =
+        data.filter(
+            (b: any) =>
+                b.paymentStatus === "PAID"
+        ).length;
 
-  return (
+    return (
 
-    <div className="min-h-screen py-12">
+        <div className="space-y-8">
 
-      <div className="max-w-5xl mx-auto px-6 space-y-8">
-
-        {/* HEADER */}
-        <div
-          className="
-        rounded-lg
-        border border-slate-200
-
-        bg-white
-
-        px-5 py-4
-
-        flex flex-col lg:flex-row
-        lg:items-center
-        lg:justify-between
-
-        gap-5
-
-        shadow-sm
-    "
-        >
-
-          {/* LEFT */}
-          <div className="space-y-3">
-
-            {/* TABS */}
-            <div className="flex gap-2 flex-wrap">
-
-              <button
-                onClick={() =>
-                  setTab("PENDING")
-                }
-                className={`
-                    px-4 py-2
-
-                    rounded-lg
-
-                    text-sm font-medium
-
-                    transition
-
-                    ${tab === "PENDING"
-                    ? "bg-navy text-white"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                  }
-                `}
-              >
-                Pending Bills
-              </button>
-
-              <button
-                onClick={() =>
-                  setTab("PAID")
-                }
-                className={`
-                    px-4 py-2
-
-                    rounded-lg
-
-                    text-sm font-medium
-
-                    transition
-
-                    ${tab === "PAID"
-                    ? "bg-navy text-white"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                  }
-                `}
-              >
-                Payment History
-              </button>
-
-            </div>
-
-            {/* COUNT */}
-            <p className="text-sm text-slate-500">
-
-              Showing{" "}
-
-              <span className="font-medium text-slate-700">
-                {filtered.length}
-              </span>{" "}
-
-              records
-
-            </p>
-
-          </div>
-
-          {/* RIGHT STATS */}
-          <div className="flex gap-3 flex-wrap">
-
-            {/* PENDING */}
             <div
-              className="
-                rounded-lg
+                className="
+                    overflow-hidden
 
-                bg-amber-50
-                border border-amber-100
+                    rounded-2xl
 
-                px-4 py-3
+                    border border-slate-200
 
-                min-w-[120px]
-            "
+                    bg-white
+
+                    shadow-sm
+                "
             >
 
-              <p className="text-xs text-amber-700">
-                Pending
-              </p>
+                {/* =====================================================
+                   HEADER
+                   ===================================================== */}
 
-              <p className="mt-1 text-xl font-semibold text-amber-600">
-                {pendingCount}
-              </p>
+                <div
+                    className="
+                        border-b border-slate-200
 
-            </div>
+                        bg-gradient-to-r
+                        from-wellness-bg/90
+                        via-wellness-bg/50
+                        to-white
 
-            {/* PAID */}
-            <div
-              className="
-                rounded-lg
+                        px-8 py-7
+                    "
+                >
 
-                bg-emerald-50
-                border border-emerald-100
+                    <div
+                        className="
+                            flex flex-col gap-6
 
-                px-4 py-3
+                            lg:flex-row
+                            lg:items-center
+                            lg:justify-between
+                        "
+                    >
 
-                min-w-[120px]
-            "
-            >
+                        {/* LEFT */}
 
-              <p className="text-xs text-emerald-700">
-                Paid
-              </p>
+                        <div>
 
-              <p className="mt-1 text-xl font-semibold text-emerald-600">
-                {paidCount}
-              </p>
+                            <div
+                                className="
+                                    inline-flex items-center gap-2
 
-            </div>
+                                    rounded-full
 
-          </div>
+                                    border border-teal-100
 
-        </div>
+                                    bg-white
 
-        {/* LIST */}
-        <div className="space-y-5">
+                                    px-3 py-1
 
-          {/* EMPTY */}
-          {filtered.length === 0 && (
+                                    text-xs font-semibold
 
-            <div
-              className="
-                                rounded-lg
+                                    uppercase tracking-wide
+
+                                    text-teal-700
+                                "
+                            >
+
+                                Billing & Payments
+
+                            </div>
+
+                            <h1
+                                className="
+                                    mt-4
+
+                                    text-3xl font-semibold
+
+                                    tracking-[-0.03em]
+
+                                    text-slate-900
+                                "
+                            >
+
+                                Pharmacy Bills
+
+                            </h1>
+
+                            <p
+                                className="
+                                    mt-2
+
+                                    max-w-2xl
+
+                                    text-sm leading-6
+
+                                    text-slate-500
+                                "
+                            >
+
+                                Manage pending invoices,
+                                completed payments, and
+                                prescription billing history.
+
+                            </p>
+
+                        </div>
+
+                        {/* STATS */}
+
+                        <div className="flex flex-wrap gap-4">
+
+                            {/* PENDING */}
+
+                            <div
+                                className="
+                                    rounded-xl
+
+                                    border border-amber-100
+
+                                    bg-white
+
+                                    px-5 py-4
+
+                                    shadow-sm
+
+                                    min-w-[140px]
+                                "
+                            >
+
+                                <p
+                                    className="
+                                        text-xs font-medium
+
+                                        uppercase tracking-wide
+
+                                        text-amber-600
+                                    "
+                                >
+
+                                    Pending
+
+                                </p>
+
+                                <p
+                                    className="
+                                        mt-2
+
+                                        text-3xl font-semibold
+
+                                        text-slate-900
+                                    "
+                                >
+
+                                    {pendingCount}
+
+                                </p>
+
+                            </div>
+
+                            {/* PAID */}
+
+                            <div
+                                className="
+                                    rounded-xl
+
+                                    border border-emerald-100
+
+                                    bg-white
+
+                                    px-5 py-4
+
+                                    shadow-sm
+
+                                    min-w-[140px]
+                                "
+                            >
+
+                                <p
+                                    className="
+                                        text-xs font-medium
+
+                                        uppercase tracking-wide
+
+                                        text-emerald-600
+                                    "
+                                >
+
+                                    Paid
+
+                                </p>
+
+                                <p
+                                    className="
+                                        mt-2
+
+                                        text-3xl font-semibold
+
+                                        text-slate-900
+                                    "
+                                >
+
+                                    {paidCount}
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {/* =====================================================
+                   CONTENT
+                   ===================================================== */}
+
+                <div className="p-6 md:p-8">
+
+                    {/* =====================================================
+                       TABS
+                       ===================================================== */}
+
+                    <div
+                        className="
+                            flex flex-col gap-5
+
+                            lg:flex-row
+                            lg:items-center
+                            lg:justify-between
+                        "
+                    >
+
+                        <div
+                            className="
+                                inline-flex
+
+                                rounded-xl
+
+                                border border-slate-200
+
+                                bg-slate-100
+
+                                p-1
+                            "
+                        >
+
+                            <button
+                                onClick={() =>
+                                    setTab("PENDING")
+                                }
+
+                                className={`
+                                    rounded-xl
+
+                                    px-5 py-2.5
+
+                                    text-sm font-medium
+
+                                    transition
+
+                                    ${tab === "PENDING"
+
+                                        ? `
+                                            bg-white
+                                            text-slate-900
+                                            shadow-sm
+                                        `
+
+                                        : `
+                                            text-slate-500
+                                            hover:text-slate-700
+                                        `
+                                    }
+                                `}
+                            >
+
+                                Pending Bills
+
+                            </button>
+
+                            <button
+                                onClick={() =>
+                                    setTab("PAID")
+                                }
+
+                                className={`
+                                    rounded-xl
+
+                                    px-5 py-2.5
+
+                                    text-sm font-medium
+
+                                    transition
+
+                                    ${tab === "PAID"
+
+                                        ? `
+                                            bg-white
+                                            text-slate-900
+                                            shadow-sm
+                                        `
+
+                                        : `
+                                            text-slate-500
+                                            hover:text-slate-700
+                                        `
+                                    }
+                                `}
+                            >
+
+                                Payment History
+
+                            </button>
+
+                        </div>
+
+                        {/* RECORD COUNT */}
+
+                        <p className="text-sm text-slate-500">
+
+                            Showing{" "}
+
+                            <span className="font-semibold text-slate-800">
+
+                                {filtered.length}
+
+                            </span>{" "}
+
+                            records
+
+                        </p>
+
+                    </div>
+
+                    {/* =====================================================
+                       EMPTY
+                       ===================================================== */}
+
+                    {filtered.length === 0 && (
+
+                        <div
+                            className="
+                                mt-8
+
+                                rounded-2xl
 
                                 border border-dashed border-slate-300
 
                                 bg-white
 
-                                py-16 px-6
+                                py-20 px-6
 
                                 text-center
 
                                 shadow-sm
                             "
-            >
+                        >
 
-              <div
-                className="
-                                    h-14 w-14
+                            <div
+                                className="
+                                    mx-auto mb-5
+
+                                    flex h-16 w-16
+                                    items-center justify-center
 
                                     rounded-full
 
                                     bg-slate-100
-
-                                    flex items-center justify-center
-
-                                    mx-auto mb-4
                                 "
-              >
-                <CreditCard />
-              </div>
+                            >
 
-              <h3 className="text-sm font-medium text-slate-700">
-                No payment records found
-              </h3>
+                                <CreditCard
+                                    className="text-slate-500"
+                                />
 
-              <p className="text-sm text-slate-500 mt-1">
-                Your bills and invoices
-                will appear here.
-              </p>
+                            </div>
 
-            </div>
+                            <h3
+                                className="
+                                    text-lg font-semibold
 
-          )}
+                                    text-slate-800
+                                "
+                            >
 
-          {/* CARDS */}
-          {filtered.map((bill: any) => (
+                                No payment records found
 
-            <div
-              key={bill.id}
-              className="
-                                rounded-lg
+                            </h3>
 
-                                border border-slate-200
+                            <p
+                                className="
+                                    mt-2
 
-                                bg-white
+                                    text-sm
 
-                                p-5
+                                    text-slate-500
+                                "
+                            >
 
-                                shadow-sm
+                                Your bills and invoices
+                                will appear here.
 
-                                space-y-5
-                            "
-            >
-
-              {/* TOP */}
-              <div
-                className="
-    flex flex-col lg:flex-row lg:items-center lg:justify-between
-    gap-5
-    rounded-xl
-    border border-slate-200
-    bg-white
-    p-5
-    shadow-sm
-  "
-              >
-
-                {/* LEFT */}
-                <div className="flex-1 space-y-4">
-
-                  {/* Invoice Meta */}
-                  <div className="flex flex-wrap items-center gap-3">
-
-                    <div
-                      className="
-          inline-flex items-center
-          rounded-full
-          bg-slate-100
-          px-3 py-1
-          text-xs font-medium text-slate-600
-        "
-                    >
-                      Invoice
-                    </div>
-
-                    <p className="text-lg font-semibold text-slate-900">
-                      #{bill.invoiceNumber}
-                    </p>
-
-                    <span className="text-sm text-slate-400">
-                      •
-                    </span>
-
-                    <p className="text-sm text-slate-500">
-                      {new Date(bill.createdAt).toLocaleDateString()}
-                    </p>
-
-                  </div>
-
-                  {/* Tracking */}
-                  {bill.trackingId && (
-                    <div
-                      className="
-          flex flex-col sm:flex-row sm:items-center
-          gap-3
-        "
-                    >
-
-                      <div>
-                        <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-                          Tracking ID
-                        </p>
-
-                        <div
-                          className="
-              mt-1
-              inline-flex items-center gap-2
-              rounded-2xl
-              border border-slate-200
-              bg-slate-50
-              px-4 py-2
-            "
-                        >
-
-                          <span
-                            className="
-                font-mono
-                text-sm
-                font-semibold
-                text-slate-800
-              "
-                          >
-                            {bill.trackingId}
-                          </span>
-
-                          <button
-                            onClick={() => {
-                              navigator.clipboard.writeText(
-                                bill.trackingId
-                              );
-                            }}
-                            className="
-                rounded-lg
-                bg-white
-                border border-slate-200
-                px-2 py-1
-                text-xs font-medium
-                text-teal-600
-                hover:border-teal-300
-                hover:bg-teal-50
-                transition
-              "
-                          >
-                            Copy
-                          </button>
+                            </p>
 
                         </div>
-                      </div>
-
-                    </div>
-                  )}
-
-                </div>
-
-                {/* RIGHT */}
-                <div
-                  className="
-      flex flex-col items-start
-      lg:items-end
-      gap-3
-    "
-                >
-
-                  <div>
-                    <p className="text-xs uppercase tracking-wide text-slate-400">
-                      Total Amount
-                    </p>
 
-                    <p className="text-3xl font-bold text-slate-900 mt-1">
-                      {bill.currency} {bill.totalAmount}
-                    </p>
-                  </div>
+                    )}
 
-                  <span
-                    className={`
-        inline-flex items-center
-        rounded-full
-        px-4 py-1.5
-        text-xs font-semibold
-        tracking-wide
+                    {/* =====================================================
+                       LIST
+                       ===================================================== */}
 
-        ${bill.paymentStatus === "PAID"
-                        ? "bg-emerald-100 text-emerald-700"
-                        : "bg-amber-100 text-amber-700"
-                      }
-      `}
-                  >
-                    {bill.paymentStatus === "PAID"
-                      ? "Paid"
-                      : "Pending Payment"}
-                  </span>
+                    <div className="mt-8 space-y-6">
 
-                </div>
+                        {filtered.map((bill: any) => (
 
-              </div>
+                            <div
+                                key={bill.id}
 
-              {/* ITEMS */}
-              <div className="space-y-2 text-sm text-slate-600">
+                                className="
+                                    overflow-hidden
 
-                {bill.pharmacyItems?.map(
-                  (item: any, i: number) => (
+                                    rounded-2xl
 
-                    <div
-                      key={i}
-                      className="
-                                                flex items-center justify-between gap-4
-                                            "
-                    >
+                                    border border-slate-200
 
-                      <span>
-                        {item.name} ({item.type})
-                      </span>
+                                    bg-white
 
-                      <span className="font-medium text-slate-700">
-                        {bill.currency}{" "}
-                        {item.qty * item.price}
-                      </span>
+                                    shadow-sm
 
-                    </div>
-                  )
-                )}
+                                    transition-all duration-300
 
-                <div className="border-t border-slate-200 my-3" />
+                                    hover:-translate-y-1
+                                    hover:shadow-lg
+                                "
+                            >
 
-                <div className="flex justify-between">
+                                <div className="p-6 space-y-6">
 
-                  <span>
-                    Subtotal
-                  </span>
+                                    {/* =====================================================
+                                       TOP
+                                       ===================================================== */}
 
-                  <span>
-                    {bill.currency}{" "}
-                    {bill.subtotal}
-                  </span>
+                                    <div
+                                        className="
+                                            flex flex-col gap-6
 
-                </div>
+                                            rounded-2xl
 
-                <div className="flex justify-between">
+                                            border border-slate-200
 
-                  <span>
-                    Delivery
-                  </span>
+                                            bg-gradient-to-br
+                                            from-white
+                                            to-slate-50
 
-                  <span>
-                    {bill.currency}{" "}
-                    {bill.deliveryCharge}
-                  </span>
+                                            p-6
 
-                </div>
-
-                {bill.discount > 0 && (
-
-                  <div className="flex justify-between text-emerald-600">
-
-                    <span>
-                      Discount
-                    </span>
-
-                    <span>
-                      - {bill.currency}{" "}
-                      {bill.discount}
-                    </span>
-
-                  </div>
-
-                )}
-
-                <div
-                  className="
-                                        flex justify-between
-
-                                        border-t border-slate-200
-
-                                        pt-3 mt-3
-
-                                        font-semibold text-slate-900
-                                    "
-                >
-
-                  <span>
-                    Total
-                  </span>
-
-                  <span>
-                    {bill.currency}{" "}
-                    {bill.totalAmount}
-                  </span>
-
-                </div>
-
-              </div>
-
-              {/* ACTIONS */}
-              <div className="flex flex-wrap justify-end gap-3 pt-2">
-
-                {/* DOWNLOAD */}
-                <a
-                  href={`/api/payments/invoice/${bill.id}`}
-                  target="_blank"
-                  className="
-                                        inline-flex items-center
-
-                                        rounded-lg
-
-                                        border border-slate-300
-
-                                        px-4 py-2
-
-                                        text-sm font-medium text-slate-700
-
-                                        hover:bg-slate-50
-
-                                        transition
-                                    "
-                >
-                  Download Invoice
-                </a>
-
-                {/* PAY */}
-                {bill.paymentStatus === "PENDING" && (
-
-                  <button
-                    onClick={async () => {
-
-                      try {
-
-                        const res =
-                          await api.post(
-                            `/payments/pay-prescription/${bill.id}`
-                          );
-
-                        const data =
-                          res.data.data;
-
-                        if (
-                          data.gateway ===
-                          "RAZORPAY"
-                        ) {
-
-                          const options = {
-
-                            key: data.key,
-
-                            amount: data.amount,
-
-                            currency:
-                              data.currency,
-
-                            name: "Healora",
-
-                            description:
-                              "Pharmacy Bill Payment",
-
-                            order_id:
-                              data.orderId,
-
-                            handler:
-                              function () {
-
-                                window.location.reload();
-                              },
-                          };
-
-                          const rzp =
-                            new (
-                              window as any
-                            ).Razorpay(
-                              options
-                            );
-
-                          rzp.open();
-                        }
-
-                        if (
-                          data.gateway ===
-                          "STRIPE"
-                        ) {
-
-                          window.location.href =
-                            data.checkoutUrl;
-                        }
-
-                      } catch {
-
-                        alert(
-                          "Payment failed to start"
-                        );
-                      }
-                    }}
-                    className="
-                                            inline-flex items-center
-
-                                            rounded-lg
-
-                                            bg-navy
-                                            hover:bg-teal-700
-
-                                            px-5 py-2
-
-                                            text-sm font-medium text-white
-
-                                            transition
+                                            lg:flex-row
+                                            lg:items-center
+                                            lg:justify-between
                                         "
-                  >
-                    Pay Now
-                  </button>
+                                    >
 
-                )}
+                                        {/* LEFT */}
 
-              </div>
+                                        <div className="flex-1 space-y-5">
+
+                                            {/* META */}
+
+                                            <div
+                                                className="
+                                                    flex flex-wrap
+                                                    items-center
+                                                    gap-3
+                                                "
+                                            >
+
+                                                <div
+                                                    className="
+                                                        inline-flex items-center
+
+                                                        rounded-full
+
+                                                        border border-slate-200
+
+                                                        bg-white
+
+                                                        px-3 py-1
+
+                                                        text-xs font-semibold
+
+                                                        text-slate-600
+                                                    "
+                                                >
+
+                                                    Invoice
+
+                                                </div>
+
+                                                <p
+                                                    className="
+                                                        text-xl font-semibold
+
+                                                        text-slate-900
+                                                    "
+                                                >
+
+                                                    #{bill.invoiceNumber}
+
+                                                </p>
+
+                                                <span className="text-slate-300">
+                                                    •
+                                                </span>
+
+                                                <p className="text-sm text-slate-500">
+
+                                                    {new Date(
+                                                        bill.createdAt
+                                                    ).toLocaleDateString()}
+
+                                                </p>
+
+                                            </div>
+
+                                            {/* TRACKING */}
+
+                                            {bill.trackingId && (
+
+                                                <div>
+
+                                                    <p
+                                                        className="
+                                                            text-xs font-medium
+
+                                                            uppercase tracking-wide
+
+                                                            text-slate-400
+                                                        "
+                                                    >
+
+                                                        Tracking ID
+
+                                                    </p>
+
+                                                    <div
+                                                        className="
+                                                            mt-2
+
+                                                            inline-flex items-center gap-2
+
+                                                            rounded-2xl
+
+                                                            border border-slate-200
+
+                                                            bg-white
+
+                                                            px-4 py-3
+                                                        "
+                                                    >
+
+                                                        <span
+                                                            className="
+                                                                font-mono
+
+                                                                text-sm font-semibold
+
+                                                                text-slate-800
+                                                            "
+                                                        >
+
+                                                            {bill.trackingId}
+
+                                                        </span>
+
+                                                        <button
+                                                            onClick={() =>
+                                                                navigator.clipboard.writeText(
+                                                                    bill.trackingId
+                                                                )
+                                                            }
+
+                                                            className="
+                                                                flex items-center gap-1
+
+                                                                rounded-xl
+
+                                                                border border-slate-200
+
+                                                                bg-slate-50
+
+                                                                px-3 py-1.5
+
+                                                                text-xs font-medium
+
+                                                                text-teal-700
+
+                                                                transition
+
+                                                                hover:bg-teal-50
+                                                            "
+                                                        >
+
+                                                            <Copy size={12} />
+
+                                                            Copy
+
+                                                        </button>
+
+                                                    </div>
+
+                                                </div>
+
+                                            )}
+
+                                        </div>
+
+                                        {/* RIGHT */}
+
+                                        <div
+                                            className="
+                                                flex flex-col gap-4
+
+                                                lg:items-end
+                                            "
+                                        >
+
+                                            <div>
+
+                                                <p
+                                                    className="
+                                                        text-xs font-medium
+
+                                                        uppercase tracking-wide
+
+                                                        text-slate-400
+                                                    "
+                                                >
+
+                                                    Total Amount
+
+                                                </p>
+
+                                                <p
+                                                    className="
+                                                        mt-2
+
+                                                        text-4xl font-semibold
+
+                                                        tracking-[-0.03em]
+
+                                                        text-slate-900
+                                                    "
+                                                >
+
+                                                    {bill.currency} {bill.totalAmount}
+
+                                                </p>
+
+                                            </div>
+
+                                            <span
+                                                className={`
+                                                    inline-flex items-center
+
+                                                    rounded-full
+
+                                                    px-4 py-1.5
+
+                                                    text-xs font-semibold
+
+                                                    tracking-wide
+
+                                                    ${bill.paymentStatus === "PAID"
+
+                                                        ? `
+                                                            bg-emerald-100
+                                                            text-emerald-700
+                                                        `
+
+                                                        : `
+                                                            bg-amber-100
+                                                            text-amber-700
+                                                        `
+                                                    }
+                                                `}
+                                            >
+
+                                                {bill.paymentStatus === "PAID"
+
+                                                    ? "Paid"
+
+                                                    : "Pending Payment"}
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                    {/* =====================================================
+                                       ITEMS
+                                       ===================================================== */}
+
+                                    <div
+                                        className="
+                                            rounded-2xl
+
+                                            border border-slate-200
+
+                                            bg-slate-50/60
+
+                                            p-5
+
+                                            text-sm text-slate-600
+                                        "
+                                    >
+
+                                        <div className="space-y-2">
+
+                                            {bill.pharmacyItems?.map(
+                                                (
+                                                    item: any,
+                                                    i: number
+                                                ) => (
+
+                                                    <div
+                                                        key={i}
+
+                                                        className="
+                                                            flex items-center justify-between gap-4
+
+                                                            rounded-xl
+
+                                                            px-3 py-2
+
+                                                            transition
+
+                                                            hover:bg-white
+                                                        "
+                                                    >
+
+                                                        <span>
+
+                                                            {item.name} ({item.type})
+
+                                                        </span>
+
+                                                        <span
+                                                            className="
+                                                                font-semibold
+
+                                                                text-slate-800
+                                                            "
+                                                        >
+
+                                                            {bill.currency}{" "}
+
+                                                            {item.qty * item.price}
+
+                                                        </span>
+
+                                                    </div>
+
+                                                )
+                                            )}
+
+                                        </div>
+
+                                        <div className="my-4 border-t border-slate-200" />
+
+                                        <div className="space-y-3">
+
+                                            <div className="flex justify-between">
+
+                                                <span>Subtotal</span>
+
+                                                <span>
+
+                                                    {bill.currency} {bill.subtotal}
+
+                                                </span>
+
+                                            </div>
+
+                                            <div className="flex justify-between">
+
+                                                <span>Delivery</span>
+
+                                                <span>
+
+                                                    {bill.currency} {bill.deliveryCharge}
+
+                                                </span>
+
+                                            </div>
+
+                                            {bill.discount > 0 && (
+
+                                                <div
+                                                    className="
+                                                        flex justify-between
+
+                                                        text-emerald-600
+                                                    "
+                                                >
+
+                                                    <span>Discount</span>
+
+                                                    <span>
+
+                                                        - {bill.currency} {bill.discount}
+
+                                                    </span>
+
+                                                </div>
+
+                                            )}
+
+                                        </div>
+
+                                        <div
+                                            className="
+                                                mt-5
+
+                                                flex justify-between
+
+                                                border-t border-slate-200
+
+                                                pt-5
+
+                                                text-base font-semibold
+
+                                                text-slate-900
+                                            "
+                                        >
+
+                                            <span>Total</span>
+
+                                            <span>
+
+                                                {bill.currency} {bill.totalAmount}
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                    {/* =====================================================
+                                       ACTIONS
+                                       ===================================================== */}
+
+                                    <div
+                                        className="
+                                            flex flex-wrap justify-end gap-3
+
+                                            border-t border-slate-200
+
+                                            pt-6
+                                        "
+                                    >
+
+                                        {/* DOWNLOAD */}
+
+                                        <a
+                                            href={`/api/payments/invoice/${bill.id}`}
+
+                                            target="_blank"
+
+                                            className="
+                                                inline-flex items-center gap-2
+
+                                                rounded-lg
+
+                                                border border-slate-200
+
+                                                bg-white
+
+                                                px-5 py-3
+
+                                                text-sm font-semibold
+
+                                                text-slate-700
+
+                                                transition
+
+                                                hover:bg-slate-50
+                                            "
+                                        >
+
+                                            <Download size={16} />
+
+                                            Download Invoice
+
+                                        </a>
+
+                                        {/* PAY */}
+
+                                        {bill.paymentStatus === "PENDING" && (
+
+                                            <button
+                                                onClick={async () => {
+
+                                                    try {
+
+                                                        const res =
+                                                            await api.post(
+                                                                `/payments/pay-prescription/${bill.id}`
+                                                            );
+
+                                                        const data =
+                                                            res.data.data;
+
+                                                        if (
+                                                            data.gateway ===
+                                                            "RAZORPAY"
+                                                        ) {
+
+                                                            const options = {
+
+                                                                key: data.key,
+
+                                                                amount: data.amount,
+
+                                                                currency: data.currency,
+
+                                                                name: "Healora",
+
+                                                                description:
+                                                                    "Pharmacy Bill Payment",
+
+                                                                order_id:
+                                                                    data.orderId,
+
+                                                                handler:
+                                                                    function () {
+
+                                                                        window.location.reload();
+                                                                    },
+                                                            };
+
+                                                            const rzp =
+                                                                new (
+                                                                    window as any
+                                                                ).Razorpay(
+                                                                    options
+                                                                );
+
+                                                            rzp.open();
+                                                        }
+
+                                                        if (
+                                                            data.gateway ===
+                                                            "STRIPE"
+                                                        ) {
+
+                                                            window.location.href =
+                                                                data.checkoutUrl;
+                                                        }
+
+                                                    } catch {
+
+                                                        alert(
+                                                            "Payment failed to start"
+                                                        );
+                                                    }
+                                                }}
+
+                                                className="
+                                                    inline-flex items-center gap-2
+
+                                                    rounded-lg
+
+                                                    bg-teal-600
+
+                                                    px-5 py-3
+
+                                                    text-sm font-semibold
+                                                    text-white
+
+                                                    shadow-sm
+
+                                                    transition-all duration-200
+
+                                                    hover:bg-teal-700
+                                                    hover:shadow-md
+                                                "
+                                            >
+
+                                                <CreditCard size={16} />
+
+                                                Pay Now
+
+                                            </button>
+
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        ))}
+
+                    </div>
+
+                </div>
 
             </div>
 
-          ))}
-
         </div>
-
-      </div>
-
-    </div>
-  );
+    );
 }

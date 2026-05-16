@@ -16,7 +16,7 @@ export default function DoctorSecurity() {
   const {
     register,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors },
   } = useForm<FormValues>();
 
@@ -27,6 +27,12 @@ export default function DoctorSecurity() {
     mutationFn: updateSettings,
     onSuccess: () => {
       toast.success("Password updated successfully");
+      reset({
+
+        password: "",
+
+        confirmPassword: "",
+      });
     },
     onError: () => {
       toast.error("Failed to update password");
@@ -42,6 +48,8 @@ export default function DoctorSecurity() {
     mutation.mutate({
       password: data.password,
     });
+
+
   };
 
   const inputStyle =

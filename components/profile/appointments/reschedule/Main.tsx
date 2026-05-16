@@ -83,7 +83,7 @@ export default function ReschedulePage() {
 
         const fetchAvailableDays = async () => {
 
-            if(!appointment){
+            if (!appointment) {
                 return;
             }
 
@@ -110,11 +110,23 @@ export default function ReschedulePage() {
                     }
                 );
 
-                setAvailableDates(
+                const dates =
                     res.data.map(
                         (d: any) => d.date
-                    )
-                );
+                    );
+
+                setAvailableDates(dates);
+
+                if (
+                    !date &&
+                    dates.length
+                ) {
+
+                    const firstAvailable =
+                        new Date(dates[0]);
+
+                    setDate(firstAvailable);
+                }
 
             } catch (err) {
 
@@ -127,7 +139,7 @@ export default function ReschedulePage() {
 
         fetchAvailableDays();
 
-    }, [appointment, timezone, date]);
+    }, [appointment, timezone]);
 
     /* ---------------- LOADING ---------------- */
 
@@ -140,14 +152,14 @@ export default function ReschedulePage() {
 
     return (
 
-        <div className="min-h-screen pt-12">
+        <div className="min-h-screen">
 
-            <div className="max-w-5xl mx-auto space-y-6">
+            <div className="max-w-7xl mx-auto space-y-6">
 
                 {/* HEADER */}
                 <div
                     className="
-                        rounded-lg
+                        rounded-2xl
                         border border-slate-200
 
                         bg-white
@@ -249,7 +261,7 @@ export default function ReschedulePage() {
                 {/* SUMMARY */}
                 <div
                     className="
-                        rounded-lg
+                        rounded-2xl
                         border border-slate-200
 
                         bg-white
@@ -299,7 +311,7 @@ export default function ReschedulePage() {
                     {/* DATE */}
                     <div
                         className="
-                            rounded-lg
+                            rounded-2xl
                             border border-slate-200
 
                             bg-white
@@ -325,7 +337,7 @@ export default function ReschedulePage() {
                     {/* SLOT */}
                     <div
                         className="
-                            rounded-lg
+                            rounded-2xl
                             border border-slate-200
 
                             bg-white

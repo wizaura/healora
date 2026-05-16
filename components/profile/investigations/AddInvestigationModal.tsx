@@ -113,7 +113,7 @@ export default function AddInvestigationModal({
 
                     px-4 py-2.5
 
-                    text-sm font-medium text-white
+                    text-md font-medium text-white
 
                     transition
                 "

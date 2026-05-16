@@ -244,104 +244,101 @@ export default function SettingsPage() {
 
     const inputStyle =
         `
-            w-full
+        w-full
 
-            rounded-xl
+        rounded-lg
 
-            border border-slate-200
+        border border-slate-200
 
-            bg-white
+        bg-white
 
-            px-4 py-3
+        px-4 py-3.5
 
-            text-sm text-slate-700
+        text-sm text-slate-700
 
-            transition
+        shadow-sm
 
-            focus:outline-none
-            focus:ring-4
-            focus:ring-teal-500/10
-            focus:border-teal-500
+        transition-all duration-200
 
-            disabled:bg-slate-50
-            disabled:text-slate-500
-            disabled:cursor-not-allowed
-        `;
+        focus:outline-none
+        focus:ring-4
+        focus:ring-teal-500/10
+        focus:border-teal-500
+
+        disabled:bg-slate-50
+        disabled:text-slate-500
+        disabled:cursor-not-allowed
+    `;
 
     return (
 
-        <div
-            className="
-                min-h-screen
+        <div className="space-y-8">
 
-                py-12
-            "
-        >
+            {/* =====================================================
+           HEADER
+           ===================================================== */}
 
             <div
                 className="
-                    mx-auto
+                overflow-hidden
 
-                    max-w-5xl
+                rounded-3xl
 
-                    space-y-6
+                border border-slate-200
 
-                    px-4 md:px-6
-                "
+                bg-white
+
+                shadow-sm
+            "
             >
-
-                {/* =====================================================
-                   HEADER
-                   ===================================================== */}
 
                 <div
                     className="
-                        rounded-xl
+                    border-b border-slate-200
 
-                        border border-slate-200
+                    bg-gradient-to-r
+                    from-wellness-bg/90
+                    via-wellness-bg/50
+                    to-white
 
-                        bg-white
-
-                        p-6 md:p-8
-
-                        shadow-sm
-                    "
+                    px-8 py-7
+                "
                 >
 
                     <div
                         className="
-                            flex flex-col gap-6
+                        flex flex-col gap-6
 
-                            lg:flex-row
-                            lg:items-center
-                            lg:justify-between
-                        "
+                        lg:flex-row
+                        lg:items-center
+                        lg:justify-between
+                    "
                     >
 
                         {/* LEFT */}
 
                         <div
                             className="
-                                flex items-center gap-5
-                            "
+                            flex items-center gap-5
+                        "
                         >
 
                             {/* AVATAR */}
 
                             <div
                                 className="
-                                    flex h-16 w-16
-                                    items-center justify-center
+                                flex h-20 w-20
+                                items-center justify-center
 
-                                    rounded-2xl
+                                rounded-3xl
 
-                                    bg-gradient-to-br
-                                    from-teal-500
-                                    to-cyan-500
+                                bg-navy
 
-                                    text-2xl font-semibold
-                                    text-white
-                                "
+                                text-3xl font-semibold
+                                text-white
+
+                                shadow-sm
+                            "
                             >
 
                                 {profile?.name?.charAt(0) || "U"}
@@ -352,16 +349,42 @@ export default function SettingsPage() {
 
                             <div>
 
+                                <div
+                                    className="
+                                    inline-flex items-center gap-2
+
+                                    rounded-full
+
+                                    border border-teal-100
+
+                                    bg-white
+
+                                    px-3 py-1
+
+                                    text-xs font-semibold
+
+                                    uppercase tracking-wide
+
+                                    text-teal-700
+                                "
+                                >
+
+                                    Profile Settings
+
+                                </div>
+
                                 <h1
                                     className="
-                                        text-2xl font-semibold
+                                    mt-4
 
-                                        tracking-[-0.03em]
+                                    text-3xl font-semibold
 
-                                        text-slate-900
+                                    tracking-[-0.03em]
 
-                                        md:text-3xl
-                                    "
+                                    text-slate-900
+
+                                    md:text-4xl
+                                "
                                 >
 
                                     Account Settings
@@ -370,16 +393,19 @@ export default function SettingsPage() {
 
                                 <p
                                     className="
-                                        mt-2
+                                    mt-2
 
-                                        text-sm leading-6
+                                    max-w-2xl
 
-                                        text-slate-500
-                                    "
+                                    text-sm leading-6
+
+                                    text-slate-500
+                                "
                                 >
 
-                                    Manage your profile, address
-                                    and security settings.
+                                    Manage your personal profile,
+                                    address information, and
+                                    security preferences securely.
 
                                 </p>
 
@@ -399,21 +425,24 @@ export default function SettingsPage() {
                                     }
 
                                     className="
-                                        inline-flex items-center gap-2
+                                    inline-flex items-center gap-2
 
-                                        rounded-xl
+                                    rounded-lg
 
-                                        bg-navy
+                                    bg-navy
 
-                                        px-5 py-3
+                                    px-5 py-3
 
-                                        text-sm font-medium
-                                        text-white
+                                    text-sm font-semibold
+                                    text-white
 
-                                        transition
+                                    shadow-sm
 
-                                        hover:bg-navy-dark
-                                    "
+                                    transition-all duration-200
+
+                                    hover:bg-navy-dark
+                                    hover:shadow-md
+                                "
                                 >
 
                                     <Pencil size={16} />
@@ -433,21 +462,21 @@ export default function SettingsPage() {
                                     }}
 
                                     className="
-                                        rounded-xl
+                                    rounded-2xl
 
-                                        border border-slate-200
+                                    border border-slate-200
 
-                                        bg-white
+                                    bg-white
 
-                                        px-5 py-3
+                                    px-5 py-3
 
-                                        text-sm font-medium
-                                        text-slate-700
+                                    text-sm font-semibold
+                                    text-slate-700
 
-                                        transition
+                                    transition
 
-                                        hover:bg-slate-50
-                                    "
+                                    hover:bg-slate-50
+                                "
                                 >
 
                                     Cancel Editing
@@ -462,507 +491,527 @@ export default function SettingsPage() {
 
                 </div>
 
-                {/* =====================================================
-                   FORM CARD
-                   ===================================================== */}
+            </div>
+
+            {/* =====================================================
+           FORM CARD
+           ===================================================== */}
+
+            <div
+                className="
+                overflow-hidden
+
+                rounded-3xl
+
+                border border-slate-200
+
+                bg-white
+
+                shadow-sm
+            "
+            >
+
+                {/* HEADER */}
 
                 <div
                     className="
-                        overflow-hidden
+                    border-b border-slate-200
 
-                        rounded-xl
+                    bg-gradient-to-r
+                    from-slate-50
+                    to-white
 
-                        border border-slate-200
-
-                        bg-white
-
-                        shadow-sm
-                    "
+                    px-7 py-5
+                "
                 >
 
-                    {/* HEADER */}
+                    <h2
+                        className="
+                        text-sm font-semibold
+
+                        uppercase tracking-wide
+
+                        text-slate-700
+                    "
+                    >
+
+                        Profile Information
+
+                    </h2>
+
+                </div>
+
+                {/* FORM */}
+
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+
+                    className="
+                    space-y-10
+
+                    p-7 md:p-8
+                "
+                >
+
+                    {/* =====================================================
+                   PERSONAL
+                   ===================================================== */}
+
+                    <SectionHeader
+                        title="Personal Information"
+                        icon={
+                            <User2 size={16} />
+                        }
+                    />
 
                     <div
                         className="
-                            border-b border-slate-100
+                        grid grid-cols-1 gap-6
 
-                            bg-slate-50/70
-
-                            px-6 py-5
-                        "
+                        md:grid-cols-2
+                    "
                     >
 
-                        <h2
-                            className="
-                                text-sm font-semibold
+                        {/* NAME */}
 
-                                uppercase tracking-wide
+                        <InputField label="Full Name" required>
 
-                                text-slate-700
-                            "
-                        >
+                            <input
+                                {...register("name", {
+                                    required: "Full name is required",
+                                    minLength: {
+                                        value: 2,
+                                        message: "Name is too short",
+                                    },
+                                })}
 
-                            Profile Information
+                                disabled={!isEditing}
 
-                        </h2>
+                                className={inputStyle}
+                            />
+
+                            {errors.name && (
+
+                                <p className="text-sm text-rose-500">
+                                    {errors.name.message}
+                                </p>
+
+                            )}
+
+                        </InputField>
+
+                        {/* EMAIL */}
+
+                        <InputField label="Email Address" required>
+
+                            <input
+                                {...register("email", {
+                                    required: "Email is required",
+                                    pattern: {
+                                        value:
+                                            /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                        message:
+                                            "Invalid email address",
+                                    },
+                                })}
+
+                                disabled={!isEditing}
+
+                                className={inputStyle}
+                            />
+
+                            {errors.email && (
+
+                                <p className="text-sm text-rose-500">
+                                    {errors.email.message}
+                                </p>
+
+                            )}
+
+                        </InputField>
+
+                        {/* AGE */}
+
+                        <InputField label="Age" required>
+
+                            <input
+                                type="number"
+
+                                {...register("age", {
+                                    required: "Age is required",
+                                    min: {
+                                        value: 1,
+                                        message: "Invalid age",
+                                    },
+                                })}
+
+                                disabled={!isEditing}
+
+                                className={inputStyle}
+                            />
+
+                            {errors.age && (
+
+                                <p className="text-sm text-rose-500">
+                                    {errors.age.message}
+                                </p>
+
+                            )}
+
+                        </InputField>
+
+                        {/* GENDER */}
+
+                        <InputField label="Gender" required>
+
+                            <select
+                                {...register("gender", {
+                                    required: "Gender is required",
+                                })}
+
+                                disabled={!isEditing}
+
+                                className={inputStyle}
+                            >
+
+                                <option value="">
+                                    Select gender
+                                </option>
+
+                                <option value="MALE">
+                                    Male
+                                </option>
+
+                                <option value="FEMALE">
+                                    Female
+                                </option>
+
+                                <option value="OTHER">
+                                    Other
+                                </option>
+
+                            </select>
+
+                            {errors.gender && (
+
+                                <p className="text-sm text-rose-500">
+                                    {errors.gender.message}
+                                </p>
+
+                            )}
+
+                        </InputField>
 
                     </div>
 
-                    {/* FORM */}
+                    {/* =====================================================
+                   LOCATION
+                   ===================================================== */}
 
-                    <form
-                        onSubmit={handleSubmit(onSubmit)}
+                    <SectionHeader
+                        title="Location Details"
+                        icon={
+                            <MapPin size={16} />
+                        }
+                    />
 
+                    <div
                         className="
-                            space-y-10
+                        grid grid-cols-1 gap-6
 
-                            p-6 md:p-8
-                        "
+                        md:grid-cols-2
+                    "
                     >
 
-                        {/* =====================================================
-                           PERSONAL
-                           ===================================================== */}
+                        {/* COUNTRY */}
 
-                        <SectionHeader
-                            title="Personal Information"
-                            icon={
-                                <User2 size={16} />
-                            }
-                        />
-
-                        <div
-                            className="
-                                grid grid-cols-1 gap-6
-
-                                md:grid-cols-2
-                            "
-                        >
-
-                            <InputField label="Full Name" required>
-
-                                <input
-                                    {...register("name", {
-                                        required: "Full name is required",
-                                        minLength: {
-                                            value: 2,
-                                            message: "Name is too short",
-                                        },
-                                    })}
-
-                                    disabled={!isEditing}
-
-                                    className={inputStyle}
-                                />
-
-                                {errors.name && (
-
-                                    <p className="text-sm text-rose-500">
-                                        {errors.name.message}
-                                    </p>
-
-                                )}
-
-                            </InputField>
-
-                            <InputField label="Email Address" required>
-
-                                <input
-                                    {...register("email", {
-                                        required: "Email is required",
-                                        pattern: {
-                                            value:
-                                                /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                            message:
-                                                "Invalid email address",
-                                        },
-                                    })}
-
-                                    disabled={!isEditing}
-
-                                    className={inputStyle}
-                                />
-
-                                {errors.email && (
-
-                                    <p className="text-sm text-rose-500">
-                                        {errors.email.message}
-                                    </p>
-
-                                )}
-
-                            </InputField>
-
-                            <InputField label="Age" required>
-
-                                <input
-                                    type="number"
-
-                                    {...register("age", {
-                                        required: "Age is required",
-                                        min: {
-                                            value: 1,
-                                            message: "Invalid age",
-                                        },
-                                    })}
-
-                                    disabled={!isEditing}
-
-                                    className={inputStyle}
-                                />
-
-                                {errors.age && (
-
-                                    <p className="text-sm text-rose-500">
-                                        {errors.age.message}
-                                    </p>
-
-                                )}
-
-                            </InputField>
-
-                            <InputField label="Gender" required>
-
-                                <select
-                                    {...register("gender", {
-                                        required: "Gender is required",
-                                    })}
-
-                                    disabled={!isEditing}
-
-                                    className={inputStyle}
-                                >
-
-                                    <option value="">
-                                        Select gender
-                                    </option>
-
-                                    <option value="MALE">
-                                        Male
-                                    </option>
-
-                                    <option value="FEMALE">
-                                        Female
-                                    </option>
-
-                                    <option value="OTHER">
-                                        Other
-                                    </option>
-
-                                </select>
-
-                                {errors.gender && (
-
-                                    <p className="text-sm text-rose-500">
-                                        {errors.gender.message}
-                                    </p>
-
-                                )}
-
-                            </InputField>
-
-                        </div>
-
-                        {/* =====================================================
-                           LOCATION
-                           ===================================================== */}
-
-                        <SectionHeader
-                            title="Location Details"
-                            icon={
-                                <MapPin size={16} />
-                            }
-                        />
-
-                        <div
-                            className="
-                                grid grid-cols-1 gap-6
-
-                                md:grid-cols-2
-                            "
-                        >
-
-                            {/* COUNTRY */}
-
-                            <InputField label="Country">
-
-                                <div
-                                    className="
-                                        flex items-center gap-3
-
-                                        rounded-xl
-
-                                        border border-slate-200
-
-                                        bg-slate-50
-
-                                        px-4 py-3
-
-                                        text-sm text-slate-700
-                                    "
-                                >
-
-                                    {profile?.countryCode && (
-
-                                        <ReactCountryFlag
-                                            svg
-                                            countryCode={
-                                                profile.countryCode
-                                            }
-                                        />
-
-                                    )}
-
-                                    <span>
-
-                                        {
-                                            countryList()
-                                                .getLabel(
-                                                    profile?.countryCode || "IN"
-                                                )
-                                        }
-
-                                    </span>
-
-                                </div>
-
-                            </InputField>
-
-                            {/* ADDRESS */}
-
-                            <div className="md:col-span-2">
-
-                                <Controller
-                                    name="address"
-
-                                    control={control}
-
-                                    render={({ field }) => (
-
-                                        <AddressForm
-                                            value={
-                                                field.value || {}
-                                            }
-
-                                            disabled={!isEditing}
-
-                                            onChange={
-                                                field.onChange
-                                            }
-                                        />
-
-                                    )}
-                                />
-
-                            </div>
-
-                        </div>
-
-                        {/* =====================================================
-                           SECURITY
-                           ===================================================== */}
-
-                        <SectionHeader
-                            title="Security"
-                            icon={
-                                <Shield size={16} />
-                            }
-                        />
-
-                        <div
-                            className="
-                                grid grid-cols-1 gap-6
-
-                                md:grid-cols-2
-                            "
-                        >
-
-                            {/* PASSWORD */}
-
-                            <PasswordField
-                                label="New Password"
-
-                                show={showPassword}
-
-                                toggle={() =>
-                                    setShowPassword(
-                                        !showPassword
-                                    )
-                                }
-                            >
-
-                                <input
-                                    type={
-                                        showPassword
-                                            ? "text"
-                                            : "password"
-                                    }
-
-                                    {...register("password", {
-                                        minLength: {
-                                            value: 6,
-                                            message:
-                                                "Password must be at least 6 characters",
-                                        },
-                                    })}
-
-                                    disabled={!isEditing}
-
-                                    className={`${inputStyle} pr-10`}
-                                />
-
-                                {errors.password && (
-
-                                    <p className="text-sm text-rose-500">
-                                        {errors.password.message}
-                                    </p>
-
-                                )}
-
-                            </PasswordField>
-
-                            {/* CONFIRM */}
-
-                            <PasswordField
-                                label="Confirm Password"
-
-                                show={showConfirm}
-
-                                toggle={() =>
-                                    setShowConfirm(
-                                        !showConfirm
-                                    )
-                                }
-                            >
-
-                                <input
-                                    type={
-                                        showConfirm
-                                            ? "text"
-                                            : "password"
-                                    }
-
-                                    {...register("confirmPassword", {
-
-                                        validate: (value) => {
-
-                                            if (
-                                                password &&
-                                                value !== password
-                                            ) {
-
-                                                return "Passwords do not match";
-                                            }
-
-                                            return true;
-                                        },
-                                    })}
-
-                                    disabled={!isEditing}
-
-                                    className={`${inputStyle} pr-10`}
-                                />
-
-                                {errors.confirmPassword && (
-
-                                    <p className="text-sm text-rose-500">
-                                        {errors.confirmPassword.message}
-                                    </p>
-
-                                )}
-
-                            </PasswordField>
-
-                        </div>
-
-                        {/* =====================================================
-                           SAVE BAR
-                           ===================================================== */}
-
-                        {isEditing && (
+                        <InputField label="Country">
 
                             <div
                                 className="
-                                    sticky bottom-0 z-10
+                                flex items-center gap-3
 
-                                    flex justify-end gap-3
+                                rounded-2xl
 
-                                    border-t border-slate-200
+                                border border-slate-200
 
-                                    bg-white
+                                bg-slate-50
 
-                                    pt-6
-                                "
+                                px-4 py-3.5
+
+                                text-sm text-slate-700
+                            "
                             >
 
-                                <button
-                                    type="button"
+                                {profile?.countryCode && (
 
-                                    onClick={() => {
+                                    <ReactCountryFlag
+                                        svg
+                                        countryCode={
+                                            profile.countryCode
+                                        }
+                                    />
 
-                                        reset();
+                                )}
 
-                                        setIsEditing(false);
-                                    }}
+                                <span>
 
-                                    className="
-                                        rounded-xl
-
-                                        border border-slate-200
-
-                                        bg-white
-
-                                        px-5 py-3
-
-                                        text-sm font-medium
-                                        text-slate-700
-
-                                        transition
-
-                                        hover:bg-slate-50
-                                    "
-                                >
-
-                                    Cancel
-
-                                </button>
-
-                                <button
-                                    type="submit"
-
-                                    disabled={
-                                        mutation.isPending
+                                    {
+                                        countryList()
+                                            .getLabel(
+                                                profile?.countryCode || "IN"
+                                            )
                                     }
 
-                                    className="
-                                        rounded-xl
-
-                                        bg-[#1F2147]
-
-                                        px-6 py-3
-
-                                        text-sm font-medium
-                                        text-white
-
-                                        transition
-
-                                        hover:bg-[#141633]
-                                    "
-                                >
-
-                                    {mutation.isPending
-                                        ? "Saving..."
-                                        : "Save Changes"}
-
-                                </button>
+                                </span>
 
                             </div>
 
-                        )}
+                        </InputField>
 
-                    </form>
+                        {/* ADDRESS */}
 
-                </div>
+                        <div className="md:col-span-2">
+
+                            <Controller
+                                name="address"
+
+                                control={control}
+
+                                render={({ field }) => (
+
+                                    <AddressForm
+                                        value={
+                                            field.value || {}
+                                        }
+
+                                        disabled={!isEditing}
+
+                                        onChange={
+                                            field.onChange
+                                        }
+                                    />
+
+                                )}
+                            />
+
+                        </div>
+
+                    </div>
+
+                    {/* =====================================================
+                   SECURITY
+                   ===================================================== */}
+
+                    <SectionHeader
+                        title="Security"
+                        icon={
+                            <Shield size={16} />
+                        }
+                    />
+
+                    <div
+                        className="
+                        grid grid-cols-1 gap-6
+
+                        md:grid-cols-2
+                    "
+                    >
+
+                        {/* PASSWORD */}
+
+                        <PasswordField
+                            label="New Password"
+
+                            show={showPassword}
+
+                            toggle={() =>
+                                setShowPassword(
+                                    !showPassword
+                                )
+                            }
+                        >
+
+                            <input
+                                type={
+                                    showPassword
+                                        ? "text"
+                                        : "password"
+                                }
+
+                                {...register("password", {
+                                    minLength: {
+                                        value: 6,
+                                        message:
+                                            "Password must be at least 6 characters",
+                                    },
+                                })}
+
+                                disabled={!isEditing}
+
+                                className={`${inputStyle} pr-12`}
+                            />
+
+                            {errors.password && (
+
+                                <p className="text-sm text-rose-500">
+                                    {errors.password.message}
+                                </p>
+
+                            )}
+
+                        </PasswordField>
+
+                        {/* CONFIRM */}
+
+                        <PasswordField
+                            label="Confirm Password"
+
+                            show={showConfirm}
+
+                            toggle={() =>
+                                setShowConfirm(
+                                    !showConfirm
+                                )
+                            }
+                        >
+
+                            <input
+                                type={
+                                    showConfirm
+                                        ? "text"
+                                        : "password"
+                                }
+
+                                {...register("confirmPassword", {
+
+                                    validate: (value) => {
+
+                                        if (
+                                            password &&
+                                            value !== password
+                                        ) {
+
+                                            return "Passwords do not match";
+                                        }
+
+                                        return true;
+                                    },
+                                })}
+
+                                disabled={!isEditing}
+
+                                className={`${inputStyle} pr-12`}
+                            />
+
+                            {errors.confirmPassword && (
+
+                                <p className="text-sm text-rose-500">
+                                    {errors.confirmPassword.message}
+                                </p>
+
+                            )}
+
+                        </PasswordField>
+
+                    </div>
+
+                    {/* =====================================================
+                   SAVE BAR
+                   ===================================================== */}
+
+                    {isEditing && (
+
+                        <div
+                            className="
+                            sticky bottom-0 z-10
+
+                            flex flex-col-reverse gap-3
+
+                            border-t border-slate-200
+
+                            bg-white/95
+                            backdrop-blur
+
+                            pt-6
+
+                            sm:flex-row
+                            sm:justify-end
+                        "
+                        >
+
+                            {/* CANCEL */}
+
+                            <button
+                                type="button"
+
+                                onClick={() => {
+
+                                    reset();
+
+                                    setIsEditing(false);
+                                }}
+
+                                className="
+                                rounded-lg
+
+                                border border-slate-200
+
+                                bg-white
+
+                                px-5 py-3
+
+                                text-sm font-semibold
+                                text-slate-700
+
+                                transition
+
+                                hover:bg-slate-50
+                            "
+                            >
+
+                                Cancel
+
+                            </button>
+
+                            {/* SAVE */}
+
+                            <button
+                                type="submit"
+
+                                disabled={
+                                    mutation.isPending
+                                }
+
+                                className="
+                                rounded-lg
+
+                                px-6 py-3.5
+
+                                text-sm font-semibold
+                                text-white
+
+                                shadow-sm
+
+                                transition-all duration-200
+
+                                bg-navy
+                                hover:bg-navy-dark
+                                hover:shadow-md
+                            "
+                            >
+
+                                {mutation.isPending
+                                    ? "Saving..."
+                                    : "Save Changes"}
+
+                            </button>
+
+                        </div>
+
+                    )}
+
+                </form>
 
             </div>
 
@@ -983,15 +1032,26 @@ function SectionHeader({
 
         <div
             className="
-                flex items-center gap-2
+                flex items-center gap-3
 
                 border-b border-slate-100
 
-                pb-3
+                pb-4
             "
         >
 
-            <div className="text-slate-500">
+            <div
+                className="
+                    flex h-9 w-9
+                    items-center justify-center
+
+                    rounded-xl
+
+                    bg-teal-50
+
+                    text-teal-600
+                "
+            >
                 {icon}
             </div>
 
@@ -1016,7 +1076,6 @@ function SectionHeader({
 /* =====================================================
    INPUT FIELD
    ===================================================== */
-
 function InputField({
     label,
     required = false,
@@ -1029,7 +1088,7 @@ function InputField({
 
             <label
                 className="
-                    flex itmems-center gap-1
+                    flex items-center gap-1.5
 
                     text-sm font-medium
 
@@ -1054,7 +1113,6 @@ function InputField({
         </div>
     );
 }
-
 /* =====================================================
    PASSWORD FIELD
    ===================================================== */
@@ -1092,7 +1150,7 @@ function PasswordField({
                     onClick={toggle}
 
                     className="
-                        absolute right-3 top-3
+                        absolute right-4 top-4
 
                         text-slate-400
 

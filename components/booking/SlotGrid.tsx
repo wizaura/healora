@@ -102,6 +102,20 @@ export default function SlotGrid({
                         };
                     });
 
+                const firstSlot =
+                    mapped.find(
+                        (s) =>
+                            s.category ===
+                            selectedCategory
+                    );
+
+                if (firstSlot) {
+
+                    setSelectedSlot(
+                        firstSlot
+                    );
+                }
+
                 setSlots(mapped);
 
             } catch (err) {
@@ -123,6 +137,27 @@ export default function SlotGrid({
         fetchSlots();
 
     }, [doctorId, dateStr, setSelectedSlot]);
+
+    useEffect(() => {
+
+        const first =
+            groupedSlots[
+            selectedCategory
+            ]?.[0];
+
+        if (first) {
+
+            setSelectedSlot(first);
+
+        } else {
+
+            setSelectedSlot(null);
+        }
+
+    }, [
+        selectedCategory,
+        slots,
+    ]);
 
     /* ---------- GROUPED ---------- */
 

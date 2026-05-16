@@ -108,16 +108,7 @@ export default function ProfileHeader() {
     <>
 
       {/* HEADER */}
-      <div
-        className="
-    rounded-xl
-    border border-slate-200
-    bg-white/90
-    p-2
-    max-w-4xl mx-auto
-    shadow-sm
-  "
-      >
+      <div>
 
         <div className="overflow-x-auto no-scrollbar">
 
@@ -132,7 +123,7 @@ export default function ProfileHeader() {
               className="
           flex items-center gap-2
 
-          rounded-lg
+          rounded-lg border border-gray-200
 
           bg-slate-100
 

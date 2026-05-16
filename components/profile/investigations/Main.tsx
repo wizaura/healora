@@ -16,11 +16,15 @@ import InvestigationViewModal
 import {
     Trash2,
     FileText,
+    ShieldCheck,
+    CalendarDays,
 } from "lucide-react";
 
 import { toast }
     from "react-hot-toast";
-import Loader from "@/components/common/Loader";
+
+import Loader
+    from "@/components/common/Loader";
 
 export default function InvestigationsSection({
     isDoctor,
@@ -36,10 +40,14 @@ export default function InvestigationsSection({
     const [selectedDeleteId, setSelectedDeleteId] =
         useState<string | null>(null);
 
-    const [selectedInvestigation, setSelectedInvestigation] =
-        useState<any>(null);
+    const [
+        selectedInvestigation,
+        setSelectedInvestigation,
+    ] = useState<any>(null);
 
-    /* ---------------- QUERY ---------------- */
+    /* =====================================================
+       QUERY
+       ===================================================== */
 
     const {
         data = [],
@@ -67,193 +75,259 @@ export default function InvestigationsSection({
         },
     });
 
-    /* ---------------- DELETE FLOW ---------------- */
+    /* =====================================================
+       DELETE FLOW
+       ===================================================== */
 
     const openDeleteConfirm = (
         id: string
     ) => {
 
         setSelectedDeleteId(id);
+
         setConfirmOpen(true);
     };
 
-    const handleDelete = async () => {
+    const handleDelete =
+        async () => {
 
-        if (!selectedDeleteId) return;
+            if (!selectedDeleteId) return;
 
-        try {
+            try {
 
-            setDeletingId(
-                selectedDeleteId
-            );
+                setDeletingId(
+                    selectedDeleteId
+                );
 
-            await api.delete(
-                `/consultations/investigations/${selectedDeleteId}`
-            );
+                await api.delete(
+                    `/consultations/investigations/${selectedDeleteId}`
+                );
 
-            toast.success(
-                "Deleted successfully"
-            );
+                toast.success(
+                    "Deleted successfully"
+                );
 
-            refetch();
+                refetch();
 
-        } catch {
+            } catch {
 
-            toast.error(
-                "Failed to delete"
-            );
+                toast.error(
+                    "Failed to delete"
+                );
 
-        } finally {
+            } finally {
 
-            setDeletingId(null);
+                setDeletingId(null);
 
-            setConfirmOpen(false);
+                setConfirmOpen(false);
 
-            setSelectedDeleteId(null);
-        }
-    };
+                setSelectedDeleteId(null);
+            }
+        };
 
-    if(isLoading){
-      return <Loader fullScreen />
+    if (isLoading) {
+
+        return <Loader fullScreen />;
     }
 
     return (
 
-        <div className="min-h-screen py-12">
+        <div className="space-y-8">
 
-            <div className="max-w-5xl mx-auto px-6 space-y-5">
+            {/* =====================================================
+               HEADER
+               ===================================================== */}
 
-                {/* TOP BAR */}
+            <div
+                className="
+                    overflow-hidden
+
+                    rounded-2xl
+
+                    border border-slate-200
+
+                    bg-white
+
+                    shadow-sm
+                "
+            >
+
                 <div
                     className="
-                        rounded-lg
-                        border border-slate-200
+                        border-b border-slate-200
 
-                        bg-white
+                        bg-gradient-to-r
+                        from-wellness-bg/90
+                        via-wellness-bg/50
+                        to-white
 
-                        px-5 py-4
-
-                        flex flex-col lg:flex-row
-                        lg:items-center
-                        lg:justify-between
-
-                        gap-5
-
-                        shadow-sm
+                        px-8 py-7
                     "
                 >
 
-                    {/* LEFT */}
-                    <div className="space-y-1">
+                    <div
+                        className="
+                            flex flex-col gap-6
 
-                        <h2 className="text-lg font-semibold text-slate-900">
-                            Investigations & Medical Records
-                        </h2>
+                            lg:flex-row
+                            lg:items-center
+                            lg:justify-between
+                        "
+                    >
 
-                        <p className="text-sm text-slate-500">
+                        {/* LEFT */}
 
-                            Showing{" "}
+                        <div>
 
-                            <span className="font-medium text-slate-700">
-                                {data?.length || 0}
-                            </span>{" "}
+                            <div
+                                className="
+                                    inline-flex items-center gap-2
 
-                            records
+                                    rounded-full
 
-                        </p>
+                                    border border-teal-100
 
-                    </div>
+                                    bg-white
 
-                    {/* RIGHT */}
-                    <div className="flex items-center gap-3">
+                                    px-3 py-1
 
-                        {/* STATS */}
-                        <div
-                            className="
-                                rounded-lg
+                                    text-xs font-semibold
 
-                                bg-slate-50
-                                border border-slate-200
+                                    uppercase tracking-wide
 
-                                px-4 py-3
+                                    text-teal-700
+                                "
+                            >
 
-                                min-w-[120px]
-                            "
-                        >
+                                Medical Records
 
-                            <p className="text-xs text-slate-500">
-                                Total Records
-                            </p>
+                            </div>
 
-                            <p className="mt-1 text-xl font-semibold text-slate-800">
-                                {data?.length || 0}
+                            <h1
+                                className="
+                                    mt-4
+
+                                    text-3xl font-semibold
+
+                                    tracking-[-0.03em]
+
+                                    text-slate-900
+                                "
+                            >
+
+                                Investigations & Reports
+
+                            </h1>
+
+                            <p
+                                className="
+                                    mt-2
+
+                                    max-w-2xl
+
+                                    text-sm leading-6
+
+                                    text-slate-500
+                                "
+                            >
+
+                                Securely manage laboratory reports,
+                                scans, prescriptions, and investigation
+                                records in one place.
+
                             </p>
 
                         </div>
 
-                        {/* ADD */}
-                        {!isDoctor && (
+                        {/* RIGHT */}
 
-                            <AddInvestigationModal
-                                onSaved={refetch}
-                            />
+                        <div className="flex flex-row gap-4">
 
-                        )}
+                            {/* TOTAL */}
+
+                            <div
+                                className="
+                                    rounded-2xl
+
+                                    border border-slate-200
+
+                                    bg-white
+
+                                    px-5 py-2
+
+                                    shadow-sm
+
+                                    min-w-[150px]
+                                "
+                            >
+
+                                <p
+                                    className="
+                                        text-xs font-medium
+
+                                        uppercase tracking-wide
+
+                                        text-slate-400
+                                    "
+                                >
+
+                                    Total Records
+
+                                </p>
+
+                                <p
+                                    className="
+                                        mt-2
+
+                                        text-3xl font-semibold
+
+                                        text-slate-900
+                                    "
+                                >
+
+                                    {data?.length || 0}
+
+                                </p>
+
+                            </div>
+
+                            {/* ADD */}
+
+                            {!isDoctor && (
+
+                                <AddInvestigationModal
+                                    onSaved={refetch}
+                                />
+
+                            )}
+
+                        </div>
 
                     </div>
 
                 </div>
 
-                {/* LOADING */}
-                {isLoading && (
+                {/* =====================================================
+                   CONTENT
+                   ===================================================== */}
 
-                    <div className="space-y-4">
+                <div className="p-6 md:p-8">
 
-                        {[1, 2, 3].map((i) => (
+                    {/* =====================================================
+                       EMPTY
+                       ===================================================== */}
 
-                            <div
-                                key={i}
-                                className="
-                                    rounded-lg
-                                    border border-slate-200
-
-                                    bg-white
-
-                                    p-5
-
-                                    animate-pulse
-
-                                    shadow-sm
-                                "
-                            >
-
-                                <div className="h-4 w-40 bg-slate-200 rounded mb-4" />
-
-                                <div className="h-3 w-full bg-slate-100 rounded mb-2" />
-
-                                <div className="h-3 w-2/3 bg-slate-100 rounded" />
-
-                            </div>
-
-                        ))}
-
-                    </div>
-
-                )}
-
-                {/* EMPTY */}
-                {!isLoading &&
-                    data?.length === 0 && (
+                    {data?.length === 0 && (
 
                         <div
                             className="
-                                rounded-lg
+                                rounded-2xl
 
                                 border border-dashed border-slate-300
 
                                 bg-white
 
-                                py-16 px-6
+                                py-20 px-6
 
                                 text-center
 
@@ -263,153 +337,342 @@ export default function InvestigationsSection({
 
                             <div
                                 className="
-                                    h-14 w-14
+                                    mx-auto mb-5
+
+                                    flex h-16 w-16
+                                    items-center justify-center
 
                                     rounded-full
 
                                     bg-slate-100
-
-                                    flex items-center justify-center
-
-                                    mx-auto mb-4
                                 "
                             >
 
                                 <FileText
-                                    size={24}
+                                    size={28}
                                     className="text-slate-400"
                                 />
 
                             </div>
 
-                            <h3 className="text-sm font-medium text-slate-700">
+                            <h3
+                                className="
+                                    text-lg font-semibold
+
+                                    text-slate-800
+                                "
+                            >
+
                                 No investigations uploaded
+
                             </h3>
 
-                            <p className="text-sm text-slate-500 mt-1">
-                                Medical records and reports
-                                will appear here.
+                            <p
+                                className="
+                                    mt-2
+
+                                    text-sm leading-6
+
+                                    text-slate-500
+                                "
+                            >
+
+                                Medical records, prescriptions,
+                                scans, and reports will appear here.
+
                             </p>
 
                         </div>
 
                     )}
 
-                {/* LIST */}
-                <div className="space-y-4">
+                    {/* =====================================================
+                       LIST
+                       ===================================================== */}
 
-                    {data?.map((inv: any) => {
+                    <div className="space-y-6">
 
-                        const canDelete =
+                        {data?.map((inv: any) => {
 
-                            (!isDoctor &&
-                                inv.createdByRole === "PATIENT")
+                            const canDelete =
 
-                            ||
+                                (!isDoctor &&
+                                    inv.createdByRole === "PATIENT")
 
-                            (isDoctor &&
-                                inv.createdByRole === "DOCTOR");
+                                ||
 
-                        return (
+                                (isDoctor &&
+                                    inv.createdByRole === "DOCTOR");
 
-                            <div
-                                key={inv.id}
+                            return (
 
-                                onClick={() =>
-                                    setSelectedInvestigation(inv)
-                                }
+                                <div
+                                    key={inv.id}
 
-                                className="
-                                    rounded-lg
-                                    border border-slate-200
+                                    onClick={() =>
+                                        setSelectedInvestigation(inv)
+                                    }
 
-                                    bg-white
+                                    className="
+                                        overflow-hidden
 
-                                    p-5
+                                        rounded-2xl
 
-                                    shadow-sm
-                                    hover:shadow-md
+                                        border border-slate-200
 
-                                    transition
+                                        bg-white
 
-                                    cursor-pointer
+                                        shadow-sm
 
-                                    space-y-4
-                                "
-                            >
+                                        transition-all duration-300
 
-                                {/* TOP */}
-                                <div className="flex items-start justify-between gap-4">
+                                        hover:-translate-y-1
+                                        hover:shadow-lg
 
-                                    <div>
+                                        cursor-pointer
+                                    "
+                                >
 
-                                        <p className="text-sm font-medium text-slate-800">
-                                            Investigation Record
-                                        </p>
+                                    <div className="p-6 space-y-6">
 
-                                        <p className="text-xs text-slate-500 mt-1">
+                                        {/* =====================================================
+                                           TOP
+                                           ===================================================== */}
 
-                                            {new Date(
-                                                inv.createdAt
-                                            ).toLocaleString()}
-
-                                        </p>
-
-                                    </div>
-
-                                    <div className="flex items-center gap-3">
-
-                                        <span
+                                        <div
                                             className="
-                                                inline-flex items-center
+                                                flex flex-col gap-5
 
-                                                rounded-full
-
-                                                bg-slate-100
-
-                                                px-3 py-1
-
-                                                text-xs font-medium text-slate-600
+                                                lg:flex-row
+                                                lg:items-start
+                                                lg:justify-between
                                             "
                                         >
 
-                                            {inv.createdByRole}
+                                            {/* LEFT */}
 
-                                        </span>
+                                            <div className="space-y-4">
 
-                                        {canDelete && (
+                                                <div
+                                                    className="
+                                                        flex flex-wrap
+                                                        items-center
+                                                        gap-3
+                                                    "
+                                                >
 
-                                            <button
-                                                onClick={(e) => {
+                                                    <div
+                                                        className="
+                                                            flex h-12 w-12
+                                                            items-center justify-center
 
-                                                    e.stopPropagation();
+                                                            rounded-2xl
 
-                                                    openDeleteConfirm(
-                                                        inv.id
-                                                    );
-                                                }}
+                                                            bg-navy
 
-                                                disabled={
-                                                    deletingId === inv.id
-                                                }
+                                                            text-white
+                                                        "
+                                                    >
 
+                                                        <FileText size={20} />
+
+                                                    </div>
+
+                                                    <div>
+
+                                                        <h3
+                                                            className="
+                                                                text-xl font-semibold
+
+                                                                text-slate-900
+                                                            "
+                                                        >
+
+                                                            Investigation Record
+
+                                                        </h3>
+
+                                                        <div
+                                                            className="
+                                                                mt-1
+
+                                                                flex flex-wrap items-center gap-2
+
+                                                                text-sm text-slate-500
+                                                            "
+                                                        >
+
+                                                            <CalendarDays size={14} />
+
+                                                            {new Date(
+                                                                inv.createdAt
+                                                            ).toLocaleString()}
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                {/* BADGE */}
+
+                                                <div
+                                                    className="
+                                                        inline-flex items-center gap-2
+
+                                                        rounded-full
+
+                                                        border border-slate-200
+
+                                                        bg-slate-50
+
+                                                        px-4 py-2
+
+                                                        text-xs font-semibold
+
+                                                        uppercase tracking-wide
+
+                                                        text-slate-700
+                                                    "
+                                                >
+
+                                                    <ShieldCheck size={14} />
+
+                                                    {inv.createdByRole}
+
+                                                </div>
+
+                                            </div>
+
+                                            {/* DELETE */}
+
+                                            {canDelete && (
+
+                                                <button
+                                                    onClick={(e) => {
+
+                                                        e.stopPropagation();
+
+                                                        openDeleteConfirm(
+                                                            inv.id
+                                                        );
+                                                    }}
+
+                                                    disabled={
+                                                        deletingId === inv.id
+                                                    }
+
+                                                    className="
+                                                        flex h-11 w-11
+                                                        items-center justify-center
+
+                                                        rounded-2xl
+
+                                                        border border-red-100
+
+                                                        bg-red-50
+
+                                                        text-red-600
+
+                                                        transition
+
+                                                        hover:bg-red-100
+                                                    "
+                                                >
+
+                                                    <Trash2 size={16} />
+
+                                                </button>
+
+                                            )}
+
+                                        </div>
+
+                                        {/* =====================================================
+                                           NOTE
+                                           ===================================================== */}
+
+                                        {inv.note && (
+
+                                            <div
                                                 className="
-                                                    h-9 w-9
+                                                    rounded-xl
 
-                                                    rounded-lg
+                                                    border border-slate-200
 
-                                                    flex items-center justify-center
+                                                    bg-slate-50/70
 
-                                                    text-red-500
-                                                    hover:bg-red-50
-
-                                                    transition
+                                                    p-5
                                                 "
                                             >
 
-                                                <Trash2 size={16} />
+                                                <p
+                                                    className="
+                                                        text-sm leading-7
 
-                                            </button>
+                                                        text-slate-700
+                                                    "
+                                                >
+
+                                                    {inv.note}
+
+                                                </p>
+
+                                            </div>
+
+                                        )}
+
+                                        {/* =====================================================
+                                           IMAGES
+                                           ===================================================== */}
+
+                                        {inv.images?.length > 0 && (
+
+                                            <div
+                                                className="
+                                                    grid grid-cols-2 gap-4
+
+                                                    md:grid-cols-4
+                                                "
+                                            >
+
+                                                {inv.images.map((img: any) => (
+
+                                                    <div
+                                                        key={img.id}
+
+                                                        className="
+                                                            overflow-hidden
+
+                                                            rounded-2xl
+
+                                                            border border-slate-200
+
+                                                            bg-slate-100
+
+                                                            aspect-square
+                                                        "
+                                                    >
+
+                                                        <img
+                                                            src={img.imageUrl}
+
+                                                            className="
+                                                                h-full w-full
+
+                                                                object-cover
+
+                                                                transition duration-300
+
+                                                                hover:scale-105
+                                                            "
+                                                        />
+
+                                                    </div>
+
+                                                ))}
+
+                                            </div>
 
                                         )}
 
@@ -417,75 +680,24 @@ export default function InvestigationsSection({
 
                                 </div>
 
-                                {/* NOTE */}
-                                {inv.note && (
+                            );
+                        })}
 
-                                    <div
-                                        className="
-                                            rounded-lg
-
-                                            bg-slate-50
-                                            border border-slate-100
-
-                                            p-4
-                                        "
-                                    >
-
-                                        <p className="text-sm leading-relaxed text-slate-700">
-                                            {inv.note}
-                                        </p>
-
-                                    </div>
-
-                                )}
-
-                                {/* IMAGES */}
-                                {inv.images?.length > 0 && (
-
-                                    <div className="flex gap-3 flex-wrap">
-
-                                        {inv.images.map((img: any) => (
-
-                                            <img
-                                                key={img.id}
-
-                                                src={img.imageUrl}
-
-                                                className="
-                                                    h-24 w-24
-
-                                                    rounded-lg
-
-                                                    border border-slate-200
-
-                                                    object-cover
-
-                                                    hover:scale-[1.02]
-
-                                                    transition
-                                                "
-                                            />
-
-                                        ))}
-
-                                    </div>
-
-                                )}
-
-                            </div>
-
-                        );
-                    })}
+                    </div>
 
                 </div>
 
             </div>
 
-            {/* VIEW MODAL */}
+            {/* =====================================================
+               VIEW MODAL
+               ===================================================== */}
+
             {selectedInvestigation && (
 
                 <InvestigationViewModal
                     investigation={selectedInvestigation}
+
                     onClose={() =>
                         setSelectedInvestigation(null)
                     }
@@ -493,7 +705,10 @@ export default function InvestigationsSection({
 
             )}
 
-            {/* DELETE CONFIRM */}
+            {/* =====================================================
+               DELETE CONFIRM
+               ===================================================== */}
+
             <ConfirmModal
                 open={confirmOpen}
 

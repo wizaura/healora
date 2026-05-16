@@ -14,9 +14,9 @@ export default function AppointmentCard({ appt, onView }: any) {
       hour: "2-digit",
       minute: "2-digit",
     });
-    
 
-    console.log(appt,'a')
+
+  console.log(appt, 'a')
 
   const slotPaid =
     appt.slotPaymentStatus === "PAID";
@@ -90,231 +90,568 @@ export default function AppointmentCard({ appt, onView }: any) {
     now <= slotEnd + 5 * 60 * 1000;            // ✅ optional 5 min buffer after
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
-      <div className="space-y-2">
+    <div
+      className="
+            overflow-hidden
 
-        <div className="font-semibold text-slate-900">
-          {appt.doctor?.user?.name}
-        </div>
+            rounded-xl
 
-        <div className="text-sm text-slate-500">
-          {appt.doctor?.speciality?.name}
-        </div>
+            border border-slate-200
 
-        <div className="flex items-center gap-2 text-sm text-slate-600">
-          <Calendar size={14} />
-          {formatDate(appt.slot.startTimeUTC)}
-        </div>
+            bg-white
 
-        <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Clock size={12} />
-          {appt.status}
-        </div>
+            shadow-sm
 
-        {appt.doctorRating && (
+            transition-all duration-300
 
-          <div
-            className="
-        inline-flex items-center gap-1
+            hover:-translate-y-1
+            hover:shadow-lg
+        "
+    >
 
-        rounded-full
+      <div className="p-6">
 
-        bg-yellow-50
+        <div
+          className="
+                    flex flex-col gap-6
 
-        px-2.5 py-1
+                    lg:flex-row
+                    lg:items-start
+                    lg:justify-between
+                "
+        >
 
-        text-xs font-medium
+          {/* =====================================================
+                   LEFT
+                   ===================================================== */}
 
-        text-yellow-700
-      "
-          >
+          <div className="flex gap-5">
 
-            <span>⭐</span>
+            {/* AVATAR */}
 
-            <span>
-              {appt.doctorRating}/5
-            </span>
+            <div
+              className="
+        h-16 w-16
+
+        overflow-hidden
+
+        rounded-2xl
+
+        border border-slate-200
+
+        bg-slate-100
+
+        shadow-sm
+
+        flex-shrink-0
+    "
+            >
+
+              {appt.doctor?.imageUrl ? (
+
+                <img
+                  src={appt.doctor.imageUrl}
+
+                  alt={
+                    appt.doctor?.user?.name
+                  }
+
+                  className="
+                h-full w-full
+
+                object-cover
+            "
+                />
+
+              ) : (
+
+                <div
+                  className="
+                flex h-full w-full
+                items-center justify-center
+
+                bg-gradient-to-br
+                from-teal-500
+                to-cyan-500
+
+                text-xl font-semibold
+                text-white
+            "
+                >
+
+                  {appt.doctor?.user?.name?.charAt(0)}
+
+                </div>
+
+              )}
+
+            </div>
+
+            {/* CONTENT */}
+
+            <div className="min-w-0 flex-1">
+
+              <div
+                className="
+                                flex flex-wrap
+                                items-center
+                                gap-2
+                            "
+              >
+
+                <h3
+                  className="
+                                    text-xl font-semibold
+
+                                    text-slate-900
+                                "
+                >
+
+                  {appt.doctor?.user?.name}
+
+                </h3>
+
+                <span
+                  className={`
+                                    rounded-full
+
+                                    px-3 py-1
+
+                                    text-xs font-semibold
+
+                                    ${appt.status === "CONFIRMED"
+
+                      ? `
+                                            bg-emerald-100
+                                            text-emerald-700
+                                        `
+
+                      : appt.status === "COMPLETED"
+
+                        ? `
+                                                bg-blue-100
+                                                text-blue-700
+                                            `
+
+                        : appt.status === "CANCELLED"
+
+                          ? `
+                                                    bg-red-100
+                                                    text-red-700
+                                                `
+
+                          : `
+                                                    bg-amber-100
+                                                    text-amber-700
+                                                `
+                    }
+                                `}
+                >
+
+                  {appt.status}
+
+                </span>
+
+              </div>
+
+              <p
+                className="
+                                mt-1
+
+                                text-sm
+
+                                text-slate-500
+                            "
+              >
+
+                {appt.doctor?.speciality?.name}
+
+              </p>
+
+              {/* DATE */}
+
+              <div
+                className="
+                                mt-5
+
+                                inline-flex items-center gap-2
+
+                                rounded-xl
+
+                                border border-slate-200
+
+                                bg-slate-50
+
+                                px-4 py-2
+
+                                text-sm font-medium
+
+                                text-slate-700
+                            "
+              >
+
+                <Calendar size={16} />
+
+                {formatDate(
+                  appt.slot.startTimeUTC
+                )}
+
+              </div>
+
+              {/* PAYMENT TAGS */}
+
+              <div
+                className="
+                                mt-5
+
+                                flex flex-wrap gap-2
+                            "
+              >
+
+                <span
+                  className={`
+                                    rounded-full
+
+                                    px-3 py-1
+
+                                    text-xs font-semibold
+
+                                    ${slotPaid
+
+                      ? `
+                                            bg-emerald-100
+                                            text-emerald-700
+                                        `
+
+                      : `
+                                            bg-amber-100
+                                            text-amber-700
+                                        `
+                    }
+                                `}
+                >
+
+                  Slot {appt.slotPaymentStatus}
+
+                </span>
+
+                <span
+                  className={`
+                                    rounded-full
+
+                                    px-3 py-1
+
+                                    text-xs font-semibold
+
+                                    ${consultationPaid
+
+                      ? `
+                                            bg-emerald-100
+                                            text-emerald-700
+                                        `
+
+                      : `
+                                            bg-slate-100
+                                            text-slate-600
+                                        `
+                    }
+                                `}
+                >
+
+                  Consultation {paymentLabel(
+                    appt.consultationPaymentStatus
+                  )}
+
+                </span>
+
+                {appt.doctorRating && (
+
+                  <span
+                    className="
+                                        rounded-full
+
+                                        bg-yellow-100
+
+                                        px-3 py-1
+
+                                        text-xs font-semibold
+
+                                        text-yellow-700
+                                    "
+                  >
+
+                    ⭐ {appt.doctorRating}/5
+
+                  </span>
+
+                )}
+
+              </div>
+
+            </div>
 
           </div>
 
-        )}
+          {/* =====================================================
+                   RIGHT
+                   ===================================================== */}
 
-        <div className="grid grid-col-2 md:grid-col-1 gap-2 mt-1 text-xs">
+          <div
+            className="
+                        flex flex-col gap-3
 
-          <span
-            className={`px-2 py-1 rounded-full ${slotPaid
-              ? "bg-green-100 text-green-700"
-              : "bg-yellow-100 text-yellow-700"
-              }`}
+                        lg:min-w-[220px]
+                    "
           >
-            Slot {appt.slotPaymentStatus}
-          </span>
 
-          <span
-            className={`px-2 py-1 rounded-full ${consultationPaid
-              ? "bg-green-100 text-green-700"
-              : "bg-gray-100 text-gray-600"
-              }`}
-          >
-            Consultation {paymentLabel(appt.consultationPaymentStatus)}
-          </span>
+            {/* JOIN */}
+
+            {canJoinMeeting && (
+
+              <a
+                href={appt.meetingLink}
+
+                target="_blank"
+
+                className="
+                                inline-flex items-center
+                                justify-center gap-2
+
+                                rounded-xl
+
+                                bg-indigo-600
+
+                                px-4 py-3
+
+                                text-sm font-medium
+                                text-white
+
+                                transition
+
+                                hover:bg-indigo-700
+                            "
+              >
+
+                <Video size={16} />
+
+                Join Consultation
+
+              </a>
+
+            )}
+
+            {/* WAIT */}
+
+            {appt.meetingLink &&
+              appt.status === "CONFIRMED" &&
+              now < slotStart - 10 * 60 * 1000 && (
+
+                <div
+                  className="
+                                    rounded-xl text-end
+
+                                    border border-slate-200
+
+                                    bg-slate-50
+
+                                    px-4 py-3  md:max-w-xs
+
+                                    text-xs leading-5
+
+                                    text-slate-500
+                                "
+                >
+
+                  Consultation link will become
+                  available 10 minutes before
+                  appointment time.
+
+                </div>
+
+              )}
+
+            {/* ENDED */}
+
+            {appt.meetingLink &&
+              now > slotEnd && (
+
+                <div
+                  className="
+                                    rounded-xl
+
+                                    border border-red-200
+
+                                    bg-red-50
+
+                                    px-4 py-3 text-center
+
+                                    text-sm font-medium
+
+                                    text-red-600
+                                "
+                >
+
+                  Meeting ended
+
+                </div>
+
+              )}
+
+            {/* COMPLETE PAYMENT */}
+
+            {bothPending && (
+
+              <button
+                onClick={() =>
+                  router.push(
+                    `/checkout/${appt.id}`
+                  )
+                }
+
+                className="
+                                inline-flex items-center
+                                justify-center gap-2
+
+                                rounded-xl
+
+                                bg-teal-600
+
+                                px-4 py-3
+
+                                text-sm font-medium
+                                text-white
+
+                                transition
+
+                                hover:bg-teal-700
+                            "
+              >
+
+                <CreditCard size={16} />
+
+                Complete Payment
+
+              </button>
+
+            )}
+
+            {/* CONSULTATION */}
+
+            {consultationPending && (
+
+              <button
+                onClick={() =>
+                  router.push(
+                    `/checkout/${appt.id}`
+                  )
+                }
+
+                className="
+                                inline-flex items-center
+                                justify-center gap-2
+
+                                rounded-xl
+
+                                border border-teal-200
+
+                                bg-teal-50
+
+                                px-4 py-3
+
+                                text-sm font-medium
+
+                                text-teal-700
+
+                                transition
+
+                                hover:bg-teal-100
+                            "
+              >
+
+                <CreditCard size={16} />
+
+                Pay Consultation
+
+              </button>
+
+            )}
+
+            {/* RETRY */}
+
+            {retrySlotPayment && (
+
+              <button
+                onClick={() =>
+                  router.push(
+                    `/checkout/${appt.id}`
+                  )
+                }
+
+                className="
+                                inline-flex items-center
+                                justify-center gap-2
+
+                                rounded-xl
+
+                                bg-red-500
+
+                                px-4 py-3
+
+                                text-sm font-medium
+                                text-white
+
+                                transition
+
+                                hover:bg-red-600
+                            "
+              >
+
+                <RefreshCw size={16} />
+
+                Retry Payment
+
+              </button>
+
+            )}
+
+            {/* VIEW */}
+
+            <button
+              onClick={onView}
+
+              className="
+                            inline-flex items-center
+                            justify-center gap-2
+
+                            rounded-xl
+
+                            border border-slate-200
+
+                            bg-white
+
+                            px-4 py-3
+
+                            text-sm font-medium
+
+                            text-slate-700
+
+                            transition
+
+                            hover:bg-slate-50
+                        "
+            >
+
+              View Details
+
+            </button>
+
+          </div>
 
         </div>
 
-
-
       </div>
 
-      {/* ACTIONS */}
-
-      <div className="flex flex-col gap-3 items-end justify-end">
-
-        {/* JOIN MEETING */}
-        {canJoinMeeting && (
-          <a
-            href={appt.meetingLink}
-            target="_blank"
-            className="flex items-center gap-1 bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-sm"
-          >
-            <Video size={16} />
-            Join
-          </a>
-        )}
-
-        {/* SHOW WAIT MESSAGE */}
-        {appt.meetingLink &&
-          appt.status === "CONFIRMED" &&
-          now < slotStart - 10 * 60 * 1000 && (
-            <span className="text-xs inline text-end text-slate-500">
-              Consultation link will be available<br/> 10 minutes before appointment
-            </span>
-          )}
-
-        {appt.meetingLink &&
-          now > slotEnd && (
-            <span className="text-xs text-red-500 font-bold">
-              Meeting ended
-            </span>
-          )}
-
-        {/* PAY BOTH */}
-        {/* COMPLETE PAYMENT */}
-        {bothPending && (
-
-          <button
-            onClick={() =>
-              router.push(`/checkout/${appt.id}`)
-            }
-            className="
-            flex items-center gap-2
-
-            rounded-lg
-
-            bg-teal-600
-            hover:bg-teal-700
-
-            px-4 py-2
-
-            text-sm font-medium text-white
-
-            transition
-        "
-          >
-
-            <CreditCard size={15} />
-
-            Complete Payment
-
-          </button>
-
-        )}
-
-        {/* PAY CONSULTATION */}
-        {consultationPending && (
-
-          <button
-            onClick={() =>
-              router.push(`/checkout/${appt.id}`)
-            }
-            className="
-            flex items-center gap-2
-
-            rounded-lg
-
-            border border-teal-200
-            bg-teal-50
-            hover:bg-teal-100
-
-            px-4 py-2
-
-            text-sm font-medium text-teal-700
-
-            transition
-        "
-          >
-
-            <CreditCard size={15} />
-
-            Pay Consultation
-
-          </button>
-
-        )}
-
-        {/* RETRY SLOT PAYMENT */}
-        {retrySlotPayment && (
-
-          <button
-            onClick={() =>
-              router.push(`/checkout/${appt.id}`)
-            }
-            className="
-            flex items-center gap-2
-
-            rounded-lg
-
-            bg-red-500
-            hover:bg-red-600
-
-            px-4 py-2
-
-            text-sm font-medium text-white
-
-            transition
-        "
-          >
-
-            <RefreshCw size={15} />
-
-            Retry Payment
-
-          </button>
-
-        )}
-
-        <button
-          onClick={onView}
-          className="
-        inline-flex items-center gap-1
-
-        rounded-lg
-
-        border border-slate-200
-        bg-white
-        hover:bg-slate-50
-
-        px-3 py-1.5
-
-        text-sm font-medium text-slate-700
-
-        transition
-    "
-        >
-          View
-        </button>
-
-      </div>
     </div>
   );
 }

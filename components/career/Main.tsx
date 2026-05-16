@@ -5,7 +5,7 @@ import CareerHeader from "./CareerHeader";
 
 export default function Career() {
     return (
-        <div className="bg-white min-h-screen antialiased selection:bg-navy selection:text-white">
+        <div className="bg-white min-h-screen antialiased">
             <CareerHeader />
             <CareerFormSection />
         </div>

@@ -146,9 +146,9 @@ export default function DoctorProfilePage() {
                                             ).toFixed(1)}
                                         </span>
 
-                                        <span className="text-yellow-600/70">
+                                        {/* <span className="text-yellow-600/70">
                                             ({profile.ratingCount})
-                                        </span>
+                                        </span> */}
 
                                     </div>
 
@@ -178,7 +178,7 @@ export default function DoctorProfilePage() {
                             shadow-sm
                             ${isEditing
                                 ? "bg-yellow-50 text-yellow-700 border border-yellow-300 hover:bg-yellow-100"
-                                : "bg-wellness-accent text-white hover:bg-teal-700"
+                                : "bg-navy text-white hover:bg-navy-dark"
                             }
                         `}
                     >
@@ -214,7 +214,7 @@ export default function DoctorProfilePage() {
                     <div className="flex justify-end">
                         <button
                             onClick={() => saveMutation.mutate()}
-                            className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-xl flex items-center gap-2 shadow-sm"
+                            className="bg-navy hover:bg-navy-dark text-white px-8 py-3 rounded-xl flex items-center gap-2 shadow-sm"
                             disabled={saveMutation.isPending}
                         >
                             {saveMutation.isPending && (

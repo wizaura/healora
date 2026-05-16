@@ -380,7 +380,7 @@ export default function AppointmentDetailsModal({ appointment, onClose }: any) {
                                     </p>
 
                                     <p className="mt-2 font-semibold text-slate-900">
-                                        {appointment.slotPaymentStatus}
+                                        {paymentLabel(appointment.slotPaymentStatus)}
                                     </p>
 
                                 </div>
@@ -552,7 +552,7 @@ export default function AppointmentDetailsModal({ appointment, onClose }: any) {
                                         </p>
 
                                         <p className="mt-1 font-medium text-slate-900">
-                                            {appointment.meetingType}
+                                            {appointment.meetingType === "GOOGLE" ? "Google Meet" : "Zoom"}
                                         </p>
 
                                     </div>

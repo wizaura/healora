@@ -54,28 +54,86 @@ export default function ServicesScrollSection() {
 
   /* ---------------- HORIZONTAL SCROLL ---------------- */
   useEffect(() => {
-    const onScroll = () => {
+
+    const handleScroll = () => {
+
       if (window.innerWidth < 768) return;
-      if (!sectionRef.current || !trackRef.current) return;
 
-      const section = sectionRef.current;
-      const track = trackRef.current;
+      if (
+        !sectionRef.current ||
+        !trackRef.current
+      ) return;
 
-      const rect = section.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const totalScroll = rect.height - viewportHeight;
+      const section =
+        sectionRef.current;
 
-      const scrolled = Math.min(Math.max(-rect.top, 0), totalScroll);
-      const progress = scrolled / totalScroll;
+      const track =
+        trackRef.current;
+
+      const rect =
+        section.getBoundingClientRect();
+
+      const viewportHeight =
+        window.innerHeight;
+
+      const totalScroll =
+        rect.height - viewportHeight;
+
+      const current =
+        Math.min(
+          Math.max(-rect.top, 0),
+          totalScroll
+        );
+
+      const progress =
+        totalScroll > 0
+          ? current / totalScroll
+          : 0;
+
+      /* =====================================
+         PERFECT TRACK WIDTH
+         ===================================== */
 
       const maxTranslate =
-        track.scrollWidth - window.innerWidth + 300;
+        Math.max(
+          track.scrollWidth -
+          track.clientWidth,
+          0
+        );
 
-      track.style.transform = `translateX(-${progress * maxTranslate}px)`;
+      const translateX =
+        progress * maxTranslate;
+
+      track.style.transform =
+        `translate3d(-${translateX}px,0,0)`;
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    handleScroll();
+
+    window.addEventListener(
+      "scroll",
+      handleScroll,
+      { passive: true }
+    );
+
+    window.addEventListener(
+      "resize",
+      handleScroll
+    );
+
+    return () => {
+
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
+
+      window.removeEventListener(
+        "resize",
+        handleScroll
+      );
+    };
+
   }, []);
 
   return (
@@ -97,7 +155,7 @@ export default function ServicesScrollSection() {
       <div className="relative md:sticky md:top-10 lg:top-25 overflow-hidden mb-6">
 
         {/* HEADER */}
-        <div className="mx-auto max-w-7xl px-2 md:px-12 pt-10 md:pt-12 pb-10">
+        <div className="mx-auto max-w-7xl px-2 md:px-4 pt-10 md:pt-12 pb-10">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 md:items-center">
 
             {/* LEFT TITLE */}
@@ -135,7 +193,7 @@ export default function ServicesScrollSection() {
         </div>
 
         {/* CARDS */}
-        <div className="relative lg:mt-8 max-w-6xl mx-auto">
+        <div className="relative lg:mt-8 max-w-7xl mx-auto">
 
           {/* MOBILE */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:hidden max-w-6xl mx-auto px-2">
@@ -157,17 +215,41 @@ export default function ServicesScrollSection() {
           </div>
 
           {/* DESKTOP */}
-          <div className="hidden md:block overflow-hidden">
+          <div
+            className="
+              hidden md:block
+
+              overflow-hidden
+            "
+          >
             <div
               ref={trackRef}
-              className="flex gap-6 px-4 md:px-0 py-3 will-change-transform"
+              className="
+                flex gap-8
+
+                px-4 md:px-2
+
+                py-4
+
+                will-change-transform
+
+                transition-transform
+                duration-150
+                ease-out
+            "
             >
               {services.map((s: any, index: number) => (
                 <div
                   key={s.id}
                   data-aos="fade-up"
                   data-aos-delay={100 + index * 100}
-                  className="flex-shrink-0 w-[360px]"
+                  className="
+                    flex-shrink-0
+
+                    w-[320px]
+                    lg:w-[360px]
+                    xl:w-[380px]
+                  "
                 >
                   <MainSpecialityCard
                     name={s.name}

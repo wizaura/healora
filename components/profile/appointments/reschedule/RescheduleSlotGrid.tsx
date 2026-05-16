@@ -104,6 +104,20 @@ export default function SlotGrid({
                         };
                     });
 
+                const firstSlot =
+                    mapped.find(
+                        (s) =>
+                            s.category ===
+                            selectedCategory
+                    );
+
+                if (firstSlot) {
+
+                    setSelectedSlot(
+                        firstSlot
+                    );
+                }
+
                 setSlots(mapped);
 
             } catch (err) {

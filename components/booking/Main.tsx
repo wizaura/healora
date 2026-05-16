@@ -44,11 +44,23 @@ export default function BookingMainPage() {
                     }
                 );
 
-                setAvailableDates(
+                const dates =
                     res.data.map(
                         (d: any) => d.date
-                    )
-                );
+                    );
+
+                setAvailableDates(dates);
+
+                if (
+                    !date &&
+                    dates.length
+                ) {
+
+                    const firstAvailable =
+                        new Date(dates[0]);
+
+                    setDate(firstAvailable);
+                }
 
             } catch (err) {
 
@@ -61,7 +73,7 @@ export default function BookingMainPage() {
 
         fetchAvailableDays();
 
-    }, [doctorId, timezone, date]);
+    }, [doctorId, timezone]);
 
     return (
         <>

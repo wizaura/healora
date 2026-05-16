@@ -95,7 +95,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${manrope.variable}`}>
-  <body className="font-sans antialiased bg-white text-gray-900">
+  <body className="font-sans antialiased bg-white text-gray-900 selection:bg-navy selection:text-white">
     <AuthProvider>
       <AOSProvider />
       <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>

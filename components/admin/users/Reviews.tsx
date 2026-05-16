@@ -89,7 +89,7 @@ export default function AdminReviews() {
 
     return (
 
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div id="reviews" className="max-w-7xl mx-auto space-y-6">
 
             {/* HEADER */}
             <div>

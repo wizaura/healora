@@ -231,7 +231,7 @@ export default function DoctorProfessionalInfo({ profile, setProfile, isEditing 
                             onClick={() => toggle(o.id)}
                             className={`px-3 py-1 rounded-lg border text-sm transition
                                 ${selected.includes(o.id)
-                                    ? "bg-teal-600 text-white border-teal-600"
+                                    ? "bg-navy text-white border-navy"
                                     : "bg-white border-gray-200 hover:bg-gray-50"}
                             `}
                         >

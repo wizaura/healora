@@ -51,7 +51,7 @@ export default function HowItWorks() {
     return (
         <section
             data-aos="fade-up"
-            className="bg-gradient-to-b from-wellness-bg via-white to-wellness-bg py-16 m-4 rounded-2xl"
+            className="bg-gradient-to-b from-wellness-bg via-white to-wellness-bg py-16 px-4 md:px-6 m-4 rounded-2xl"
         >
             <div className="mx-auto max-w-7xl px-6">
 

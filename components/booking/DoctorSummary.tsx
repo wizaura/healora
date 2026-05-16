@@ -99,9 +99,9 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
                     ).toFixed(1)}
                   </span>
 
-                  <span className="text-yellow-700/70">
+                  {/* <span className="text-yellow-700/70">
                     ({data.ratingCount} reviews)
-                  </span>
+                  </span> */}
 
                 </div>
 

@@ -233,7 +233,7 @@ export default function ReviewsSection() {
         from-wellness-bg
         via-white
         to-wellness-bg
-
+        px-4 md:px-6
         py-16
       "
     >
@@ -345,9 +345,7 @@ export default function ReviewsSection() {
 
             h-full w-16
 
-            bg-gradient-to-r
-            from-wellness-bg
-            to-transparent
+            bg-transparent
           "
         />
 
@@ -361,9 +359,7 @@ export default function ReviewsSection() {
 
             h-full w-16
 
-            bg-gradient-to-l
-            from-wellness-bg
-            to-transparent
+            bg-transparent
           "
         />
 

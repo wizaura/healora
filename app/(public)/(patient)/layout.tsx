@@ -51,11 +51,56 @@ export default function ProtectedLayout({
 
   /* Logged in → render layout */
   return (
-    <div className="pt-24 pb-12 bg-white min-h-screen">
-      <ProfileHeader />
-      <div className="mx-auto min-h-screen py-12 mt-8 max-w-7xl bg-gradient-to-b from-wellness-bg via-white to-wellness-bg rounded-2xl">
-        {children}
+
+    <div
+      className="
+            min-h-screen
+            md:m-4 rounded-2xl
+
+            bg-gradient-to-b
+            from-white
+            via-white
+            to-wellness-bg
+
+            pt-20
+            pb-12
+        "
+    >
+
+      {/* PROFILE HEADER */}
+
+      <div
+        className="
+                mx-auto
+
+                max-w-7xl
+
+                px-4
+            "
+      >
+
+          <ProfileHeader />
+
       </div>
+
+      {/* PAGE CONTENT */}
+
+      <div
+        className="
+                mx-auto
+
+                mt-8
+
+                max-w-7xl
+
+                px-2 md:px-4
+            "
+      >
+
+        {children}
+
+      </div>
+
     </div>
   );
 }
