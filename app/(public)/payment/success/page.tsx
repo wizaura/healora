@@ -1,4 +1,4 @@
-import BookingSuccess from "@/components/booking/Success";
+import BookingSuccess from "@/components/payment/success/Success";
 
 export default function BookingSuccessPage() {
     return (

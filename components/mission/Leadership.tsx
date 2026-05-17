@@ -4,7 +4,7 @@ const leaders = [
     {
         name: "Dr Reenidge Emmanuel",
         role: "Co-Founder & Director",
-        image: "/doc_2.png",
+        image: "/doc_2.jpeg",
         description:
             "Dr. Reenidge Emmanuel is a highly accomplished homeopathic physician and mental-health practitioner with over nine years of clinical experience. He integrates medical science with psychological insight to foster holistic well-being.",
     },
@@ -20,7 +20,7 @@ const leaders = [
         role: "Co-Founder & Director",
         image: "/doc_3.png",
         description:
-            "Dr. Anu A. A. is a distinguished homeopathic physician and holistic health practitioner with over 8 years of experience, combining clinical expertise with nutrition and lifestyle medicine.",
+            "Dr. Anu A A is a distinguished homeopathic physician and holistic health practitioner with over 8 years of experience, combining clinical expertise with nutrition and lifestyle medicine.",
     },
     {
         name: "Dr Bittumol Benny",

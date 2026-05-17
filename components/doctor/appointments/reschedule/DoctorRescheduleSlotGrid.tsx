@@ -1,14 +1,19 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+
 import api from "@/lib/api";
+
 import { Clock10 } from "lucide-react";
+
+/* ---------- TYPES ---------- */
 
 type Slot = {
     id: string;
     startTime: string;
     endTime: string;
     duration: 30 | 60;
+    category: "FIRST_TIME" | "FOLLOW_UP";
 };
 
 type Props = {
@@ -19,6 +24,8 @@ type Props = {
     setSelectedSlot: (slot: Slot | null) => void;
 };
 
+/* ---------- COMPONENT ---------- */
+
 export default function DoctorRescheduleSlotGrid({
     doctorId,
     date,
@@ -26,128 +33,519 @@ export default function DoctorRescheduleSlotGrid({
     selectedSlot,
     setSelectedSlot,
 }: Props) {
-    const [slots, setSlots] = useState<Slot[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [duration, setDuration] = useState<30 | 60>(30);
+
+    const [slots, setSlots] =
+        useState<Slot[]>([]);
+
+    const [loading, setLoading] =
+        useState(false);
+
+    const [
+        selectedCategory,
+        setSelectedCategory,
+    ] = useState<
+        "FIRST_TIME" | "FOLLOW_UP"
+    >("FIRST_TIME");
+
+    /* ---------- DATE STRING ---------- */
 
     const dateStr = date
         ? [
             date.getFullYear(),
-            String(date.getMonth() + 1).padStart(2, "0"),
-            String(date.getDate()).padStart(2, "0"),
+            String(
+                date.getMonth() + 1
+            ).padStart(2, "0"),
+            String(
+                date.getDate()
+            ).padStart(2, "0"),
         ].join("-")
         : null;
 
+    /* ---------- FETCH ---------- */
+
     useEffect(() => {
+
         if (!doctorId || !dateStr) return;
 
         const fetchSlots = async () => {
+
             try {
+
                 setLoading(true);
+
                 setSelectedSlot(null);
 
-                const res = await api.get("/availability/slots", {
-                    params: { doctorId, date: dateStr },
-                });
+                const res =
+                    await api.get(
+                        "/availability/slots",
+                        {
+                            params: {
+                                doctorId,
+                                date: dateStr,
+                            },
+                        }
+                    );
 
-                const mapped: Slot[] = res.data.map((s: any) => {
-                    const start = new Date(s.startTimeUTC);
-                    const end = new Date(s.endTimeUTC);
+                const mapped: Slot[] =
+                    res.data.map(
+                        (s: any) => {
 
-                    const diffMinutes =
-                        (end.getTime() - start.getTime()) / (1000 * 60);
+                            const start =
+                                new Date(
+                                    s.startTimeUTC
+                                );
 
-                    return {
-                        id: s.id,
-                        startTime: s.startTimeUTC,
-                        endTime: s.endTimeUTC,
-                        duration: diffMinutes as 30 | 60,
-                    };
-                });
+                            const end =
+                                new Date(
+                                    s.endTimeUTC
+                                );
+
+                            const diffMinutes =
+                                (
+                                    end.getTime()
+
+                                    -
+
+                                    start.getTime()
+                                ) /
+                                (
+                                    1000 * 60
+                                );
+
+                            return {
+
+                                id: s.id,
+
+                                startTime:
+                                    s.startTimeUTC,
+
+                                endTime:
+                                    s.endTimeUTC,
+
+                                duration:
+                                    diffMinutes as
+                                    30 | 60,
+
+                                category:
+                                    s.category,
+                            };
+                        }
+                    );
 
                 setSlots(mapped);
+
+                /* AUTO SELECT */
+
+                const firstSlot =
+                    mapped.find(
+                        (s) =>
+
+                            s.category ===
+                            selectedCategory
+
+                            &&
+
+                            s.id !==
+                            currentSlotId
+                    );
+
+                if (firstSlot) {
+
+                    setSelectedSlot(
+                        firstSlot
+                    );
+                }
+
             } catch (err) {
-                console.error("Failed to fetch slots", err);
+
+                console.error(
+                    "Failed to fetch slots",
+                    err
+                );
+
                 setSlots([]);
+
             } finally {
+
                 setLoading(false);
+
             }
         };
 
         fetchSlots();
-    }, [doctorId, dateStr, setSelectedSlot]);
 
-    const visibleSlots = useMemo(
-        () => slots.filter((s) => s.duration === duration),
-        [slots, duration]
-    );
+    }, [
+        doctorId,
+        dateStr,
+    ]);
+
+    /* ---------- GROUP ---------- */
+
+    const groupedSlots =
+        useMemo(() => {
+
+            return {
+
+                FIRST_TIME:
+                    slots.filter(
+                        (s) =>
+                            s.category ===
+                            "FIRST_TIME"
+                    ),
+
+                FOLLOW_UP:
+                    slots.filter(
+                        (s) =>
+                            s.category ===
+                            "FOLLOW_UP"
+                    ),
+            };
+
+        }, [slots]);
+
+    const visibleSlots =
+        groupedSlots[
+        selectedCategory
+        ];
+
+    /* ---------- LOADING ---------- */
 
     if (loading) {
+
         return (
-            <div className="rounded-2xl border border-navy/10 bg-white p-8 text-center">
-                <p className="text-sm text-navy/60">
-                    Loading available slots…
+
+            <div
+                className="
+                    rounded-3xl
+
+                    border border-navy/10
+
+                    bg-white
+
+                    p-8
+
+                    text-center
+                "
+            >
+
+                <p
+                    className="
+                        text-sm font-medium
+
+                        text-navy/60
+                    "
+                >
+
+                    Fetching available slots…
+
                 </p>
+
             </div>
         );
     }
 
+    /* ---------- UI ---------- */
+
     return (
+
         <div className="rounded-2xl bg-white p-6">
 
-            <div className="mx-auto max-w-lg text-center">
+            <div className="mx-auto max-w-2xl text-center">
 
-                <span className="mb-4 inline-block rounded-full border border-gray-200 bg-white px-6 py-2 text-sm font-medium text-gray-600">
-                    Available Slots
+                {/* LABEL */}
+
+                <span
+                    className="
+                        mb-4 inline-block
+
+                        rounded-full
+
+                        border border-gray-200
+
+                        bg-white
+
+                        px-6 py-2
+
+                        text-sm font-medium
+
+                        text-gray-600
+                    "
+                >
+
+                    Reschedule Appointment
+
                 </span>
 
-                <h2 className="text-2xl font-medium text-[#1F2147]">
-                    Choose a new consultation time
+                {/* TITLE */}
+
+                <h2
+                    className="
+                        text-2xl font-medium
+
+                        tracking-[-0.02em]
+
+                        text-[#1F2147]
+                    "
+                >
+
+                    Choose a new consultation slot
+
                 </h2>
 
-                {/* Duration filter */}
+                {/* CATEGORY */}
 
-                <div className="my-6 flex justify-center gap-3">
+                <div
+                    className="
+                        mt-6
 
-                    {[30, 60].map((d) => (
-                        <button
-                            key={d}
-                            onClick={() => {
-                                setDuration(d as 30 | 60);
-                                setSelectedSlot(null);
-                            }}
-                            className={`rounded-full px-5 py-2 text-sm font-medium transition
-                ${duration === d
-                                    ? "bg-navy text-white shadow"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                }`}
+                        flex justify-center gap-3
+                    "
+                >
+
+                    {/* FIRST VISIT */}
+
+                    <button
+                        onClick={() => {
+
+                            setSelectedCategory(
+                                "FIRST_TIME"
+                            );
+
+                            setSelectedSlot(
+                                null
+                            );
+                        }}
+
+                        className={`
+                            rounded-full
+
+                            px-5 py-2
+
+                            text-sm font-medium
+
+                            transition
+
+                            ${selectedCategory === "FIRST_TIME"
+
+                                ? `
+                                    bg-blue-600
+                                    text-white
+                                    shadow
+                                `
+
+                                : `
+                                    bg-gray-100
+                                    text-gray-700
+
+                                    hover:bg-gray-200
+                                `
+                            }
+                        `}
+                    >
+
+                        First Visit
+
+                    </button>
+
+                    {/* FOLLOW UP */}
+
+                    <button
+                        onClick={() => {
+
+                            setSelectedCategory(
+                                "FOLLOW_UP"
+                            );
+
+                            setSelectedSlot(
+                                null
+                            );
+                        }}
+
+                        className={`
+                            rounded-full
+
+                            px-5 py-2
+
+                            text-sm font-medium
+
+                            transition
+
+                            ${selectedCategory === "FOLLOW_UP"
+
+                                ? `
+                                    bg-emerald-600
+                                    text-white
+                                    shadow
+                                `
+
+                                : `
+                                    bg-gray-100
+                                    text-gray-700
+
+                                    hover:bg-gray-200
+                                `
+                            }
+                        `}
+                    >
+
+                        Follow Up
+
+                    </button>
+
+                </div>
+
+                {/* HEADER */}
+
+                <div
+                    className="
+                        mt-8 mb-5
+
+                        flex items-center justify-between
+                    "
+                >
+
+                    <div
+                        className="
+                            flex items-center gap-3
+                        "
+                    >
+
+                        <span
+                            className={`
+                                rounded-full
+
+                                px-4 py-1.5
+
+                                text-xs font-semibold
+
+                                ${selectedCategory === "FIRST_TIME"
+
+                                    ? `
+                                        bg-blue-100
+                                        text-blue-700
+                                    `
+
+                                    : `
+                                        bg-emerald-100
+                                        text-emerald-700
+                                    `
+                                }
+                            `}
                         >
-                            {d} min
-                        </button>
-                    ))}
+
+                            {selectedCategory ===
+                                "FIRST_TIME"
+
+                                ? "First Visit"
+
+                                : "Follow Up"}
+
+                        </span>
+
+                        <p
+                            className="
+                                text-sm text-gray-500
+                            "
+                        >
+
+                            {selectedCategory ===
+                                "FIRST_TIME"
+
+                                ? "New patient consultation"
+
+                                : "Review consultation"}
+
+                        </p>
+
+                    </div>
+
+                    <span
+                        className="
+                            text-xs text-gray-400
+                        "
+                    >
+
+                        {visibleSlots.length} slots
+
+                    </span>
 
                 </div>
 
                 {/* SLOT GRID */}
 
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                <div
+                    className="
+                        grid grid-cols-2 gap-4
+
+                        sm:grid-cols-3
+                    "
+                >
 
                     {!visibleSlots.length && (
 
-                        <div className="col-span-full flex h-56 items-center justify-center">
+                        <div
+                            className="
+                                col-span-full
 
-                            <div className="text-center space-y-3">
+                                flex h-64 items-center justify-center
+                            "
+                        >
 
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-navy/5">
-                                    <Clock10 className="text-navy/40" />
+                            <div
+                                className="
+                                    space-y-3
+
+                                    text-center
+                                "
+                            >
+
+                                <div
+                                    className="
+                                        mx-auto
+
+                                        flex h-14 w-14
+                                        items-center justify-center
+
+                                        rounded-full
+
+                                        bg-navy/5
+                                    "
+                                >
+
+                                    <span
+                                        className="
+                                            text-2xl text-navy/40
+                                        "
+                                    >
+
+                                        <Clock10 />
+
+                                    </span>
+
                                 </div>
 
-                                <p className="text-base font-semibold text-navy">
+                                <p
+                                    className="
+                                        text-base font-semibold
+
+                                        text-navy
+                                    "
+                                >
+
                                     No slots available
+
                                 </p>
 
-                                <p className="text-sm text-navy/50">
-                                    Try another date
+                                <p
+                                    className="
+                                        text-sm
+
+                                        text-navy/50
+                                    "
+                                >
+
+                                    Try another category or date
+
                                 </p>
 
                             </div>
@@ -156,55 +554,153 @@ export default function DoctorRescheduleSlotGrid({
 
                     )}
 
-                    {visibleSlots.map((slot) => {
+                    {visibleSlots.map(
+                        (slot) => {
 
-                        const start = formatTime(slot.startTime);
-                        const end = formatTime(slot.endTime);
+                            const start =
+                                formatTime(
+                                    slot.startTime
+                                );
 
-                        const isSelected = selectedSlot?.id === slot.id;
-                        const isCurrent = slot.id === currentSlotId;
+                            const isSelected =
+                                selectedSlot?.id ===
+                                slot.id;
 
-                        return (
-                            <button
-                                key={slot.id}
-                                disabled={isCurrent}
-                                onClick={() =>
-                                    !isCurrent &&
-                                    setSelectedSlot(isSelected ? null : slot)
-                                }
-                                className={`
-                  rounded-xl border px-4 py-4 text-sm font-semibold transition
+                            const isCurrent =
+                                slot.id ===
+                                currentSlotId;
 
-                  ${isCurrent
-                                        ? "border-amber-400 bg-amber-50 text-amber-700 cursor-not-allowed"
-                                        : isSelected
-                                            ? "border-navy bg-navy text-white shadow"
-                                            : "border-gray-200 bg-white text-navy hover:border-navy/40"
+                            return (
+
+                                <button
+                                    key={slot.id}
+
+                                    disabled={
+                                        isCurrent
                                     }
-                `}
-                            >
 
-                                <div>{start}</div>
+                                    onClick={() =>
 
-                                <div className="text-xs opacity-70">
-                                    → {end}
-                                </div>
+                                        !isCurrent &&
 
-                                {isCurrent && (
-                                    <div className="text-[10px] mt-1">
-                                        Current slot
+                                        setSelectedSlot(
+
+                                            isSelected
+                                                ? null
+                                                : slot
+                                        )
+                                    }
+
+                                    className={`
+                                        group relative overflow-hidden
+
+                                        rounded-2xl
+
+                                        border
+
+                                        px-4 py-4
+
+                                        transition-all duration-200
+
+                                        ${isCurrent
+
+                                            ? `
+                                                border-amber-300
+                                                bg-amber-50
+
+                                                text-amber-700
+
+                                                cursor-not-allowed
+                                            `
+
+                                            : isSelected
+
+                                                ? `
+                                                    border-navy
+                                                    bg-navy
+
+                                                    text-white
+
+                                                    shadow-lg
+
+                                                    scale-[1.02]
+                                                `
+
+                                                : `
+                                                    border-gray-200
+                                                    bg-white
+
+                                                    hover:border-navy/30
+                                                    hover:shadow-sm
+                                                `
+                                        }
+                                    `}
+                                >
+
+                                    <div className="space-y-1">
+
+                                        <p
+                                            className={`
+                                                text-lg font-semibold
+
+                                                ${isSelected
+
+                                                    ? "text-white"
+
+                                                    : `
+                                                        text-[#1F2147]
+                                                    `
+                                                }
+                                            `}
+                                        >
+
+                                            {start}
+
+                                        </p>
+
+                                        {isCurrent && (
+
+                                            <p
+                                                className="
+                                                    text-[10px]
+
+                                                    font-medium
+                                                "
+                                            >
+
+                                                Current slot
+
+                                            </p>
+
+                                        )}
+
                                     </div>
-                                )}
 
-                            </button>
-                        );
-                    })}
+                                </button>
+                            );
+                        }
+                    )}
 
                 </div>
 
-                <p className="mt-4 text-xs text-gray-500">
-                    Times shown in your timezone (
-                    {Intl.DateTimeFormat().resolvedOptions().timeZone})
+                {/* TIMEZONE */}
+
+                <p
+                    className="
+                        mt-6
+
+                        text-xs text-gray-500
+                    "
+                >
+
+                    Times shown in your local timezone (
+                    {
+                        Intl.DateTimeFormat()
+                            .resolvedOptions()
+                            .timeZone
+                    }
+                    )
+
                 </p>
 
             </div>
@@ -213,12 +709,21 @@ export default function DoctorRescheduleSlotGrid({
     );
 }
 
-function formatTime(utc: string) {
-    const d = new Date(utc);
+/* ---------- HELPERS ---------- */
 
-    return d.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-    });
+function formatTime(
+    utc: string
+) {
+
+    const d =
+        new Date(utc);
+
+    return d.toLocaleTimeString(
+        [],
+        {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+        }
+    );
 }

@@ -25,6 +25,7 @@ import RescheduleSlotGrid
 
 import DoctorRescheduleFooter
     from "./DoctorRescheduleFooter";
+import api from "@/lib/api";
 
 export default function DoctorReschedulePage() {
 
@@ -42,14 +43,81 @@ export default function DoctorReschedulePage() {
     const [selectedSlot, setSelectedSlot] =
         useState<any>(null);
 
+    const [availableDates, setAvailableDates] =
+            useState<string[]>([]);
+
     const [loading, setLoading] =
         useState(true);
+
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     useEffect(() => {
 
         loadAppointment();
 
     }, []);
+
+    useEffect(() => {
+
+        const fetchAvailableDays = async () => {
+
+            if (!appointment) {
+                return;
+            }
+
+            try {
+
+                const current =
+                    date || new Date();
+
+                const month = [
+                    current.getFullYear(),
+                    String(
+                        current.getMonth() + 1
+                    ).padStart(2, "0"),
+                ].join("-");
+
+                const res = await api.get(
+                    "/availability/days",
+                    {
+                        params: {
+                            doctorId: appointment.doctorId,
+                            month,
+                            timezone,
+                        },
+                    }
+                );
+
+                const dates =
+                    res.data.map(
+                        (d: any) => d.date
+                    );
+
+                setAvailableDates(dates);
+
+                if (
+                    !date &&
+                    dates.length
+                ) {
+
+                    const firstAvailable =
+                        new Date(dates[0]);
+
+                    setDate(firstAvailable);
+                }
+
+            } catch (err) {
+
+                console.error(
+                    "Failed to fetch available days",
+                    err
+                );
+            }
+        };
+
+        fetchAvailableDays();
+
+    }, [appointment, timezone]);
 
     const loadAppointment = async () => {
 
@@ -295,6 +363,7 @@ export default function DoctorReschedulePage() {
                             <DatePickerCard
                                 date={date}
                                 setDate={setDate}
+                                availableDates={availableDates}
                             />
 
                         </div>

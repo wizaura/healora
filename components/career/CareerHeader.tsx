@@ -18,7 +18,7 @@ export default function CareerHeader() {
           "
         >
           Join Healora Team
-          <span className="block text-slate-400 font-medium text-3xl md:text-5xl mt-2">
+          <span className="block text-slate-700 font-medium text-3xl md:text-5xl mt-2">
             Build the Future of Healthcare
           </span>
         </h1>

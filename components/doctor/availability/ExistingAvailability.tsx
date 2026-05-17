@@ -83,26 +83,60 @@ export default function ExistingAvailability({
     );
   }, [data]);
 
+
   /* ---------- DATE HELPERS ---------- */
 
-  const isPastDate = (dateStr: string) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+  const isPastDate = (
+    dateStr: string
+  ) => {
 
-    const date = new Date(dateStr);
-    date.setHours(0, 0, 0, 0);
+    const today =
+      new Date();
+
+    today.setHours(
+      0,
+      0,
+      0,
+      0
+    );
+
+    const date =
+      new Date(dateStr);
+
+    date.setHours(
+      0,
+      0,
+      0,
+      0
+    );
 
     return date < today;
   };
 
-  const isToday = (dateStr: string) => {
-    const today = new Date();
-    const date = new Date(dateStr);
+  const isToday = (
+    dateStr: string
+  ) => {
+
+    const today =
+      new Date();
+
+    const date =
+      new Date(dateStr);
 
     return (
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
+
+      date.getDate() ===
+      today.getDate()
+
+      &&
+
+      date.getMonth() ===
+      today.getMonth()
+
+      &&
+
+      date.getFullYear() ===
+      today.getFullYear()
     );
   };
 

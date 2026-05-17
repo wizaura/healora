@@ -31,6 +31,9 @@ export default function AppointmentCheckout() {
     useState("₹");
 
   const [prescriptionFee, setPrescriptionFee] =
+    useState(60);
+
+  const [slotFee, setSlotFee] =
     useState(50);
 
   const [checkoutStage, setCheckoutStage] =
@@ -72,7 +75,7 @@ export default function AppointmentCheckout() {
 
     try {
 
-      const [res, prescriptionRes] =
+      const [res, prescriptionRes, slotFeeRes] =
         await Promise.all([
 
           api.get(
@@ -81,6 +84,9 @@ export default function AppointmentCheckout() {
 
           api.get(
             "/settings/prescription-fee"
+          ),
+          api.get(
+            "/settings/slot-fee"
           ),
         ]);
 
@@ -96,6 +102,10 @@ export default function AppointmentCheckout() {
 
       setPrescriptionFee(
         prescriptionRes.data.prescriptionFee || 50
+      );
+
+      setSlotFee(
+        slotFeeRes.data.slotFee || 100
       );
 
       setPaymentMethod(
@@ -177,7 +187,7 @@ export default function AppointmentCheckout() {
     ) {
 
       total +=
-        appointment.fees.slotFee;
+        slotFee;
 
       total +=
         appointment.fees.consultationFee;
@@ -1403,7 +1413,7 @@ export default function AppointmentCheckout() {
 
                   <span>
                     {currencySymbol}
-                    {appointment.fees.slotFee}
+                    {slotFee}
                   </span>
 
                 </div>

@@ -94,7 +94,7 @@ export default function CareerFormSection() {
     const labelClasses = "block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2";
 
     return (
-        <section className="bg-white border-t border-slate-100">
+        <section className="bg-gradient-to-b from-white via-white to-wellness-bg m-4 rounded-2xl border-t border-slate-100">
             <div className="max-w-7xl mx-auto px-6 py-16 md:py-24">
                 {/* Framed Two-Column Layout */}
                 <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
@@ -102,10 +102,10 @@ export default function CareerFormSection() {
                     {/* Left Side: Engaging Sticky Context Frame */}
                     <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-8">
                         <div>
-                            <h2 className="text-2xl font-bold text-navy tracking-tight">
+                            <h2 className="text-3xl font-bold text-navy tracking-tight">
                                 Faculty Intake Portal
                             </h2>
-                            <p className="text-sm text-slate-500 mt-2 leading-relaxed">
+                            <p className="text-md text-slate-500 mt-2 leading-relaxed">
                                 Join a global network of premier healthcare practitioners redefining digital consultations and clinical autonomy.
                             </p>
                         </div>
@@ -113,27 +113,27 @@ export default function CareerFormSection() {
                         {/* Informative Perks Cards */}
                         <div className="space-y-4 pt-4 border-t border-slate-100">
                             <div className="flex gap-4">
-                                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-navy font-semibold text-sm">
+                                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-navy font-semibold text-md">
                                     01
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-semibold text-slate-900">Credential Review</h4>
-                                    <p className="text-xs text-slate-500 mt-0.5">Our medical board evaluates applications within 3–5 business days.</p>
+                                    <h4 className="text-md font-semibold text-slate-900">Credential Review</h4>
+                                    <p className="text-sm text-slate-500 mt-0.5">Our medical board evaluates applications within 3–5 business days.</p>
                                 </div>
                             </div>
 
                             <div className="flex gap-4">
-                                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-navy font-semibold text-sm">
+                                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-navy font-semibold text-md">
                                     02
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-semibold text-slate-900">Digital Onboarding</h4>
-                                    <p className="text-xs text-slate-500 mt-0.5">Approved clinicians receive personalized training on our advanced telehealth suite.</p>
+                                    <h4 className="text-md font-semibold text-slate-900">Digital Onboarding</h4>
+                                    <p className="text-sm text-slate-500 mt-0.5">Approved clinicians receive personalized training on our advanced telehealth suite.</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="p-4 rounded-xl bg-slate-50/70 border border-slate-100 text-xs text-slate-500 leading-relaxed">
+                        <div className="p-4 rounded-xl bg-slate-50/80 border border-slate-100 text-sm text-slate-600 leading-relaxed">
                             <strong>Security & Privacy Notice:</strong> All uploaded medical licenses and documentation are encrypted and handled in strict accordance with healthcare compliance standards.
                         </div>
                     </div>

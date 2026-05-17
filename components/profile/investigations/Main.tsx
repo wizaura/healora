@@ -215,7 +215,7 @@ export default function InvestigationsSection({
                                 "
                             >
 
-                                Investigations & Reports
+                                Investigations Reports
 
                             </h1>
 
@@ -377,8 +377,8 @@ export default function InvestigationsSection({
                                 "
                             >
 
-                                Medical records, prescriptions,
-                                scans, and reports will appear here.
+                                eg: Scanning  reports, Blood reports , X-rays,
+                                etc will appear here.
 
                             </p>
 

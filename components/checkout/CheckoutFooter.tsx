@@ -49,7 +49,7 @@ export default function CheckoutFooter({
 
     const [meetingType, setMeetingType] = useState<"google" | "zoom" | null>(null);
     const [deliveryMode, setDeliveryMode] = useState<"none" | "prescription" | "door">("none");
-    const [payMode, setPayMode] = useState<"SLOT" | "FULL">("SLOT");
+    const [payMode, setPayMode] = useState<"SLOT" | "FULL">("FULL");
     const [deliveryType, setDeliveryType] = useState<
         "FAST" | "NORMAL" | null
     >(null);
@@ -199,7 +199,7 @@ export default function CheckoutFooter({
     }
 
     return (
-        <section className="rounded-2xl md:max-h-[60vh] bg-white shadow-sm flex flex-col">
+        <section className="rounded-2xl md:max-h-[90vh] bg-white shadow-sm flex flex-col">
             <Script
                 src="https://checkout.razorpay.com/v1/checkout.js"
                 strategy="afterInteractive"
@@ -213,6 +213,21 @@ export default function CheckoutFooter({
 
                 {/* Payment Mode */}
                 <div className="space-y-3">
+
+                    <div
+                        onClick={() => setPayMode("FULL")}
+                        className={`cursor-pointer rounded-xl border p-4 ${payMode === "FULL"
+                            ? "border-navy bg-navy/5"
+                            : "border-gray-200"
+                            }`}
+                    >
+                        <div className="flex justify-between">
+                            <span className="font-medium">
+                                Pay Slot + Consultation
+                            </span>
+                            <span>{currencySymbol}{slotFee + consultationFee}</span>
+                        </div>
+                    </div>
                     <div
                         onClick={() => {
                             setPayMode("SLOT");
@@ -227,21 +242,6 @@ export default function CheckoutFooter({
                         <div className="flex justify-between">
                             <span className="font-medium">Pay Slot Fee Only</span>
                             <span>{currencySymbol}{slotFee}</span>
-                        </div>
-                    </div>
-
-                    <div
-                        onClick={() => setPayMode("FULL")}
-                        className={`cursor-pointer rounded-xl border p-4 ${payMode === "FULL"
-                            ? "border-navy bg-navy/5"
-                            : "border-gray-200"
-                            }`}
-                    >
-                        <div className="flex justify-between">
-                            <span className="font-medium">
-                                Pay Slot + Consultation
-                            </span>
-                            <span>{currencySymbol}{slotFee + consultationFee}</span>
                         </div>
                     </div>
                 </div>

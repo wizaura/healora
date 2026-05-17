@@ -803,118 +803,122 @@ export default function SettingsPage() {
                    SECURITY
                    ===================================================== */}
 
-                    <SectionHeader
-                        title="Security"
-                        icon={
-                            <Shield size={16} />
-                        }
-                    />
 
-                    <div
-                        className="
-                        grid grid-cols-1 gap-6
-
-                        md:grid-cols-2
-                    "
-                    >
-
-                        {/* PASSWORD */}
-
-                        <PasswordField
-                            label="New Password"
-
-                            show={showPassword}
-
-                            toggle={() =>
-                                setShowPassword(
-                                    !showPassword
-                                )
-                            }
-                        >
-
-                            <input
-                                type={
-                                    showPassword
-                                        ? "text"
-                                        : "password"
+                    {profile.authProvide === "LOCAL" && (
+                        <>
+                            <SectionHeader
+                                title="Security"
+                                icon={
+                                    <Shield size={16} />
                                 }
-
-                                {...register("password", {
-                                    minLength: {
-                                        value: 6,
-                                        message:
-                                            "Password must be at least 6 characters",
-                                    },
-                                })}
-
-                                disabled={!isEditing}
-
-                                className={`${inputStyle} pr-12`}
                             />
+                            <div
+                                className="
+                            grid grid-cols-1 gap-6
+                            
+                            md:grid-cols-2
+                            "
+                            >
 
-                            {errors.password && (
+                                {/* PASSWORD */}
 
-                                <p className="text-sm text-rose-500">
-                                    {errors.password.message}
-                                </p>
+                                <PasswordField
+                                    label="New Password"
 
-                            )}
+                                    show={showPassword}
 
-                        </PasswordField>
+                                    toggle={() =>
+                                        setShowPassword(
+                                            !showPassword
+                                        )
+                                    }
+                                >
 
-                        {/* CONFIRM */}
-
-                        <PasswordField
-                            label="Confirm Password"
-
-                            show={showConfirm}
-
-                            toggle={() =>
-                                setShowConfirm(
-                                    !showConfirm
-                                )
-                            }
-                        >
-
-                            <input
-                                type={
-                                    showConfirm
-                                        ? "text"
-                                        : "password"
-                                }
-
-                                {...register("confirmPassword", {
-
-                                    validate: (value) => {
-
-                                        if (
-                                            password &&
-                                            value !== password
-                                        ) {
-
-                                            return "Passwords do not match";
+                                    <input
+                                        type={
+                                            showPassword
+                                                ? "text"
+                                                : "password"
                                         }
 
-                                        return true;
-                                    },
-                                })}
+                                        {...register("password", {
+                                            minLength: {
+                                                value: 6,
+                                                message:
+                                                    "Password must be at least 6 characters",
+                                            },
+                                        })}
 
-                                disabled={!isEditing}
+                                        disabled={!isEditing}
 
-                                className={`${inputStyle} pr-12`}
-                            />
+                                        className={`${inputStyle} pr-12`}
+                                    />
 
-                            {errors.confirmPassword && (
+                                    {errors.password && (
 
-                                <p className="text-sm text-rose-500">
-                                    {errors.confirmPassword.message}
-                                </p>
+                                        <p className="text-sm text-rose-500">
+                                            {errors.password.message}
+                                        </p>
 
-                            )}
+                                    )}
 
-                        </PasswordField>
+                                </PasswordField>
 
-                    </div>
+                                {/* CONFIRM */}
+
+                                <PasswordField
+                                    label="Confirm Password"
+
+                                    show={showConfirm}
+
+                                    toggle={() =>
+                                        setShowConfirm(
+                                            !showConfirm
+                                        )
+                                    }
+                                >
+
+                                    <input
+                                        type={
+                                            showConfirm
+                                                ? "text"
+                                                : "password"
+                                        }
+
+                                        {...register("confirmPassword", {
+
+                                            validate: (value) => {
+
+                                                if (
+                                                    password &&
+                                                    value !== password
+                                                ) {
+
+                                                    return "Passwords do not match";
+                                                }
+
+                                                return true;
+                                            },
+                                        })}
+
+                                        disabled={!isEditing}
+
+                                        className={`${inputStyle} pr-12`}
+                                    />
+
+                                    {errors.confirmPassword && (
+
+                                        <p className="text-sm text-rose-500">
+                                            {errors.confirmPassword.message}
+                                        </p>
+
+                                    )}
+
+                                </PasswordField>
+
+                            </div>
+                        </>
+                    )}
 
                     {/* =====================================================
                    SAVE BAR

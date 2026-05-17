@@ -190,7 +190,7 @@ export default function Profile() {
                                     "
                                 >
 
-                                    Patient Profile
+                                    Profile
 
                                 </div>
 
