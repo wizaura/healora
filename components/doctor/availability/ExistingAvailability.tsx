@@ -35,14 +35,37 @@ export default function ExistingAvailability({
   const [activeDay, setActiveDay] = useState<Availability | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   /* ---------- FETCH FROM BACKEND ---------- */
 
-  const fetchAvailability = async (monthDate: Date) => {
+  const fetchAvailability = async (
+    monthDate: Date
+  ) => {
+
     try {
-      const month = monthDate.toISOString().slice(0, 7);
-      const res = await api.get(`/availability/my?month=${month}`);
+
+      const year =
+        monthDate.getFullYear();
+
+      const month =
+        String(
+          monthDate.getMonth() + 1
+        ).padStart(2, "0");
+
+      const formattedMonth =
+        `${year}-${month}`;
+
+      const res =
+        await api.get(
+
+          `/availability/my?month=${formattedMonth}&timezone=${encodeURIComponent(timezone)}`
+        );
+
       setData(res.data);
+
     } catch (err) {
+
       console.error(err);
     }
   };
@@ -61,27 +84,47 @@ export default function ExistingAvailability({
 
   /* ---------- MERGE SAME DATES ---------- */
 
-  const sortedData = useMemo(() => {
-    const grouped: Record<string, Availability> = {};
+  const sortedData =
+    useMemo(() => {
 
-    data.forEach((item) => {
-      if (!grouped[item.date]) {
-        grouped[item.date] = {
-          id: item.date,
-          date: item.date,
-          slots: [],
-        };
-      }
+      const grouped:
+        Record<string, Availability> = {};
 
-      grouped[item.date].slots.push(...item.slots);
-    });
+      data.forEach((item) => {
 
-    return Object.values(grouped).sort(
-      (a, b) =>
-        new Date(a.date).getTime() -
-        new Date(b.date).getTime()
-    );
-  }, [data]);
+        const dateKey =
+          item.date
+            .split("T")[0];
+
+        if (!grouped[dateKey]) {
+
+          grouped[dateKey] = {
+
+            id: dateKey,
+
+            date: dateKey,
+
+            slots: [],
+          };
+        }
+
+        grouped[dateKey]
+          .slots
+          .push(...item.slots);
+      });
+
+      return Object
+        .values(grouped)
+
+        .sort(
+          (a, b) =>
+
+            a.date.localeCompare(
+              b.date
+            )
+        );
+
+    }, [data]);
 
 
   /* ---------- DATE HELPERS ---------- */
@@ -101,7 +144,9 @@ export default function ExistingAvailability({
     );
 
     const date =
-      new Date(dateStr);
+      new Date(
+        `${dateStr}T00:00:00`
+      );
 
     date.setHours(
       0,
@@ -121,7 +166,9 @@ export default function ExistingAvailability({
       new Date();
 
     const date =
-      new Date(dateStr);
+      new Date(
+        `${dateStr}T00:00:00`
+      );
 
     return (
 
@@ -212,7 +259,9 @@ export default function ExistingAvailability({
               >
                 <div className="flex justify-between items-center mb-3">
                   <p className="font-semibold text-[#0B2E28]">
-                    {new Date(day.date).toLocaleDateString(undefined, {
+                    {new Date(
+                      `${day.date}T00:00:00`
+                    ).toLocaleDateString(undefined, {
                       weekday: "short",
                       day: "numeric",
                     })}

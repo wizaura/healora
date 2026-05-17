@@ -156,7 +156,7 @@ export default function CheckoutFooter({
             /* ================= HANDLE GATEWAY ================= */
 
             if (paymentMethod === "RAZORPAY") {
-                openRazorpay(paymentRes.data.data, appointmentId);
+                openRazorpay(paymentRes.data.data, appointmentId, "APPOINTMENT");
             }
 
             if (paymentMethod === "STRIPE") {
@@ -171,7 +171,7 @@ export default function CheckoutFooter({
         }
     };
 
-    const openRazorpay = (order: any, appointmentId: string) => {
+    const openRazorpay = (order: any, entityId: string, entityType: string) => {
         if (!window.Razorpay) {
             toast.error("Payment service not loaded.");
             return;
@@ -185,7 +185,7 @@ export default function CheckoutFooter({
             name: "Healora",
             description: "Appointment Payment",
             handler: () => {
-                router.push(`/payment/pending?appointmentId=${appointmentId}`);
+                router.push(`/payment/pending?type=${entityType}&id=${entityId}`);
             },
             theme: { color: "#0E3B43" },
         };
