@@ -314,7 +314,7 @@ export default function AppointmentCheckout() {
         "RAZORPAY"
       ) {
 
-        openRazorpay(order);
+        openRazorpay(order, appointment.id, "APPOINTMENT");
       }
 
       if (
@@ -335,7 +335,9 @@ export default function AppointmentCheckout() {
   };
 
   const openRazorpay = (
-    order: any
+    order: any,
+    entityId: string, 
+    entityType: string,
   ) => {
 
     const options = {
@@ -360,7 +362,7 @@ export default function AppointmentCheckout() {
       handler: () => {
 
         router.push(
-          "/appointments"
+          `/payment/pending?type=${entityType}&id=${entityId}`
         );
       },
 
