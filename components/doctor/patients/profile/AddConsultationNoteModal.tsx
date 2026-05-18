@@ -7,52 +7,153 @@ import { X } from "lucide-react";
 
 export default function AddConsultationNoteModal({
     appointment,
-    onSaved
+    onSaved,
+    existingNote = null,
+    trigger = null,
 }: any) {
 
     const [open, setOpen] = useState(false);
 
-    const [symptoms, setSymptoms] = useState("");
-    const [diagnosis, setDiagnosis] = useState("");
-    const [advice, setAdvice] = useState("");
-    const [followUpDate, setFollowUpDate] = useState("");
+    const [symptoms,
+        setSymptoms] =
+        useState(
+            existingNote?.symptoms || ""
+        );
 
-    const save = async () => {
+    const [diagnosis,
+        setDiagnosis] =
+        useState(
+            existingNote?.diagnosis || ""
+        );
 
-        try {
+    const [advice,
+        setAdvice] =
+        useState(
+            existingNote?.advice || ""
+        );
 
-            await api.post("/consultations/notes", {
-                appointmentId: appointment.id,
-                symptoms,
-                diagnosis,
-                advice,
-                followUpDate: followUpDate || null
-            });
+    const [followUpDate,
+        setFollowUpDate] =
+        useState(
 
-            toast.success("Consultation note saved");
+            existingNote?.followUpDate
 
-            setOpen(false);
+                ? new Date(
+                    existingNote.followUpDate
+                )
+                    .toISOString()
+                    .split("T")[0]
 
-            setSymptoms("");
-            setDiagnosis("");
-            setAdvice("");
-            setFollowUpDate("");
+                : ""
+        );
 
-            onSaved();
+    const save =
+        async () => {
 
-        } catch {
-            toast.error("Failed to save consultation note");
-        }
+            try {
 
-    };
+                const payload = {
+
+                    appointmentId:
+                        appointment.id,
+
+                    symptoms,
+
+                    diagnosis,
+
+                    advice,
+
+                    followUpDate:
+                        followUpDate || null,
+                };
+
+                if (
+                    existingNote
+                ) {
+
+                    await api.patch(
+
+                        `/consultations/notes/${existingNote.id}`,
+
+                        payload
+                    );
+
+                    toast.success(
+
+                        "Consultation note updated"
+                    );
+
+                } else {
+
+                    await api.post(
+
+                        "/consultations/notes",
+
+                        payload
+                    );
+
+                    toast.success(
+
+                        "Consultation note saved"
+                    );
+                }
+
+                setOpen(false);
+
+                onSaved();
+
+            } catch {
+
+                toast.error(
+
+                    existingNote
+
+                        ? "Failed to update consultation note"
+
+                        : "Failed to save consultation note"
+                );
+            }
+        };
 
     if (!open) {
-        return (
-            <button
-                onClick={() => setOpen(true)}
-                className="bg-navy text-white text-sm px-4 py-2 rounded-lg"
+
+        return trigger ? (
+
+            <div
+                onClick={() =>
+                    setOpen(true)
+                }
             >
-                Add Consultation Note
+
+                {trigger}
+
+            </div>
+
+        ) : (
+
+            <button
+                onClick={() =>
+                    setOpen(true)
+                }
+
+                className="
+                bg-navy
+
+                px-4 py-2
+
+                text-sm
+                text-white
+
+                rounded-lg
+            "
+            >
+
+                {existingNote
+
+                    ? "Edit"
+
+                    : "Add Consultation Note"}
+
             </button>
         );
     }
@@ -304,7 +405,9 @@ export default function AddConsultationNoteModal({
                         onClick={save}
                         className="bg-navy hover:bg-navy-dark text-white px-4 py-2 rounded-lg text-sm"
                     >
-                        Save Consultation
+                        {existingNote
+                            ? "Edit"
+                            : "Add Consultation Note"}
                     </button>
 
                 </div>

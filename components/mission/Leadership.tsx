@@ -13,7 +13,7 @@ const leaders = [
         role: "Co-Founder & Director",
         image: "/doc_1.png",
         description:
-            "Dr Dilraj M is a passionate homeopathic practitioner with over 8 years of clinical expertise. He co-founded Healora to bridge the gap between quality care and global accessibility.",
+            "Dr. Dilraj M is a passionate homeopathic practitioner with over 8 years of clinical expertise. He co-founded Healora to bridge the gap between quality care and global accessibility.",
     },
     {
         name: "Dr Anu A A",

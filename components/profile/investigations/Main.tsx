@@ -25,6 +25,8 @@ import { toast }
 
 import Loader
     from "@/components/common/Loader";
+import FollowUpSection from "./FollowUpSection";
+import Link from "next/link";
 
 export default function InvestigationsSection({
     isDoctor,
@@ -247,7 +249,7 @@ export default function InvestigationsSection({
 
                             <div
                                 className="
-                                    rounded-2xl
+                                    rounded-2xl flex-col
 
                                     border border-slate-200
 
@@ -300,6 +302,39 @@ export default function InvestigationsSection({
                                 />
 
                             )}
+
+                            <Link
+                                href="
+        /profile/investigation#follow-up
+    "
+
+                                className="
+        inline-flex
+        items-center
+        justify-center
+
+        rounded-lg
+
+        border border-blue-200
+
+        bg-blue-50
+
+        px-5 py-3
+
+        text-sm
+        font-medium
+
+        text-blue-700
+
+        transition
+
+        hover:bg-blue-100
+    "
+                            >
+
+                                View Follow-ups
+
+                            </Link>
 
                         </div>
 
@@ -704,6 +739,8 @@ export default function InvestigationsSection({
                 />
 
             )}
+
+            <FollowUpSection />
 
             {/* =====================================================
                DELETE CONFIRM

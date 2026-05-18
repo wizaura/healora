@@ -162,7 +162,7 @@ export default function DoctorSummary({ doctorId }: { doctorId: string }) {
                 </p>
 
                 <div className="flex flex-wrap justify-center md:justify-start gap-2">
-                  {data.subSpecialities.slice(0, 2).map((item: any) => {
+                  {data.subSpecialities.slice(0, 6).map((item: any) => {
                     const specialitySlug = data.specialities?.[0]?.slug;
 
                     return (

@@ -8,6 +8,10 @@ import { CalendarX2, Search } from "lucide-react";
 import Loader from "@/components/common/Loader";
 import SelectOption from "@/components/common/SelectOption";
 import AppointmentReviewModal from "./AppointmentReviewModal";
+import {
+    useSearchParams,
+} from "next/navigation";
+import AppReviewModal from "../AppReviewModal";
 
 export default function UserAppointments() {
 
@@ -17,6 +21,16 @@ export default function UserAppointments() {
     const [statusFilter, setStatusFilter] = useState("");
     const [search, setSearch] = useState("");
     const [reviewAppointment, setReviewAppointment] = useState<any>(null);
+    const [showReviewModal, setShowReviewModal] =
+        useState(false);
+
+    const searchParams =
+        useSearchParams();
+
+    const fromPayment =
+        searchParams.get(
+            "fromPayment"
+        ) === "true";
 
     useEffect(() => {
         fetchAppointments();
@@ -24,21 +38,37 @@ export default function UserAppointments() {
 
     useEffect(() => {
 
+        /* ---------- SKIP AUTO REVIEW AFTER PAYMENT ---------- */
+
+        if (fromPayment) {
+            setShowReviewModal(true);
+            return;
+        }
+
         const pendingReview =
             appointments.find(
                 (a) =>
-                    a.status === "COMPLETED" &&
+
+                    a.status ===
+                    "COMPLETED"
+
+                    &&
+
                     a.doctorRatingStatus ===
                     "PENDING"
             );
 
         if (pendingReview) {
+
             setReviewAppointment(
                 pendingReview
             );
         }
 
-    }, [appointments]);
+    }, [
+        appointments,
+        fromPayment,
+    ]);
 
     const fetchAppointments = async () => {
         try {
@@ -622,6 +652,19 @@ export default function UserAppointments() {
                     onSubmitted={fetchAppointments}
                 />
             )}
+
+            <AppReviewModal
+
+                open={
+                    showReviewModal
+                }
+
+                onClose={() =>
+                    setShowReviewModal(
+                        false
+                    )
+                }
+            />
 
         </div>
     );

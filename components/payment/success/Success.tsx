@@ -503,7 +503,7 @@ export default function PaymentSuccess() {
                             <button
                                 onClick={() =>
                                     router.replace(
-                                        isPrescription ? "/profile/payments" : "/profile/appointments"
+                                        isPrescription ? "/profile/payments" : "/profile/appointments?fromPayment=true"
                                     )
                                 }
 

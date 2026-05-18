@@ -100,7 +100,7 @@ export default function ExistingAvailability({
 
           grouped[dateKey] = {
 
-            id: dateKey,
+            id: item.id,
 
             date: dateKey,
 

@@ -27,8 +27,6 @@ export default function ConsultationNotesSection({
             day: "2-digit",
             month: "short",
             year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
         });
 
     return (
@@ -136,8 +134,33 @@ export default function ConsultationNotesSection({
 
                         <div className="flex gap-4 text-sm pt-2">
 
+                            <AddConsultationNoteModal
+
+                                appointment={appointment}
+
+                                existingNote={note}
+
+                                onSaved={refetch}
+
+                                trigger={
+
+                                    <button
+                                        className="
+                    text-blue-600
+                    hover:underline
+                "
+                                    >
+
+                                        Edit
+
+                                    </button>
+                                }
+                            />
+
                             <button
-                                onClick={() => deleteNote(note.id)}
+                                onClick={() =>
+                                    deleteNote(note.id)
+                                }
                                 className="text-red-600 hover:underline"
                             >
                                 Delete

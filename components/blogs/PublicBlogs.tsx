@@ -1,6 +1,6 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
@@ -11,32 +11,26 @@ const LIMIT = 6;
 
 export default function Blog() {
 
-    const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
     const {
-        data,
-        fetchNextPage,
-        hasNextPage,
-        isFetchingNextPage,
-        isLoading
-    } = useInfiniteQuery({
-        queryKey: ["public-blogs"],
+        data: blogs = [],
+        isLoading,
+    } = useQuery({
 
-        initialPageParam: 1,
+        queryKey: [
+            "public-blogs",
+        ],
 
-        queryFn: ({ pageParam }) =>
-            api
-                .get(`/blogs?page=${pageParam}&limit=${LIMIT}`)
-                .then((res) => res.data),
+        queryFn: async () => {
 
-        getNextPageParam: (lastPage, pages) => {
-            if (lastPage.length < LIMIT) return undefined;
-            return pages.length + 1;
+            const res =
+                await api.get(
+                    "/blogs"
+                );
+
+            return res.data;
         },
     });
-
-
-    const blogs = data?.pages.flat() ?? [];
 
 
     if (isLoading) {
@@ -173,20 +167,6 @@ export default function Blog() {
                 ))}
 
             </div>
-
-
-            {/* LOAD MORE TRIGGER */}
-
-            {/* <div
-                ref={loadMoreRef}
-                className="flex justify-center py-10 text-slate-500"
-            >
-                {isFetchingNextPage
-                    ? "Loading more blogs..."
-                    : hasNextPage
-                        ? "Scroll to load more"
-                        : "No more blogs"}
-            </div> */}
 
         </div>
 

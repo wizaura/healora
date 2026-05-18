@@ -12,8 +12,11 @@ export default function AddDoctorInvestigationModal({
   const [open, setOpen] = useState(false);
   const [note, setNote] = useState("1. ");
   const [loading, setLoading] = useState(false);
+  const [confirmOpen,
+    setConfirmOpen] =
+    useState(false);
 
-  const save = async () => {
+  const saveInvestigation = async () => {
     try {
       if (!note) return toast.error("Add note");
 
@@ -142,7 +145,9 @@ export default function AddDoctorInvestigationModal({
 
         {/* Submit */}
         <button
-          onClick={save}
+          onClick={() =>
+            setConfirmOpen(true)
+          }
           disabled={loading}
           className="bg-navy text-white px-4 py-2 rounded-lg w-full"
         >
@@ -150,6 +155,153 @@ export default function AddDoctorInvestigationModal({
         </button>
 
       </div>
+
+      {/* =====================================================
+   CONFIRM MODAL
+   ===================================================== */}
+
+      {confirmOpen && (
+
+        <div
+          className="
+      fixed inset-0 z-[60]
+
+      flex items-center justify-center
+
+      bg-black/50
+
+      p-4
+    "
+        >
+
+          <div
+            className="
+        w-full max-w-md
+
+        rounded-2xl
+
+        bg-white
+
+        p-6
+
+        shadow-2xl
+      "
+          >
+
+            {/* TITLE */}
+
+            <h3
+              className="
+          text-lg font-semibold
+          text-slate-900
+        "
+            >
+
+              Continue Investigation Note?
+
+            </h3>
+
+            {/* DESCRIPTION */}
+
+            <p
+              className="
+          mt-3
+
+          text-sm
+          leading-relaxed
+
+          text-slate-600
+        "
+            >
+
+              Please review the investigation advice carefully before continuing.
+
+              Once submitted, the patient may act on these instructions immediately.
+
+            </p>
+
+            {/* ACTIONS */}
+
+            <div
+              className="
+          mt-6
+
+          flex items-center
+          justify-end
+
+          gap-3
+        "
+            >
+
+              <button
+                onClick={() =>
+                  setConfirmOpen(false)
+                }
+
+                className="
+            rounded-xl
+
+            border border-slate-200
+
+            px-4 py-2
+
+            text-sm
+            font-medium
+
+            text-slate-600
+
+            transition
+
+            hover:bg-slate-50
+          "
+              >
+
+                Cancel
+
+              </button>
+
+              <button
+                onClick={async () => {
+
+                  setConfirmOpen(false);
+
+                  await saveInvestigation();
+                }}
+
+                disabled={loading}
+
+                className="
+            rounded-xl
+
+            bg-[#1F2147]
+
+            px-4 py-2
+
+            text-sm
+            font-medium
+
+            text-white
+
+            transition
+
+            hover:bg-[#171933]
+
+            disabled:opacity-50
+          "
+              >
+
+                {loading
+                  ? "Saving..."
+                  : "Continue"}
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+      )}
     </div>
   );
 }

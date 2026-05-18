@@ -28,6 +28,9 @@ export default function AddPrescriptionModal({ appointment, user, deliveryMode, 
 
     const [instructions, setInstructions] = useState("");
     const [loading, setLoading] = useState(false);
+    const [confirmOpen,
+        setConfirmOpen] =
+        useState(false);
 
     const addMedicine = () => {
         setMedicines([...medicines, { text: "" }]);
@@ -52,11 +55,11 @@ export default function AddPrescriptionModal({ appointment, user, deliveryMode, 
     };
 
 
-    const save = async () => {
-        
+    const savePrescription = async () => {
+
         try {
 
-            console.log(appointment.id,'ss')
+            console.log(appointment.id, 'ss')
 
             setLoading(true);
 
@@ -463,7 +466,8 @@ export default function AddPrescriptionModal({ appointment, user, deliveryMode, 
                     </button>
 
                     <button
-                        onClick={save}
+                        onClick={() =>
+                            setConfirmOpen(true)}
                         disabled={loading}
                         className="bg-navy hover:bg-navy-dark text-white px-4 py-2 rounded-lg text-sm"
                     >
@@ -473,6 +477,155 @@ export default function AddPrescriptionModal({ appointment, user, deliveryMode, 
                 </div>
 
             </div>
+
+            {/* =====================================================
+   CONFIRM MODAL
+   ===================================================== */}
+
+            {confirmOpen && (
+
+                <div
+                    className="
+            fixed inset-0 z-[70]
+
+            flex items-center justify-center
+
+            bg-black/50
+
+            p-4
+        "
+                >
+
+                    <div
+                        className="
+                w-full max-w-md
+
+                rounded-2xl
+
+                bg-white
+
+                p-6
+
+                shadow-2xl
+            "
+                    >
+
+                        {/* TITLE */}
+
+                        <h3
+                            className="
+                    text-lg font-semibold
+                    text-slate-900
+                "
+                        >
+
+                            Continue Prescription?
+
+                        </h3>
+
+                        {/* DESCRIPTION */}
+
+                        <p
+                            className="
+                    mt-3
+
+                    text-sm
+                    leading-relaxed
+
+                    text-slate-600
+                "
+                        >
+
+                            Please review the prescription carefully before continuing.
+
+                            Once created, the prescription will be shared with the patient and may affect pharmacy processing and billing.
+
+                        </p>
+
+                        {/* ACTIONS */}
+
+                        <div
+                            className="
+                    mt-6
+
+                    flex items-center
+                    justify-end
+
+                    gap-3
+                "
+                        >
+
+                            <button
+                                onClick={() =>
+                                    setConfirmOpen(false)
+                                }
+
+                                className="
+                        rounded-xl
+
+                        border border-slate-200
+
+                        px-4 py-2
+
+                        text-sm
+                        font-medium
+
+                        text-slate-600
+
+                        transition
+
+                        hover:bg-slate-50
+                    "
+                            >
+
+                                Cancel
+
+                            </button>
+
+                            <button
+                                onClick={async () => {
+
+                                    setConfirmOpen(false);
+
+                                    await savePrescription();
+                                }}
+
+                                disabled={loading}
+
+                                className="
+                        rounded-xl
+
+                        bg-[#1F2147]
+
+                        px-4 py-2
+
+                        text-sm
+                        font-medium
+
+                        text-white
+
+                        transition
+
+                        hover:bg-[#171933]
+
+                        disabled:opacity-50
+                    "
+                            >
+
+                                {loading
+
+                                    ? "Creating..."
+
+                                    : "Continue"}
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            )}
 
         </div>
     );

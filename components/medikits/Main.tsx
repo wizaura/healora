@@ -1,53 +1,25 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import MedikitViewModal from "./MedikitViewModal";
 import Loader from "../common/Loader";
 
-const LIMIT = 6;
-
 export default function MedikitsPage() {
-  const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const [selected, setSelected] = useState<any>(null);
 
   const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
+    data: medikits = [],
     isLoading,
-  } = useInfiniteQuery({
+  } = useQuery({
     queryKey: ["public-medikits"],
-    initialPageParam: 1,
-    queryFn: ({ pageParam }) =>
+    queryFn: () =>
       api
-        .get(`/medikits?page=${pageParam}&limit=${LIMIT}`)
+        .get(`/medikits`)
         .then((res) => res.data),
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage.length < LIMIT) return undefined;
-      return pages.length + 1;
-    },
   });
-
-  const medikits = data?.pages.flat() ?? [];
-
-  // Infinite scroll
-  useEffect(() => {
-    const el = loadMoreRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasNextPage) {
-        fetchNextPage();
-      }
-    });
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [hasNextPage]);
 
   if (isLoading) {
     return <Loader fullScreen />;
@@ -114,18 +86,6 @@ export default function MedikitsPage() {
           </div>
         ))}
       </div>
-
-      {/* LOAD MORE */}
-      {/* <div
-        ref={loadMoreRef}
-        className="flex justify-center py-10 text-slate-500"
-      >
-        {isFetchingNextPage
-          ? "Loading more medikits..."
-          : hasNextPage
-          ? "Scroll to load more"
-          : "No more medikits"}
-      </div> */}
 
       {/* MODAL */}
       {selected && (

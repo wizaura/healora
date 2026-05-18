@@ -161,6 +161,8 @@ export default function AvailabilityModal({
                     )
                 );
 
+                toast.success("Availability Deleted");
+
             } catch (err) {
 
                 toast.error(getApiError(err));
@@ -202,7 +204,69 @@ export default function AvailabilityModal({
 
             } catch (err) {
 
-                console.error(err);
+                toast.error(getApiError(err));
+
+            } finally {
+
+                setLoading(false);
+
+                setConfirmOpen(false);
+            }
+        });
+
+        setConfirmOpen(true);
+    };
+
+    /* =========================================================
+   SLOT DELETE
+   ========================================================= */
+
+    const handleDeleteSlot = (
+        slot: Slot
+    ) => {
+
+        if (
+            slot.status === "BOOKED" ||
+
+            slot.status === "PENDING_PAYMENT"
+        ) return;
+
+        setConfirmMessage(
+
+            "Are you sure you want to delete this slot?"
+        );
+
+        setConfirmAction(() => async () => {
+
+            try {
+
+                setLoading(true);
+
+                await api.delete(
+
+                    `/availability/slot/${slot.id}`
+                );
+
+                setSlots(prev =>
+
+                    prev.filter(
+
+                        (s) =>
+                            s.id !== slot.id
+                    )
+                );
+
+                await refresh();
+
+                toast.success(
+                    "Slot deleted"
+                );
+
+            } catch (err) {
+
+                toast.error(
+                    getApiError(err)
+                );
 
             } finally {
 
@@ -515,55 +579,91 @@ export default function AvailabilityModal({
 
                                         </span>
 
-                                        <button
-                                            disabled={
-                                                isBooked ||
-                                                isPending
-                                            }
+                                        <div className="mt-4 flex gap-2">
 
-                                            onClick={() =>
-                                                handleToggle(
-                                                    slot
-                                                )
-                                            }
+                                            <button
 
-                                            className="
-                                                mt-4
+                                                disabled={
+                                                    isBooked ||
+                                                    isPending
+                                                }
 
-                                                rounded-full
+                                                onClick={() =>
+                                                    handleToggle(
+                                                        slot
+                                                    )
+                                                }
 
-                                                bg-[#38D6C4]
+                                                className="
+            rounded-full
 
-                                                px-4 py-1.5
+            bg-[#38D6C4]
 
-                                                text-xs font-medium
+            px-4 py-1.5
 
-                                                text-white
+            text-xs font-medium
 
-                                                transition
+            text-white
 
-                                                hover:opacity-90
+            transition
 
-                                                disabled:cursor-not-allowed
-                                                disabled:bg-gray-300
-                                            "
-                                        >
+            hover:opacity-90
 
-                                            {isBooked
+            disabled:cursor-not-allowed
+            disabled:bg-gray-300
+        "
+                                            >
 
-                                                ? "Booked"
+                                                {isBooked
 
-                                                : isPending
+                                                    ? "Booked"
 
-                                                    ? "Reserved"
+                                                    : isPending
 
-                                                    : isAvailable
+                                                        ? "Reserved"
 
-                                                        ? "Deactivate"
+                                                        : isAvailable
 
-                                                        : "Activate"}
+                                                            ? "Deactivate"
 
-                                        </button>
+                                                            : "Activate"}
+
+                                            </button>
+
+                                            {!isBooked && !isPending && (
+
+                                                <button
+
+                                                    onClick={() =>
+                                                        handleDeleteSlot(
+                                                            slot
+                                                        )
+                                                    }
+
+                                                    className="
+                flex items-center
+                justify-center
+
+                rounded-full
+
+                bg-red-500
+
+                px-3 py-1.5
+
+                text-white
+
+                transition
+
+                hover:bg-red-600
+            "
+                                                >
+
+                                                    <Trash2 size={14} />
+
+                                                </button>
+                                            )}
+
+                                        </div>
 
                                     </div>
                                 );

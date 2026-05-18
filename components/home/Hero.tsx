@@ -67,7 +67,7 @@ export default function HomeHero() {
       <svg
         data-aos="fade-right"
         data-aos-delay="300"
-        className="absolute left-6 top-1/2 w-28 -translate-y-1/2 opacity-40 animate-spin-slow"
+        className="absolute left-2 md:left-6 top-1/2 w-28 -translate-y-1/2 opacity-40 animate-spin-slow"
         viewBox="0 0 200 200"
       >
         <circle cx="100" cy="100" r="40" fill="#38D6C4" />
@@ -83,7 +83,7 @@ export default function HomeHero() {
       <svg
         data-aos="fade-left"
         data-aos-delay="300"
-        className="absolute right-6 top-1/2 w-28 -translate-y-1/2 opacity-40 animate-float"
+        className="absolute right-2 md:right-6 top-1/2 w-28 -translate-y-1/2 opacity-40 animate-float"
         viewBox="0 0 200 200"
       >
         <circle cx="100" cy="100" r="35" fill="#A8F3D6" />

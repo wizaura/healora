@@ -427,7 +427,16 @@ export default function Profile() {
                         label="Email Address"
                         value={profile?.email || "—"}
                     />
-
+                    <InfoCard
+                        icon={<Cake size={18} />}
+                        label="Age"
+                        value={profile?.age || "—"}
+                    />
+                    <InfoCard
+                        icon={<VenusAndMars size={18} />}
+                        label="Gender"
+                        value={profile?.gender || "—"}
+                    />
                     <InfoCard
                         icon={<Phone size={18} />}
                         label="Phone Number"
@@ -442,17 +451,7 @@ export default function Profile() {
                         }
                     />
 
-                    <InfoCard
-                        icon={<Cake size={18} />}
-                        label="Age"
-                        value={profile?.age || "—"}
-                    />
 
-                    <InfoCard
-                        icon={<VenusAndMars size={18} />}
-                        label="Gender"
-                        value={profile?.gender || "—"}
-                    />
 
                     <div className="md:col-span-2">
 
