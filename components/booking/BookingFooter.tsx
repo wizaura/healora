@@ -48,7 +48,6 @@ export default function BookingFooter({
         date.toLocaleDateString(
             undefined,
             {
-                weekday: "long",
                 day: "numeric",
                 month: "long",
                 year: "numeric",
@@ -59,23 +58,16 @@ export default function BookingFooter({
         new Date(
             slot.startTime
         ).toLocaleTimeString(
-            [],
-            {
-                hour: "2-digit",
-                minute: "2-digit",
-            }
-        );
 
-    const endTime =
-        new Date(
-            slot.endTime
-        ).toLocaleTimeString(
-            [],
+            "en-IN",
+
             {
-                hour: "2-digit",
+                hour: "numeric",
                 minute: "2-digit",
+
+                hour12: true,
             }
-        );
+        ).toUpperCase();
 
     const dateStr = [
 
@@ -162,132 +154,229 @@ export default function BookingFooter({
                     className="
             mx-auto
             max-w-7xl
-            px-6 py-4
+
+            px-4 py-3
+            sm:px-6
         "
                 >
 
                     <div
                         className="
-                flex flex-col lg:flex-row
+                flex flex-col gap-4
+
+                lg:flex-row
                 lg:items-center
                 lg:justify-between
-                gap-5
             "
                     >
 
                         {/* LEFT */}
-                        <div className="space-y-4">
+
+                        <div className="min-w-0 space-y-3">
 
                             {/* HEADER */}
-                            <div className="flex items-center gap-2">
+
+                            <div className="flex items-start gap-3">
 
                                 <div
                                     className="
-                            flex h-8 w-8
-                            items-center justify-center
+                            mt-0.5
+
+                            flex h-9 w-9
+                            shrink-0
+
+                            items-center
+                            justify-center
+
                             rounded-full
+
                             bg-emerald-100
                         "
                                 >
+
                                     <ShieldCheck
                                         size={16}
                                         className="text-emerald-600"
                                     />
+
                                 </div>
 
-                                <div>
-                                    <p className="text-sm font-semibold text-slate-900">
-                                        Appointment Selected
+                                <div className="min-w-0">
+
+                                    <p
+                                        className="
+                                text-sm
+                                font-semibold
+
+                                text-slate-900
+                            "
+                                    >
+
+                                        Appointment Slot Reserved
+
                                     </p>
 
-                                    <p className="text-xs text-slate-500">
-                                        Your consultation slot will be reserved temporarily
+                                    <p
+                                        className="
+                                mt-0.5
+
+                                text-xs
+                                leading-5
+
+                                text-slate-500
+                            "
+                                    >
+
+                                        This consultation slot will be temporarily
+                                        locked for 10 minutes while you complete
+                                        your booking.
+
                                     </p>
+
                                 </div>
 
                             </div>
 
                             {/* DETAILS */}
-                            <div className="flex flex-wrap gap-3">
+
+                            <div
+                                className="
+                        flex flex-wrap gap-2
+                    "
+                            >
 
                                 {/* DATE */}
+
                                 <div
                                     className="
-                            flex items-center gap-3
+                            flex items-center gap-2
 
-                            rounded-lg
+                            rounded-xl
 
                             border border-slate-200
 
                             bg-slate-50
 
-                            px-4 py-3
+                            px-3 py-2
                         "
                                 >
 
                                     <div
                                         className="
-                                flex h-9 w-9
-                                items-center justify-center
+                                flex h-8 w-8
+                                shrink-0
+
+                                items-center
+                                justify-center
+
                                 rounded-full
+
                                 bg-teal-100
                             "
                                     >
+
                                         <CalendarDays
-                                            size={16}
+                                            size={14}
                                             className="text-teal-700"
                                         />
+
                                     </div>
 
-                                    <div className="text-left">
-                                        <p className="text-xs text-slate-500">
-                                            Appointment Date
+                                    <div className="min-w-0">
+
+                                        <p
+                                            className="
+                                    text-[11px]
+
+                                    text-slate-500
+                                "
+                                        >
+
+                                            Date
+
                                         </p>
 
-                                        <p className="text-sm font-medium text-slate-800">
+                                        <p
+                                            className="
+                                    text-sm
+                                    font-medium
+
+                                    text-slate-800
+                                "
+                                        >
+
                                             {dateLabel}
+
                                         </p>
+
                                     </div>
 
                                 </div>
 
                                 {/* TIME */}
+
                                 <div
                                     className="
-                            flex items-center gap-3
+                            flex items-center gap-2
 
-                            rounded-lg
+                            rounded-xl
 
                             border border-slate-200
 
                             bg-slate-50
 
-                            px-4 py-3
+                            px-3 py-2
                         "
                                 >
 
                                     <div
                                         className="
-                                flex h-9 w-9
-                                items-center justify-center
+                                flex h-8 w-8
+                                shrink-0
+
+                                items-center
+                                justify-center
+
                                 rounded-full
+
                                 bg-indigo-100
                             "
                                     >
+
                                         <Clock3
-                                            size={16}
+                                            size={14}
                                             className="text-indigo-700"
                                         />
+
                                     </div>
 
-                                    <div className="text-left">
-                                        <p className="text-xs text-slate-500">
-                                            Consultation Time
+                                    <div className="min-w-0">
+
+                                        <p
+                                            className="
+                                    text-[11px]
+
+                                    text-slate-500
+                                "
+                                        >
+
+                                            Time
+
                                         </p>
 
-                                        <p className="text-sm font-medium text-slate-800">
+                                        <p
+                                            className="
+                                    text-sm
+                                    font-medium
+
+                                    text-slate-800
+                                "
+                                        >
+
                                             {startTime}
+
                                         </p>
+
                                     </div>
 
                                 </div>
@@ -297,22 +386,31 @@ export default function BookingFooter({
                         </div>
 
                         {/* BUTTON */}
+
                         <button
                             onClick={handleContinue}
+
                             disabled={loading}
+
                             className="
                     inline-flex items-center justify-center gap-2
 
-                    rounded-lg
+                    w-full
+                    lg:w-auto
+
+                    rounded-xl
 
                     bg-[#1F2147]
                     hover:bg-[#151736]
 
                     disabled:opacity-60
 
-                    px-7 py-3.5
+                    px-6 py-3
 
-                    text-sm font-semibold text-white
+                    text-sm
+                    font-semibold
+
+                    text-white
 
                     shadow-lg shadow-[#1F2147]/10
 
@@ -401,7 +499,7 @@ export default function BookingFooter({
 
                                 rounded-full
 
-                                bg-teal-100
+                                bg-navy
 
                                 flex items-center justify-center
 
@@ -411,7 +509,7 @@ export default function BookingFooter({
 
                             <ShieldCheck
                                 size={26}
-                                className="text-teal-700"
+                                className="text-white"
                             />
 
                         </div>
@@ -532,8 +630,8 @@ export default function BookingFooter({
 
                                     rounded-lg
 
-                                    bg-teal-600
-                                    hover:bg-teal-700
+                                    bg-navy
+                                    hover:bg-navy-dark
 
                                     px-4 py-2.5
 

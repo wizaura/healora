@@ -192,7 +192,7 @@ export default function MedikitViewModal({
                     text-sm
                     leading-relaxed
 
-                    text-gray-500
+                    text-gray-700
                   "
                 >
 
@@ -299,7 +299,7 @@ export default function MedikitViewModal({
                             mt-1
 
                             text-sm
-                            text-gray-600
+                            text-gray-800
                           "
                         >
 
@@ -340,7 +340,7 @@ export default function MedikitViewModal({
                 text-center
 
                 text-xs
-                text-gray-500
+                text-gray-700
               "
             >
 

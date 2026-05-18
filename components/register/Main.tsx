@@ -131,9 +131,36 @@ export default function Register() {
 
                     <div className="relative rounded-t-[28px] bg-gradient-to-r from-teal-500 to-emerald-600 px-6 pt-8 pb-16 text-center">
 
-                        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-lg">
+                        <div
+                            className="
+        mx-auto
 
-                            <HeartPulse className="h-8 w-8 text-emerald-600" />
+        flex h-16 w-16
+
+        items-center
+        justify-center
+
+        overflow-hidden
+
+        rounded-full
+
+        bg-white
+
+        shadow-lg
+    "
+                        >
+
+                            <img
+                                src="/logo.png"
+                                alt="Healora Logo"
+
+                                className="
+            h-16
+            w-16
+
+            object-contain
+        "
+                            />
 
                         </div>
 

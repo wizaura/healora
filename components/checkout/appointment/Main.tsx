@@ -64,6 +64,12 @@ export default function AppointmentCheckout() {
       "RAZORPAY"
     );
 
+  const [
+    showPrescriptionConfirm,
+
+    setShowPrescriptionConfirm,
+  ] = useState(false);
+
   const [address, setAddress] =
     useState<any>({});
 
@@ -75,24 +81,17 @@ export default function AppointmentCheckout() {
 
     try {
 
-      const [res, prescriptionRes, slotFeeRes] =
+      const [res] =
         await Promise.all([
 
           api.get(
             `/appointments/${appointmentId}/checkout`
           ),
-
-          api.get(
-            "/settings/prescription-fee"
-          ),
-          api.get(
-            "/settings/slot-fee"
-          ),
         ]);
 
       const appt = res.data;
 
-      console.log(appt,'appt')
+      console.log(appt, 'appt')
 
       setAppointment(appt);
 
@@ -101,11 +100,11 @@ export default function AppointmentCheckout() {
       );
 
       setPrescriptionFee(
-        prescriptionRes.data.prescriptionFee || 50
+        appt.prescriptionFee || 50
       );
 
       setSlotFee(
-        slotFeeRes.data.slotFee || 100
+        appt.slotFee || 100
       );
 
       setPaymentMethod(
@@ -218,44 +217,7 @@ export default function AppointmentCheckout() {
     prescriptionFee,
   ]);
 
-  const handlePayment = async () => {
-
-    if (!meetingType) {
-
-      return toast.error(
-        "Please select consultation mode"
-      );
-    }
-
-    if (
-      needsMedicine &&
-      deliveryMode === "none"
-    ) {
-
-      return toast.error(
-        "Please choose prescription or medicine delivery"
-      );
-    }
-
-    if (
-      deliveryMode === "door" &&
-      !address?.line1
-    ) {
-
-      return toast.error(
-        "Please enter delivery address"
-      );
-    }
-
-    if (
-      deliveryMode === "door" &&
-      !deliveryType
-    ) {
-
-      return toast.error(
-        "Please select delivery speed"
-      );
-    }
+  const proceedPayment = async () => {
 
     try {
 
@@ -263,7 +225,8 @@ export default function AppointmentCheckout() {
 
         appointmentId,
 
-        payMode: checkoutStage,
+        payMode:
+          checkoutStage,
 
         paymentMethod:
           appointment.paymentMethod,
@@ -276,8 +239,11 @@ export default function AppointmentCheckout() {
       }
 
       if (
+
         needsMedicine &&
-        deliveryMode !== "none"
+
+        deliveryMode !==
+        "none"
       ) {
 
         payload.deliveryMode =
@@ -285,16 +251,12 @@ export default function AppointmentCheckout() {
       }
 
       if (
-        deliveryMode === "door"
+        deliveryMode ===
+        "door"
       ) {
 
         payload.address =
           address;
-      }
-
-      if (
-        deliveryMode === "door"
-      ) {
 
         payload.deliveryType =
           deliveryType;
@@ -302,22 +264,37 @@ export default function AppointmentCheckout() {
 
       const paymentRes =
         await api.post(
+
           "/payments/initiate",
+
           payload
         );
 
       const order =
         paymentRes.data.data;
 
+      /* ---------- RAZORPAY ---------- */
+
       if (
+
         appointment.paymentMethod ===
         "RAZORPAY"
       ) {
 
-        openRazorpay(order, appointment.id, "APPOINTMENT");
+        openRazorpay(
+
+          order,
+
+          appointment.id,
+
+          "APPOINTMENT"
+        );
       }
 
+      /* ---------- STRIPE ---------- */
+
       if (
+
         appointment.paymentMethod ===
         "STRIPE"
       ) {
@@ -334,9 +311,71 @@ export default function AppointmentCheckout() {
     }
   };
 
+  const handlePayment = async () => {
+
+    if (!meetingType) {
+
+      return toast.error(
+
+        "Please select consultation mode"
+      );
+    }
+
+    /* ---------- MEDICINE SUPPORT ---------- */
+
+    if (
+
+      !needsMedicine &&
+
+      deliveryMode ===
+      "none"
+    ) {
+
+      setShowPrescriptionConfirm(
+        true
+      );
+
+      return;
+    }
+
+    /* ---------- ADDRESS ---------- */
+
+    if (
+
+      deliveryMode ===
+      "door" &&
+
+      !address?.line1
+    ) {
+
+      return toast.error(
+
+        "Please enter delivery address"
+      );
+    }
+
+    /* ---------- DELIVERY TYPE ---------- */
+
+    if (
+
+      deliveryMode ===
+      "door" &&
+
+      !deliveryType
+    ) {
+
+      return toast.error(
+
+        "Please select delivery speed"
+      );
+    }
+
+    await proceedPayment();
+  };
+
   const openRazorpay = (
     order: any,
-    entityId: string, 
+    entityId: string,
     entityType: string,
   ) => {
 
@@ -1551,6 +1590,237 @@ export default function AppointmentCheckout() {
         </div>
 
       </div>
+
+      {
+        showPrescriptionConfirm && (
+
+          <div
+            className="
+                fixed inset-0
+
+                z-50
+
+                flex items-center
+                justify-center
+
+                bg-black/50
+                backdrop-blur-sm
+
+                p-4
+            "
+          >
+
+            <div
+              className="
+                    w-full
+                    max-w-lg
+
+                    rounded-3xl
+
+                    bg-white
+
+                    p-7
+
+                    shadow-2xl
+                "
+            >
+
+              {/* HEADER */}
+
+              <div className="space-y-2">
+
+                <p
+                  className="
+                            text-xs
+                            font-semibold
+
+                            uppercase
+                            tracking-[0.2em]
+
+                            text-emerald-600
+                        "
+                >
+
+                  Homeopathic Consultation
+
+                </p>
+
+                <h3
+                  className="
+                            text-2xl
+                            font-semibold
+
+                            text-slate-900
+                        "
+                >
+
+                  Prescription & Medicine Support
+
+                </h3>
+
+              </div>
+
+              {/* CONTENT */}
+
+              <div
+                className="
+                        mt-5
+
+                        space-y-4
+
+                        text-sm
+                        leading-7
+
+                        text-slate-600
+                    "
+              >
+
+                <p>
+
+                  Homeopathic consultations,
+                  including Agro, Veterinary and
+                  Classical Homeopathy,
+                  commonly involve detailed
+                  prescription guidance and
+                  medicine recommendations.
+
+                </p>
+
+                <p>
+
+                  If you choose not to proceed
+                  with medicine delivery or
+                  prescription support,
+                  you may not receive
+                  treatment medicines
+                  directly through Healora Wellness Centre.
+
+                </p>
+
+                <div
+                  className="
+                            rounded-2xl
+
+                            border border-amber-100
+
+                            bg-amber-50
+
+                            px-4 py-3
+
+                            text-amber-800
+                        "
+                >
+
+                  Please confirm whether
+                  you would still like to
+                  continue without
+                  prescription or
+                  medicine delivery support.
+
+                </div>
+
+              </div>
+
+              {/* ACTIONS */}
+
+              <div
+                className="
+                        mt-7
+
+                        flex flex-col-reverse
+                        gap-3
+
+                        sm:flex-row
+                    "
+              >
+
+                {/* CONTINUE WITHOUT */}
+
+                <button
+
+                  onClick={() => {
+
+                    setShowPrescriptionConfirm(
+                      false
+                    );
+
+                    proceedPayment();
+                  }}
+
+                  className="
+                            flex-1
+
+                            rounded-2xl
+
+                            border
+                            border-slate-200
+
+                            bg-white
+
+                            px-5 py-3
+
+                            text-sm
+                            font-medium
+
+                            text-slate-700
+
+                            transition
+
+                            hover:bg-slate-50
+                        "
+                >
+
+                  Continue Without Delivery
+
+                </button>
+
+                {/* ENABLE DELIVERY */}
+
+                <button
+
+                  onClick={() => {
+
+                    setDeliveryMode(
+                      "door"
+                    );
+                    setNeedsMedicine(true);
+
+                    setShowPrescriptionConfirm(
+                      false
+                    );
+                  }}
+
+                  className="
+                            flex-1
+
+                            rounded-2xl
+
+                            bg-navy
+
+                            px-5 py-3
+
+                            text-sm
+                            font-medium
+
+                            text-white
+
+                            transition
+
+                            hover:bg-navy-dark
+                        "
+                >
+
+                  Add Medicine Delivery
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+        )
+      }
 
     </section>
   );

@@ -57,6 +57,12 @@ export default function CheckoutFooter({
     const [address, setAddress] = useState<Address>({});
     const [needsMedicine, setNeedsMedicine] = useState(false);
 
+    const [
+        showPrescriptionConfirm,
+
+        setShowPrescriptionConfirm,
+    ] = useState(false);
+
     const router = useRouter();
 
     /* ---------------- Fetch Fees ---------------- */
@@ -105,70 +111,165 @@ export default function CheckoutFooter({
         return total;
     }, [slotFee, consultationFee, payMode, deliveryMode, prescriptionFee, deliveryFee]);
 
-    /* ---------------- Payment ---------------- */
-    const handlePayment = async () => {
-        if (payMode === "FULL" && !meetingType) {
-            return toast.error("Please select consultation mode");
-        }
-
-        if (payMode === "FULL" && needsMedicine && deliveryMode === "none") {
-            return toast.error("Please choose prescription or medicine delivery");
-        }
-
-        if (deliveryMode === "door" && !deliveryType) {
-            return toast.error("Please choose delivery speed");
-        }
-
-        if (deliveryMode === "door" && !address.line1) {
-            return toast.error("Please enter delivery address");
-        }
+    const proceedPayment = async () => {
 
         try {
+
             setLoading(true);
 
-            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const timeZone =
+                Intl
+                    .DateTimeFormat()
+                    .resolvedOptions()
+                    .timeZone;
 
             /* ================= BOOKING ================= */
 
-            const bookingRes = await api.post("/booking/initiate", {
-                doctorId,
-                slotId,
-                timeZone,
-                paymentMethod,
-                currency,
+            const bookingRes =
+                await api.post(
 
-                payMode,
-                meetingType: payMode === "FULL" ? meetingType : undefined,
-                deliveryMode: needsMedicine ? deliveryMode : "none",
-                deliveryType: deliveryMode === "door" ? deliveryType : undefined,
-                address: deliveryMode === "door" ? address : undefined,
-            });
+                    "/booking/initiate",
 
-            const { appointmentId } = bookingRes.data.data;
+                    {
+                        doctorId,
+                        slotId,
+                        timeZone,
+                        paymentMethod,
+                        currency,
+
+                        payMode,
+
+                        meetingType:
+                            payMode === "FULL"
+                                ? meetingType
+                                : undefined,
+
+                        deliveryMode:
+                            needsMedicine
+                                ? deliveryMode
+                                : "none",
+
+                        deliveryType:
+                            deliveryMode === "door"
+                                ? deliveryType
+                                : undefined,
+
+                        address:
+                            deliveryMode === "door"
+                                ? address
+                                : undefined,
+                    }
+                );
+
+            const {
+                appointmentId,
+            } = bookingRes.data.data;
 
             /* ================= PAYMENT ================= */
 
-            const paymentRes = await api.post("/payments/initiate", {
-                appointmentId,
-                paymentMethod, // ✅ ONLY THIS NEEDED
-            });
+            const paymentRes =
+                await api.post(
+
+                    "/payments/initiate",
+
+                    {
+                        appointmentId,
+                        paymentMethod,
+                    }
+                );
 
             /* ================= HANDLE GATEWAY ================= */
 
-            if (paymentMethod === "RAZORPAY") {
-                openRazorpay(paymentRes.data.data, appointmentId, "APPOINTMENT");
+            if (
+                paymentMethod ===
+                "RAZORPAY"
+            ) {
+
+                openRazorpay(
+
+                    paymentRes.data.data,
+
+                    appointmentId,
+
+                    "APPOINTMENT"
+                );
             }
 
-            if (paymentMethod === "STRIPE") {
-                window.location.href = paymentRes.data.data.checkoutUrl;
+            if (
+                paymentMethod ===
+                "STRIPE"
+            ) {
+
+                window.location.href =
+                    paymentRes.data
+                        .data
+                        .checkoutUrl;
             }
 
         } catch (err) {
-            toast.error(getApiError(err));
+
+            toast.error(
+                getApiError(err)
+            );
+
             console.error(err);
+
         } finally {
+
             setLoading(false);
         }
+    };
+
+    /* ---------------- Payment ---------------- */
+    const handlePayment = async () => {
+
+        if (
+            payMode === "FULL" &&
+            !meetingType
+        ) {
+
+            return toast.error(
+
+                "Please select consultation mode"
+            );
+        }
+
+        if (
+            payMode === "FULL" &&
+            !needsMedicine &&
+            deliveryMode === "none"
+        ) {
+
+            setShowPrescriptionConfirm(
+                true
+            );
+
+            return;
+        }
+
+        if (
+            deliveryMode === "door" &&
+            !deliveryType
+        ) {
+
+            return toast.error(
+
+                "Please choose delivery speed"
+            );
+        }
+
+        if (
+            deliveryMode === "door" &&
+            !address.line1
+        ) {
+
+            return toast.error(
+
+                "Please enter delivery address"
+            );
+        }
+
+        await proceedPayment();
     };
 
     const openRazorpay = (order: any, entityId: string, entityType: string) => {
@@ -560,6 +661,238 @@ export default function CheckoutFooter({
                     Secure payment • {paymentMethod.toUpperCase()}
                 </p>
             </div>
+            {
+                showPrescriptionConfirm && (
+
+                    <div
+                        className="
+                fixed inset-0
+
+                z-50
+
+                flex items-center
+                justify-center
+
+                bg-black/50
+                backdrop-blur-sm
+
+                p-4
+            "
+                    >
+
+                        <div
+                            className="
+                    w-full
+                    max-w-lg
+
+                    rounded-3xl
+
+                    bg-white
+
+                    p-7
+
+                    shadow-2xl
+                "
+                        >
+
+                            {/* HEADER */}
+
+                            <div className="space-y-2">
+
+                                <p
+                                    className="
+                            text-xs
+                            font-semibold
+
+                            uppercase
+                            tracking-[0.2em]
+
+                            text-emerald-600
+                        "
+                                >
+
+                                    Homeopathic Consultation
+
+                                </p>
+
+                                <h3
+                                    className="
+                            text-2xl
+                            font-semibold
+
+                            text-slate-900
+                        "
+                                >
+
+                                    Prescription & Medicine Support
+
+                                </h3>
+
+                            </div>
+
+                            {/* CONTENT */}
+
+                            <div
+                                className="
+                        mt-5
+
+                        space-y-4
+
+                        text-sm
+                        leading-7
+
+                        text-slate-600
+                    "
+                            >
+
+                                <p>
+
+                                    Homeopathic consultations,
+                                    including Agro, Veterinary and
+                                    Classical Homeopathy,
+                                    commonly involve detailed
+                                    prescription guidance and
+                                    medicine recommendations.
+
+                                </p>
+
+                                <p>
+
+                                    If you choose not to proceed
+                                    with medicine delivery or
+                                    prescription support,
+                                    you may not receive
+                                    treatment medicines
+                                    directly through Healora Wellness Centre.
+
+                                </p>
+
+                                <div
+                                    className="
+                            rounded-2xl
+
+                            border border-amber-100
+
+                            bg-amber-50
+
+                            px-4 py-3
+
+                            text-amber-800
+                        "
+                                >
+
+                                    Please confirm whether
+                                    you would still like to
+                                    continue without
+                                    prescription or
+                                    medicine delivery support.<br />
+                                    
+                                    This feature is not required for treatments other than Homeopathy Catogery.
+
+                                </div>
+
+                            </div>
+
+                            {/* ACTIONS */}
+
+                            <div
+                                className="
+                        mt-7
+
+                        flex flex-col-reverse
+                        gap-3
+
+                        sm:flex-row
+                    "
+                            >
+
+                                {/* CONTINUE WITHOUT */}
+
+                                <button
+
+                                    onClick={() => {
+
+                                        setShowPrescriptionConfirm(
+                                            false
+                                        );
+
+                                        proceedPayment();
+                                    }}
+
+                                    className="
+                            flex-1
+
+                            rounded-2xl
+
+                            border
+                            border-slate-200
+
+                            bg-white
+
+                            px-5 py-3
+
+                            text-sm
+                            font-medium
+
+                            text-slate-700
+
+                            transition
+
+                            hover:bg-slate-50
+                        "
+                                >
+
+                                    Continue Without Delivery
+
+                                </button>
+
+                                {/* ENABLE DELIVERY */}
+
+                                <button
+
+                                    onClick={() => {
+
+                                        setDeliveryMode(
+                                            "door"
+                                        );
+                                        setNeedsMedicine(true);
+
+                                        setShowPrescriptionConfirm(
+                                            false
+                                        );
+                                    }}
+
+                                    className="
+                            flex-1
+
+                            rounded-2xl
+
+                            bg-navy
+
+                            px-5 py-3
+
+                            text-sm
+                            font-medium
+
+                            text-white
+
+                            transition
+
+                            hover:bg-navy-dark
+                        "
+                                >
+
+                                    Add Medicine Delivery
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                )
+            }
         </section>
     );
 }

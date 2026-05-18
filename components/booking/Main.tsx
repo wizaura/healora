@@ -7,6 +7,7 @@ import DatePickerCard from "./DatePicker";
 import SlotGrid from "./SlotGrid";
 import BookingFooter from "./BookingFooter";
 import api from "@/lib/api";
+import { CalendarDays } from "lucide-react";
 
 export default function BookingMainPage() {
     const { doctorId } = useParams<{ doctorId: string }>();
@@ -131,14 +132,99 @@ export default function BookingMainPage() {
 
                 <DatePickerCard date={date} setDate={setDate} availableDates={availableDates} />
 
-                {date && (
+                {date ? (
+
                     <SlotGrid
                         doctorId={doctorId}
+
                         date={date}
+
                         selectedSlot={selectedSlot}
+
                         setSelectedSlot={setSelectedSlot}
+
                         timezone={timezone}
                     />
+
+                ) : (
+
+                    <div
+                        className="
+            flex flex-col
+            items-center
+            justify-center
+
+            rounded-3xl
+
+            bg-white
+
+            px-6 py-12
+
+            text-center
+        "
+                    >
+
+                        <div
+                            className="
+                flex h-16 w-16
+                items-center
+                justify-center
+
+                rounded-full
+
+                bg-navy
+            "
+                        >
+
+                            <CalendarDays
+                                className="
+                    h-8 w-8
+
+                    text-white
+                "
+                            />
+
+                        </div>
+
+                        <h3
+                            className="
+                mt-5
+
+                text-xl
+                font-semibold
+
+                text-slate-900
+            "
+                        >
+
+                            No Available Slots This Month
+
+                        </h3>
+
+                        <p
+                            className="
+                mt-3
+
+                max-w-md
+
+                text-sm
+                leading-7
+
+                text-slate-500
+            "
+                        >
+
+                            This doctor currently has no
+                            available consultation slots
+                            for the selected month.
+
+                            You may try another doctor
+                            or check back later for
+                            newly added availability.
+
+                        </p>
+
+                    </div>
                 )}
 
             </section>
