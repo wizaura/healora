@@ -91,8 +91,6 @@ export default function AppointmentCheckout() {
 
       const appt = res.data;
 
-      console.log(appt, 'appt')
-
       setAppointment(appt);
 
       setCurrencySymbol(

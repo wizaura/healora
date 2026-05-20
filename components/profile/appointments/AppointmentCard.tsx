@@ -15,9 +15,6 @@ export default function AppointmentCard({ appt, onView }: any) {
       minute: "2-digit",
     });
 
-
-  console.log(appt, 'a')
-
   const slotPaid =
     appt.slotPaymentStatus === "PAID";
 

@@ -127,9 +127,7 @@ export default function AdminHeader() {
 
   // ✅ safely extract profile data
   const adminProfile =
-    profile?.data?.data ||
-    profile?.data ||
-    {};
+    profile || {};
 
   const adminName =
     adminProfile?.name ||

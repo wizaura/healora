@@ -17,8 +17,6 @@ export default function DoctorProfilePage() {
         queryFn: () => api.get("/doctor/profile").then(res => res.data),
     });
 
-    console.log(data, 'dar')
-
     useEffect(() => {
         if (data) setProfile(data);
     }, [data]);

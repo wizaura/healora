@@ -353,11 +353,7 @@ export default function DoctorDashboard() {
             todayAppointments || []
           }
 
-          onSelect={(appt: any) => {
-
-            console.log(appt);
-
-          }}
+          isViewButton={false}
         />
 
         {/* APPOINTMENTS TREND */}

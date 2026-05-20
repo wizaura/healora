@@ -52,8 +52,6 @@ export default function BookingMainPage() {
 
                 setAvailableDates(dates);
 
-                console.log(dates)
-
                 if (!date && dates.length) {
 
                     const sortedDates =
@@ -248,19 +246,25 @@ export default function BookingMainPage() {
                     </span>
 
                     <span>
-                        Select a <strong>date</strong>
+                        Select a <strong>Date</strong>
                     </span>
 
                     <span className="hidden md:block text-navy/30">•</span>
 
                     <span>
-                        Choose an available <strong>time slot</strong>
+                        Select <strong>First Time/Follow Up</strong>
                     </span>
 
                     <span className="hidden md:block text-navy/30">•</span>
 
                     <span>
-                        Confirm your <strong>appointment</strong>
+                        Choose an available <strong>Time Slot</strong>
+                    </span>
+
+                    <span className="hidden md:block text-navy/30">•</span>
+
+                    <span>
+                        Confirm your <strong>Appointment</strong>
                     </span>
 
                 </div>

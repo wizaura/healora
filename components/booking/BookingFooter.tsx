@@ -104,8 +104,6 @@ export default function BookingFooter({
 
         } catch (err: any) {
 
-            console.log(err);
-
             const message =
                 getApiError(err);
 

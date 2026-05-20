@@ -2,7 +2,7 @@
 
 import { Clock, User } from "lucide-react";
 
-export default function TodayPanel({ appointments, onSelect }: any) {
+export default function TodayPanel({ appointments, onSelect, isViewButton = true }: any) {
 
     const today = new Date();
 
@@ -125,12 +125,14 @@ export default function TodayPanel({ appointments, onSelect }: any) {
                                         {appt.status}
                                     </span>
 
-                                    <button
-                                        onClick={() => onSelect(appt)}
-                                        className="px-4 py-0.5 text-sm font-medium rounded-md bg-wellness-accent text-white hover:bg-wellness-accent/80 transition"
-                                    >
-                                        View
-                                    </button>
+                                    {isViewButton && (
+                                        <button
+                                            onClick={() => onSelect(appt)}
+                                            className="px-4 py-0.5 text-sm font-medium rounded-md bg-wellness-accent text-white hover:bg-wellness-accent/80 transition"
+                                        >
+                                            View
+                                        </button>
+                                    )}
 
                                     {isNext && (
                                         <span className="text-[10px] text-blue-600 font-medium">

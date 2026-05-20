@@ -59,8 +59,6 @@ export default function AddPrescriptionModal({ appointment, user, deliveryMode, 
 
         try {
 
-            console.log(appointment.id, 'ss')
-
             setLoading(true);
 
             await api.post("/consultations/prescriptions", {

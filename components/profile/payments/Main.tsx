@@ -71,8 +71,6 @@ export default function Payments() {
         return <Loader fullScreen />;
     }
 
-    console.log(bills, history, 'as')
-
     const billsMap =
         new Map(
 
@@ -1296,7 +1294,6 @@ export default function Payments() {
 
                                                                 const data =
                                                                     res.data.data;
-                                                                console.log(data, 'ssq')
                                                                 if (
                                                                     data.gateway ===
                                                                     "RAZORPAY"

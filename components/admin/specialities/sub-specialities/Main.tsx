@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import Link from "next/link";
 import api from "@/lib/api";
+import { BadgeCheck, Ban } from "lucide-react";
 
 type TabType = "overview" | "sub";
 
@@ -336,15 +337,33 @@ function SubSpecialitySection({ speciality, specialityId, refetch }: any) {
                         >
 
                             <span className="text-sm font-medium text-navy-dark">
-                                {sub.name} {sub.isActive}
+                                {sub.name}
                             </span>
 
-                            <Link
-                                href={`/admin/sub-specialities/${sub.id}`}
-                                className="text-sm text-wellness-accent hover:underline"
-                            >
-                                Manage
-                            </Link>
+                            <div className="flex gap-6">
+                                <span>{sub.isActive ? (
+
+                                    <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                                        <BadgeCheck size={14} />
+                                        Active
+                                    </span>
+
+                                ) : (
+
+                                    <span className="inline-flex items-center gap-2 rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700">
+                                        <Ban size={14} />
+                                        Inactive
+                                    </span>
+
+                                )}</span>
+
+                                <Link
+                                    href={`/admin/sub-specialities/${sub.id}`}
+                                    className="text-sm text-white bg-navy rounded-sm px-2 py-1 hover:bg-navy-dark"
+                                >
+                                    Manage
+                                </Link>
+                            </div>
 
                         </div>
 

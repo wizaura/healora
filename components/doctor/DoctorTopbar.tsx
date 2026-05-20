@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -38,6 +38,9 @@ export default function DoctorTopBar() {
     const [profileOpen, setProfileOpen] =
         useState(false);
 
+    const profileRef =
+        useRef<HTMLDivElement>(null);
+
     const {
         data: profileResponse,
         isLoading: profileLoading,
@@ -54,6 +57,37 @@ export default function DoctorTopBar() {
         enabled:
             !!user?.sub,
     });
+
+    useEffect(() => {
+
+        const handleClickOutside = (
+            event: MouseEvent
+        ) => {
+
+            if (
+                profileRef.current &&
+                !profileRef.current.contains(
+                    event.target as Node
+                )
+            ) {
+                setProfileOpen(false);
+            }
+        };
+
+        document.addEventListener(
+            "mousedown",
+            handleClickOutside
+        );
+
+        return () => {
+
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            );
+        };
+
+    }, []);
 
     const profile =
         profileResponse ||
@@ -148,7 +182,7 @@ export default function DoctorTopBar() {
                 <div className="flex items-center gap-3">
 
                     {/* PROFILE DROPDOWN */}
-                    <div className="relative">
+                    <div ref={profileRef} className="relative">
 
                         <button
                             onClick={() =>
@@ -175,10 +209,10 @@ export default function DoctorTopBar() {
     "
                             >
 
-                                {profile?.imageUrl ? (
+                                {profile?.image ? (
 
                                     <Image
-                                        src={profile.imageUrl}
+                                        src={profile?.image}
                                         alt={doctorName}
                                         width={36}
                                         height={36}
