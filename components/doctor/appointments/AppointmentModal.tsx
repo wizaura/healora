@@ -1,8 +1,10 @@
 "use client";
 
 import api from "@/lib/api";
+import { getApiError } from "@/lib/util";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, User, CreditCard, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function AppointmentModal({
     selected,
@@ -29,6 +31,25 @@ export default function AppointmentModal({
                 return "bg-[#FFF7E6] text-[#C98B00]";
         }
     };
+
+    const handleCompleteAppointment =
+        async () => {
+
+            try {
+
+                await api.post(
+
+                    `/appointments/${selected.id}/complete`
+                );
+
+                window.location.href =
+                    `/doctor/patients/${selected.user.id}`;
+
+            } catch (err) {
+
+                toast.error(getApiError(err))
+            }
+        };
 
     const canJoin = (() => {
 
@@ -415,14 +436,30 @@ export default function AppointmentModal({
 
 
                             {selected.status === "CONFIRMED" && (
+
                                 <button
-                                    onClick={async () => {
-                                        await api.post(`/appointments/${selected.id}/complete`);
-                                        window.location.href = `/doctor/patients/${selected.user.id}`;
-                                    }}
-                                    className="px-4 py-2 text-sm font-medium rounded-lg bg-green-800 text-white hover:bg-green-900"
+                                    onClick={
+                                        handleCompleteAppointment
+                                    }
+
+                                    className="
+            rounded-lg
+
+            bg-green-800
+
+            px-4 py-2
+
+            text-sm
+            font-medium
+
+            text-white
+
+            hover:bg-green-900
+        "
                                 >
+
                                     Complete Appointment
+
                                 </button>
                             )}
 

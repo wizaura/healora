@@ -45,7 +45,7 @@ export default function HealoraAboutSection() {
                     <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
 
                         <img
-                            src="/hero-1.jpg"
+                            src="/about-1.jpeg"
                             alt="Healora Wellness"
                             className="w-full h-[380px] object-cover"
                         />
@@ -180,7 +180,7 @@ export default function HealoraAboutSection() {
                     <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
 
                         <img
-                            src="/hero-2.jpeg"
+                            src="/about-2.jpeg"
                             alt="Healora Community"
                             className="w-full h-[380px] object-cover"
                         />

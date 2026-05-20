@@ -32,12 +32,16 @@ export default function AdminPharmacy() {
 
   const getStatus = (p: any) => {
     if (!p.totalAmount) return "Pending Invoice";
+    if (p.paymentStatus === "PAID" && p.isDelivered) return "Delivered";
+    if (p.paymentStatus === "PAID" && p.isShipping) return "Shipped";
     if (p.paymentStatus === "PENDING") return "Awaiting Payment";
     if (p.paymentStatus === "PAID") return "Completed";
     return "Pending";
   };
 
   const getStatusColor = (status: string) => {
+    if (status === "Delivered") return "bg-blue-100 text-blue-700";
+    if (status === "Shipped") return "bg-indigo-100 text-indigo-700";
     if (status === "Completed") return "bg-green-100 text-green-700";
     if (status === "Awaiting Payment") return "bg-yellow-100 text-yellow-700";
     return "bg-gray-100 text-gray-700";

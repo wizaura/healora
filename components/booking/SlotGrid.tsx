@@ -32,155 +32,300 @@ export default function SlotGrid({
     timezone,
 }: Props) {
 
-    const [slots, setSlots] = useState<Slot[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [slots, setSlots] =
+        useState<Slot[]>([]);
 
-    const [selectedCategory, setSelectedCategory] = useState<
-        "FOLLOW_UP" | "FIRST_TIME"
+    const [loading, setLoading] =
+        useState(false);
+
+    const [
+        selectedCategory,
+
+        setSelectedCategory,
+    ] = useState<
+        "FOLLOW_UP" |
+        "FIRST_TIME"
     >("FIRST_TIME");
 
     /* ---------- DATE STRING ---------- */
 
     const dateStr = date
+
         ? [
+
             date.getFullYear(),
-            String(date.getMonth() + 1).padStart(2, "0"),
-            String(date.getDate()).padStart(2, "0"),
+
+            String(
+                date.getMonth() + 1
+            ).padStart(2, "0"),
+
+            String(
+                date.getDate()
+            ).padStart(2, "0"),
+
         ].join("-")
+
         : null;
 
     /* ---------- FETCH SLOTS ---------- */
 
     useEffect(() => {
 
-        if (!doctorId || !dateStr) return;
+        if (
+            !doctorId ||
 
-        const fetchSlots = async () => {
-            try {
+            !dateStr
+        ) {
 
-                setLoading(true);
-                setSelectedSlot(null);
+            return;
+        }
 
-                const res = await api.get(
-                    "/availability/slots",
-                    {
-                        params: {
-                            doctorId,
-                            date: dateStr,
-                            timezone,
-                        },
-                    }
-                );
+        const fetchSlots =
+            async () => {
 
-                const mapped: Slot[] =
-                    res.data.map((s: any) => {
+                try {
 
-                        const start = new Date(
-                            s.startTimeUTC
+                    setLoading(true);
+
+                    const res =
+                        await api.get(
+
+                            "/availability/slots",
+
+                            {
+                                params: {
+
+                                    doctorId,
+
+                                    date:
+                                        dateStr,
+
+                                    timezone,
+                                },
+                            }
                         );
 
-                        const end = new Date(
-                            s.endTimeUTC
+                    const mapped: Slot[] =
+
+                        res.data.map(
+                            (s: any) => {
+
+                                const start =
+                                    new Date(
+                                        s.startTimeUTC
+                                    );
+
+                                const end =
+                                    new Date(
+                                        s.endTimeUTC
+                                    );
+
+                                const diffMinutes =
+                                    (
+                                        end.getTime()
+
+                                        -
+
+                                        start.getTime()
+                                    )
+
+                                    /
+
+                                    (
+                                        1000 * 60
+                                    );
+
+                                return {
+
+                                    id: s.id,
+
+                                    startTime:
+                                        s.startTimeUTC,
+
+                                    endTime:
+                                        s.endTimeUTC,
+
+                                    duration:
+                                        diffMinutes as
+                                        30 | 60,
+
+                                    category:
+                                        s.category,
+                                };
+                            }
                         );
 
-                        const diffMinutes =
-                            (end.getTime() -
-                                start.getTime()) /
-                            (1000 * 60);
+                    /* ---------- SORT ---------- */
 
-                        return {
-                            id: s.id,
-                            startTime:
-                                s.startTimeUTC,
-                            endTime:
-                                s.endTimeUTC,
-                            duration:
-                                diffMinutes as
-                                30 | 60,
-                            category:
-                                s.category,
-                        };
-                    });
+                    const sorted =
 
-                const firstSlot =
-                    mapped.find(
-                        (s) =>
-                            s.category ===
-                            selectedCategory
+                        [...mapped].sort(
+
+                            (a, b) => {
+
+                                const aTime =
+                                    new Date(
+                                        a.startTime
+                                    ).getTime();
+
+                                const bTime =
+                                    new Date(
+                                        b.startTime
+                                    ).getTime();
+
+                                /* ---------- EARLIER FIRST ---------- */
+
+                                if (
+                                    aTime !==
+                                    bTime
+                                ) {
+
+                                    return (
+                                        aTime -
+                                        bTime
+                                    );
+                                }
+
+                                /* ---------- SAME TIME -> PREFER FIRST VISIT ---------- */
+
+                                if (
+
+                                    a.category ===
+                                    "FIRST_TIME"
+
+                                    &&
+
+                                    b.category !==
+                                    "FIRST_TIME"
+                                ) {
+
+                                    return -1;
+                                }
+
+                                if (
+
+                                    b.category ===
+                                    "FIRST_TIME"
+
+                                    &&
+
+                                    a.category !==
+                                    "FIRST_TIME"
+                                ) {
+
+                                    return 1;
+                                }
+
+                                return 0;
+                            }
+                        );
+
+                    setSlots(sorted);
+
+                } catch (err) {
+
+                    console.error(
+                        "Failed to fetch slots",
+                        err
                     );
 
-                if (firstSlot) {
+                    setSlots([]);
 
-                    setSelectedSlot(
-                        firstSlot
-                    );
+                } finally {
+
+                    setLoading(false);
                 }
-
-                setSlots(mapped);
-
-            } catch (err) {
-
-                console.error(
-                    "Failed to fetch slots",
-                    err
-                );
-
-                setSlots([]);
-
-            } finally {
-
-                setLoading(false);
-
-            }
-        };
+            };
 
         fetchSlots();
 
-    }, [doctorId, dateStr, setSelectedSlot]);
+    }, [
+
+        doctorId,
+
+        dateStr,
+
+        timezone,
+    ]);
+
+    /* ---------- VISIBLE SLOTS ---------- */
+
+    const visibleSlots =
+        useMemo(() => {
+
+            return slots.filter(
+
+                (slot) =>
+
+                    slot.category ===
+                    selectedCategory
+            );
+
+        }, [
+
+            slots,
+
+            selectedCategory,
+        ]);
+
+    /* ---------- AUTO SELECT ---------- */
 
     useEffect(() => {
 
-        const first =
-            groupedSlots[
-            selectedCategory
-            ]?.[0];
+        if (
+            !slots.length
+        ) {
 
-        if (first) {
+            setSelectedSlot(
+                null
+            );
 
-            setSelectedSlot(first);
-
-        } else {
-
-            setSelectedSlot(null);
+            return;
         }
 
+        /* ---------- PREFER CURRENT CATEGORY ---------- */
+
+        const preferred =
+            visibleSlots[0];
+
+        if (preferred) {
+
+            setSelectedSlot(
+                preferred
+            );
+
+            return;
+        }
+
+        /* ---------- FALLBACK ---------- */
+
+        const fallback =
+            slots[0];
+
+        setSelectedSlot(
+            fallback
+        );
+
+        /* ---------- SYNC CATEGORY ---------- */
+
+        setSelectedCategory(
+            fallback.category
+        );
+
+        /* ---------- FALLBACK ---------- */
+
+        setSelectedSlot(
+            slots[0]
+        );
+
     }, [
-        selectedCategory,
+
+        visibleSlots,
+
         slots,
+
+        setSelectedSlot,
     ]);
-
-    /* ---------- GROUPED ---------- */
-
-    const groupedSlots = useMemo(() => {
-
-        return {
-            FIRST_TIME: slots.filter(
-                (s) =>
-                    s.category ===
-                    "FIRST_TIME"
-            ),
-
-            FOLLOW_UP: slots.filter(
-                (s) =>
-                    s.category ===
-                    "FOLLOW_UP"
-            ),
-        };
-
-    }, [slots]);
-
-    const visibleSlots =
-        groupedSlots[selectedCategory];
 
     /* ---------- LOADING ---------- */
 

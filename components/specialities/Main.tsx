@@ -60,10 +60,10 @@ export default function SpecialtiesSection() {
                 {/* BG IMAGE */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="/hero-2.jpeg"
+                        src="/spec-head-1.jpeg"
                         className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
                 </div>
 
                 {/* CONTENT */}

@@ -830,6 +830,39 @@ export default function Payments() {
 
                                                                 </div>
 
+                                                                {prescription.deliveryType && (
+                                                                    <div className="text-sm text-slate-600">
+
+                                                                        Delivery Type:{" "}
+
+                                                                        <span className="font-semibold text-slate-800">
+
+                                                                            {
+                                                                                prescription
+                                                                                    ?.appointment.deliveryType
+                                                                            }
+
+                                                                        </span>
+
+                                                                    </div>
+                                                                )}
+                                                                {prescription.deliveryMedium && (
+                                                                    <div className="text-sm text-slate-600">
+
+                                                                        Delivery Provider:{" "}
+
+                                                                        <span className="font-semibold text-slate-800">
+
+                                                                            {
+                                                                                prescription
+                                                                                    ?.deliveryMedium
+                                                                            }
+
+                                                                        </span>
+
+                                                                    </div>
+                                                                )}
+
                                                                 {/* PAYMENT */}
 
                                                                 <div className="text-sm text-slate-600">
@@ -954,6 +987,48 @@ export default function Payments() {
                                                     </p>
 
                                                 </div>
+
+                                                <span
+                                                    className={`
+        inline-flex items-center
+
+        rounded-full
+
+        px-4 py-1.5
+
+        text-xs font-semibold
+
+        tracking-wide
+
+        ${prescription?.isDelivered
+
+                                                            ? `
+                bg-emerald-100
+                text-emerald-700
+            `
+
+                                                            : prescription?.isShipping
+
+                                                                ? `
+                    bg-blue-100
+                    text-blue-700
+                `
+
+                                                        : "" }
+    `}
+                                                >
+
+                                                    {prescription?.isDelivered
+
+                                                        ? "Delivered"
+
+                                                        : prescription?.isShipping
+
+                                                            ? "Shipping"
+
+                                                            : ""}
+
+                                                </span>
 
                                                 <span
                                                     className={`

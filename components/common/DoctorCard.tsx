@@ -114,10 +114,6 @@ export default function DoctorCard({ doctor, onBook }: DoctorCardProps) {
                                     ).toFixed(1)}
                                 </span>
 
-                                <span className="text-yellow-700/70">
-                                    ({doctor.ratingCount})
-                                </span>
-
                             </div>
 
                         )}

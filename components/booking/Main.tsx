@@ -52,15 +52,155 @@ export default function BookingMainPage() {
 
                 setAvailableDates(dates);
 
-                if (
-                    !date &&
-                    dates.length
-                ) {
+                console.log(dates)
 
-                    const firstAvailable =
-                        new Date(dates[0]);
+                if (!date && dates.length) {
 
-                    setDate(firstAvailable);
+                    const sortedDates =
+
+                        [...dates].sort(
+
+                            (a, b) =>
+
+                                new Date(a).getTime()
+
+                                -
+
+                                new Date(b).getTime()
+                        );
+
+                    let selectedDate: Date | null = null;
+
+                    for (const d of sortedDates) {
+
+                        try {
+
+                            const slotRes =
+                                await api.get(
+                                    "/availability/slots",
+                                    {
+                                        params: {
+                                            doctorId,
+                                            date: d,
+                                            timezone,
+                                        },
+                                    }
+                                );
+
+                            const slots =
+                                slotRes.data || [];
+
+                            if (!slots.length) {
+                                continue;
+                            }
+
+                            /* ---------- SAME DAY CATEGORY PRIORITY ---------- */
+
+                            const firstVisit =
+                                slots.find(
+                                    (s: any) =>
+                                        s.category ===
+                                        "FIRST_TIME"
+                                );
+
+                            const followUp =
+                                slots.find(
+                                    (s: any) =>
+                                        s.category ===
+                                        "FOLLOW_UP"
+                                );
+
+                            selectedDate =
+                                new Date(d);
+
+                            /* ---------- PREFER FIRST VISIT IF SAME DAY ---------- */
+
+                            if (firstVisit) {
+
+                                setSelectedSlot({
+
+                                    id: firstVisit.id,
+
+                                    startTime:
+                                        firstVisit.startTimeUTC,
+
+                                    endTime:
+                                        firstVisit.endTimeUTC,
+
+                                    duration:
+                                        (
+                                            (
+                                                new Date(
+                                                    firstVisit.endTimeUTC
+                                                ).getTime()
+
+                                                -
+
+                                                new Date(
+                                                    firstVisit.startTimeUTC
+                                                ).getTime()
+                                            ) /
+
+                                            (1000 * 60)
+                                        ) as 30 | 60,
+
+                                    category:
+                                        firstVisit.category,
+                                });
+
+                            } else if (followUp) {
+
+                                setSelectedSlot({
+
+                                    id: followUp.id,
+
+                                    startTime:
+                                        followUp.startTimeUTC,
+
+                                    endTime:
+                                        followUp.endTimeUTC,
+
+                                    duration:
+                                        (
+                                            (
+                                                new Date(
+                                                    followUp.endTimeUTC
+                                                ).getTime()
+
+                                                -
+
+                                                new Date(
+                                                    followUp.startTimeUTC
+                                                ).getTime()
+                                            ) /
+
+                                            (1000 * 60)
+                                        ) as 30 | 60,
+
+                                    category:
+                                        followUp.category,
+                                });
+                            }
+
+                            break;
+
+                        } catch (err) {
+
+                            console.error(
+                                "Failed checking slots",
+                                err
+                            );
+                        }
+                    }
+
+                    if (selectedDate) {
+
+                        setDate(selectedDate);
+
+                    } else {
+
+                        setDate(undefined);
+                    }
                 }
 
             } catch (err) {

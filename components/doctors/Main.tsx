@@ -88,10 +88,10 @@ export default function AllDoctors() {
                 {/* BG IMAGE */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="/hero-2.jpeg"
+                        src="/doc-head-1.jpeg"
                         className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
                 </div>
 
                 {/* CONTENT */}
