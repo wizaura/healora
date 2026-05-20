@@ -98,11 +98,11 @@ export default function AppointmentCheckout() {
       );
 
       setPrescriptionFee(
-        appt.prescriptionFee || 50
+        appt.fees.prescriptionFee || 50
       );
 
       setSlotFee(
-        appt.slotFee || 100
+        appt.fees.slotFee || 100
       );
 
       setPaymentMethod(
