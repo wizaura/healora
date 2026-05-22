@@ -975,13 +975,13 @@ export default function Payments() {
                                 "
                                                     >
 
-                                                        {item.currency}{" "}
+                                                        {item.displaySymbol}{" "}
 
                                                         {isPendingTab
 
-                                                            ? item.totalAmount
+                                                            ? item.displayAmount
 
-                                                            : item.amount}
+                                                            : item.displayAmount}
                                                     </p>
 
                                                 </div>
@@ -1012,7 +1012,7 @@ export default function Payments() {
                     text-blue-700
                 `
 
-                                                        : "" }
+                                                                : ""}
     `}
                                                 >
 
@@ -1108,35 +1108,45 @@ export default function Payments() {
                                                                     key={i}
 
                                                                     className="
-                                                flex items-center justify-between gap-4
+                flex items-center justify-between gap-4
 
-                                                rounded-xl
+                rounded-xl
 
-                                                px-3 py-2
+                px-3 py-2
 
-                                                transition
+                transition
 
-                                                hover:bg-white
-                                            "
+                hover:bg-white
+            "
                                                                 >
 
-                                                                    <span>
+                                                                    <div>
 
-                                                                        {medicine.name}
+                                                                        <p>
+                                                                            {medicine.name}
+                                                                        </p>
 
-                                                                    </span>
+                                                                        <p
+                                                                            className="
+                        text-xs
+                        text-slate-500
+                    "
+                                                                        >
+                                                                            Qty: {medicine.qty}
+                                                                        </p>
+
+                                                                    </div>
 
                                                                     <span
                                                                         className="
-                                                    font-semibold
-
-                                                    text-slate-800
-                                                "
+                    font-semibold
+                    text-slate-800
+                "
                                                                     >
 
-                                                                        {item.currency}{" "}
+                                                                        {item.displaySymbol}{" "}
 
-                                                                        {medicine.qty * medicine.price}
+                                                                        {medicine.displayTotal}
 
                                                                     </span>
 
@@ -1156,7 +1166,7 @@ export default function Payments() {
 
                                                             <span>
 
-                                                                {item.currency} {item.subtotal}
+                                                                {item.displaySymbol} {item.displaySubtotal}
 
                                                             </span>
 
@@ -1168,7 +1178,7 @@ export default function Payments() {
 
                                                             <span>
 
-                                                                {item.currency} {item.deliveryCharge}
+                                                                {item.displaySymbol} {item.displayDeliveryCharge}
 
                                                             </span>
 
@@ -1188,7 +1198,7 @@ export default function Payments() {
 
                                                                 <span>
 
-                                                                    - {item.currency} {item.discount}
+                                                                    - {item.displaySymbol} {item.displayDiscount}
 
                                                                 </span>
 
@@ -1217,7 +1227,7 @@ export default function Payments() {
 
                                                         <span>
 
-                                                            {item.currency} {item.totalAmount}
+                                                            {item.displaySymbol} {item.displayAmount}
 
                                                         </span>
 

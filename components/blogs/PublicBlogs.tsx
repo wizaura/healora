@@ -39,28 +39,30 @@ export default function Blog() {
 
     return (
 
-        <div className="max-w-7xl mx-auto px-6 py-24 space-y-16">
+        <div className="relative m-4 rounded-3xl
+            bg-gradient-to-b from-white via-white to-wellness-bg pb-24">
+            <div className="max-w-7xl mx-auto px-6 py-24 space-y-16">
 
-            {/* HEADER */}
+                {/* HEADER */}
 
-            <div className="mb-20 mt-4 text-center">
+                <div className="mb-20 mt-4 text-center">
 
-                <h1
-                    className="
+                    <h1
+                        className="
         text-4xl md:text-6xl
         font-semibold
         leading-[1.15]
         tracking-[-0.02em]
         text-navy
     "
-                >
-                    Health, Wellness
-                    <br />
-                    & Holistic Living
-                </h1>
+                    >
+                        Health, Wellness
+                        <br />
+                        & Holistic Living
+                    </h1>
 
-                <p
-                    className="
+                    <p
+                        className="
         mt-6
         text-lg
         text-navy/60
@@ -68,25 +70,25 @@ export default function Blog() {
         mx-auto
         leading-relaxed
     "
-                >
-                    Explore expert insights on homeopathy, mental wellness,
-                    lifestyle improvement, and holistic healthcare guidance
-                    from our Healora specialists.
-                </p>
+                    >
+                        Explore expert insights on homeopathy, mental wellness,
+                        lifestyle improvement, and holistic healthcare guidance
+                        from our Healora specialists.
+                    </p>
 
-            </div>
+                </div>
 
 
-            {/* BLOG GRID */}
+                {/* BLOG GRID */}
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                {blogs.map((blog: any) => (
+                    {blogs.map((blog: any) => (
 
-                    <Link
-                        key={blog.id}
-                        href={`/blog/${blog.slug}`}
-                        className="
+                        <Link
+                            key={blog.id}
+                            href={`/blog/${blog.slug}`}
+                            className="
                         group
                         relative
                         border border-slate-200
@@ -96,17 +98,17 @@ export default function Blog() {
                         transition
                         hover:shadow-xl
                     "
-                    >
+                        >
 
-                        {/* IMAGE */}
+                            {/* IMAGE */}
 
-                        {blog.imageUrl && (
+                            {blog.imageUrl && (
 
-                            <div className="relative overflow-hidden">
+                                <div className="relative overflow-hidden">
 
-                                <img
-                                    src={blog.imageUrl}
-                                    className="
+                                    <img
+                                        src={blog.imageUrl}
+                                        className="
                                     w-full
                                     h-48
                                     object-cover
@@ -114,12 +116,12 @@ export default function Blog() {
                                     duration-500
                                     group-hover:scale-105
                                 "
-                                />
+                                    />
 
-                                {/* HOVER VIEW TEXT */}
+                                    {/* HOVER VIEW TEXT */}
 
-                                <div
-                                    className="
+                                    <div
+                                        className="
                                     absolute inset-0
                                     bg-black/40
                                     opacity-0
@@ -127,47 +129,48 @@ export default function Blog() {
                                     flex items-center justify-center
                                     transition
                                 "
-                                >
+                                    >
 
-                                    <span
-                                        className="
+                                        <span
+                                            className="
                                         flex items-center gap-2
                                         text-white
                                         text-sm
                                         font-medium
                                     "
-                                    >
-                                        View Article
-                                        <ArrowUpRight size={16} />
-                                    </span>
+                                        >
+                                            View Article
+                                            <ArrowUpRight size={16} />
+                                        </span>
+
+                                    </div>
 
                                 </div>
 
+                            )}
+
+
+                            {/* CONTENT */}
+
+                            <div className="p-5 space-y-3">
+
+                                <h3 className="font-semibold text-slate-900 line-clamp-2">
+                                    {blog.title}
+                                </h3>
+
+                                <p className="text-sm text-slate-500">
+                                    By {blog.author?.name}
+                                </p>
+
                             </div>
 
-                        )}
+                        </Link>
 
+                    ))}
 
-                        {/* CONTENT */}
-
-                        <div className="p-5 space-y-3">
-
-                            <h3 className="font-semibold text-slate-900 line-clamp-2">
-                                {blog.title}
-                            </h3>
-
-                            <p className="text-sm text-slate-500">
-                                By {blog.author?.name}
-                            </p>
-
-                        </div>
-
-                    </Link>
-
-                ))}
+                </div>
 
             </div>
-
         </div>
 
     );

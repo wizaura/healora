@@ -167,7 +167,7 @@ export default function UserAppointmentsTab({
 
                                     (a.consultationPaymentStatus === "PAID" ? a.consultationFee : 0) +
 
-                                    (a.prescription ? a.prescriptionFee : 0)
+                                    (a.deliveryMode === "PRESCRIPTION" ? a.prescriptionFee : 0)
 
                                 ).toFixed(2)}`}
                             />

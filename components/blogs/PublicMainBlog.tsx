@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { useParams } from "next/navigation";
+import Loader from "../common/Loader";
 
 export default function BlogPage() {
 
@@ -17,9 +18,7 @@ export default function BlogPage() {
 
     if (isLoading) {
         return (
-            <div className="text-center py-24 text-slate-500">
-                Loading article...
-            </div>
+            <Loader fullScreen />
         );
     }
 
@@ -33,48 +32,50 @@ export default function BlogPage() {
 
     return (
 
-        <div className="max-w-4xl mx-auto px-6 py-24 space-y-12">
+        <div className="relative m-4 rounded-3xl
+            bg-gradient-to-b from-white via-white to-wellness-bg pb-24">
+            <div className="max-w-4xl mx-auto px-6 py-24 space-y-12">
 
-            {/* HERO */}
+                {/* HERO */}
 
-            <div className="space-y-6 text-center pt-12">
+                <div className="space-y-6 text-center pt-12">
 
-                <h1 className="text-4xl font-semibold text-slate-900 leading-tight">
-                    {blog.title}
-                </h1>
+                    <h1 className="text-4xl font-semibold text-slate-900 leading-tight">
+                        {blog.title}
+                    </h1>
 
-                <p className="text-sm text-slate-500">
-                    By {blog.author?.name} •{" "}
-                    {new Date(blog.updatedAt).toLocaleDateString("en-IN", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                    })}
-                </p>
-
-            </div>
-
-
-            {/* IMAGE */}
-
-            {blog.imageUrl && (
-
-                <div className="rounded-2xl overflow-hidden shadow-sm">
-
-                    <img
-                        src={blog.imageUrl}
-                        className="w-full max-h-[420px] object-cover"
-                    />
+                    <p className="text-sm text-slate-500">
+                        By {blog.author?.name} •{" "}
+                        {new Date(blog.updatedAt).toLocaleDateString("en-IN", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                        })}
+                    </p>
 
                 </div>
 
-            )}
+
+                {/* IMAGE */}
+
+                {blog.imageUrl && (
+
+                    <div className="rounded-2xl overflow-hidden shadow-sm">
+
+                        <img
+                            src={blog.imageUrl}
+                            className="w-full max-h-[420px] object-cover"
+                        />
+
+                    </div>
+
+                )}
 
 
-            {/* CONTENT */}
+                {/* CONTENT */}
 
-            <div
-                className="
+                <div
+                    className="
                 prose
                 prose-slate
                 max-w-none
@@ -83,9 +84,10 @@ export default function BlogPage() {
                 prose-a:text-teal-600
                 prose-p:leading-relaxed
                 "
-                dangerouslySetInnerHTML={{ __html: blog.content }}
-            />
+                    dangerouslySetInnerHTML={{ __html: blog.content }}
+                />
 
+            </div>
         </div>
 
     );

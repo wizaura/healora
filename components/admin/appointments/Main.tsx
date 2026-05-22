@@ -173,6 +173,31 @@ export default function AdminAppointmentsPage() {
         }
     };
 
+    const getCurrencySymbol =
+        (currency?: string) => {
+
+            switch (currency) {
+
+                case "INR":
+                    return "₹";
+
+                case "USD":
+                    return "$";
+
+                case "EUR":
+                    return "€";
+
+                case "GBP":
+                    return "£";
+
+                case "AED":
+                    return "د.إ";
+
+                default:
+                    return currency || "$";
+            }
+        };
+
     function Info({
         label,
         children,
@@ -439,13 +464,32 @@ export default function AdminAppointmentsPage() {
 
                                             <td className="p-4">
                                                 <div>
+
                                                     Consultation:
-                                                    ₹{appt.consultationFee}
+
+                                                    {getCurrencySymbol(
+                                                        appt.currency
+                                                    )}
+
+                                                    {appt.consultationFee}
+
                                                 </div>
 
-                                                <div className="text-xs text-gray-500">
+                                                <div
+                                                    className="
+                                                        text-xs
+                                                        text-gray-500
+                                                    "
+                                                >
+
                                                     Slot:
-                                                    ₹{appt.slotFee}
+
+                                                    {getCurrencySymbol(
+                                                        appt.currency
+                                                    )}
+
+                                                    {appt.slotFee}
+
                                                 </div>
                                             </td>
 
@@ -546,118 +590,631 @@ export default function AdminAppointmentsPage() {
 
             {/* Modal */}
             <AnimatePresence>
+
                 {selected && (
+
                     <motion.div
+
                         initial={{ opacity: 0 }}
+
                         animate={{ opacity: 1 }}
+
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50"
+
+                        className="
+                fixed inset-0 z-50
+
+                flex items-center justify-center
+
+                bg-black/50
+                backdrop-blur-sm
+
+                p-4
+            "
                     >
+
                         <motion.div
-                            initial={{ scale: 0.95 }}
-                            animate={{ scale: 1 }}
-                            exit={{ scale: 0.95 }}
-                            className="bg-white rounded-2xl w-full max-w-2xl p-6 shadow-xl"
+
+                            initial={{
+                                opacity: 0,
+                                y: 20,
+                                scale: 0.96,
+                            }}
+
+                            animate={{
+                                opacity: 1,
+                                y: 0,
+                                scale: 1,
+                            }}
+
+                            exit={{
+                                opacity: 0,
+                                y: 10,
+                                scale: 0.96,
+                            }}
+
+                            transition={{
+                                duration: 0.2,
+                            }}
+
+                            className="
+                    relative
+
+                    w-full max-w-3xl
+
+                    overflow-hidden
+
+                    rounded-3xl
+
+                    border border-white/20
+
+                    bg-white
+
+                    shadow-[0_20px_60px_rgba(0,0,0,0.18)]
+                "
                         >
-                            {/* Header */}
-                            <div className="flex justify-between items-center mb-4 border-b pb-3">
+
+                            {/* HEADER */}
+
+                            <div
+                                className="
+                        flex items-start justify-between
+
+                        border-b border-slate-200
+
+                        bg-gradient-to-r
+                        from-[#16A085]
+                        to-[#138d75]
+
+                        px-6 py-5
+
+                        text-white
+                    "
+                            >
+
                                 <div>
-                                    <h2 className="text-lg font-semibold">
+
+                                    <p
+                                        className="
+                                text-xs uppercase
+                                tracking-[0.2em]
+
+                                text-white/70
+                            "
+                                    >
                                         Appointment Details
-                                    </h2>
-                                    <p className="text-xs text-gray-500">
-                                        ID: {selected.id}
                                     </p>
+
+                                    <h2
+                                        className="
+                                mt-1
+                                text-2xl
+                                font-semibold
+                            "
+                                    >
+                                        {selected.user?.name}
+                                    </h2>
+
+                                    <p
+                                        className="
+                                mt-1
+                                text-sm
+                                text-white/80
+                            "
+                                    >
+                                        #{selected.id}
+                                    </p>
+
                                 </div>
-                                <X
-                                    className="cursor-pointer"
-                                    onClick={() => setSelected(null)}
-                                />
+
+                                <button
+                                    onClick={() =>
+                                        setSelected(null)
+                                    }
+                                    className="
+                            rounded-full
+
+                            bg-white/10
+
+                            p-2
+
+                            transition
+
+                            hover:bg-white/20
+                        "
+                                >
+
+                                    <X size={20} />
+
+                                </button>
+
                             </div>
 
-                            {/* Body */}
-                            <div className="grid grid-cols-2 gap-4 text-sm">
+                            {/* BODY */}
 
-                                <Info label="Date">
-                                    {formatDateTime(selected.slot.startTimeUTC)}
-                                </Info>
+                            <div
+                                className="
+                        max-h-[80vh]
+                        overflow-y-auto
 
-                                <Info label="Status">
-                                    <span className="px-2 py-1 rounded bg-gray-100">
-                                        {selected.status}
-                                    </span>
-                                </Info>
+                        p-6
+                    "
+                            >
 
-                                <Info label="Patient">
-                                    {selected.user?.name}
-                                </Info>
+                                {/* TOP GRID */}
 
-                                <Info label="Doctor">
-                                    {selected.doctor?.user?.name}
-                                </Info>
+                                <div
+                                    className="
+                            grid gap-4
 
-                                <Info label="Speciality">
-                                    {selected.doctor?.specialities
-                                        ?.map((s: any) => s.speciality.name)
-                                        .join(", ")}
-                                </Info>
+                            md:grid-cols-2
+                        "
+                                >
 
-                                <Info label="Meeting Type">
-                                    {selected.meetingType || "—"}
-                                </Info>
+                                    <div
+                                        className="
+                                rounded-2xl
 
-                                <Info label="Delivery Mode">
-                                    {selected.deliveryMode || "—"}
-                                </Info>
+                                border border-slate-200
 
-                                <Info label="Meeting Link">
-                                    {selected.meetingLink ? (
-                                        <a
-                                            href={selected.meetingLink}
-                                            target="_blank"
-                                            className="text-teal-600 underline"
+                                bg-slate-50
+
+                                p-5
+                            "
+                                    >
+
+                                        <p
+                                            className="
+                                    mb-4
+
+                                    text-sm
+                                    font-semibold
+
+                                    text-slate-700
+                                "
                                         >
-                                            Join Meeting
-                                        </a>
-                                    ) : "—"}
-                                </Info>
+                                            Appointment Info
+                                        </p>
 
-                            </div>
+                                        <div className="space-y-4">
 
-                            {/* Payment Section */}
-                            <div className="mt-6 border-t pt-4">
-                                <h3 className="text-sm font-semibold mb-3">
-                                    Payment Details
-                                </h3>
+                                            <Info label="Date">
 
-                                <div className="grid grid-cols-2 gap-4 text-sm">
+                                                {formatDateTime(
+                                                    selected.slot.startTimeUTC
+                                                )}
 
-                                    <Info label="Slot Fee">
-                                        ₹{selected.slotFee}
-                                    </Info>
+                                            </Info>
 
-                                    <Info label="Slot Payment">
-                                        <span className="px-2 py-1 rounded bg-gray-100">
-                                            {selected.slotPaymentStatus}
-                                        </span>
-                                    </Info>
+                                            <Info label="Status">
 
-                                    <Info label="Consultation Fee">
-                                        ₹{selected.consultationFee}
-                                    </Info>
+                                                <span
+                                                    className={`
+                                            inline-flex
+                                            rounded-full
 
-                                    <Info label="Consultation Payment">
-                                        <span className="px-2 py-1 rounded bg-gray-100">
-                                            {selected.consultationPaymentStatus}
-                                        </span>
-                                    </Info>
+                                            px-3 py-1
+
+                                            text-xs
+                                            font-semibold
+
+                                            ${statusColor(
+                                                        selected.status
+                                                    )}
+                                        `}
+                                                >
+
+                                                    {selected.status}
+
+                                                </span>
+
+                                            </Info>
+
+                                            <Info label="Meeting Type">
+
+                                                {selected.meetingType || "—"}
+
+                                            </Info>
+
+                                            <Info label="Delivery Mode">
+
+                                                {selected.deliveryMode || "—"}
+
+                                            </Info>
+
+                                            <Info label="Meeting Link">
+
+                                                {selected.meetingLink ? (
+
+                                                    <a
+                                                        href={
+                                                            selected.meetingLink
+                                                        }
+
+                                                        target="_blank"
+
+                                                        className="
+                                                inline-flex
+                                                items-center
+
+                                                rounded-lg
+
+                                                bg-[#16A085]
+
+                                                px-4 py-2
+
+                                                text-sm
+                                                font-medium
+
+                                                text-white
+
+                                                transition
+
+                                                hover:bg-[#138d75]
+                                            "
+                                                    >
+                                                        Join Meeting
+                                                    </a>
+
+                                                ) : "—"}
+
+                                            </Info>
+
+                                        </div>
+
+                                    </div>
+
+                                    {/* DOCTOR + PATIENT */}
+
+                                    <div
+                                        className="
+                                rounded-2xl
+
+                                border border-slate-200
+
+                                bg-white
+
+                                p-5
+                            "
+                                    >
+
+                                        <p
+                                            className="
+                                    mb-4
+
+                                    text-sm
+                                    font-semibold
+
+                                    text-slate-700
+                                "
+                                        >
+                                            Participants
+                                        </p>
+
+                                        <div className="space-y-5">
+
+                                            <div>
+
+                                                <p
+                                                    className="
+                                            text-xs
+                                            uppercase
+                                            tracking-wide
+
+                                            text-slate-400
+                                        "
+                                                >
+                                                    Patient
+                                                </p>
+
+                                                <p
+                                                    className="
+                                            mt-1
+                                            text-lg
+                                            font-semibold
+                                            text-slate-800
+                                        "
+                                                >
+                                                    {selected.user?.name}
+                                                </p>
+
+                                            </div>
+
+                                            <div>
+
+                                                <p
+                                                    className="
+                                            text-xs
+                                            uppercase
+                                            tracking-wide
+
+                                            text-slate-400
+                                        "
+                                                >
+                                                    Doctor
+                                                </p>
+
+                                                <p
+                                                    className="
+                                            mt-1
+                                            text-lg
+                                            font-semibold
+                                            text-slate-800
+                                        "
+                                                >
+                                                    {selected.doctor?.user?.name}
+                                                </p>
+
+                                                <p
+                                                    className="
+                                            mt-1
+                                            text-sm
+                                            text-slate-500
+                                        "
+                                                >
+
+                                                    {selected.doctor?.specialities
+                                                        ?.map(
+                                                            (s: any) =>
+                                                                s.speciality.name
+                                                        )
+                                                        .join(", ")}
+
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
 
                                 </div>
+
+                                {/* PAYMENT SECTION */}
+
+                                <div
+                                    className="
+                            mt-6
+
+                            rounded-2xl
+
+                            border border-slate-200
+
+                            bg-gradient-to-br
+                            from-slate-50
+                            to-white
+
+                            p-5
+                        "
+                                >
+
+                                    <div
+                                        className="
+                                mb-5
+
+                                flex items-center
+                                justify-between
+                            "
+                                    >
+
+                                        <div>
+
+                                            <p
+                                                className="
+                                        text-sm
+                                        font-semibold
+                                        text-slate-700
+                                    "
+                                            >
+                                                Payment Details
+                                            </p>
+
+                                            <p
+                                                className="
+                                        mt-1
+                                        text-xs
+                                        text-slate-500
+                                    "
+                                            >
+                                                Original database currency
+                                            </p>
+
+                                        </div>
+
+                                        <div
+                                            className="
+                                    rounded-full
+
+                                    bg-slate-900
+
+                                    px-3 py-1
+
+                                    text-xs
+                                    font-semibold
+
+                                    text-white
+                                "
+                                        >
+                                            {selected.currency}
+                                        </div>
+
+                                    </div>
+
+                                    <div
+                                        className="
+                                grid gap-4
+
+                                md:grid-cols-2
+                            "
+                                    >
+
+                                        {/* SLOT */}
+
+                                        <div
+                                            className="
+                                    rounded-2xl
+
+                                    border border-slate-200
+
+                                    bg-white
+
+                                    p-4
+                                "
+                                        >
+
+                                            <div
+                                                className="
+                                        flex items-center
+                                        justify-between
+                                    "
+                                            >
+
+                                                <div>
+
+                                                    <p
+                                                        className="
+                                                text-xs
+                                                uppercase
+
+                                                text-slate-400
+                                            "
+                                                    >
+                                                        Slot Fee
+                                                    </p>
+
+                                                    <h3
+                                                        className="
+                                                mt-1
+
+                                                text-2xl
+                                                font-bold
+
+                                                text-slate-800
+                                            "
+                                                    >
+
+                                                        {getCurrencySymbol(
+                                                            selected.currency
+                                                        )}
+
+                                                        {selected.slotFee}
+
+                                                    </h3>
+
+                                                </div>
+
+                                                <span
+                                                    className={`
+                                            rounded-full
+
+                                            px-3 py-1
+
+                                            text-xs
+                                            font-semibold
+
+                                            ${paymentColor(
+                                                        selected.slotPaymentStatus
+                                                    )}
+                                        `}
+                                                >
+
+                                                    {selected.slotPaymentStatus}
+
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                        {/* CONSULTATION */}
+
+                                        <div
+                                            className="
+                                    rounded-2xl
+
+                                    border border-slate-200
+
+                                    bg-white
+
+                                    p-4
+                                "
+                                        >
+
+                                            <div
+                                                className="
+                                        flex items-center
+                                        justify-between
+                                    "
+                                            >
+
+                                                <div>
+
+                                                    <p
+                                                        className="
+                                                text-xs
+                                                uppercase
+
+                                                text-slate-400
+                                            "
+                                                    >
+                                                        Consultation Fee
+                                                    </p>
+
+                                                    <h3
+                                                        className="
+                                                mt-1
+
+                                                text-2xl
+                                                font-bold
+
+                                                text-slate-800
+                                            "
+                                                    >
+
+                                                        {getCurrencySymbol(
+                                                            selected.currency
+                                                        )}
+
+                                                        {selected.consultationFee}
+
+                                                    </h3>
+
+                                                </div>
+
+                                                <span
+                                                    className={`
+                                            rounded-full
+
+                                            px-3 py-1
+
+                                            text-xs
+                                            font-semibold
+
+                                            ${paymentColor(
+                                                        selected.consultationPaymentStatus
+                                                    )}
+                                        `}
+                                                >
+
+                                                    {selected.consultationPaymentStatus}
+
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                             </div>
 
                         </motion.div>
+
                     </motion.div>
                 )}
+
             </AnimatePresence>
         </div>
     );
